@@ -19,11 +19,12 @@ const TEMP_PATIENT = {
   pathologies: ["tumor"],
   symptoms: ["Dyspnée", "Toux chronique"],
   medicalHistory: "Antécédents d'asthme dans l'enfance",
-  consultationReason: "Toux persistante depuis 3 mois",
-  medicalBackground: "Pas de traitement en cours",
+  consultationReason: "Dypnée",
+  medicalBackground: "TBK traitée en 2017",
   clinicalExam: "Auscultation pulmonaire : présence de sibilants",
-  diagnosis: "Pneumopathie tumorale",
-  treatment: "Traitement bronchodilatateur",
+  diagnosis: "Asthme",
+  treatment:
+    "Corticoïde inhalé (CSI) :\n➤ Budesonide (Pulmicort®) 400 µg 2 fois/jour (ou selon sévérité)\n\nBronchodilatateur bêta-2 agoniste de longue durée d'action (LABA) (si asthme modéré à sévère) :\n➤ Formotérol (Symbicort®) 1-2 bouffées matin et soir",
 };
 
 function EditPatientContent() {

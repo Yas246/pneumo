@@ -19,7 +19,7 @@ interface PatientListProps {
 const mockPatients: Patient[] = [
   {
     id: "1",
-    name: "Jean Dupont",
+    name: "Hamza Farhi",
     age: 45,
     diagnosis: "Pneumopathie tumorale",
     lastVisit: "2024-03-01",
@@ -27,7 +27,7 @@ const mockPatients: Patient[] = [
   },
   {
     id: "2",
-    name: "Marie Martin",
+    name: "Ahmad Benal",
     age: 62,
     diagnosis: "BPCO",
     lastVisit: "2024-02-28",
@@ -35,7 +35,7 @@ const mockPatients: Patient[] = [
   },
   {
     id: "3",
-    name: "Pierre Durant",
+    name: "Abdelghani Ali",
     age: 53,
     diagnosis: "Asthme sévère",
     lastVisit: "2024-01-15",
@@ -43,7 +43,7 @@ const mockPatients: Patient[] = [
   },
   {
     id: "4",
-    name: "Camille Roux",
+    name: "Lhessen Elkhomss",
     age: 34,
     diagnosis: "Asthme",
     lastVisit: "2024-02-10",
@@ -51,7 +51,7 @@ const mockPatients: Patient[] = [
   },
   {
     id: "5",
-    name: "Antoine Girard",
+    name: "Toufik Hafid",
     age: 29,
     diagnosis: "Asthme",
     lastVisit: "2024-03-01",
@@ -59,7 +59,7 @@ const mockPatients: Patient[] = [
   },
   {
     id: "6",
-    name: "Camille Dupont",
+    name: "Mohamed Henni",
     age: 34,
     diagnosis: "Asthme",
     lastVisit: "2024-02-10",
