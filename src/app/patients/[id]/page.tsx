@@ -15,8 +15,8 @@ import { useState } from "react";
 // Données temporaires pour la démonstration
 const TEMP_PATIENT = {
   id: "1",
-  firstName: "Jean",
-  lastName: "Dupont",
+  firstName: "Hamza",
+  lastName: "Farhi",
   age: 45,
   socialSecurity: "1234567890123",
   pathologies: ["tumor"],

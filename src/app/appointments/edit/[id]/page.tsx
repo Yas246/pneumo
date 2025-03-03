@@ -14,7 +14,7 @@ import { z } from "zod";
 const TEMP_APPOINTMENT = {
   id: "1",
   patientId: "1",
-  patientName: "Jean Dupont",
+  patientName: "Hamza Farhi",
   date: "2024-03-15T14:30",
   duration: 30,
   type: "Consultation",

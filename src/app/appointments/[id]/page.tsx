@@ -13,7 +13,7 @@ import { useState } from "react";
 const TEMP_APPOINTMENT = {
   id: "1",
   patientId: "1",
-  patientName: "Jean Dupont",
+  patientName: "Hamza Farhi",
   date: new Date(2024, 2, 15, 14, 30),
   duration: 30,
   type: "Consultation",

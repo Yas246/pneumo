@@ -12,7 +12,7 @@ import { z } from "zod";
 
 // Données temporaires pour la démonstration
 const TEMP_PATIENTS = [
-  { id: "1", name: "Jean Dupont", pathology: "Pneumopathie tumorale" },
+  { id: "1", name: "Hamza Farhi", pathology: "Pneumopathie tumorale" },
   { id: "2", name: "Marie Martin", pathology: "BPCO" },
   { id: "3", name: "Pierre Durant", pathology: "Asthme sévère" },
 ];

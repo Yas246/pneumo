@@ -26,7 +26,7 @@ const TEMP_APPOINTMENTS = [
   {
     id: "1",
     patientId: "1",
-    patientName: "Jean Dupont",
+    patientName: "Hamza Farhi",
     date: new Date(2024, 2, 15, 9, 30),
     duration: 30,
     type: "Consultation",
