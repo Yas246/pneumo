@@ -123,7 +123,7 @@ export default function PatientPage() {
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Numéro de sécurité sociale
+                      Couverture Sociale
                     </p>
                     <p className="mt-1 text-sm text-gray-900 dark:text-white">
                       {patient.socialSecurity}
