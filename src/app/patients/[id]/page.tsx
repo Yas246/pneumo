@@ -13,23 +13,59 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 
 // Données temporaires pour la démonstration
-const TEMP_PATIENT = {
-  id: "1",
-  firstName: "Hamza",
-  lastName: "Farhi",
-  age: 45,
-  socialSecurity: "CNSS" as const,
-  pathologies: ["tumor"],
-  symptoms: ["Dyspnée", "Toux chronique"],
-  medicalHistory: "Antécédents d'asthme dans l'enfance",
-  consultationReason: "Dypnée",
-  medicalBackground: "TBK traitée en 2017",
-  clinicalExam: "Auscultation pulmonaire : présence de sibilants",
-  diagnosis: "Asthme",
-  treatment:
-    "Corticoïde inhalé (CSI) :\n➤ Budesonide (Pulmicort®) 400 µg 2 fois/jour (ou selon sévérité)\n\nBronchodilatateur bêta-2 agoniste de longue durée d'action (LABA) (si asthme modéré à sévère) :\n➤ Formotérol (Symbicort®) 1-2 bouffées matin et soir",
-  status: "active" as const,
-  lastVisit: "2024-03-01",
+const TEMP_PATIENTS = {
+  "1": {
+    id: "1",
+    firstName: "Hamza",
+    lastName: "Farhi",
+    age: 45,
+    socialSecurity: "CNSS" as const,
+    pathologies: ["tumor"],
+    symptoms: ["Dyspnée", "Toux chronique"],
+    medicalHistory: "Antécédents d'asthme dans l'enfance",
+    consultationReason: "Dypnée",
+    medicalBackground: "TBK traitée en 2017",
+    clinicalExam: "Auscultation pulmonaire : présence de sibilants",
+    diagnosis: "Asthme",
+    treatment:
+      "Corticoïde inhalé (CSI) :\n➤ Budesonide (Pulmicort®) 400 µg 2 fois/jour (ou selon sévérité)\n\nBronchodilatateur bêta-2 agoniste de longue durée d'action (LABA) (si asthme modéré à sévère) :\n➤ Formotérol (Symbicort®) 1-2 bouffées matin et soir",
+    status: "active" as const,
+    lastVisit: "2024-03-01",
+  },
+  "2": {
+    id: "2",
+    firstName: "Ahmad",
+    lastName: "Benal",
+    age: 62,
+    socialSecurity: "AMO" as const,
+    pathologies: ["BPCO"],
+    symptoms: ["Dyspnée", "Toux chronique", "Expectorations"],
+    medicalHistory: "BPCO stade II",
+    consultationReason: "Suivi BPCO",
+    medicalBackground: "Tabagisme sevré depuis 2 ans",
+    clinicalExam: "Auscultation pulmonaire : râles bronchiques diffus",
+    diagnosis: "BPCO",
+    treatment: "Bronchodilatateurs longue durée d'action",
+    status: "active" as const,
+    lastVisit: "2024-02-28",
+  },
+  "3": {
+    id: "3",
+    firstName: "Abdelghani",
+    lastName: "Ali",
+    age: 53,
+    socialSecurity: "Mutuelle" as const,
+    pathologies: ["Asthme"],
+    symptoms: ["Dyspnée", "Toux chronique", "Sifflements"],
+    medicalHistory: "Asthme depuis l'enfance",
+    consultationReason: "Exacerbation asthme",
+    medicalBackground: "Allergie aux acariens",
+    clinicalExam: "Sibilants diffus aux deux champs pulmonaires",
+    diagnosis: "Asthme sévère",
+    treatment: "Corticothérapie inhalée + bronchodilatateurs",
+    status: "archived" as const,
+    lastVisit: "2024-01-15",
+  },
 };
 
 export default function PatientPage() {
@@ -38,7 +74,25 @@ export default function PatientPage() {
   const [isArchiving, setIsArchiving] = useState(false);
 
   // Dans une vraie application, nous ferions un appel API ici pour récupérer les données du patient
-  const patient = TEMP_PATIENT;
+  const patient = TEMP_PATIENTS[id as keyof typeof TEMP_PATIENTS];
+
+  if (!patient) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Patient non trouvé
+          </h1>
+          <Link
+            href="/dashboard"
+            className="text-primary-600 hover:text-primary-700"
+          >
+            Retour au tableau de bord
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const handleArchive = async () => {
     setIsArchiving(true);
