@@ -18,7 +18,7 @@ const TEMP_PATIENT = {
   firstName: "Hamza",
   lastName: "Farhi",
   age: 45,
-  socialSecurity: "1234567890123",
+  socialSecurity: "CNSS" as const,
   pathologies: ["tumor"],
   symptoms: ["Dyspnée", "Toux chronique"],
   medicalHistory: "Antécédents d'asthme dans l'enfance",

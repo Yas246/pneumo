@@ -13,10 +13,7 @@ const patientSchema = z.object({
     .number()
     .min(0, "L'âge doit être positif")
     .max(150, "L'âge doit être inférieur à 150"),
-  socialSecurity: z
-    .string()
-    .min(13, "Le numéro de sécurité sociale doit contenir 13 chiffres")
-    .max(15),
+  socialSecurity: z.enum(["CNSS", "AMO", "Mutuelle", "Aucun", "Autre"]),
   symptoms: z.array(z.string()),
   medicalHistory: z.string(),
   consultationReason: z.string(),
@@ -34,7 +31,7 @@ interface PatientFormProps {
     firstName: string;
     lastName: string;
     age: number;
-    socialSecurity: string;
+    socialSecurity: "CNSS" | "AMO" | "Mutuelle" | "Aucun" | "Autre";
     symptoms: string[];
     medicalHistory: string;
     consultationReason: string;
@@ -146,13 +143,19 @@ export function PatientForm({
               htmlFor="socialSecurity"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Numéro de sécurité sociale
+              Couverture Sociale
             </label>
-            <input
-              type="text"
+            <select
               {...register("socialSecurity")}
               className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
-            />
+            >
+              <option value="">Sélectionnez une couverture sociale</option>
+              <option value="CNSS">CNSS</option>
+              <option value="AMO">AMO</option>
+              <option value="Mutuelle">Mutuelle</option>
+              <option value="Aucun">Aucun</option>
+              <option value="Autre">Autre</option>
+            </select>
             {errors.socialSecurity && (
               <p className="text-sm text-red-600 dark:text-red-400">
                 {errors.socialSecurity.message}
