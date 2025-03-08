@@ -102,7 +102,7 @@ export default function NewPatientPage() {
                             alt={pathology.name}
                             width={64}
                             height={64}
-                            className="object-contain"
+                            className="object-contain dark:invert"
                           />
                         </div>
                         <h3 className="text-center font-medium text-gray-900 dark:text-white mb-2">
@@ -149,10 +149,7 @@ export default function NewPatientPage() {
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                   Informations du patient
                 </h2>
-                <PatientForm
-                  selectedPathologies={selectedPathologies}
-                  onSubmit={handleSubmit}
-                />
+                <PatientForm onSubmit={handleSubmit} />
               </div>
             )}
           </div>

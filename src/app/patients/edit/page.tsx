@@ -11,20 +11,115 @@ import { Suspense } from "react";
 
 // Données temporaires pour la démonstration
 const TEMP_PATIENT = {
-  id: "1",
-  firstName: "Jean",
-  lastName: "Dupont",
-  age: 45,
+  firstName: "John",
+  lastName: "Doe",
+  birthDate: "1990-01-01",
+  sex: "M" as const,
+  address: "123 Main St",
+  phone: "0123456789",
+  profession: "Engineer",
+  treatingDoctor: "Dr. Smith",
   socialSecurity: "CNSS" as const,
-  pathologies: ["tumor"],
-  symptoms: ["Dyspnée", "Toux chronique"],
-  medicalHistory: "Antécédents d'asthme dans l'enfance",
-  consultationReason: "Dypnée",
-  medicalBackground: "TBK traitée en 2017",
-  clinicalExam: "Auscultation pulmonaire : présence de sibilants",
-  diagnosis: "Asthme",
-  treatment:
-    "Corticoïde inhalé (CSI) :\n➤ Budesonide (Pulmicort®) 400 µg 2 fois/jour (ou selon sévérité)\n\nBronchodilatateur bêta-2 agoniste de longue durée d'action (LABA) (si asthme modéré à sévère) :\n➤ Formotérol (Symbicort®) 1-2 bouffées matin et soir",
+  consultationReason: "Regular checkup",
+  diurnalSymptoms: {
+    excessiveSleepiness: false,
+    headaches: false,
+    asthenia: false,
+    epworthScore: 0,
+  },
+  nocturnalSymptoms: {
+    snoring: false,
+    sleepApnea: false,
+    choking: false,
+    agitation: false,
+    insomnia: false,
+    nocturia: false,
+  },
+  symptomsDuration: "N/A",
+  personalHistory: {
+    obesity: false,
+    hta: false,
+    orl: "",
+    neuro: "",
+    smoking: "",
+    alcoholism: "",
+    diabetes: "",
+    cardiovascularDiseases: "",
+    lifestyle: "",
+    respiratoryPathology: "",
+    currentMedications: "",
+  },
+  familyHistory: {
+    saosHistory: false,
+    respiratoryPathologies: false,
+  },
+  clinicalExam: {
+    weight: 70,
+    height: 175,
+    bmi: 22.9,
+    neckCircumference: 38,
+    abdominalPerimeter: 85,
+    bloodPressure: "120/80",
+    heartRate: 75,
+    pulmonaryAuscultation: "Normal",
+  },
+  orlExam: {
+    vasAnatomy: "Normal",
+    nasalObstruction: false,
+    amygdalineHypertrophy: false,
+    retrognathia: false,
+    micromandible: false,
+    macroglossia: false,
+  },
+  complementaryExams: {
+    ventilationPolygraphy: false,
+    psg: false,
+    tensionalHolter: false,
+    metabolicAssessment: {
+      lipidProfile: {},
+    },
+    nightOximetry: false,
+    morningBloodGas: {},
+    spirometry: {},
+    imaging: {
+      chestXray: false,
+      orlScan: false,
+    },
+  },
+  diagnosis: {
+    saos: false,
+    sacs: false,
+    soh: false,
+    nocturalHypoventilation: false,
+    simpleSnoring: false,
+  },
+  treatment: {
+    hygieneDietetic: {
+      weightLoss: false,
+      alcoholAndSedativesStop: false,
+      sleepHygieneImprovement: false,
+    },
+    medicalTreatments: {
+      ppc: false,
+      oam: false,
+    },
+    surgicalTreatments: {
+      orlSurgery: false,
+      bariatricSurgery: false,
+    },
+  },
+  ppcFollowUp: {
+    ppcPrescribingDoctor: "",
+    ppcStartDate: "",
+    deviceModel: "",
+    deviceSupplier: "",
+    initialPressure: 0,
+    ventilationMode: "AutoPAP" as const,
+    humidifier: false,
+    maskType: "",
+  },
+  status: "active" as const,
+  lastVisit: "2024-01-01",
 };
 
 function EditPatientContent() {
@@ -69,7 +164,6 @@ function EditPatientContent() {
               <PatientForm
                 mode="edit"
                 initialData={patient}
-                selectedPathologies={patient.pathologies}
                 onSubmit={handleSubmit}
               />
             </div>
