@@ -3,7 +3,8 @@
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
 import { pathologies } from "@/config/pathologies";
-import { getPatient, updatePatient } from "@/firebase/patients";
+import { getPatient, updatePatientStatus } from "@/firebase/patients";
+import { useAuth } from "@/hooks/useAuth";
 import { usePermissions } from "@/hooks/usePermissions";
 import type { Patient } from "@/types/patient";
 import {
@@ -22,6 +23,7 @@ import { toast } from "react-hot-toast";
 export default function PatientPage() {
   const { id } = useParams();
   const router = useRouter();
+  const { user } = useAuth();
   const { canEdit, canArchive, canCreateAppointment } = usePermissions();
   const [patient, setPatient] = useState<Patient | null>(null);
   const [loading, setLoading] = useState(true);
@@ -46,15 +48,12 @@ export default function PatientPage() {
   }, [id]);
 
   const handleArchiveToggle = async () => {
-    if (!patient || typeof id !== "string") return;
+    if (!patient || typeof id !== "string" || !user) return;
 
     setIsArchiving(true);
     try {
       const newStatus = patient.status === "archived" ? "active" : "archived";
-      await updatePatient(id, {
-        ...patient,
-        status: newStatus,
-      });
+      await updatePatientStatus(id, newStatus, user.uid);
 
       // Mettre à jour l'état local
       setPatient({
@@ -235,35 +234,37 @@ export default function PatientPage() {
                   Pathologies
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {patient.pathologies?.map((pathologyId) => {
-                    const pathology = pathologies.find(
-                      (p) => p.id === pathologyId
-                    );
-                    if (!pathology) return null;
-                    return (
-                      <div
-                        key={pathologyId}
-                        className="flex items-center space-x-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4"
-                      >
-                        <div className="flex-shrink-0 w-10 h-10 relative">
-                          <Image
-                            src={pathology.icon}
-                            alt={pathology.name}
-                            fill
-                            className="object-contain dark:invert"
-                          />
-                        </div>
-                        <div>
-                          <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-                            {pathology.name}
-                          </h3>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {pathology.description}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
+                  {Array.isArray(patient.pathologies)
+                    ? patient.pathologies.map((pathologyId) => {
+                        const pathology = pathologies.find(
+                          (p) => p.id === pathologyId
+                        );
+                        if (!pathology) return null;
+                        return (
+                          <div
+                            key={pathologyId}
+                            className="flex items-center space-x-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4"
+                          >
+                            <div className="flex-shrink-0 w-10 h-10 relative">
+                              <Image
+                                src={pathology.icon}
+                                alt={pathology.name}
+                                fill
+                                className="object-contain dark:invert"
+                              />
+                            </div>
+                            <div>
+                              <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+                                {pathology.name}
+                              </h3>
+                              <p className="text-sm text-gray-500 dark:text-gray-400">
+                                {pathology.description}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })
+                    : null}
                 </div>
               </div>
 

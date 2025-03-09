@@ -6,8 +6,8 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    const data = await request.json();
-    const patientId = await createPatientInDb(data);
+    const { userId, ...data } = await request.json();
+    const patientId = await createPatientInDb(data, userId);
 
     return NextResponse.json({ id: patientId }, { status: 201 });
   } catch (error) {
@@ -21,8 +21,8 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { id, ...data } = await request.json();
-    await updatePatientInDb(id, data);
+    const { id, userId, ...data } = await request.json();
+    await updatePatientInDb(id, data, userId);
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Erreur lors de la mise à jour du patient:", error);

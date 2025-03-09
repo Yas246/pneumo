@@ -1,7 +1,54 @@
-import { PatientFormData } from "@/components/patients/forms";
+import { CreateAppointmentData } from "@/types/appointment";
+import { CreatePatientData, Patient } from "@/types/patient";
 
-export async function createPatient(data: PatientFormData): Promise<void> {
+// Patients API
+export async function createPatient(
+  data: CreatePatientData,
+  userId: string
+): Promise<string> {
   const response = await fetch("/api/patients", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...data, userId }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.message || "Erreur lors de la création du patient");
+  }
+
+  const result = await response.json();
+  return result.id;
+}
+
+export async function updatePatient(
+  id: string,
+  data: Partial<Patient>,
+  userId: string
+): Promise<void> {
+  const response = await fetch(`/api/patients/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ ...data, userId }),
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(
+      error.message || "Erreur lors de la mise à jour du patient"
+    );
+  }
+}
+
+// Appointments API
+export async function createAppointment(
+  data: CreateAppointmentData
+): Promise<string> {
+  const response = await fetch("/api/appointments", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -11,30 +58,11 @@ export async function createPatient(data: PatientFormData): Promise<void> {
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || "Erreur lors de la création du patient");
-  }
-}
-
-export async function updatePatient(
-  id: string | undefined,
-  data: PatientFormData
-): Promise<void> {
-  if (!id) {
-    throw new Error("ID du patient manquant");
-  }
-
-  const response = await fetch(`/api/patients/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ ...data, id }),
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
     throw new Error(
-      error.message || "Erreur lors de la mise à jour du patient"
+      error.message || "Erreur lors de la création du rendez-vous"
     );
   }
+
+  const result = await response.json();
+  return result.id;
 }

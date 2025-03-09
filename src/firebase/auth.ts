@@ -11,6 +11,8 @@ import {
   User,
 } from "firebase/auth";
 import { auth } from "./config";
+import { createLog } from "./logs";
+import { getUser } from "./users";
 
 export interface AuthError {
   code: string;
@@ -139,6 +141,48 @@ export const changePassword = async (
   try {
     await reauthenticate(currentPassword);
     await updatePassword(user, newPassword);
+  } catch (error) {
+    throw formatAuthError(error as AuthError);
+  }
+};
+
+// Changer le mot de passe d'un utilisateur (par le super-admin)
+export const changeUserPassword = async (
+  uid: string,
+  newPassword: string
+): Promise<void> => {
+  try {
+    // Récupérer les informations de l'utilisateur
+    const userData = await getUser(uid);
+    if (!userData) {
+      throw new Error("Utilisateur non trouvé");
+    }
+
+    const response = await fetch(`/api/users/${uid}/change-password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newPassword }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(
+        error.message || "Erreur lors du changement de mot de passe"
+      );
+    }
+
+    // Créer un log pour le changement de mot de passe
+    await createLog({
+      userId: uid,
+      userEmail: userData.email,
+      userRole: userData.role,
+      action: "CHANGEMENT_MDP",
+      details: `Changement du mot de passe pour ${userData.displayName}`,
+      targetId: uid,
+      targetType: "user",
+    });
   } catch (error) {
     throw formatAuthError(error as AuthError);
   }

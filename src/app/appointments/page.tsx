@@ -5,15 +5,56 @@ import { AppointmentList } from "@/components/appointments/AppointmentList";
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
 import {
+  getAllAppointmentsWithPatients,
+  getUserAppointmentsWithPatients,
+} from "@/firebase/appointments";
+import { useAuth } from "@/hooks/useAuth";
+import { AppointmentWithPatient } from "@/types/appointment";
+import {
   CalendarIcon,
   ListBulletIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 export default function AppointmentsPage() {
   const [view, setView] = useState<"calendar" | "list">("calendar");
+  const [appointments, setAppointments] = useState<AppointmentWithPatient[]>(
+    []
+  );
+  const [loading, setLoading] = useState(true);
+  const { user, isSuperAdmin } = useAuth();
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        if (!user) return;
+
+        const fetchedAppointments = isSuperAdmin
+          ? await getAllAppointmentsWithPatients()
+          : await getUserAppointmentsWithPatients(user.uid);
+
+        setAppointments(fetchedAppointments);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des rendez-vous:", error);
+        toast.error("Erreur lors de la récupération des rendez-vous");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAppointments();
+  }, [user, isSuperAdmin]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -57,7 +98,11 @@ export default function AppointmentsPage() {
             </div>
           </div>
 
-          {view === "calendar" ? <AppointmentCalendar /> : <AppointmentList />}
+          {view === "calendar" ? (
+            <AppointmentCalendar appointments={appointments} />
+          ) : (
+            <AppointmentList appointments={appointments} />
+          )}
         </div>
       </main>
     </div>

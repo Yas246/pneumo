@@ -64,6 +64,7 @@ export function StatChart({ title, type, data }: StatChartProps) {
     responsive: true,
     plugins: {
       legend: {
+        display: type === "pie",
         position: "bottom" as const,
         labels: {
           color: "rgb(156, 163, 175)", // gray-400

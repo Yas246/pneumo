@@ -2,46 +2,121 @@
 
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
+import { deleteAppointment, getAppointment } from "@/firebase/appointments";
+import { db } from "@/firebase/config";
+import { getPatient } from "@/firebase/patients";
+import { useAuth } from "@/hooks/useAuth";
 import { ArrowLeftIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { doc, getDoc } from "firebase/firestore";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
-// Données temporaires pour la démonstration
-const TEMP_APPOINTMENT = {
-  id: "1",
-  patientId: "1",
-  patientName: "Hamza Farhi",
-  date: new Date(2024, 2, 15, 14, 30),
-  duration: 30,
-  type: "Consultation",
-  notes: "Patient à suivre de près",
-  diagnosis: "Pneumopathie tumorale",
-};
+interface AppointmentDetails {
+  id: string;
+  patientId: string;
+  patientName: string;
+  date: string;
+  time: string;
+  duration: number;
+  type: string;
+  notes?: string;
+  createdBy: string;
+  doctor?: {
+    displayName: string;
+    role: string;
+  };
+}
 
-export default function AppointmentPage() {
-  const { id } = useParams();
+export default function AppointmentDetailsPage() {
   const router = useRouter();
-  const [isDeleting, setIsDeleting] = useState(false);
+  const params = useParams();
+  const { user } = useAuth();
+  const [appointment, setAppointment] = useState<AppointmentDetails | null>(
+    null
+  );
 
-  // Dans une vraie application, nous ferions un appel API ici
-  const appointment = TEMP_APPOINTMENT;
+  useEffect(() => {
+    const fetchAppointment = async () => {
+      if (!params.id || typeof params.id !== "string") {
+        toast.error("ID de rendez-vous invalide");
+        router.push("/appointments");
+        return;
+      }
+
+      try {
+        const appointmentData = await getAppointment(params.id);
+        if (!appointmentData) {
+          toast.error("Rendez-vous non trouvé");
+          router.push("/appointments");
+          return;
+        }
+
+        const patient = await getPatient(appointmentData.patientId);
+        if (!patient) {
+          toast.error("Patient non trouvé");
+          return;
+        }
+
+        // Récupérer les informations du médecin si disponibles
+        let doctorInfo = undefined;
+        if (appointmentData.createdBy) {
+          const doctorDoc = await getDoc(
+            doc(db, "users", appointmentData.createdBy)
+          );
+          if (doctorDoc.exists()) {
+            const doctorData = doctorDoc.data();
+            doctorInfo = {
+              displayName: doctorData.displayName,
+              role: doctorData.role,
+            };
+          }
+        }
+
+        setAppointment({
+          ...appointmentData,
+          id: params.id,
+          patientName: `${patient.firstName} ${patient.lastName}`,
+          doctor: doctorInfo,
+        });
+      } catch (error) {
+        console.error("Error:", error);
+        toast.error("Erreur lors du chargement du rendez-vous");
+      }
+    };
+
+    fetchAppointment();
+  }, [params.id, router]);
 
   const handleDelete = async () => {
-    if (!confirm("Êtes-vous sûr de vouloir supprimer ce rendez-vous ?")) return;
+    if (!user) {
+      toast.error("Vous devez être connecté pour supprimer un rendez-vous");
+      return;
+    }
 
-    setIsDeleting(true);
-    try {
-      // TODO: Implémenter la logique de suppression
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      router.push("/appointments");
-    } catch (error) {
-      console.error("Error:", error);
-      setIsDeleting(false);
+    if (!params.id || typeof params.id !== "string") {
+      toast.error("ID de rendez-vous invalide");
+      return;
+    }
+
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce rendez-vous ?")) {
+      try {
+        await deleteAppointment(params.id, user.uid);
+        toast.success("Rendez-vous supprimé avec succès");
+        router.push("/appointments");
+      } catch (error) {
+        console.error("Error:", error);
+        toast.error("Erreur lors de la suppression du rendez-vous");
+      }
     }
   };
+
+  if (!appointment) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -63,17 +138,26 @@ export default function AppointmentPage() {
                 Rendez-vous avec {appointment.patientName}
               </h1>
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {format(appointment.date, "EEEE d MMMM yyyy 'à' HH:mm", {
-                  locale: fr,
-                })}
+                {format(
+                  new Date(`${appointment.date}T${appointment.time}`),
+                  "EEEE d MMMM yyyy 'à' HH:mm",
+                  {
+                    locale: fr,
+                  }
+                )}
               </p>
             </div>
-            <Link href={`/appointments/edit/${id}`}>
-              <Button>
-                <PencilIcon className="h-5 w-5 mr-2" />
-                Modifier
-              </Button>
-            </Link>
+            <div className="flex items-center space-x-4">
+              <Link href={`/patients/${appointment.patientId}`}>
+                <Button variant="outline">Voir le dossier patient</Button>
+              </Link>
+              <Link href={`/appointments/edit/${appointment.id}`}>
+                <Button>
+                  <PencilIcon className="h-5 w-5 mr-2" />
+                  Modifier
+                </Button>
+              </Link>
+            </div>
           </div>
 
           <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
@@ -107,14 +191,27 @@ export default function AppointmentPage() {
                       {appointment.patientName}
                     </dd>
                   </div>
-                  <div>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Diagnostic
-                    </dt>
-                    <dd className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {appointment.diagnosis}
-                    </dd>
-                  </div>
+                  {appointment.doctor && (
+                    <div>
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Médecin
+                      </dt>
+                      <dd className="mt-1 text-sm text-gray-900 dark:text-white">
+                        {appointment.doctor.displayName}
+                        <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+                          (
+                          {appointment.doctor.role === "medecin"
+                            ? "Médecin"
+                            : appointment.doctor.role === "super-admin"
+                            ? "Super Admin"
+                            : appointment.doctor.role === "infirmier"
+                            ? "Infirmier"
+                            : ""}
+                          )
+                        </span>
+                      </dd>
+                    </div>
+                  )}
                   {appointment.notes && (
                     <div className="sm:col-span-2">
                       <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -134,10 +231,9 @@ export default function AppointmentPage() {
             <Button
               variant="outline"
               onClick={handleDelete}
-              disabled={isDeleting}
               className="border-red-600 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10"
             >
-              {isDeleting ? "Suppression..." : "Supprimer le rendez-vous"}
+              Supprimer le rendez-vous
             </Button>
           </div>
         </div>

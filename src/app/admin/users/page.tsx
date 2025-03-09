@@ -1,5 +1,6 @@
 "use client";
 
+import { AdminChangePasswordModal } from "@/components/admin/AdminChangePasswordModal";
 import { ChangePasswordModal } from "@/components/admin/ChangePasswordModal";
 import { CreateUserModal } from "@/components/admin/CreateUserModal";
 import { DeleteUserModal } from "@/components/admin/DeleteUserModal";
@@ -8,7 +9,7 @@ import { Navbar } from "@/components/shared/Navbar";
 import { deleteUser, getAllUsers } from "@/firebase/users";
 import { useAuth } from "@/hooks/useAuth";
 import { UserData } from "@/types/user";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import { KeyIcon, TrashIcon, UserPlusIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -24,6 +25,8 @@ export default function UsersPage() {
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [loadingUsers, setLoadingUsers] = useState(true);
   const [isDeletingUser, setIsDeletingUser] = useState(false);
+  const [isAdminChangePasswordModalOpen, setIsAdminChangePasswordModalOpen] =
+    useState(false);
 
   useEffect(() => {
     if (!loading && !isSuperAdmin) {
@@ -80,62 +83,93 @@ export default function UsersPage() {
       <Navbar />
 
       <main className="py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Gestion des Utilisateurs
-            </h1>
-            <div className="flex space-x-4">
-              <Button
-                variant="outline"
-                onClick={() => setIsChangePasswordModalOpen(true)}
-              >
-                Changer mon mot de passe
-              </Button>
-              <Button onClick={() => setIsCreateModalOpen(true)}>
-                Créer un utilisateur
-              </Button>
+        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+          <div className="px-4 sm:px-0 mb-8">
+            <div className="sm:flex sm:items-center">
+              <div className="sm:flex-auto">
+                <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
+                  Gestion des Utilisateurs
+                </h1>
+                <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                  Gérez les comptes des médecins et infirmiers de la plateforme
+                </p>
+              </div>
+              <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none space-x-4">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsChangePasswordModalOpen(true)}
+                  className="inline-flex items-center"
+                >
+                  <KeyIcon className="h-4 w-4 mr-2" />
+                  Changer mon mot de passe
+                </Button>
+                <Button
+                  onClick={() => setIsCreateModalOpen(true)}
+                  className="inline-flex items-center"
+                >
+                  <UserPlusIcon className="h-4 w-4 mr-2" />
+                  Créer un utilisateur
+                </Button>
+              </div>
             </div>
           </div>
 
-          {loadingUsers ? (
-            <div className="flex justify-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
-            </div>
-          ) : (
-            <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
-              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead className="bg-gray-50 dark:bg-gray-700">
+          <div className="shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg overflow-hidden">
+            {loadingUsers ? (
+              <div className="flex justify-center items-center h-64 bg-white dark:bg-gray-800">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+              </div>
+            ) : (
+              <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-800">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6"
+                    >
                       Nom
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
+                    >
                       Email
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
+                    >
                       Rôle
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    <th
+                      scope="col"
+                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white"
+                    >
                       Date de création
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                      Actions
+                    <th
+                      scope="col"
+                      className="relative py-3.5 pl-3 pr-4 sm:pr-6"
+                    >
+                      <span className="sr-only">Actions</span>
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
                   {users.map((user) => (
-                    <tr key={user.uid}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                    <tr
+                      key={user.uid}
+                      className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                    >
+                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-white sm:pl-6">
                         {user.displayName || "Non défini"}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-600 dark:text-gray-300">
                         {user.email}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm">
                         <span
-                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
                             user.role === "super-admin"
                               ? "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200"
                               : user.role === "medecin"
@@ -146,28 +180,44 @@ export default function UsersPage() {
                           {user.role}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                        {user.createdAt.toLocaleDateString()}
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-600 dark:text-gray-300">
+                        {new Date(user.createdAt).toLocaleDateString()}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
+                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                         {user.role !== "super-admin" && (
-                          <button
-                            onClick={() => {
-                              setSelectedUser(user);
-                              setIsDeleteModalOpen(true);
-                            }}
-                            className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
-                          >
-                            <TrashIcon className="h-5 w-5" />
-                          </button>
+                          <div className="flex justify-end space-x-2">
+                            <button
+                              onClick={() => {
+                                setSelectedUser(user);
+                                setIsAdminChangePasswordModalOpen(true);
+                              }}
+                              className="group inline-flex items-center px-2.5 py-1.5 bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-200 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-md transition-all duration-200 hover:shadow-sm"
+                              title="Modifier le mot de passe"
+                            >
+                              <KeyIcon className="h-4 w-4 mr-1.5 transition-transform duration-200 group-hover:scale-110" />
+                              <span className="text-xs font-medium">
+                                Modifier MDP
+                              </span>
+                            </button>
+                            <button
+                              onClick={() => {
+                                setSelectedUser(user);
+                                setIsDeleteModalOpen(true);
+                              }}
+                              className="group inline-flex items-center px-2 py-1.5 bg-red-50 dark:bg-red-900/50 text-red-700 dark:text-red-200 hover:bg-red-100 dark:hover:bg-red-800 rounded-md transition-all duration-200 hover:shadow-sm"
+                              title="Supprimer l'utilisateur"
+                            >
+                              <TrashIcon className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
+                            </button>
+                          </div>
                         )}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </main>
 
@@ -186,16 +236,27 @@ export default function UsersPage() {
       />
 
       {selectedUser && (
-        <DeleteUserModal
-          isOpen={isDeleteModalOpen}
-          onClose={() => {
-            setIsDeleteModalOpen(false);
-            setSelectedUser(null);
-          }}
-          onConfirm={handleDeleteUser}
-          user={selectedUser}
-          isLoading={isDeletingUser}
-        />
+        <>
+          <DeleteUserModal
+            isOpen={isDeleteModalOpen}
+            onClose={() => {
+              setIsDeleteModalOpen(false);
+              setSelectedUser(null);
+            }}
+            onConfirm={handleDeleteUser}
+            user={selectedUser}
+            isLoading={isDeletingUser}
+          />
+
+          <AdminChangePasswordModal
+            isOpen={isAdminChangePasswordModalOpen}
+            onClose={() => {
+              setIsAdminChangePasswordModalOpen(false);
+              setSelectedUser(null);
+            }}
+            user={selectedUser}
+          />
+        </>
       )}
     </div>
   );

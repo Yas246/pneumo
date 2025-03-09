@@ -1,3 +1,8 @@
+export interface StatusChange {
+  status: "active" | "archived";
+  date: Date;
+}
+
 export interface Patient {
   id?: string;
   // Informations Générales du Patient
@@ -11,6 +16,8 @@ export interface Patient {
   treatingDoctor: string;
   socialSecurity: "CNSS" | "AMO" | "Mutuelle" | "Aucun" | "Autre";
   status: "active" | "archived";
+  statusHistory: StatusChange[];
+  statusChangedAt: Date;
   lastVisit: string;
   pathologies: string[]; // Liste des IDs des pathologies
 

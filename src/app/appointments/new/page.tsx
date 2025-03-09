@@ -2,20 +2,19 @@
 
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
+import { createAppointment } from "@/firebase/appointments";
+import { searchPatients } from "@/firebase/patients";
+import { useAuth } from "@/hooks/useAuth";
+import { usePermissions } from "@/hooks/usePermissions";
+import { Patient } from "@/types/patient";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 import { z } from "zod";
-
-// Données temporaires pour la démonstration
-const TEMP_PATIENTS = [
-  { id: "1", name: "Hamza Farhi", pathology: "Pneumopathie tumorale" },
-  { id: "2", name: "Marie Martin", pathology: "BPCO" },
-  { id: "3", name: "Pierre Durant", pathology: "Asthme sévère" },
-];
 
 const appointmentSchema = z.object({
   patientId: z.string().min(1, "Veuillez sélectionner un patient"),
@@ -32,14 +31,46 @@ function NewAppointmentContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [patients, setPatients] = useState<Patient[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+  const { canCreateAppointment, loading: permissionsLoading } =
+    usePermissions();
+  const { user } = useAuth();
 
   const patientId = searchParams.get("patientId");
   const patientName = searchParams.get("patientName");
   const diagnosis = searchParams.get("diagnosis");
 
+  useEffect(() => {
+    if (!permissionsLoading && !canCreateAppointment) {
+      toast.error("Vous n'avez pas les permissions nécessaires");
+      router.push("/appointments");
+    }
+  }, [canCreateAppointment, permissionsLoading, router]);
+
+  useEffect(() => {
+    const searchPatientsDebounced = async () => {
+      if (searchTerm.length >= 2) {
+        try {
+          const results = await searchPatients(searchTerm);
+          setPatients(results);
+        } catch (error) {
+          console.error("Erreur lors de la recherche des patients:", error);
+        }
+      } else {
+        setPatients([]);
+      }
+    };
+
+    const timeoutId = setTimeout(searchPatientsDebounced, 300);
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm]);
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<AppointmentFormData>({
     resolver: zodResolver(appointmentSchema),
@@ -51,18 +82,38 @@ function NewAppointmentContent() {
   });
 
   const onSubmit = async (data: AppointmentFormData) => {
+    if (!user) {
+      toast.error("Vous devez être connecté pour créer un rendez-vous");
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      // TODO: Implémenter la logique de sauvegarde
-      console.log("Form data:", data);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulation d'une requête API
+      await createAppointment({
+        ...data,
+        createdBy: user.uid,
+      });
+      toast.success("Rendez-vous créé avec succès");
       router.push("/appointments");
     } catch (error) {
       console.error("Error:", error);
+      toast.error("Erreur lors de la création du rendez-vous");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (permissionsLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
+
+  if (!canCreateAppointment) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -92,26 +143,55 @@ function NewAppointmentContent() {
                 >
                   Patient
                 </label>
-                <select
-                  id="patientId"
-                  {...register("patientId")}
-                  className="block w-full px-4 py-2.5 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white rounded-lg"
-                  disabled={!!patientId}
-                >
-                  <option value="" disabled selected>
-                    Sélectionner un patient
-                  </option>
-                  {TEMP_PATIENTS.map((patient) => (
-                    <option
-                      key={patient.id}
-                      value={patient.id}
-                      className="py-2"
+                {!selectedPatient && !patientId && (
+                  <input
+                    type="text"
+                    placeholder="Rechercher un patient..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="block w-full px-4 py-2.5 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white rounded-lg mb-2"
+                  />
+                )}
+                {!selectedPatient && !patientId && patients.length > 0 && (
+                  <div className="mt-2 max-h-48 overflow-auto rounded-md border border-gray-300 dark:border-gray-600">
+                    {patients.map((patient) => (
+                      <button
+                        key={patient.id}
+                        type="button"
+                        onClick={() => {
+                          if (patient.id) {
+                            setValue("patientId", patient.id);
+                            setSelectedPatient(patient);
+                            setSearchTerm("");
+                            setPatients([]);
+                          }
+                        }}
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        {patient.firstName} {patient.lastName}
+                      </button>
+                    ))}
+                  </div>
+                )}
+                {selectedPatient && (
+                  <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                    <p className="text-sm text-gray-700 dark:text-gray-300">
+                      Patient sélectionné : {selectedPatient.firstName}{" "}
+                      {selectedPatient.lastName}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedPatient(null);
+                        setValue("patientId", "");
+                      }}
+                      className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
                     >
-                      {patient.name} - {patient.pathology}
-                    </option>
-                  ))}
-                </select>
-                {patientId && patientName && (
+                      Changer
+                    </button>
+                  </div>
+                )}
+                {patientId && patientName && !selectedPatient && (
                   <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
                     Patient sélectionné : {patientName}
                     {diagnosis && ` - ${diagnosis}`}

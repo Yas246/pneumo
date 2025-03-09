@@ -3,36 +3,76 @@
 import { Navbar } from "@/components/shared/Navbar";
 import { StatCard } from "@/components/statistics/StatCard";
 import { StatChart } from "@/components/statistics/StatChart";
+import { getStatistics } from "@/firebase/statistics";
 import {
   ChartBarIcon,
   ClipboardDocumentListIcon,
   UserGroupIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
+import { useEffect, useState } from "react";
 
-// Données temporaires pour la démonstration
-const TEMP_STATS = {
-  totalPatients: 150,
-  activePatients: 85,
-  archivedPatients: 65,
-  appointmentsThisMonth: 45,
-  pathologyDistribution: [
-    { name: "Pneumopathies tumorales", count: 35 },
-    { name: "BPCO", count: 42 },
-    { name: "Asthme", count: 28 },
-    { name: "Infections pulmonaires", count: 45 },
-  ],
-  monthlyAppointments: [
-    { name: "Jan", count: 35 },
-    { name: "Fév", count: 28 },
-    { name: "Mar", count: 45 },
-    { name: "Avr", count: 42 },
-    { name: "Mai", count: 38 },
-    { name: "Juin", count: 30 },
-  ],
+type StatsData = {
+  totalPatients: number;
+  totalPatientsTrend: number;
+  activePatients: number;
+  activePatientsTrend: number;
+  archivedPatients: number;
+  archivedPatientsTrend: number;
+  appointmentsThisMonth: number;
+  appointmentsTrend: number;
+  pathologyDistribution: Array<{ name: string; count: number }>;
+  monthlyAppointments: Array<{ name: string; count: number }>;
 };
 
 export default function StatisticsPage() {
+  const [stats, setStats] = useState<StatsData>({
+    totalPatients: 0,
+    totalPatientsTrend: 0,
+    activePatients: 0,
+    activePatientsTrend: 0,
+    archivedPatients: 0,
+    archivedPatientsTrend: 0,
+    appointmentsThisMonth: 0,
+    appointmentsTrend: 0,
+    pathologyDistribution: [],
+    monthlyAppointments: [],
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const statistics = await getStatistics();
+        setStats(statistics);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des statistiques:",
+          error
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <Navbar />
+        <main className="py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-center items-center min-h-[60vh]">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
@@ -40,34 +80,46 @@ export default function StatisticsPage() {
       <main className="py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-2xl font-semibold text-gray-900 dark:text-white mb-8">
-            Tableau de bord
+            Statistiques
           </h1>
 
           {/* Cartes statistiques */}
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
             <StatCard
               title="Total patients"
-              value={TEMP_STATS.totalPatients}
+              value={stats.totalPatients}
               icon={UsersIcon}
-              trend={{ value: 12, label: "vs mois dernier" }}
+              trend={{
+                value: Math.round(stats.totalPatientsTrend),
+                label: "vs mois dernier",
+              }}
             />
             <StatCard
               title="Patients actifs"
-              value={TEMP_STATS.activePatients}
+              value={stats.activePatients}
               icon={UserGroupIcon}
-              trend={{ value: 5, label: "vs mois dernier" }}
+              trend={{
+                value: Math.round(stats.activePatientsTrend),
+                label: "vs mois dernier",
+              }}
             />
             <StatCard
               title="Patients archivés"
-              value={TEMP_STATS.archivedPatients}
+              value={stats.archivedPatients}
               icon={ClipboardDocumentListIcon}
-              trend={{ value: -2, label: "vs mois dernier" }}
+              trend={{
+                value: Math.round(stats.archivedPatientsTrend),
+                label: "vs mois dernier",
+              }}
             />
             <StatCard
               title="RDV ce mois"
-              value={TEMP_STATS.appointmentsThisMonth}
+              value={stats.appointmentsThisMonth}
               icon={ChartBarIcon}
-              trend={{ value: 8, label: "vs mois dernier" }}
+              trend={{
+                value: Math.round(stats.appointmentsTrend),
+                label: "vs mois dernier",
+              }}
             />
           </div>
 
@@ -76,12 +128,12 @@ export default function StatisticsPage() {
             <StatChart
               title="Distribution des pathologies"
               type="pie"
-              data={TEMP_STATS.pathologyDistribution}
+              data={stats.pathologyDistribution}
             />
             <StatChart
               title="Rendez-vous par mois"
               type="bar"
-              data={TEMP_STATS.monthlyAppointments}
+              data={stats.monthlyAppointments}
             />
           </div>
         </div>

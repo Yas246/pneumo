@@ -7,6 +7,7 @@ import {
   Bars3Icon,
   CalendarIcon,
   ChartBarIcon,
+  ClipboardDocumentListIcon,
   UserGroupIcon,
   UsersIcon,
   XMarkIcon,
@@ -36,11 +37,18 @@ const getNavigation = (isSuperAdmin: boolean) => {
   ];
 
   if (isSuperAdmin) {
-    baseNavigation.push({
-      name: "Gestion des comptes",
-      href: "/admin/users",
-      icon: UsersIcon,
-    });
+    baseNavigation.push(
+      {
+        name: "Gestion des comptes",
+        href: "/admin/users",
+        icon: UsersIcon,
+      },
+      {
+        name: "Logs système",
+        href: "/admin/logs",
+        icon: ClipboardDocumentListIcon,
+      }
+    );
   }
 
   return baseNavigation;

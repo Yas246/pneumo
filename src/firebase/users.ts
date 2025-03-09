@@ -10,6 +10,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "./config";
+import { createLog } from "./logs";
 
 // Collection Firestore pour les utilisateurs
 const USERS_COLLECTION = "users";
@@ -51,6 +52,17 @@ export const createUser = async (userData: CreateUserData): Promise<void> => {
     console.log("Saving user document to Firestore:", userDoc);
     await setDoc(doc(db, USERS_COLLECTION, uid), userDoc);
     console.log("User document created in Firestore");
+
+    // Créer un log pour la création d'utilisateur
+    await createLog({
+      userId: uid,
+      userEmail: userData.email,
+      userRole: userData.role,
+      action: "CREATION_COMPTE",
+      details: `Création du compte ${userData.role} pour ${userData.displayName}`,
+      targetId: uid,
+      targetType: "user",
+    });
   } catch (error) {
     console.error("Error creating user:", error);
     throw error;
@@ -152,25 +164,35 @@ export const getUserByEmail = async (
 // Supprimer un utilisateur
 export const deleteUser = async (uid: string): Promise<void> => {
   try {
-    // Appeler l'API de suppression d'utilisateur
-    const response = await fetch("/api/users/delete", {
+    // Récupérer les informations de l'utilisateur avant la suppression
+    const userDoc = await getDoc(doc(db, USERS_COLLECTION, uid));
+    const userData = userDoc.data() as UserData;
+
+    // Appeler l'API de suppression
+    const response = await fetch(`/api/users/${uid}/delete`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ uid }),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(
-        error.message || "Erreur lors de la suppression de l'utilisateur"
-      );
+      throw new Error(error.message || "Erreur lors de la suppression");
     }
 
-    // Supprimer le document utilisateur de Firestore
+    // Supprimer le document Firestore
     await deleteDoc(doc(db, USERS_COLLECTION, uid));
+
+    // Créer un log pour la suppression d'utilisateur
+    await createLog({
+      userId: uid,
+      userEmail: userData.email,
+      userRole: userData.role,
+      action: "SUPPRESSION_COMPTE",
+      details: `Suppression du compte ${userData.role} de ${userData.displayName}`,
+      targetId: uid,
+      targetType: "user",
+    });
   } catch (error) {
+    console.error("Error deleting user:", error);
     throw error;
   }
 };

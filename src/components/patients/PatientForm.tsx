@@ -1,7 +1,9 @@
 "use client";
 
 import { Button } from "@/components/shared/Button";
+import { useAuth } from "@/hooks/useAuth";
 import { createPatient, updatePatient } from "@/lib/api";
+import { CreatePatientData, Patient } from "@/types/patient";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
@@ -98,12 +100,31 @@ const emptyTreatment = {
   },
 };
 
+const removeUndefinedValues = <T extends Record<string, unknown>>(
+  obj: T
+): Partial<T> => {
+  const result: Partial<T> = {};
+  Object.entries(obj).forEach(([key, value]) => {
+    if (value !== undefined) {
+      if (typeof value === "object" && value !== null) {
+        result[key as keyof T] = removeUndefinedValues(
+          value as Record<string, unknown>
+        ) as T[keyof T];
+      } else {
+        result[key as keyof T] = value as T[keyof T];
+      }
+    }
+  });
+  return result;
+};
+
 export function PatientForm({
   initialData,
   isEditing = false,
   pathologies = [],
 }: PatientFormProps) {
   const router = useRouter();
+  const { user } = useAuth();
 
   // Mémoriser les valeurs par défaut pour éviter les recréations
   const defaultValues = useMemo(
@@ -156,15 +177,40 @@ export function PatientForm({
   }, [reset, defaultValues]);
 
   const onSubmit = async (data: PatientFormData) => {
+    if (!user) {
+      toast.error("Vous devez être connecté pour créer un patient");
+      return;
+    }
+
     try {
       console.log("Form data:", data);
 
       if (isEditing && initialData?.id) {
-        await updatePatient(initialData.id, data);
+        const cleanedData = removeUndefinedValues(data);
+        if (cleanedData.clinicalExam) {
+          cleanedData.clinicalExam = Object.fromEntries(
+            Object.entries(cleanedData.clinicalExam).filter(
+              ([, v]) => v !== undefined
+            )
+          );
+        }
+        await updatePatient(
+          initialData.id,
+          cleanedData as Partial<Patient>,
+          user.uid
+        );
         toast.success("Patient mis à jour avec succès");
         router.push(`/patients/${initialData.id}`);
       } else {
-        await createPatient(data);
+        const now = new Date();
+        await createPatient(
+          {
+            ...data,
+            statusHistory: [{ status: data.status, date: now }],
+            statusChangedAt: now,
+          } as CreatePatientData,
+          user.uid
+        );
         toast.success("Patient créé avec succès");
         router.push("/dashboard");
       }

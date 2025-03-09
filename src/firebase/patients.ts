@@ -1,6 +1,7 @@
-import { CreatePatientData, Patient } from "@/types/patient";
+import { CreatePatientData, Patient, StatusChange } from "@/types/patient";
 import {
   addDoc,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
@@ -13,6 +14,8 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "./config";
+import { createLog } from "./logs";
+import { getUser } from "./users";
 
 const PATIENTS_COLLECTION = "patients";
 
@@ -40,17 +43,40 @@ const patientConverter = {
 
 // Créer un nouveau patient
 export const createPatient = async (
-  patientData: CreatePatientData
+  patientData: CreatePatientData,
+  userId?: string
 ): Promise<string> => {
   try {
-    const docRef = await addDoc(
-      collection(db, PATIENTS_COLLECTION),
-      patientConverter.toFirestore({
-        ...patientData,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      })
-    );
+    const now = new Date();
+    const initialStatus: StatusChange = {
+      status: patientData.status || "active",
+      date: now,
+    };
+
+    const docRef = await addDoc(collection(db, PATIENTS_COLLECTION), {
+      ...patientData,
+      statusHistory: [initialStatus],
+      statusChangedAt: now,
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    // Ajouter le log de création
+    if (userId) {
+      const user = await getUser(userId);
+      if (user) {
+        await createLog({
+          userId: user.uid,
+          userEmail: user.email,
+          userRole: user.role,
+          action: "CREATION_DOSSIER",
+          details: `Création du dossier patient pour ${patientData.firstName} ${patientData.lastName}`,
+          targetId: docRef.id,
+          targetType: "patient",
+        });
+      }
+    }
+
     return docRef.id;
   } catch (error) {
     console.error("Erreur lors de la création du patient:", error);
@@ -111,7 +137,8 @@ export const getPatientsByDiagnosis = async (
 // Mettre à jour un patient
 export const updatePatient = async (
   id: string,
-  patientData: Partial<Patient>
+  patientData: Partial<Patient>,
+  userId?: string
 ): Promise<void> => {
   try {
     const docRef = doc(db, PATIENTS_COLLECTION, id);
@@ -121,6 +148,22 @@ export const updatePatient = async (
     };
 
     await updateDoc(docRef, updateData);
+
+    // Ajouter le log de modification
+    if (userId) {
+      const user = await getUser(userId);
+      if (user) {
+        await createLog({
+          userId: user.uid,
+          userEmail: user.email,
+          userRole: user.role,
+          action: "MODIFICATION_DOSSIER",
+          details: `Modification du dossier patient ID: ${id}`,
+          targetId: id,
+          targetType: "patient",
+        });
+      }
+    }
   } catch (error) {
     console.error("Erreur lors de la mise à jour du patient:", error);
     throw new Error("Erreur lors de la mise à jour du patient");
@@ -173,4 +216,55 @@ export async function searchPatients(searchTerm: string): Promise<Patient[]> {
   console.log("Firebase - Résultats:", finalResults);
 
   return finalResults;
+}
+
+export async function updatePatientStatus(
+  patientId: string,
+  newStatus: "active" | "archived",
+  userId?: string
+): Promise<void> {
+  try {
+    const patientRef = doc(db, PATIENTS_COLLECTION, patientId);
+    const now = new Date();
+
+    const statusChange: StatusChange = {
+      status: newStatus,
+      date: now,
+    };
+
+    await updateDoc(patientRef, {
+      status: newStatus,
+      statusHistory: arrayUnion(statusChange),
+      statusChangedAt: now,
+      updatedAt: now,
+    });
+
+    // Ajouter le log d'archivage/désarchivage
+    if (userId) {
+      const user = await getUser(userId);
+      if (user) {
+        const action =
+          newStatus === "archived"
+            ? "ARCHIVAGE_DOSSIER"
+            : "DESARCHIVAGE_DOSSIER";
+        const details =
+          newStatus === "archived"
+            ? `Archivage du dossier patient ID: ${patientId}`
+            : `Désarchivage du dossier patient ID: ${patientId}`;
+
+        await createLog({
+          userId: user.uid,
+          userEmail: user.email,
+          userRole: user.role,
+          action,
+          details,
+          targetId: patientId,
+          targetType: "patient",
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du statut du patient:", error);
+    throw new Error("Erreur lors de la mise à jour du statut du patient");
+  }
 }
