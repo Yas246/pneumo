@@ -282,7 +282,116 @@ export function AppointmentList({ appointments }: AppointmentListProps) {
       </div>
 
       <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        {/* Vue mobile */}
+        <div className="block sm:hidden">
+          {filteredAppointments.map((appointment) => (
+            <div
+              key={appointment.id}
+              className={`p-4 border-l-4 border-b border-b-gray-200 dark:border-b-gray-700 hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-colors ${
+                appointment.type === "consultation"
+                  ? "border-l-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/10"
+                  : appointment.type === "examen"
+                  ? "border-l-green-500 hover:bg-green-50/50 dark:hover:bg-green-900/10"
+                  : appointment.type === "suivi"
+                  ? "border-l-purple-500 hover:bg-purple-50/50 dark:hover:bg-purple-900/10"
+                  : "border-l-gray-500"
+              }`}
+            >
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-base font-medium text-gray-900 dark:text-white">
+                    {appointment.patient.firstName}{" "}
+                    {appointment.patient.lastName}
+                  </h3>
+                  <div className="mt-1 flex items-center gap-2">
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {format(
+                        new Date(`${appointment.date}T${appointment.time}`),
+                        "PPP",
+                        { locale: fr }
+                      )}
+                    </p>
+                    <span className="text-gray-300 dark:text-gray-600">•</span>
+                    <p className="text-xs font-medium text-gray-600 dark:text-gray-300">
+                      {format(
+                        new Date(`${appointment.date}T${appointment.time}`),
+                        "HH:mm"
+                      )}
+                    </p>
+                  </div>
+                </div>
+                <span
+                  className={`px-2.5 py-1 text-xs font-medium rounded-full ${
+                    appointment.type === "consultation"
+                      ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                      : appointment.type === "examen"
+                      ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                      : appointment.type === "suivi"
+                      ? "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
+                      : "bg-gray-100 text-gray-800 dark:bg-gray-800/30 dark:text-gray-300"
+                  }`}
+                >
+                  {appointment.type}
+                </span>
+              </div>
+
+              {isSuperAdmin && appointment.doctor && (
+                <div className="mt-4 flex items-center gap-2">
+                  <div className="h-6 w-6 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                    <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
+                      {appointment.doctor.displayName?.charAt(0) || "?"}
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-900 dark:text-white">
+                      {appointment.doctor.displayName || "Non assigné"}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {appointment.doctor.role === "medecin"
+                        ? "Médecin"
+                        : appointment.doctor.role === "super-admin"
+                        ? "Super Admin"
+                        : appointment.doctor.role === "infirmier"
+                        ? "Infirmier"
+                        : ""}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {appointment.notes && (
+                <p className="mt-4 text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                  {appointment.notes}
+                </p>
+              )}
+
+              <div className="mt-4 flex justify-end">
+                <Link
+                  href={`/appointments/${appointment.id}`}
+                  className="w-full sm:w-auto"
+                >
+                  <Button
+                    variant="outline"
+                    className={`w-full sm:w-auto ${
+                      appointment.type === "consultation"
+                        ? "text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/10"
+                        : appointment.type === "examen"
+                        ? "text-green-600 hover:bg-green-50 dark:hover:bg-green-900/10"
+                        : appointment.type === "suivi"
+                        ? "text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/10"
+                        : "text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-900/10"
+                    }`}
+                  >
+                    Voir
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Vue desktop */}
+        <table className="hidden sm:table min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead className="bg-gray-50 dark:bg-gray-700">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
@@ -311,7 +420,15 @@ export function AppointmentList({ appointments }: AppointmentListProps) {
             {filteredAppointments.map((appointment) => (
               <tr
                 key={appointment.id}
-                className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+                className={`border-l-4 hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-colors ${
+                  appointment.type === "consultation"
+                    ? "border-l-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/10"
+                    : appointment.type === "examen"
+                    ? "border-l-green-500 hover:bg-green-50/50 dark:hover:bg-green-900/10"
+                    : appointment.type === "suivi"
+                    ? "border-l-purple-500 hover:bg-purple-50/50 dark:hover:bg-purple-900/10"
+                    : "border-l-gray-500"
+                }`}
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900 dark:text-white">
@@ -335,23 +452,42 @@ export function AppointmentList({ appointments }: AppointmentListProps) {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="px-2 py-1 text-xs font-medium rounded-full bg-primary-100 text-primary-800 dark:bg-primary-800/20 dark:text-primary-400">
+                  <span
+                    className={`px-2.5 py-1 text-xs font-medium rounded-full ${
+                      appointment.type === "consultation"
+                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
+                        : appointment.type === "examen"
+                        ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                        : appointment.type === "suivi"
+                        ? "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
+                        : "bg-gray-100 text-gray-800 dark:bg-gray-800/30 dark:text-gray-300"
+                    }`}
+                  >
                     {appointment.type}
                   </span>
                 </td>
                 {isSuperAdmin && (
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 dark:text-white">
-                      {appointment.doctor?.displayName || "Non assigné"}
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {appointment.doctor?.role === "medecin"
-                        ? "Médecin"
-                        : appointment.doctor?.role === "super-admin"
-                        ? "Super Admin"
-                        : appointment.doctor?.role === "infirmier"
-                        ? "Infirmier"
-                        : ""}
+                    <div className="flex items-center gap-2">
+                      <div className="h-6 w-6 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                        <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
+                          {appointment.doctor?.displayName?.charAt(0) || "?"}
+                        </span>
+                      </div>
+                      <div>
+                        <div className="text-sm text-gray-900 dark:text-white">
+                          {appointment.doctor?.displayName || "Non assigné"}
+                        </div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                          {appointment.doctor?.role === "medecin"
+                            ? "Médecin"
+                            : appointment.doctor?.role === "super-admin"
+                            ? "Super Admin"
+                            : appointment.doctor?.role === "infirmier"
+                            ? "Infirmier"
+                            : ""}
+                        </div>
+                      </div>
                     </div>
                   </td>
                 )}
@@ -364,7 +500,15 @@ export function AppointmentList({ appointments }: AppointmentListProps) {
                   <Link href={`/appointments/${appointment.id}`}>
                     <Button
                       variant="outline"
-                      className="text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/10"
+                      className={`${
+                        appointment.type === "consultation"
+                          ? "text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/10"
+                          : appointment.type === "examen"
+                          ? "text-green-600 hover:bg-green-50 dark:hover:bg-green-900/10"
+                          : appointment.type === "suivi"
+                          ? "text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/10"
+                          : "text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-900/10"
+                      }`}
                     >
                       Voir
                     </Button>

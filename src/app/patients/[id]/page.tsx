@@ -141,7 +141,7 @@ export default function PatientPage() {
               Retour au tableau de bord
             </Link>
 
-            <div className="flex justify-between items-start mb-8">
+            <div className="flex flex-col sm:flex-row justify-between items-start mb-8 gap-4">
               <div>
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
                   {patient.firstName} {patient.lastName}
@@ -150,18 +150,24 @@ export default function PatientPage() {
                   Patient ID: {id}
                 </p>
               </div>
-              <div className="flex space-x-4">
+              <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                 {canCreateAppointment && (
-                  <Link href={`/appointments/new?patientId=${id}`}>
-                    <Button variant="outline">
+                  <Link
+                    href={`/appointments/new?patientId=${id}`}
+                    className="w-full sm:w-auto"
+                  >
+                    <Button variant="outline" className="w-full sm:w-auto">
                       <CalendarIcon className="h-5 w-5 mr-2" />
                       Nouveau rendez-vous
                     </Button>
                   </Link>
                 )}
                 {canEdit && (
-                  <Link href={`/patients/${id}/edit`}>
-                    <Button>
+                  <Link
+                    href={`/patients/${id}/edit`}
+                    className="w-full sm:w-auto"
+                  >
+                    <Button className="w-full sm:w-auto">
                       <ClipboardDocumentListIcon className="h-5 w-5 mr-2" />
                       Modifier le dossier
                     </Button>

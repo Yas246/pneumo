@@ -5,8 +5,10 @@ import { Navbar } from "@/components/shared/Navbar";
 import { getLogs } from "@/firebase/logs";
 import { useAuth } from "@/hooks/useAuth";
 import type { LogActionType, LogEntry, UserRole } from "@/types/user";
+import { Dialog } from "@headlessui/react";
 import {
   ArrowDownTrayIcon,
+  ExclamationTriangleIcon,
   FunnelIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/24/outline";
@@ -110,6 +112,7 @@ export default function LogsPage() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const [isConfirmExportOpen, setIsConfirmExportOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && !isSuperAdmin) {
@@ -161,7 +164,7 @@ export default function LogsPage() {
     });
   }, [logs, searchTerm, selectedActions, selectedRoles, startDate, endDate]);
 
-  const handleExport = () => {
+  const handleExportConfirmed = () => {
     const csvContent = [
       [
         "Date",
@@ -190,6 +193,7 @@ export default function LogsPage() {
     link.href = URL.createObjectURL(blob);
     link.download = `logs_${format(new Date(), "yyyy-MM-dd_HH-mm")}.csv`;
     link.click();
+    setIsConfirmExportOpen(false);
   };
 
   if (loading || !isSuperAdmin) {
@@ -203,7 +207,7 @@ export default function LogsPage() {
       <main className="py-10">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="px-4 sm:px-0 mb-8">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div>
                 <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
                   Logs système
@@ -212,19 +216,19 @@ export default function LogsPage() {
                   Historique des actions effectuées sur la plateforme
                 </p>
               </div>
-              <div className="flex items-center space-x-4">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 w-full sm:w-auto">
                 <Button
                   variant="outline"
                   onClick={() => setShowFilters(!showFilters)}
-                  className="flex items-center"
+                  className="w-full sm:w-auto flex items-center justify-center"
                 >
                   <FunnelIcon className="h-4 w-4 mr-2" />
                   {showFilters ? "Masquer les filtres" : "Afficher les filtres"}
                 </Button>
                 <Button
                   variant="outline"
-                  onClick={handleExport}
-                  className="flex items-center"
+                  onClick={() => setIsConfirmExportOpen(true)}
+                  className="w-full sm:w-auto flex items-center justify-center border-red-600 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10"
                 >
                   <ArrowDownTrayIcon className="h-4 w-4 mr-2" />
                   Exporter (CSV)
@@ -432,47 +436,35 @@ export default function LogsPage() {
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
               </div>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                  <thead className="bg-gray-50 dark:bg-gray-900">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                      >
-                        Date
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                      >
-                        Utilisateur
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                      >
-                        Action
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                      >
-                        Détails
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                    {filteredLogs.map((log) => (
-                      <tr
-                        key={log.id}
-                        className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
-                      >
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                          {format(log.timestamp, "dd/MM/yyyy HH:mm:ss")}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="text-sm text-gray-900 dark:text-white">
+              <>
+                {/* Vue mobile */}
+                <div className="block sm:hidden">
+                  {filteredLogs.map((log) => (
+                    <div
+                      key={log.id}
+                      className="border-b border-gray-200 dark:border-gray-700 p-4"
+                    >
+                      <div className="flex flex-col gap-2">
+                        <div className="flex justify-between items-start">
+                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                            {format(log.timestamp, "dd/MM/yyyy HH:mm:ss")}
+                          </span>
+                          <span
+                            className={`px-3 py-1 text-xs leading-5 font-semibold rounded-full transition-colors ${
+                              ACTION_COLORS[log.action as LogActionType]?.bg ||
+                              "bg-gray-100 dark:bg-gray-900/30"
+                            } ${
+                              ACTION_COLORS[log.action as LogActionType]
+                                ?.text || "text-gray-800 dark:text-gray-300"
+                            }`}
+                          >
+                            {ACTION_LABELS[log.action as LogActionType] ||
+                              log.action}
+                          </span>
+                        </div>
+
+                        <div>
+                          <div className="text-sm font-medium text-gray-900 dark:text-white">
                             {log.userEmail}
                           </div>
                           <div className="text-xs text-gray-500 dark:text-gray-400">
@@ -482,45 +474,164 @@ export default function LogsPage() {
                               ? "Super Admin"
                               : "Infirmier"}
                           </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span
-                            className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full transition-colors ${
-                              ACTION_COLORS[log.action as LogActionType]?.bg ||
-                              "bg-gray-100 dark:bg-gray-900/30"
-                            } ${
-                              ACTION_COLORS[log.action as LogActionType]
-                                ?.text || "text-gray-800 dark:text-gray-300"
-                            } ${
-                              ACTION_COLORS[log.action as LogActionType]
-                                ?.hover ||
-                              "hover:bg-gray-200 dark:hover:bg-gray-800/50"
-                            }`}
-                          >
-                            {ACTION_LABELS[log.action as LogActionType] ||
-                              log.action}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                          <div className="max-w-lg break-words">
-                            {log.details}
-                            {log.targetId && (
-                              <span className="block text-xs mt-1 text-gray-400 dark:text-gray-500">
-                                ID: {log.targetId}
-                                {log.targetType && ` (${log.targetType})`}
-                              </span>
-                            )}
-                          </div>
-                        </td>
+                        </div>
+
+                        <div className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                          {log.details}
+                          {log.targetId && (
+                            <span className="block text-xs mt-1 text-gray-400 dark:text-gray-500">
+                              ID: {log.targetId}
+                              {log.targetType && ` (${log.targetType})`}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Vue desktop */}
+                <div className="hidden sm:block overflow-x-auto">
+                  <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                    <thead className="bg-gray-50 dark:bg-gray-900">
+                      <tr>
+                        <th
+                          scope="col"
+                          className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                        >
+                          Date
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                        >
+                          Utilisateur
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                        >
+                          Action
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-4 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                        >
+                          Détails
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                      {filteredLogs.map((log) => (
+                        <tr
+                          key={log.id}
+                          className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                        >
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                            {format(log.timestamp, "dd/MM/yyyy HH:mm:ss")}
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <div className="text-sm text-gray-900 dark:text-white">
+                              {log.userEmail}
+                            </div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
+                              {log.userRole === "medecin"
+                                ? "Médecin"
+                                : log.userRole === "super-admin"
+                                ? "Super Admin"
+                                : "Infirmier"}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <span
+                              className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full transition-colors ${
+                                ACTION_COLORS[log.action as LogActionType]
+                                  ?.bg || "bg-gray-100 dark:bg-gray-900/30"
+                              } ${
+                                ACTION_COLORS[log.action as LogActionType]
+                                  ?.text || "text-gray-800 dark:text-gray-300"
+                              } ${
+                                ACTION_COLORS[log.action as LogActionType]
+                                  ?.hover ||
+                                "hover:bg-gray-200 dark:hover:bg-gray-800/50"
+                              }`}
+                            >
+                              {ACTION_LABELS[log.action as LogActionType] ||
+                                log.action}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                            <div className="max-w-lg break-words">
+                              {log.details}
+                              {log.targetId && (
+                                <span className="block text-xs mt-1 text-gray-400 dark:text-gray-500">
+                                  ID: {log.targetId}
+                                  {log.targetType && ` (${log.targetType})`}
+                                </span>
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             )}
           </div>
         </div>
       </main>
+
+      {/* Modal de confirmation */}
+      <Dialog
+        open={isConfirmExportOpen}
+        onClose={() => setIsConfirmExportOpen(false)}
+        className="relative z-50"
+      >
+        <div
+          className="fixed inset-0 bg-black/30 dark:bg-black/50"
+          aria-hidden="true"
+        />
+
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="mx-auto max-w-sm rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl">
+            <div className="flex items-center gap-4">
+              <div className="flex-shrink-0">
+                <ExclamationTriangleIcon
+                  className="h-6 w-6 text-red-600"
+                  aria-hidden="true"
+                />
+              </div>
+              <div>
+                <Dialog.Title className="text-lg font-medium text-gray-900 dark:text-white">
+                  Confirmer l&apos;export
+                </Dialog.Title>
+                <Dialog.Description className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                  Êtes-vous sûr de vouloir exporter tous les logs ? Cette action
+                  téléchargera un fichier CSV contenant l&apos;historique
+                  complet des actions.
+                </Dialog.Description>
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
+              <Button
+                variant="outline"
+                onClick={() => setIsConfirmExportOpen(false)}
+                className="w-full sm:w-auto"
+              >
+                Annuler
+              </Button>
+              <Button
+                onClick={handleExportConfirmed}
+                className="w-full sm:w-auto bg-red-600 hover:bg-red-700 focus:ring-red-500 text-white"
+              >
+                Confirmer l&apos;export
+              </Button>
+            </div>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
     </div>
   );
 }
