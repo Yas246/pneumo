@@ -1,39 +1,71 @@
 "use client";
 
 import { Button } from "@/components/shared/Button";
+import { logout } from "@/firebase/auth";
+import { useAuth } from "@/hooks/useAuth";
 import {
   Bars3Icon,
   CalendarIcon,
   ChartBarIcon,
   UserGroupIcon,
+  UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
-const navigation = [
-  {
-    name: "Patients",
-    href: "/dashboard",
-    icon: UserGroupIcon,
-  },
-  {
-    name: "Rendez-vous",
-    href: "/appointments",
-    icon: CalendarIcon,
-  },
-  {
-    name: "Statistiques",
-    href: "/statistics",
-    icon: ChartBarIcon,
-  },
-];
+const getNavigation = (isSuperAdmin: boolean) => {
+  const baseNavigation = [
+    {
+      name: "Patients",
+      href: "/dashboard",
+      icon: UserGroupIcon,
+    },
+    {
+      name: "Rendez-vous",
+      href: "/appointments",
+      icon: CalendarIcon,
+    },
+    {
+      name: "Statistiques",
+      href: "/statistics",
+      icon: ChartBarIcon,
+    },
+  ];
+
+  if (isSuperAdmin) {
+    baseNavigation.push({
+      name: "Gestion des comptes",
+      href: "/admin/users",
+      icon: UsersIcon,
+    });
+  }
+
+  return baseNavigation;
+};
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { isSuperAdmin } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigation = getNavigation(isSuperAdmin);
+
+  const handleLogout = async () => {
+    setIsLoading(true);
+    try {
+      await logout();
+      router.push("/");
+    } catch (error) {
+      console.error("Erreur lors de la déconnexion:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <nav className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
@@ -89,10 +121,11 @@ export function Navbar() {
           <div className="flex items-center space-x-4">
             <Button
               variant="outline"
-              onClick={() => console.log("Déconnexion")}
+              onClick={handleLogout}
+              disabled={isLoading}
               className="hidden md:inline-flex"
             >
-              Déconnexion
+              {isLoading ? "Déconnexion..." : "Déconnexion"}
             </Button>
           </div>
         </div>
@@ -100,25 +133,41 @@ export function Navbar() {
 
       {/* Menu mobile */}
       <div
-        className={`fixed inset-0 z-40 md:hidden transition-opacity duration-300 ${
-          isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        className={`md:hidden fixed inset-0 z-40 transform transition-transform duration-300 ease-in-out ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         {/* Overlay sombre */}
         <div
-          className={`absolute inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm transition-opacity ${
+          className={`absolute inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-sm transition-opacity duration-300 ease-in-out ${
             isMobileMenuOpen ? "opacity-100" : "opacity-0"
           }`}
           onClick={() => setIsMobileMenuOpen(false)}
         />
 
-        {/* Panneau du menu */}
-        <div
-          className={`fixed inset-y-0 left-0 w-full max-w-xs bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-300 ease-in-out ${
-            isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
-        >
-          <div className="pt-5 pb-6 px-5">
+        {/* Panneau de navigation */}
+        <div className="relative w-4/5 max-w-xs bg-white dark:bg-gray-800 h-full shadow-xl flex flex-col">
+          <div className="flex-1 overflow-y-auto">
+            <div className="px-4 py-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <div className="relative w-8 h-8">
+                    <Image
+                      src="/logo.svg"
+                      alt="Logo"
+                      fill
+                      className="object-contain dark:invert"
+                    />
+                  </div>
+                </div>
+                <div className="ml-3">
+                  <p className="text-base font-medium text-gray-900 dark:text-white">
+                    Service de Pneumologie
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <div className="space-y-6">
               {navigation.map((item) => {
                 const Icon = item.icon;
@@ -143,12 +192,13 @@ export function Navbar() {
                 <Button
                   variant="outline"
                   onClick={() => {
-                    console.log("Déconnexion");
+                    handleLogout();
                     setIsMobileMenuOpen(false);
                   }}
+                  disabled={isLoading}
                   className="w-full justify-center md:hidden"
                 >
-                  Déconnexion
+                  {isLoading ? "Déconnexion..." : "Déconnexion"}
                 </Button>
               </div>
             </div>

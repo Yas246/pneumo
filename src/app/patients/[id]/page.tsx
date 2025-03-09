@@ -2,130 +2,96 @@
 
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
+import { pathologies } from "@/config/pathologies";
+import { getPatient, updatePatient } from "@/firebase/patients";
+import { usePermissions } from "@/hooks/usePermissions";
+import type { Patient } from "@/types/patient";
 import {
   ArchiveBoxIcon,
   ArrowLeftIcon,
   CalendarIcon,
   ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
+import { clsx } from "clsx";
+import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
-
-// Données temporaires pour la démonstration
-const TEMP_PATIENTS = {
-  "1": {
-    id: "1",
-    firstName: "Hamza",
-    lastName: "Farhi",
-    age: 45,
-    socialSecurity: "CNSS" as const,
-    pathologies: ["tumor"],
-    symptoms: ["Dyspnée", "Toux chronique"],
-    medicalHistory: "Antécédents d'asthme dans l'enfance",
-    consultationReason: "Dypnée",
-    medicalBackground: "TBK traitée en 2017",
-    clinicalExam: "Auscultation pulmonaire : présence de sibilants",
-    diagnosis: "Asthme",
-    treatment:
-      "Corticoïde inhalé (CSI) :\n➤ Budesonide (Pulmicort®) 400 µg 2 fois/jour (ou selon sévérité)\n\nBronchodilatateur bêta-2 agoniste de longue durée d'action (LABA) (si asthme modéré à sévère) :\n➤ Formotérol (Symbicort®) 1-2 bouffées matin et soir",
-    status: "active" as const,
-    lastVisit: "2024-03-01",
-  },
-  "2": {
-    id: "2",
-    firstName: "Ahmad",
-    lastName: "Benal",
-    age: 62,
-    socialSecurity: "AMO" as const,
-    pathologies: ["BPCO"],
-    symptoms: ["Dyspnée", "Toux chronique", "Expectorations"],
-    medicalHistory: "BPCO stade II",
-    consultationReason: "Suivi BPCO",
-    medicalBackground: "Tabagisme sevré depuis 2 ans",
-    clinicalExam: "Auscultation pulmonaire : râles bronchiques diffus",
-    diagnosis: "BPCO",
-    treatment: "Bronchodilatateurs longue durée d'action",
-    status: "active" as const,
-    lastVisit: "2024-02-28",
-  },
-  "3": {
-    id: "3",
-    firstName: "Abdelghani",
-    lastName: "Ali",
-    age: 53,
-    socialSecurity: "Mutuelle" as const,
-    pathologies: ["Asthme"],
-    symptoms: ["Dyspnée", "Toux chronique", "Sifflements"],
-    medicalHistory: "Asthme depuis l'enfance",
-    consultationReason: "Exacerbation asthme",
-    medicalBackground: "Allergie aux acariens",
-    clinicalExam: "Sibilants diffus aux deux champs pulmonaires",
-    diagnosis: "Asthme sévère",
-    treatment: "Corticothérapie inhalée + bronchodilatateurs",
-    status: "archived" as const,
-    lastVisit: "2024-01-15",
-  },
-  "4": {
-    id: "4",
-    firstName: "Lhessen",
-    lastName: "Elkhomss",
-    age: 34,
-    socialSecurity: "CNSS" as const,
-    pathologies: ["Asthme"],
-    symptoms: ["Dyspnée", "Toux chronique", "Douleurs thoraciques"],
-    medicalHistory: "Asthme allergique",
-    consultationReason: "Contrôle de l'asthme",
-    medicalBackground: "Rhinite allergique saisonnière",
-    clinicalExam: "Auscultation pulmonaire normale",
-    diagnosis: "Asthme contrôlé",
-    treatment: "Bronchodilatateurs courte durée d'action si besoin",
-    status: "active" as const,
-    lastVisit: "2024-02-10",
-  },
-  "5": {
-    id: "5",
-    firstName: "Toufik",
-    lastName: "Hafid",
-    age: 29,
-    socialSecurity: "Aucun" as const,
-    pathologies: ["Asthme"],
-    symptoms: ["Dyspnée", "Sifflements nocturnes"],
-    medicalHistory: "Début d'asthme il y a 5 ans",
-    consultationReason: "Crise d'asthme nocturne",
-    medicalBackground: "Pas d'antécédents particuliers",
-    clinicalExam: "Wheezing à l'auscultation",
-    diagnosis: "Asthme modéré",
-    treatment: "Corticothérapie inhalée + bronchodilatateurs",
-    status: "archived" as const,
-    lastVisit: "2024-03-01",
-  },
-  "6": {
-    id: "6",
-    firstName: "Mohamed",
-    lastName: "Henni",
-    age: 34,
-    socialSecurity: "Autre" as const,
-    pathologies: ["Asthme"],
-    symptoms: ["Toux chronique", "Dyspnée d'effort"],
-    medicalHistory: "Asthme d'effort",
-    consultationReason: "Suivi régulier",
-    medicalBackground: "Sportif de haut niveau",
-    clinicalExam: "Auscultation normale au repos",
-    diagnosis: "Asthme d'effort",
-    treatment: "Beta-2 mimétiques avant l'effort",
-    status: "archived" as const,
-    lastVisit: "2024-02-10",
-  },
-};
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 export default function PatientPage() {
   const { id } = useParams();
   const router = useRouter();
+  const { canEdit, canArchive, canCreateAppointment } = usePermissions();
+  const [patient, setPatient] = useState<Patient | null>(null);
+  const [loading, setLoading] = useState(true);
   const [isArchiving, setIsArchiving] = useState(false);
 
-  // Dans une vraie application, nous ferions un appel API ici pour récupérer les données du patient
-  const patient = TEMP_PATIENTS[id as keyof typeof TEMP_PATIENTS];
+  useEffect(() => {
+    const fetchPatient = async () => {
+      try {
+        if (typeof id === "string") {
+          const patientData = await getPatient(id);
+          setPatient(patientData);
+        }
+      } catch (error) {
+        console.error("Erreur lors de la récupération du patient:", error);
+        toast.error("Erreur lors de la récupération du patient");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPatient();
+  }, [id]);
+
+  const handleArchiveToggle = async () => {
+    if (!patient || typeof id !== "string") return;
+
+    setIsArchiving(true);
+    try {
+      const newStatus = patient.status === "archived" ? "active" : "archived";
+      await updatePatient(id, {
+        ...patient,
+        status: newStatus,
+      });
+
+      // Mettre à jour l'état local
+      setPatient({
+        ...patient,
+        status: newStatus,
+      });
+
+      toast.success(
+        newStatus === "archived"
+          ? "Patient archivé avec succès"
+          : "Patient désarchivé avec succès"
+      );
+
+      // Ne pas rediriger vers le dashboard si on désarchive
+      if (newStatus === "archived") {
+        router.push("/dashboard");
+      } else {
+        setIsArchiving(false);
+      }
+    } catch (error) {
+      console.error("Erreur lors de la modification du statut:", error);
+      toast.error(
+        patient.status === "archived"
+          ? "Erreur lors de la désarchivation du patient"
+          : "Erreur lors de l'archivage du patient"
+      );
+      setIsArchiving(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
 
   if (!patient) {
     return (
@@ -145,16 +111,20 @@ export default function PatientPage() {
     );
   }
 
-  const handleArchive = async () => {
-    setIsArchiving(true);
-    try {
-      // TODO: Implémenter la logique d'archivage
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulation d'une requête API
-      router.push("/dashboard");
-    } catch (error) {
-      console.error("Error:", error);
-      setIsArchiving(false);
+  const calculateAge = (birthDate: string): number => {
+    const today = new Date();
+    const birth = new Date(birthDate);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birth.getDate())
+    ) {
+      age--;
     }
+
+    return age;
   };
 
   return (
@@ -182,32 +152,22 @@ export default function PatientPage() {
                 </p>
               </div>
               <div className="flex space-x-4">
-                <Link
-                  href={{
-                    pathname: "/appointments/new",
-                    query: {
-                      patientId: id,
-                      patientName: `${patient.firstName} ${patient.lastName}`,
-                      diagnosis: patient.diagnosis,
-                    },
-                  }}
-                >
-                  <Button variant="outline">
-                    <CalendarIcon className="h-5 w-5 mr-2" />
-                    Nouveau rendez-vous
-                  </Button>
-                </Link>
-                <Link
-                  href={{
-                    pathname: "/patients/edit",
-                    query: { id },
-                  }}
-                >
-                  <Button>
-                    <ClipboardDocumentListIcon className="h-5 w-5 mr-2" />
-                    Modifier le dossier
-                  </Button>
-                </Link>
+                {canCreateAppointment && (
+                  <Link href={`/appointments/new?patientId=${id}`}>
+                    <Button variant="outline">
+                      <CalendarIcon className="h-5 w-5 mr-2" />
+                      Nouveau rendez-vous
+                    </Button>
+                  </Link>
+                )}
+                {canEdit && (
+                  <Link href={`/patients/${id}/edit`}>
+                    <Button>
+                      <ClipboardDocumentListIcon className="h-5 w-5 mr-2" />
+                      Modifier le dossier
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
 
@@ -217,13 +177,45 @@ export default function PatientPage() {
                 <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
                   Informations personnelles
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                       Âge
                     </p>
                     <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {patient.age} ans
+                      {calculateAge(patient.birthDate)} ans
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                      Téléphone
+                    </p>
+                    <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                      {patient.phone}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                      Profession
+                    </p>
+                    <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                      {patient.profession}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                      Adresse
+                    </p>
+                    <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                      {patient.address}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                      Médecin traitant
+                    </p>
+                    <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                      {patient.treatingDoctor}
                     </p>
                   </div>
                   <div>
@@ -237,135 +229,439 @@ export default function PatientPage() {
                 </div>
               </div>
 
-              {/* Symptômes et diagnostic */}
+              {/* Pathologies */}
               <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
                 <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                  Symptômes et diagnostic
+                  Pathologies
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {patient.pathologies?.map((pathologyId) => {
+                    const pathology = pathologies.find(
+                      (p) => p.id === pathologyId
+                    );
+                    if (!pathology) return null;
+                    return (
+                      <div
+                        key={pathologyId}
+                        className="flex items-center space-x-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg p-4"
+                      >
+                        <div className="flex-shrink-0 w-10 h-10 relative">
+                          <Image
+                            src={pathology.icon}
+                            alt={pathology.name}
+                            fill
+                            className="object-contain dark:invert"
+                          />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+                            {pathology.name}
+                          </h3>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {pathology.description}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Motif de consultation */}
+              <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+                <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Motif de consultation
                 </h2>
                 <div className="space-y-6">
                   <div>
                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Symptômes
+                      Raison
+                    </p>
+                    <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                      {patient.consultationReason || "Non spécifié"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                      Durée des symptômes
+                    </p>
+                    <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                      {patient.symptomsDuration || "Non spécifié"}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                      Symptômes diurnes
                     </p>
                     <div className="mt-2 flex flex-wrap gap-2">
-                      {patient.symptoms.map((symptom) => (
-                        <span
-                          key={symptom}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300"
-                        >
-                          {symptom}
+                      {patient.diurnalSymptoms?.excessiveSleepiness && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                          Somnolence excessive
                         </span>
-                      ))}
+                      )}
+                      {patient.diurnalSymptoms?.headaches && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                          Céphalées
+                        </span>
+                      )}
+                      {patient.diurnalSymptoms?.asthenia && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                          Asthénie
+                        </span>
+                      )}
+                    </div>
+                    {patient.diurnalSymptoms?.epworthScore > 0 && (
+                      <p className="mt-2 text-sm text-gray-900 dark:text-white">
+                        Score d&apos;Epworth:{" "}
+                        {patient.diurnalSymptoms.epworthScore}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                      Symptômes nocturnes
+                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {patient.nocturnalSymptoms?.snoring && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                          Ronflement
+                        </span>
+                      )}
+                      {patient.nocturnalSymptoms?.sleepApnea && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                          Apnées
+                        </span>
+                      )}
+                      {patient.nocturnalSymptoms?.choking && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                          Étouffements
+                        </span>
+                      )}
+                      {patient.nocturnalSymptoms?.agitation && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                          Agitation
+                        </span>
+                      )}
+                      {patient.nocturnalSymptoms?.insomnia && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                          Insomnie
+                        </span>
+                      )}
+                      {patient.nocturnalSymptoms?.nocturia && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                          Nycturie
+                        </span>
+                      )}
+                    </div>
+                    {patient.nocturnalSymptoms?.other && (
+                      <p className="mt-2 text-sm text-gray-900 dark:text-white">
+                        Autres: {patient.nocturnalSymptoms.other}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Antécédents */}
+              <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+                <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Antécédents
+                </h2>
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                      Personnels
+                    </p>
+                    <div className="mt-2 space-y-2">
+                      {patient.personalHistory?.obesity && (
+                        <p className="text-sm text-gray-900 dark:text-white">
+                          • Obésité
+                        </p>
+                      )}
+                      {patient.personalHistory?.hta && (
+                        <p className="text-sm text-gray-900 dark:text-white">
+                          • HTA
+                        </p>
+                      )}
+                      {patient.personalHistory?.orl && (
+                        <p className="text-sm text-gray-900 dark:text-white">
+                          • ORL: {patient.personalHistory.orl}
+                        </p>
+                      )}
+                      {patient.personalHistory?.neuro && (
+                        <p className="text-sm text-gray-900 dark:text-white">
+                          • Neuro: {patient.personalHistory.neuro}
+                        </p>
+                      )}
+                      {patient.personalHistory?.smoking && (
+                        <p className="text-sm text-gray-900 dark:text-white">
+                          • Tabagisme: {patient.personalHistory.smoking}
+                        </p>
+                      )}
+                      {patient.personalHistory?.alcoholism && (
+                        <p className="text-sm text-gray-900 dark:text-white">
+                          • Alcool: {patient.personalHistory.alcoholism}
+                        </p>
+                      )}
+                      {patient.personalHistory?.diabetes && (
+                        <p className="text-sm text-gray-900 dark:text-white">
+                          • Diabète: {patient.personalHistory.diabetes}
+                        </p>
+                      )}
+                      {patient.personalHistory?.cardiovascularDiseases && (
+                        <p className="text-sm text-gray-900 dark:text-white">
+                          • Cardiovasculaire:{" "}
+                          {patient.personalHistory.cardiovascularDiseases}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Diagnostic
+                      Familiaux
                     </p>
-                    <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {patient.diagnosis}
-                    </p>
+                    <div className="mt-2 space-y-2">
+                      {patient.familyHistory?.saosHistory && (
+                        <p className="text-sm text-gray-900 dark:text-white">
+                          • Antécédents de SAOS
+                        </p>
+                      )}
+                      {patient.familyHistory?.respiratoryPathologies && (
+                        <p className="text-sm text-gray-900 dark:text-white">
+                          • Pathologies respiratoires
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
 
-              {/* Antécédents et observations */}
+              {/* Examen clinique */}
               <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
                 <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                  Antécédents et observations
+                  Examen clinique
                 </h2>
                 <div className="space-y-6">
-                  <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Antécédents médicaux
-                    </p>
-                    <p className="mt-1 text-sm text-gray-900 dark:text-white whitespace-pre-line">
-                      {patient.medicalHistory}
-                    </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {patient.clinicalExam?.weight && (
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Poids
+                        </p>
+                        <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                          {patient.clinicalExam.weight} kg
+                        </p>
+                      </div>
+                    )}
+                    {patient.clinicalExam?.height && (
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Taille
+                        </p>
+                        <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                          {patient.clinicalExam.height} cm
+                        </p>
+                      </div>
+                    )}
+                    {patient.clinicalExam?.bmi && (
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          IMC
+                        </p>
+                        <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                          {patient.clinicalExam.bmi} kg/m²
+                        </p>
+                      </div>
+                    )}
+                    {patient.clinicalExam?.neckCircumference && (
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Tour de cou
+                        </p>
+                        <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                          {patient.clinicalExam.neckCircumference} cm
+                        </p>
+                      </div>
+                    )}
+                    {patient.clinicalExam?.abdominalPerimeter && (
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Périmètre abdominal
+                        </p>
+                        <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                          {patient.clinicalExam.abdominalPerimeter} cm
+                        </p>
+                      </div>
+                    )}
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Motif de consultation
-                    </p>
-                    <p className="mt-1 text-sm text-gray-900 dark:text-white whitespace-pre-line">
-                      {patient.consultationReason}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Contexte médical
-                    </p>
-                    <p className="mt-1 text-sm text-gray-900 dark:text-white whitespace-pre-line">
-                      {patient.medicalBackground}
-                    </p>
+                  {patient.clinicalExam?.bloodPressure && (
+                    <div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Tension artérielle
+                      </p>
+                      <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                        {patient.clinicalExam.bloodPressure}
+                      </p>
+                    </div>
+                  )}
+                  {patient.clinicalExam?.heartRate && (
+                    <div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Fréquence cardiaque
+                      </p>
+                      <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                        {patient.clinicalExam.heartRate} bpm
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Diagnostic */}
+              <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+                <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Diagnostic
+                </h2>
+                <div className="space-y-4">
+                  <div className="flex flex-wrap gap-2">
+                    {patient.diagnosis?.saos && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                        SAOS
+                      </span>
+                    )}
+                    {patient.diagnosis?.sacs && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                        SACS
+                      </span>
+                    )}
+                    {patient.diagnosis?.soh && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                        SOH
+                      </span>
+                    )}
+                    {patient.diagnosis?.nocturalHypoventilation && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                        Hypoventilation nocturne
+                      </span>
+                    )}
+                    {patient.diagnosis?.simpleSnoring && (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                        Ronflement simple
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
 
-              {/* Examen et traitement */}
+              {/* Traitement */}
               <div className="px-6 py-5">
                 <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                  Examen et traitement
+                  Traitement
                 </h2>
                 <div className="space-y-6">
+                  {patient.treatment?.hygieneDietetic?.weightLoss && (
+                    <div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Mesures hygiéno-diététiques
+                      </p>
+                      <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                        • Perte de poids
+                      </p>
+                    </div>
+                  )}
+                  {patient.treatment?.hygieneDietetic
+                    ?.alcoholAndSedativesStop && (
+                    <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                      • Arrêt alcool et sédatifs
+                    </p>
+                  )}
+                  {patient.treatment?.hygieneDietetic
+                    ?.sleepHygieneImprovement && (
+                    <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                      • Amélioration de l&apos;hygiène du sommeil
+                    </p>
+                  )}
                   <div>
                     <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Examen clinique
+                      Appareillage
                     </p>
-                    <p className="mt-1 text-sm text-gray-900 dark:text-white whitespace-pre-line">
-                      {patient.clinicalExam}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Traitement prescrit
-                    </p>
-                    <p className="mt-1 text-sm text-gray-900 dark:text-white whitespace-pre-line">
-                      {patient.treatment}
-                    </p>
+                    <div className="mt-2 flex flex-wrap gap-2">
+                      {patient.treatment?.medicalTreatments?.ppc && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300">
+                          PPC
+                        </span>
+                      )}
+                      {patient.treatment?.medicalTreatments?.oam && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300">
+                          OAM
+                        </span>
+                      )}
+                    </div>
+                    {patient.treatment?.medicalTreatments?.medications && (
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Traitement médical
+                        </p>
+                        <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                          {patient.treatment.medicalTreatments.medications}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className=" text-right mt-8 px-4 sm:px-0">
-            <Button
-              variant="outline"
-              onClick={handleArchive}
-              disabled={isArchiving}
-              className="w-full sm:w-auto border-yellow-600 text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/10"
-            >
-              {isArchiving ? (
-                <>
-                  <svg
-                    className="animate-spin -ml-1 mr-2 h-5 w-5"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Archivage...
-                </>
-              ) : (
-                <>
-                  <ArchiveBoxIcon className="h-5 w-5 mr-2" />
-                  Archiver le dossier
-                </>
-              )}
-            </Button>
+
+          <div className="text-right mt-8 px-4 sm:px-0">
+            {canArchive && (
+              <Button
+                variant="outline"
+                onClick={handleArchiveToggle}
+                disabled={isArchiving}
+                className={clsx(
+                  "w-full sm:w-auto",
+                  patient.status === "archived"
+                    ? "border-green-600 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/10"
+                    : "border-yellow-600 text-yellow-600 hover:bg-yellow-50 dark:hover:bg-yellow-900/10"
+                )}
+              >
+                {isArchiving ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-2 h-5 w-5"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    {patient.status === "archived"
+                      ? "Désarchivage..."
+                      : "Archivage..."}
+                  </>
+                ) : (
+                  <>
+                    <ArchiveBoxIcon className="h-5 w-5 mr-2" />
+                    {patient.status === "archived"
+                      ? "Désarchiver le dossier"
+                      : "Archiver le dossier"}
+                  </>
+                )}
+              </Button>
+            )}
           </div>
         </div>
       </main>

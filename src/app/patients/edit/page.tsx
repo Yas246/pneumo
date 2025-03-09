@@ -1,145 +1,66 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 "use client";
 
 import { PatientForm } from "@/components/patients/PatientForm";
 import { Navbar } from "@/components/shared/Navbar";
+import { getPatient } from "@/firebase/patients";
+import { usePermissions } from "@/hooks/usePermissions";
+import { Patient } from "@/types/patient";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense } from "react";
-
-// Données temporaires pour la démonstration
-const TEMP_PATIENT = {
-  firstName: "John",
-  lastName: "Doe",
-  birthDate: "1990-01-01",
-  sex: "M" as const,
-  address: "123 Main St",
-  phone: "0123456789",
-  profession: "Engineer",
-  treatingDoctor: "Dr. Smith",
-  socialSecurity: "CNSS" as const,
-  consultationReason: "Regular checkup",
-  diurnalSymptoms: {
-    excessiveSleepiness: false,
-    headaches: false,
-    asthenia: false,
-    epworthScore: 0,
-  },
-  nocturnalSymptoms: {
-    snoring: false,
-    sleepApnea: false,
-    choking: false,
-    agitation: false,
-    insomnia: false,
-    nocturia: false,
-  },
-  symptomsDuration: "N/A",
-  personalHistory: {
-    obesity: false,
-    hta: false,
-    orl: "",
-    neuro: "",
-    smoking: "",
-    alcoholism: "",
-    diabetes: "",
-    cardiovascularDiseases: "",
-    lifestyle: "",
-    respiratoryPathology: "",
-    currentMedications: "",
-  },
-  familyHistory: {
-    saosHistory: false,
-    respiratoryPathologies: false,
-  },
-  clinicalExam: {
-    weight: 70,
-    height: 175,
-    bmi: 22.9,
-    neckCircumference: 38,
-    abdominalPerimeter: 85,
-    bloodPressure: "120/80",
-    heartRate: 75,
-    pulmonaryAuscultation: "Normal",
-  },
-  orlExam: {
-    vasAnatomy: "Normal",
-    nasalObstruction: false,
-    amygdalineHypertrophy: false,
-    retrognathia: false,
-    micromandible: false,
-    macroglossia: false,
-  },
-  complementaryExams: {
-    ventilationPolygraphy: false,
-    psg: false,
-    tensionalHolter: false,
-    metabolicAssessment: {
-      lipidProfile: {},
-    },
-    nightOximetry: false,
-    morningBloodGas: {},
-    spirometry: {},
-    imaging: {
-      chestXray: false,
-      orlScan: false,
-    },
-  },
-  diagnosis: {
-    saos: false,
-    sacs: false,
-    soh: false,
-    nocturalHypoventilation: false,
-    simpleSnoring: false,
-  },
-  treatment: {
-    hygieneDietetic: {
-      weightLoss: false,
-      alcoholAndSedativesStop: false,
-      sleepHygieneImprovement: false,
-    },
-    medicalTreatments: {
-      ppc: false,
-      oam: false,
-    },
-    surgicalTreatments: {
-      orlSurgery: false,
-      bariatricSurgery: false,
-    },
-  },
-  ppcFollowUp: {
-    ppcPrescribingDoctor: "",
-    ppcStartDate: "",
-    deviceModel: "",
-    deviceSupplier: "",
-    initialPressure: 0,
-    ventilationMode: "AutoPAP" as const,
-    humidifier: false,
-    maskType: "",
-  },
-  status: "active" as const,
-  lastVisit: "2024-01-01",
-};
+import { Suspense, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 function EditPatientContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+  const { canEdit, loading: permissionsLoading } = usePermissions();
+  const [patient, setPatient] = useState<Patient | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Dans une vraie application, nous ferions un appel API ici pour récupérer les données du patient
-  const patient = TEMP_PATIENT;
+  useEffect(() => {
+    const fetchPatient = async () => {
+      if (!id) {
+        router.push("/dashboard");
+        return;
+      }
 
-  const handleSubmit = async (data: any) => {
-    try {
-      // TODO: Implémenter la logique de mise à jour
-      console.log("Form data:", data);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulation d'une requête API
-      router.push(`/patients/${id}`);
-    } catch (error) {
-      console.error("Error:", error);
+      try {
+        const patientData = await getPatient(id);
+        if (!patientData) {
+          toast.error("Patient non trouvé");
+          router.push("/dashboard");
+          return;
+        }
+        setPatient(patientData);
+      } catch (error) {
+        console.error("Erreur lors de la récupération du patient:", error);
+        toast.error("Erreur lors de la récupération du patient");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPatient();
+  }, [id, router]);
+
+  useEffect(() => {
+    if (!permissionsLoading && !canEdit) {
+      toast.error("Vous n'avez pas les permissions nécessaires");
+      router.push("/dashboard");
     }
-  };
+  }, [canEdit, permissionsLoading, router]);
+
+  if (loading || permissionsLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
+
+  if (!patient) return null;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -161,11 +82,7 @@ function EditPatientContent() {
 
           <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
             <div className="p-8">
-              <PatientForm
-                mode="edit"
-                initialData={patient}
-                onSubmit={handleSubmit}
-              />
+              <PatientForm isEditing={true} initialData={patient} />
             </div>
           </div>
         </div>

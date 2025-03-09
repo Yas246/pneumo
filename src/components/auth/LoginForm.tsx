@@ -1,17 +1,11 @@
 "use client";
 
+import { signInWithEmail } from "@/firebase/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-// Identifiants temporaires
-const TEMP_CREDENTIALS = [
-  { email: "admin@hopital.fr", password: "admin123", role: "admin" },
-  { email: "medecin@hopital.fr", password: "medecin123", role: "doctor" },
-  { email: "infirmier@hopital.fr", password: "infirmier123", role: "nurse" },
-];
 
 const loginSchema = z.object({
   email: z.string().email("Email invalide"),
@@ -40,24 +34,15 @@ export function LoginForm() {
     setError(null);
 
     try {
-      // Simulation d'un délai réseau
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      const user = TEMP_CREDENTIALS.find(
-        (cred) => cred.email === data.email && cred.password === data.password
+      await signInWithEmail(data.email, data.password);
+      router.push("/dashboard");
+    } catch (err) {
+      console.error("Erreur de connexion:", err);
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Une erreur est survenue lors de la connexion"
       );
-
-      if (user) {
-        // Dans une vraie application, nous stockerions le token dans localStorage
-        // et configurerions un contexte d'authentification
-        console.log("Connexion réussie:", user);
-        router.push("/dashboard");
-      } else {
-        setError("Email ou mot de passe incorrect");
-      }
-    } catch (error) {
-      console.error("Erreur de connexion:", error);
-      setError("Une erreur est survenue lors de la connexion");
     } finally {
       setIsLoading(false);
     }
@@ -79,7 +64,6 @@ export function LoginForm() {
               id="email"
               type="email"
               autoComplete="email"
-              required
               className="block w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent transition-colors sm:text-sm"
               placeholder="vous@exemple.fr"
             />
@@ -104,7 +88,6 @@ export function LoginForm() {
               id="password"
               type="password"
               autoComplete="current-password"
-              required
               className="block w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 focus:border-transparent transition-colors sm:text-sm"
               placeholder="••••••••"
             />
@@ -141,32 +124,6 @@ export function LoginForm() {
           </div>
         </div>
       )}
-
-      <div className="rounded-lg bg-gray-50 dark:bg-gray-800/50 p-4 border border-gray-200 dark:border-gray-700">
-        <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
-          Identifiants de test
-        </h4>
-        <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-          <p>
-            <span className="font-medium text-gray-700 dark:text-gray-300">
-              Admin :
-            </span>{" "}
-            admin@hopital.fr / admin123
-          </p>
-          <p>
-            <span className="font-medium text-gray-700 dark:text-gray-300">
-              Médecin :
-            </span>{" "}
-            medecin@hopital.fr / medecin123
-          </p>
-          <p>
-            <span className="font-medium text-gray-700 dark:text-gray-300">
-              Infirmier :
-            </span>{" "}
-            infirmier@hopital.fr / infirmier123
-          </p>
-        </div>
-      </div>
 
       <div>
         <button

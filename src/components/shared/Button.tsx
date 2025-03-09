@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import { ButtonHTMLAttributes, ReactNode } from "react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline";
+  variant?: "primary" | "secondary" | "outline" | "danger";
   size?: "sm" | "md" | "lg";
   children: ReactNode;
 }
@@ -25,6 +25,8 @@ export function Button({
             variant === "secondary",
           "border-2 border-indigo-600 text-indigo-600 hover:bg-indigo-50 focus:ring-indigo-500":
             variant === "outline",
+          "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500":
+            variant === "danger",
         },
         {
           "px-2.5 py-1.5 text-sm": size === "sm",

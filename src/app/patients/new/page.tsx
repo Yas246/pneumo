@@ -1,45 +1,42 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { PatientForm } from "@/components/patients/PatientForm";
 import { Button } from "@/components/shared/Button";
+import { pathologies } from "@/config/pathologies";
+import { usePermissions } from "@/hooks/usePermissions";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-
-const pathologies = [
-  {
-    id: "tumor",
-    name: "Pneumopathies tumorales",
-    icon: "/icons/tumor.svg",
-    description: "Cancer et tumeurs pulmonaires",
-  },
-  {
-    id: "allergy",
-    name: "Allergies",
-    icon: "/icons/allergy.svg",
-    description: "Asthme et allergies respiratoires",
-  },
-  {
-    id: "bronchial",
-    name: "Pneumopathies bronchiques",
-    icon: "/icons/bronchial.svg",
-    description: "BPCO et maladies bronchiques",
-  },
-  {
-    id: "infection",
-    name: "Infections pulmonaires",
-    icon: "/icons/infection.svg",
-    description: "Infections respiratoires",
-  },
-];
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 export default function NewPatientPage() {
   const router = useRouter();
+  const { canCreate, loading } = usePermissions();
   const [selectedPathologies, setSelectedPathologies] = useState<string[]>([]);
   const [step, setStep] = useState(1);
+
+  useEffect(() => {
+    if (!loading && !canCreate) {
+      router.push("/dashboard");
+      toast.error(
+        "Vous n'avez pas les permissions nécessaires pour créer un patient"
+      );
+    }
+  }, [canCreate, loading, router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
+
+  if (!canCreate) {
+    return null;
+  }
 
   const handlePathologyToggle = (pathologyId: string) => {
     setSelectedPathologies((current) =>
@@ -53,12 +50,6 @@ export default function NewPatientPage() {
     if (selectedPathologies.length > 0) {
       setStep(2);
     }
-  };
-
-  const handleSubmit = async (data: any) => {
-    // TODO: Implémenter la logique de sauvegarde
-    console.log("Form data:", { ...data, pathologies: selectedPathologies });
-    router.push("/dashboard");
   };
 
   return (
@@ -149,7 +140,10 @@ export default function NewPatientPage() {
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
                   Informations du patient
                 </h2>
-                <PatientForm onSubmit={handleSubmit} />
+                <PatientForm
+                  isEditing={false}
+                  pathologies={selectedPathologies}
+                />
               </div>
             )}
           </div>

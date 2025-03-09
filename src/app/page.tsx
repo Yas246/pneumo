@@ -1,7 +1,25 @@
+"use client";
+
 import { LoginForm } from "@/components/auth/LoginForm";
+import { onAuthStateChange } from "@/firebase/auth";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Rediriger vers le dashboard si l'utilisateur est déjà connecté
+    const unsubscribe = onAuthStateChange((user) => {
+      if (user) {
+        router.push("/dashboard");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
   return (
     <main className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900 transition-colors">
       <div className="max-w-md w-full space-y-8 px-4 sm:px-6 lg:px-8">
