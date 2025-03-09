@@ -215,11 +215,13 @@ export async function getStatistics() {
     // Calculer la distribution des pathologies
     const pathologyCount: { [key: string]: number } = {};
     patients.forEach((patient) => {
-      patient.pathologies?.forEach((pathology) => {
-        const pathologyName = pathologyNames[pathology] || pathology;
-        pathologyCount[pathologyName] =
-          (pathologyCount[pathologyName] || 0) + 1;
-      });
+      if (patient.pathologies && Array.isArray(patient.pathologies)) {
+        patient.pathologies.forEach((pathology) => {
+          const pathologyName = pathologyNames[pathology] || pathology;
+          pathologyCount[pathologyName] =
+            (pathologyCount[pathologyName] || 0) + 1;
+        });
+      }
     });
 
     const pathologyDistribution = Object.entries(pathologyCount).map(
