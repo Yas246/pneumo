@@ -7,7 +7,7 @@ import { CreatePatientData, Patient } from "@/types/patient";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import {
   ClinicalExamForm,
@@ -65,13 +65,13 @@ const emptyFamilyHistory = {
 };
 
 const emptyClinicalExam = {
-  weight: undefined,
-  height: undefined,
-  bmi: undefined,
-  neckCircumference: undefined,
-  abdominalPerimeter: undefined,
+  weight: 0,
+  height: 0,
+  bmi: 0,
+  neckCircumference: 0,
+  abdominalPerimeter: 0,
   bloodPressure: "",
-  heartRate: undefined,
+  heartRate: 0,
   pulmonaryAuscultation: "",
 };
 
@@ -98,6 +98,54 @@ const emptyTreatment = {
     orlSurgery: false,
     bariatricSurgery: false,
   },
+};
+
+const emptyComplementaryExams = {
+  ventilationPolygraphy: false,
+  psg: false,
+  tensionalHolter: false,
+  nightOximetry: false,
+  imaging: {
+    chestXray: false,
+    orlScan: false,
+  },
+  // Polygraphie
+  polygraphyDate: "",
+  iah: 0,
+  iahCentral: 0,
+  oxygenDesaturation: 0,
+  ct90: 0,
+  // Gazométrie
+  gazometryDate: "",
+  ph: 0,
+  pao2: 0,
+  paco2: 0,
+  hco3: 0,
+  sao2: 0,
+  // EFR
+  efrDate: "",
+  cvf: 0,
+  vems: 0,
+  dlco: 0,
+  cpt: 0,
+  // Autres
+  otherExams: "",
+};
+
+const emptyPPCFollowUp = {
+  ppcPrescribingDoctor: "",
+  ppcStartDate: "",
+  deviceModel: "",
+  deviceSupplier: "",
+  initialPressure: 0,
+  ventilationMode: "CPAP" as const,
+  humidifier: false,
+  maskType: "",
+  maskModel: "",
+  maskSize: "",
+  serialNumber: "",
+  provider: "",
+  otherAccessories: "",
 };
 
 const removeUndefinedValues = <T extends Record<string, unknown>>(
@@ -129,6 +177,7 @@ export function PatientForm({
   // Mémoriser les valeurs par défaut pour éviter les recréations
   const defaultValues = useMemo(
     () => ({
+      // Champs obligatoires (informations personnelles)
       firstName: "",
       lastName: "",
       birthDate: "",
@@ -139,8 +188,10 @@ export function PatientForm({
       treatingDoctor: "",
       socialSecurity: "Aucun" as const,
       status: "active" as const,
+
+      // Champs optionnels
       lastVisit: "",
-      pathologies,
+      pathologies: pathologies || [],
       consultationReason: "",
       symptomsDuration: "",
       personalHistory: emptyPersonalHistory,
@@ -150,6 +201,8 @@ export function PatientForm({
       clinicalExam: emptyClinicalExam,
       diagnosis: emptyDiagnosis,
       treatment: emptyTreatment,
+      complementaryExams: emptyComplementaryExams,
+      ppcFollowUp: emptyPPCFollowUp,
       ...initialData,
     }),
     [initialData, pathologies]
@@ -160,10 +213,36 @@ export function PatientForm({
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    control,
+    setValue,
   } = useForm<PatientFormData>({
     resolver: zodResolver(patientSchema),
     defaultValues,
   });
+
+  // Surveiller les changements de poids et taille
+  const weight = useWatch({
+    control,
+    name: "clinicalExam.weight",
+  });
+
+  const height = useWatch({
+    control,
+    name: "clinicalExam.height",
+  });
+
+  // Calculer et mettre à jour l'IMC lorsque le poids ou la taille change
+  useEffect(() => {
+    if (weight && height) {
+      // Convertir la taille en mètres si elle est en cm
+      const heightInMeters = height > 3 ? height / 100 : height;
+      // Calculer l'IMC : poids / (taille en mètres)²
+      const bmi = Number(
+        (weight / (heightInMeters * heightInMeters)).toFixed(1)
+      );
+      setValue("clinicalExam.bmi", bmi);
+    }
+  }, [weight, height, setValue]);
 
   // Utiliser useRef pour suivre si c'est le premier rendu
   const isFirstRender = useRef(true);
