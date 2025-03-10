@@ -37,31 +37,35 @@ Pneumo est une application web moderne développée avec Next.js 15.2, conçue p
 ## Installation
 
 1. Cloner le repository :
-   \`\`\`bash
+
+   ```bash
    git clone [url-du-repo]
    cd pneumo
-   \`\`\`
+   ```
 
 2. Installer les dépendances :
-   \`\`\`bash
+   ```bash
    npm install
+   ou
+   ```
 
-# ou
-
+```bash
 yarn install
-\`\`\`
+```
 
 3. Configurer les variables d'environnement :
    Créer un fichier \`.env.local\` à la racine du projet avec les configurations Firebase nécessaires.
 
 4. Lancer le serveur de développement :
-   \`\`\`bash
+   ```bash
    npm run dev
+   ```
 
-# ou
+ou
 
+```bash
 yarn dev
-\`\`\`
+```
 
 L'application sera accessible à l'adresse [http://localhost:3000](http://localhost:3000).
 
