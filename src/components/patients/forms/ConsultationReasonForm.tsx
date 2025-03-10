@@ -185,7 +185,7 @@ export function ConsultationReasonForm({ register }: FormSectionProps) {
               htmlFor="nocturnalSymptomsOther"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Autres symptômes nocturnes
+              Autres symptômes
             </label>
             <input
               type="text"

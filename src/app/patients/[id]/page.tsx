@@ -126,6 +126,42 @@ export default function PatientPage() {
     return age;
   };
 
+  const exams = (patient.complementaryExams || {
+    polygraphyDate: "",
+    iah: 0,
+    iahCentral: 0,
+    oxygenDesaturation: 0,
+    ct90: 0,
+    gazometryDate: "",
+    ph: 0,
+    pao2: 0,
+    paco2: 0,
+    hco3: 0,
+    sao2: 0,
+    efrDate: "",
+    cvf: 0,
+    vems: 0,
+    dlco: 0,
+    cpt: 0,
+  }) as {
+    polygraphyDate: string;
+    iah: number;
+    iahCentral: number;
+    oxygenDesaturation: number;
+    ct90: number;
+    gazometryDate: string;
+    ph: number;
+    pao2: number;
+    paco2: number;
+    hco3: number;
+    sao2: number;
+    efrDate: string;
+    cvf: number;
+    vems: number;
+    dlco: number;
+    cpt: number;
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar />
@@ -362,7 +398,7 @@ export default function PatientPage() {
                     </div>
                     {patient.nocturnalSymptoms?.other && (
                       <p className="mt-2 text-sm text-gray-900 dark:text-white">
-                        Autres: {patient.nocturnalSymptoms.other}
+                        Autres symptômes : {patient.nocturnalSymptoms.other}
                       </p>
                     )}
                   </div>
@@ -450,7 +486,7 @@ export default function PatientPage() {
                 </h2>
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {patient.clinicalExam?.weight && (
+                    {patient.clinicalExam?.weight > 0 && (
                       <div>
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                           Poids
@@ -460,7 +496,7 @@ export default function PatientPage() {
                         </p>
                       </div>
                     )}
-                    {patient.clinicalExam?.height && (
+                    {patient.clinicalExam?.height > 0 && (
                       <div>
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                           Taille
@@ -470,7 +506,7 @@ export default function PatientPage() {
                         </p>
                       </div>
                     )}
-                    {patient.clinicalExam?.bmi && (
+                    {patient.clinicalExam?.bmi > 0 && (
                       <div>
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                           IMC
@@ -480,7 +516,7 @@ export default function PatientPage() {
                         </p>
                       </div>
                     )}
-                    {patient.clinicalExam?.neckCircumference && (
+                    {patient.clinicalExam?.neckCircumference > 0 && (
                       <div>
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                           Tour de cou
@@ -490,7 +526,7 @@ export default function PatientPage() {
                         </p>
                       </div>
                     )}
-                    {patient.clinicalExam?.abdominalPerimeter && (
+                    {patient.clinicalExam?.abdominalPerimeter > 0 && (
                       <div>
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                           Périmètre abdominal
@@ -511,7 +547,7 @@ export default function PatientPage() {
                       </p>
                     </div>
                   )}
-                  {patient.clinicalExam?.heartRate && (
+                  {patient.clinicalExam?.heartRate > 0 && (
                     <div>
                       <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                         Fréquence cardiaque
@@ -519,6 +555,230 @@ export default function PatientPage() {
                       <p className="mt-1 text-sm text-gray-900 dark:text-white">
                         {patient.clinicalExam.heartRate} bpm
                       </p>
+                    </div>
+                  )}
+                  {patient.clinicalExam?.pulmonaryAuscultation && (
+                    <div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Auscultation pulmonaire
+                      </p>
+                      <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                        {patient.clinicalExam.pulmonaryAuscultation}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Examens complémentaires */}
+              <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+                <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Examens complémentaires
+                </h2>
+                <div className="space-y-6">
+                  {/* Polygraphie */}
+                  {(exams.polygraphyDate ||
+                    exams.iah > 0 ||
+                    exams.iahCentral > 0 ||
+                    exams.oxygenDesaturation > 0 ||
+                    exams.ct90 > 0) && (
+                    <div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                        Polygraphie
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {exams.polygraphyDate && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              Date
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.polygraphyDate}
+                            </p>
+                          </div>
+                        )}
+                        {exams.iah > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              IAH
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.iah}
+                            </p>
+                          </div>
+                        )}
+                        {exams.iahCentral > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              IAH Central
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.iahCentral}
+                            </p>
+                          </div>
+                        )}
+                        {exams.oxygenDesaturation > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              Désaturation en O2
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.oxygenDesaturation}%
+                            </p>
+                          </div>
+                        )}
+                        {exams.ct90 > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              CT90
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.ct90}%
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Gazométrie */}
+                  {(exams.gazometryDate ||
+                    exams.ph > 0 ||
+                    exams.pao2 > 0 ||
+                    exams.paco2 > 0 ||
+                    exams.hco3 > 0 ||
+                    exams.sao2 > 0) && (
+                    <div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                        Gazométrie
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {exams.gazometryDate && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              Date
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.gazometryDate}
+                            </p>
+                          </div>
+                        )}
+                        {exams.ph > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              pH
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.ph}
+                            </p>
+                          </div>
+                        )}
+                        {exams.pao2 > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              PaO2
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.pao2} mmHg
+                            </p>
+                          </div>
+                        )}
+                        {exams.paco2 > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              PaCO2
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.paco2} mmHg
+                            </p>
+                          </div>
+                        )}
+                        {exams.hco3 > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              HCO3
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.hco3} mmol/L
+                            </p>
+                          </div>
+                        )}
+                        {exams.sao2 > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              SaO2
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.sao2}%
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* EFR */}
+                  {(exams.efrDate ||
+                    exams.cvf > 0 ||
+                    exams.vems > 0 ||
+                    exams.dlco > 0 ||
+                    exams.cpt > 0) && (
+                    <div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                        EFR
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {exams.efrDate && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              Date
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.efrDate}
+                            </p>
+                          </div>
+                        )}
+                        {exams.cvf > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              CVF
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.cvf}%
+                            </p>
+                          </div>
+                        )}
+                        {exams.vems > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              VEMS
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.vems}%
+                            </p>
+                          </div>
+                        )}
+                        {exams.dlco > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              DLCO
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.dlco}%
+                            </p>
+                          </div>
+                        )}
+                        {exams.cpt > 0 && (
+                          <div>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                              CPT
+                            </p>
+                            <p className="text-sm text-gray-900 dark:text-white">
+                              {exams.cpt}%
+                            </p>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
