@@ -94,10 +94,19 @@ export const getPatient = async (id: string): Promise<Patient | null> => {
       return null;
     }
 
-    return patientConverter.fromFirestore(docSnap);
+    const data = docSnap.data();
+    return {
+      ...data,
+      id: docSnap.id,
+      diurnalSymptoms: {
+        ...data.diurnalSymptoms,
+        epworthDetails:
+          data.diurnalSymptoms?.epworthDetails || Array(8).fill(0),
+      },
+    } as Patient;
   } catch (error) {
     console.error("Erreur lors de la récupération du patient:", error);
-    throw new Error("Erreur lors de la récupération du patient");
+    throw error;
   }
 };
 

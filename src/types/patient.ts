@@ -28,6 +28,7 @@ export interface Patient {
     headaches: boolean;
     asthenia: boolean;
     epworthScore: number;
+    epworthDetails: number[];
   };
   nocturnalSymptoms: {
     snoring: boolean;
