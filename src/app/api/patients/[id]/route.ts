@@ -27,8 +27,8 @@ export async function PUT(
 ): Promise<Response> {
   try {
     const { id } = await params;
-    const data = await request.json();
-    await updatePatient(id, data);
+    const { userId, ...data } = await request.json();
+    await updatePatient(id, data, userId);
     return Response.json({ success: true });
   } catch (error) {
     console.error("Erreur lors de la mise à jour du patient:", error);

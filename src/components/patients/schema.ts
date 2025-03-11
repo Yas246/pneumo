@@ -13,7 +13,18 @@ export const patientSchema = z.object({
   socialSecurity: z.enum(["Aucun", "CNSS", "AMO", "Mutuelle", "Autre"]),
   status: z.enum(["active", "archived"]).default("active"),
   lastVisit: z.string().optional().default(""),
-  pathologies: z.array(z.string()).default([]),
+  pathologies: z
+    .union([z.array(z.string()), z.record(z.string()), z.null(), z.undefined()])
+    .transform((val) => {
+      if (!val) return [];
+      if (Array.isArray(val)) return val;
+      if (typeof val === "object") {
+        // Handle both array-like objects and key-value objects
+        return Object.values(val).filter((v) => typeof v === "string");
+      }
+      return [];
+    })
+    .default([]),
 
   // Motif de consultation
   consultationReason: z.string().default(""),
@@ -23,8 +34,32 @@ export const patientSchema = z.object({
       headaches: z.boolean().default(false),
       asthenia: z.boolean().default(false),
       epworthScore: z.number().min(0).max(24).default(0),
+      epworthDetails: z
+        .union([
+          z.array(z.number().min(0).max(3)),
+          z.record(z.number().min(0).max(3)),
+          z.null(),
+          z.undefined(),
+        ])
+        .transform((val) => {
+          if (!val) return Array(8).fill(0);
+          if (Array.isArray(val)) return val.map((v) => Number(v) || 0);
+          if (typeof val === "object") {
+            return Array(8)
+              .fill(0)
+              .map((_, i) => Number(val[i]) || 0);
+          }
+          return Array(8).fill(0);
+        })
+        .default([0, 0, 0, 0, 0, 0, 0, 0]),
     })
-    .default({}),
+    .default({
+      excessiveSleepiness: false,
+      headaches: false,
+      asthenia: false,
+      epworthScore: 0,
+      epworthDetails: [0, 0, 0, 0, 0, 0, 0, 0],
+    }),
   nocturnalSymptoms: z
     .object({
       snoring: z.boolean().default(false),

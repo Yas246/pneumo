@@ -1,13 +1,20 @@
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import {
+  FieldErrors,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+} from "react-hook-form";
 import { z } from "zod";
 import { patientSchema } from "../schema";
 
-export type PatientFormData = z.infer<typeof patientSchema> & {
-  id?: string;
-};
+type PatientFormData = z.infer<typeof patientSchema>;
 
-export interface FormSectionProps {
+export type FormSectionProps = {
   register: UseFormRegister<PatientFormData>;
+  getValues: UseFormGetValues<PatientFormData>;
+  setValue: UseFormSetValue<PatientFormData>;
+  watch: UseFormWatch<PatientFormData>;
   errors: FieldErrors<PatientFormData>;
   submitting?: boolean;
-}
+};

@@ -9,18 +9,22 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { z } from "zod";
 import {
   ClinicalExamForm,
   ComplementaryExamsForm,
   ConsultationReasonForm,
   DiagnosisForm,
   MedicalHistoryForm,
-  PatientFormData,
   PersonalInfoForm,
   PPCFollowUpForm,
   TreatmentForm,
 } from "./forms";
 import { patientSchema } from "./schema";
+
+type PatientFormData = z.infer<typeof patientSchema> & {
+  id?: string;
+};
 
 interface PatientFormProps {
   initialData?: PatientFormData;
@@ -215,6 +219,8 @@ export function PatientForm({
     reset,
     control,
     setValue,
+    getValues,
+    watch,
   } = useForm<PatientFormData>({
     resolver: zodResolver(patientSchema),
     defaultValues,
@@ -255,13 +261,43 @@ export function PatientForm({
     }
   }, [reset, defaultValues]);
 
+  // Log form errors whenever they change
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      console.log("Form validation errors:", errors);
+    }
+  }, [errors]);
+
   const onSubmit = async (data: PatientFormData) => {
+    console.log("Form submission started");
+
     if (!user) {
       toast.error("Vous devez être connecté pour créer un patient");
       return;
     }
 
     try {
+      console.log("Starting validation...");
+      console.log("Data to validate:", JSON.stringify(data, null, 2));
+
+      // Vérifier les valeurs de epworthDetails
+      console.log("Epworth details:", data.diurnalSymptoms?.epworthDetails);
+
+      // Validation debug avec plus de détails
+      const result = patientSchema.safeParse(data);
+      if (!result.success) {
+        console.error("❌ Validation failed");
+        console.error(
+          "Validation errors:",
+          JSON.stringify(result.error.format(), null, 2)
+        );
+        toast.error(
+          "Erreur de validation des données. Vérifiez la console pour plus de détails."
+        );
+        return;
+      }
+
+      console.log("✅ Validation passed");
       console.log("Form data:", data);
 
       if (isEditing && initialData?.id) {
@@ -303,14 +339,62 @@ export function PatientForm({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <PersonalInfoForm register={register} errors={errors} />
-      <ConsultationReasonForm register={register} errors={errors} />
-      <MedicalHistoryForm register={register} errors={errors} />
-      <ClinicalExamForm register={register} errors={errors} />
-      <ComplementaryExamsForm register={register} errors={errors} />
-      <DiagnosisForm register={register} errors={errors} />
-      <TreatmentForm register={register} errors={errors} />
-      <PPCFollowUpForm register={register} errors={errors} />
+      <PersonalInfoForm
+        register={register}
+        errors={errors}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
+      />
+      <ConsultationReasonForm
+        register={register}
+        errors={errors}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
+      />
+      <MedicalHistoryForm
+        register={register}
+        errors={errors}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
+      />
+      <ClinicalExamForm
+        register={register}
+        errors={errors}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
+      />
+      <ComplementaryExamsForm
+        register={register}
+        errors={errors}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
+      />
+      <DiagnosisForm
+        register={register}
+        errors={errors}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
+      />
+      <TreatmentForm
+        register={register}
+        errors={errors}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
+      />
+      <PPCFollowUpForm
+        register={register}
+        errors={errors}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
+      />
 
       <div className="flex justify-end gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
         <Button
