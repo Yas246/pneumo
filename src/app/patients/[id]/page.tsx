@@ -567,6 +567,16 @@ export default function PatientPage() {
                       </p>
                     </div>
                   )}
+                  {patient.clinicalExam?.saturation > 0 && (
+                    <div>
+                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Saturation
+                      </p>
+                      <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                        {patient.clinicalExam.saturation}%
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
 

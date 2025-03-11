@@ -106,6 +106,7 @@ export const patientSchema = z.object({
       abdominalPerimeter: z.number().optional(),
       bloodPressure: z.string().optional(),
       heartRate: z.number().optional(),
+      saturation: z.number().optional(),
       pulmonaryAuscultation: z.string().optional(),
     })
     .default({}),

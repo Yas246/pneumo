@@ -69,6 +69,7 @@ export interface Patient {
     abdominalPerimeter: number;
     bloodPressure: string;
     heartRate: number;
+    saturation: number;
     pulmonaryAuscultation: string;
   };
   orlExam: {

@@ -77,6 +77,7 @@ const emptyClinicalExam = {
   bloodPressure: "",
   heartRate: 0,
   pulmonaryAuscultation: "",
+  saturation: 0,
 };
 
 const emptyDiagnosis = {
