@@ -13,7 +13,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 export default function EditPatientPage() {
-  const { id } = useParams();
+  const params = useParams() as { id: string };
+  const { id } = params;
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
   const { canEdit, loading: permissionsLoading } = usePermissions();
@@ -111,7 +112,18 @@ export default function EditPatientPage() {
           </div>
 
           <PatientForm
-            initialData={patient}
+            initialData={{
+              ...patient,
+              complementaryExams: {
+                ventilationPolygraphy:
+                  !!patient.complementaryExams?.polygraphyDate,
+                psg: false,
+                tensionalHolter: false,
+                nightOximetry: false,
+                imaging: { chestXray: false, orlScan: false },
+                ...patient.complementaryExams,
+              },
+            }}
             isEditing={true}
             pathologies={patient.pathologies}
           />

@@ -21,7 +21,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 export default function PatientPage() {
-  const { id } = useParams();
+  const params = useParams() as { id: string };
+  const { id } = params;
   const router = useRouter();
   const { user } = useAuth();
   const { canEdit, canArchive, canCreateAppointment } = usePermissions();

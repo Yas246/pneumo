@@ -12,6 +12,7 @@ export interface Patient {
   sex: "M" | "F";
   address: string;
   phone: string;
+  email: string;
   profession: string;
   treatingDoctor: string;
   socialSecurity: "CNSS" | "AMO" | "Mutuelle" | "Aucun" | "Autre";
@@ -20,6 +21,11 @@ export interface Patient {
   statusChangedAt: Date;
   lastVisit: string;
   pathologies: string[]; // Liste des IDs des pathologies
+
+  // Informations sur le créateur
+  creatorId: string;
+  creatorRole: string;
+  creatorName: string;
 
   // Motif de Consultation
   consultationReason: string;
@@ -82,36 +88,23 @@ export interface Patient {
   };
 
   // Examens Complémentaires
-  complementaryExams: {
-    ventilationPolygraphy: boolean;
-    psg: boolean;
-    tensionalHolter: boolean;
-    nightOximetry: boolean;
-    imaging: {
-      chestXray: boolean;
-      orlScan: boolean;
-    };
-    // Polygraphie
-    polygraphyDate?: string;
-    iah?: number;
-    iahCentral?: number;
-    oxygenDesaturation?: number;
-    ct90?: number;
-    // Gazométrie
-    gazometryDate?: string;
-    ph?: number;
-    pao2?: number;
-    paco2?: number;
-    hco3?: number;
-    sao2?: number;
-    // EFR
-    efrDate?: string;
-    cvf?: number;
-    vems?: number;
-    dlco?: number;
-    cpt?: number;
-    // Autres
-    otherExams?: string;
+  complementaryExams?: {
+    polygraphyDate: string;
+    iah: number;
+    iahCentral: number;
+    oxygenDesaturation: number;
+    ct90: number;
+    gazometryDate: string;
+    ph: number;
+    pao2: number;
+    paco2: number;
+    hco3: number;
+    sao2: number;
+    efrDate: string;
+    cvf: number;
+    vems: number;
+    dlco: number;
+    cpt: number;
   };
 
   // Diagnostic Principal
@@ -166,4 +159,15 @@ export interface Patient {
   updatedAt?: Date;
 }
 
+// Type pour la création d'un patient (sans les champs générés automatiquement)
 export type CreatePatientData = Omit<Patient, "id" | "createdAt" | "updatedAt">;
+
+// Type simplifié pour les rendez-vous
+export interface AppointmentPatient {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  birthDate?: string;
+  phone?: string;
+}

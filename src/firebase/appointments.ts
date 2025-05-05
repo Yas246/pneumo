@@ -1,10 +1,6 @@
-import {
-  Appointment,
-  AppointmentWithPatient,
-  CreateAppointmentData,
-} from "@/types/appointment";
-import { Patient } from "@/types/patient";
-import { UserData } from "@/types/user";
+import { Appointment, AppointmentWithPatient } from "@/types/appointment";
+import { AppointmentPatient, Patient } from "@/types/patient";
+import { UserData, UserRole } from "@/types/user";
 import {
   addDoc,
   collection,
@@ -20,7 +16,6 @@ import {
 } from "firebase/firestore";
 import { db } from "./config";
 import { createLog } from "./logs";
-import { getUser } from "./users";
 
 const APPOINTMENTS_COLLECTION = "appointments";
 
@@ -45,40 +40,76 @@ const appointmentConverter = {
   },
 };
 
-export const createAppointment = async (
-  appointmentData: CreateAppointmentData
-): Promise<string> => {
+export const getAppointments = async (
+  userId: string,
+  userRole: UserRole
+): Promise<Appointment[]> => {
   try {
+    let q = query(collection(db, APPOINTMENTS_COLLECTION));
+
+    // Filtrer selon le rôle
+    if (userRole === "resident") {
+      // Les résidents ne voient que leurs propres rendez-vous
+      q = query(
+        collection(db, APPOINTMENTS_COLLECTION),
+        where("creatorId", "==", userId)
+      );
+    } else if (userRole === "prof") {
+      // Les profs voient leurs rendez-vous et ceux des résidents
+      q = query(
+        collection(db, APPOINTMENTS_COLLECTION),
+        where("creatorRole", "in", ["prof", "resident"] as UserRole[])
+      );
+    }
+
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) =>
+      appointmentConverter.fromFirestore(doc)
+    );
+  } catch (error) {
+    console.error("Error getting appointments:", error);
+    throw error;
+  }
+};
+
+export const createAppointment = async (
+  appointmentData: Omit<Appointment, "id" | "createdAt" | "updatedAt">,
+  userId: string,
+  userRole: UserRole
+): Promise<Appointment> => {
+  try {
+    const appointment = {
+      ...appointmentData,
+      creatorId: userId,
+      creatorRole: userRole,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      status: "scheduled" as const,
+    };
+
     const docRef = await addDoc(
       collection(db, APPOINTMENTS_COLLECTION),
-      appointmentConverter.toFirestore({
-        ...appointmentData,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      })
+      appointmentConverter.toFirestore(appointment as Appointment)
     );
-
-    // Récupérer les informations de l'utilisateur qui crée le rendez-vous
-    const user = await getUser(appointmentData.createdBy);
-    if (!user) {
-      throw new Error("Utilisateur non trouvé");
-    }
 
     // Créer un log pour la création du rendez-vous
     await createLog({
-      userId: user.uid,
-      userEmail: user.email,
-      userRole: user.role,
+      userId,
+      userEmail: appointment.patient.email,
+      userRole: userRole,
       action: "CREATION_RDV",
-      details: `Création d'un rendez-vous de type ${appointmentData.type} pour le patient ${appointmentData.patientId}`,
+      details: `Création d'un rendez-vous pour ${appointment.patient.firstName} ${appointment.patient.lastName}`,
       targetId: docRef.id,
       targetType: "appointment",
     });
 
-    return docRef.id;
+    return {
+      ...appointment,
+      id: docRef.id,
+    };
   } catch (error) {
-    console.error("Erreur lors de la création du rendez-vous:", error);
-    throw new Error("Erreur lors de la création du rendez-vous");
+    console.error("Error creating appointment:", error);
+    throw error;
   }
 };
 
@@ -95,8 +126,8 @@ export const getAppointment = async (
 
     return appointmentConverter.fromFirestore(docSnap);
   } catch (error) {
-    console.error("Erreur lors de la récupération du rendez-vous:", error);
-    throw new Error("Erreur lors de la récupération du rendez-vous");
+    console.error("Error getting appointment:", error);
+    throw error;
   }
 };
 
@@ -121,70 +152,55 @@ export const getPatientAppointments = async (
 export const updateAppointment = async (
   id: string,
   appointmentData: Partial<Appointment>,
-  userId: string
+  userId: string,
+  userRole: UserRole
 ): Promise<void> => {
   try {
     const docRef = doc(db, APPOINTMENTS_COLLECTION, id);
     await updateDoc(docRef, {
       ...appointmentData,
-      updatedAt: Timestamp.now(),
+      updatedAt: new Date(),
     });
-
-    // Récupérer les informations de l'utilisateur qui modifie le rendez-vous
-    const user = await getUser(userId);
-    if (!user) {
-      throw new Error("Utilisateur non trouvé");
-    }
 
     // Créer un log pour la modification du rendez-vous
     await createLog({
-      userId: user.uid,
-      userEmail: user.email,
-      userRole: user.role,
+      userId,
+      userEmail: appointmentData.patient?.email || "",
+      userRole: userRole,
       action: "MODIFICATION_RDV",
-      details: `Modification du rendez-vous ${id}`,
+      details: `Modification du rendez-vous pour ${appointmentData.patient?.firstName} ${appointmentData.patient?.lastName}`,
       targetId: id,
       targetType: "appointment",
     });
   } catch (error) {
-    console.error("Erreur lors de la mise à jour du rendez-vous:", error);
-    throw new Error("Erreur lors de la mise à jour du rendez-vous");
+    console.error("Error updating appointment:", error);
+    throw error;
   }
 };
 
 export const deleteAppointment = async (
   id: string,
-  userId: string
+  userId: string,
+  userRole: UserRole,
+  patientInfo: AppointmentPatient
 ): Promise<void> => {
   try {
-    // Récupérer les informations du rendez-vous avant la suppression
-    const appointmentDoc = await getDoc(doc(db, APPOINTMENTS_COLLECTION, id));
-    const appointmentData = appointmentDoc.data();
-
-    // Supprimer le rendez-vous
-    await deleteDoc(doc(db, APPOINTMENTS_COLLECTION, id));
-
-    // Récupérer les informations de l'utilisateur qui supprime le rendez-vous
-    const user = await getUser(userId);
-    if (!user) {
-      throw new Error("Utilisateur non trouvé");
-    }
+    const docRef = doc(db, APPOINTMENTS_COLLECTION, id);
+    await deleteDoc(docRef);
 
     // Créer un log pour la suppression du rendez-vous
     await createLog({
-      userId: user.uid,
-      userEmail: user.email,
-      userRole: user.role,
+      userId,
+      userEmail: patientInfo.email,
+      userRole: userRole,
       action: "SUPPRESSION_RDV",
-      details: `Suppression du rendez-vous ${id}${
-        appointmentData ? ` de type ${appointmentData.type}` : ""
-      }`,
+      details: `Suppression du rendez-vous pour ${patientInfo.firstName} ${patientInfo.lastName}`,
       targetId: id,
       targetType: "appointment",
     });
   } catch (error) {
-    console.error("Erreur lors de la suppression du rendez-vous:", error);
-    throw new Error("Erreur lors de la suppression du rendez-vous");
+    console.error("Error deleting appointment:", error);
+    throw error;
   }
 };
 
@@ -208,7 +224,7 @@ export const getUserAppointments = async (
   try {
     const q = query(
       collection(db, APPOINTMENTS_COLLECTION),
-      where("createdBy", "==", userId)
+      where("creatorId", "==", userId)
     );
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) =>
@@ -245,20 +261,26 @@ export const getUserAppointmentsWithPatients = async (
     return appointments.map((appointment) => {
       const patient = patientsMap.get(appointment.patientId);
       if (!patient) {
-        console.warn(`Patient not found for appointment ${appointment.id}`);
         return {
           ...appointment,
           patient: {
+            id: "unknown",
             firstName: "Patient inconnu",
             lastName: "",
+            email: "",
           },
         };
       }
+
       return {
         ...appointment,
         patient: {
+          id: patient.id || "unknown",
           firstName: patient.firstName,
           lastName: patient.lastName,
+          email: patient.email,
+          birthDate: patient.birthDate,
+          phone: patient.phone,
         },
       };
     });
@@ -295,33 +317,26 @@ export const getAllAppointmentsWithPatients = async (): Promise<
         doctorsMap.set(doc.id, {
           uid: doc.id,
           displayName: data.displayName || "Utilisateur inconnu",
-          role: data.role || "unknown",
+          role: data.role || ("unknown" as UserRole),
           email: data.email,
           createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
         });
       }
     });
 
-    console.log("Doctors map:", doctorsMap);
-
     // Map appointments to include patient and doctor data
     return appointments.map((appointment) => {
       const patient = patientsMap.get(appointment.patientId);
-      const doctor = doctorsMap.get(appointment.createdBy);
-
-      console.log("Processing appointment:", {
-        id: appointment.id,
-        createdBy: appointment.createdBy,
-        doctor: doctor,
-      });
+      const doctor = doctorsMap.get(appointment.creatorId);
 
       if (!patient) {
-        console.warn(`Patient not found for appointment ${appointment.id}`);
         return {
           ...appointment,
           patient: {
+            id: "unknown",
             firstName: "Patient inconnu",
             lastName: "",
+            email: "",
           },
           doctor: doctor
             ? {
@@ -335,8 +350,12 @@ export const getAllAppointmentsWithPatients = async (): Promise<
       return {
         ...appointment,
         patient: {
+          id: patient.id || "unknown",
           firstName: patient.firstName,
           lastName: patient.lastName,
+          email: patient.email,
+          birthDate: patient.birthDate,
+          phone: patient.phone,
         },
         doctor: doctor
           ? {
@@ -347,12 +366,7 @@ export const getAllAppointmentsWithPatients = async (): Promise<
       };
     });
   } catch (error) {
-    console.error(
-      "Erreur lors de la récupération des rendez-vous avec patients:",
-      error
-    );
-    throw new Error(
-      "Erreur lors de la récupération des rendez-vous avec patients"
-    );
+    console.error("Error getting appointments with patients:", error);
+    throw error;
   }
 };

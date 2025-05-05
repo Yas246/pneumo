@@ -29,7 +29,7 @@ type AppointmentFormData = z.infer<typeof appointmentSchema>;
 
 function NewAppointmentContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams() as URLSearchParams;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -89,10 +89,26 @@ function NewAppointmentContent() {
 
     setIsSubmitting(true);
     try {
-      await createAppointment({
+      if (!selectedPatient || !selectedPatient.id) {
+        throw new Error("Patient non sélectionné");
+      }
+
+      const appointmentData = {
         ...data,
-        createdBy: user.uid,
-      });
+        status: "scheduled" as const,
+        patient: {
+          id: selectedPatient.id,
+          firstName: selectedPatient.firstName,
+          lastName: selectedPatient.lastName,
+          email: selectedPatient.email || "",
+          phone: selectedPatient.phone || "",
+          birthDate: selectedPatient.birthDate,
+        },
+        creatorId: user.uid,
+        creatorRole: user.role,
+        creatorName: user.displayName || "",
+      };
+      await createAppointment(appointmentData, user.uid, user.role);
       toast.success("Rendez-vous créé avec succès");
       router.push("/appointments");
     } catch (error) {

@@ -66,3 +66,18 @@ export async function createAppointment(
   const result = await response.json();
   return result.id;
 }
+
+export async function getHospitalization(
+  patientId: string,
+  hospitalizationId: string
+) {
+  const response = await fetch(
+    `/api/patients/${patientId}/hospitalizations/${hospitalizationId}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch hospitalization");
+  }
+
+  return response.json();
+}

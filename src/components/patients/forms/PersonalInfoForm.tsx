@@ -6,6 +6,7 @@ export function PersonalInfoForm({
   register,
   errors,
   setValue,
+  disabled,
 }: FormSectionProps) {
   const { user } = useAuth();
 
@@ -31,7 +32,8 @@ export function PersonalInfoForm({
           <input
             type="text"
             {...register("lastName")}
-            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           />
           {errors.lastName && (
             <p className="text-sm text-red-600 dark:text-red-400">
@@ -50,7 +52,8 @@ export function PersonalInfoForm({
           <input
             type="text"
             {...register("firstName")}
-            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           />
           {errors.firstName && (
             <p className="text-sm text-red-600 dark:text-red-400">
@@ -69,7 +72,8 @@ export function PersonalInfoForm({
           <input
             type="date"
             {...register("birthDate")}
-            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           />
         </div>
 
@@ -82,7 +86,8 @@ export function PersonalInfoForm({
           </label>
           <select
             {...register("sex")}
-            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           >
             <option value="">Sélectionnez le sexe</option>
             <option value="M">Masculin</option>
@@ -100,7 +105,8 @@ export function PersonalInfoForm({
           <input
             type="text"
             {...register("address")}
-            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           />
         </div>
 
@@ -114,7 +120,8 @@ export function PersonalInfoForm({
           <input
             type="tel"
             {...register("phone")}
-            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           />
         </div>
 
@@ -128,7 +135,8 @@ export function PersonalInfoForm({
           <input
             type="text"
             {...register("profession")}
-            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           />
         </div>
 
@@ -156,7 +164,8 @@ export function PersonalInfoForm({
           </label>
           <select
             {...register("socialSecurity")}
-            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           >
             <option value="">Sélectionnez une couverture sociale</option>
             <option value="CNSS">CNSS</option>
@@ -177,7 +186,8 @@ export function PersonalInfoForm({
           <input
             type="date"
             {...register("lastVisit")}
-            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           />
         </div>
 
@@ -190,7 +200,8 @@ export function PersonalInfoForm({
           </label>
           <select
             {...register("status")}
-            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           >
             <option value="active">Actif</option>
             <option value="archived">Archivé</option>

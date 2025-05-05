@@ -28,10 +28,26 @@ export function useAuth() {
     user,
     loading,
     isAuthenticated: !!user,
-    isSuperAdmin: user?.role === "super-admin",
+    isSuperAdmin: user?.role === "super-admin" || user?.role === "chef-service",
+    isChefService: user?.role === "chef-service",
     isMedecin: user?.role === "medecin",
+    isProf: user?.role === "prof",
+    isResident: user?.role === "resident",
     isInfirmier: user?.role === "infirmier",
     hasWritePermission:
-      user?.role === "super-admin" || user?.role === "medecin",
+      user?.role === "super-admin" ||
+      user?.role === "chef-service" ||
+      user?.role === "medecin" ||
+      user?.role === "prof" ||
+      user?.role === "resident",
+    canViewAllAppointments:
+      user?.role === "super-admin" ||
+      user?.role === "chef-service" ||
+      user?.role === "prof",
+    canViewAllPatients:
+      user?.role === "super-admin" ||
+      user?.role === "chef-service" ||
+      user?.role === "medecin" ||
+      user?.role === "prof",
   };
 }

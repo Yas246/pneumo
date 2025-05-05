@@ -16,7 +16,7 @@ const createUserSchema = z.object({
     .string()
     .min(6, "Le mot de passe doit contenir au moins 6 caractères"),
   displayName: z.string().min(1, "Le nom est requis"),
-  role: z.enum(["medecin", "infirmier"]),
+  role: z.enum(["chef-service", "medecin", "prof", "resident", "infirmier"]),
 });
 
 type CreateUserFormData = z.infer<typeof createUserSchema>;
@@ -189,7 +189,10 @@ export function CreateUserModal({
                 {...register("role")}
                 className="mt-1 block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-gray-900 dark:text-white focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 sm:text-sm"
               >
+                <option value="chef-service">Chef de service</option>
                 <option value="medecin">Médecin</option>
+                <option value="prof">Professeur</option>
+                <option value="resident">Résident</option>
                 <option value="infirmier">Infirmier</option>
               </select>
               {errors.role && (

@@ -26,7 +26,7 @@ type AppointmentFormData = z.infer<typeof appointmentSchema>;
 
 export default function EditAppointmentPage() {
   const router = useRouter();
-  const params = useParams();
+  const params = useParams() as { id: string };
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [patientName, setPatientName] = useState("");
@@ -94,7 +94,7 @@ export default function EditAppointmentPage() {
 
     setIsSubmitting(true);
     try {
-      await updateAppointment(params.id, data, user.uid);
+      await updateAppointment(params.id, data, user.uid, user.role);
       toast.success("Rendez-vous modifié avec succès");
       router.push("/appointments");
     } catch (error) {

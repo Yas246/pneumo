@@ -17,4 +17,5 @@ export type FormSectionProps = {
   watch: UseFormWatch<PatientFormData>;
   errors: FieldErrors<PatientFormData>;
   submitting?: boolean;
+  disabled?: boolean;
 };

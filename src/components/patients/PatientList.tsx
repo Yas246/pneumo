@@ -1,9 +1,11 @@
 "use client";
 
-import { getAllPatients } from "@/firebase/patients";
+import { getPatients } from "@/firebase/patients";
+import { useAuth } from "@/hooks/useAuth";
 import type { Patient } from "@/types/patient";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 interface PatientListProps {
   status: "active" | "archived";
@@ -66,12 +68,24 @@ function PatientListItem({ patient, status }: PatientListItemProps) {
 export function PatientList({ status }: PatientListProps) {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user, isResident } = useAuth();
 
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const patientsData = await getAllPatients();
-        setPatients(patientsData);
+        if (!user) return;
+
+        const patientsData = await getPatients(user.uid, user.role);
+        const filteredPatients = patientsData.filter(
+          (p) => p.status === status
+        );
+
+        // Si c'est un résident, on affiche un message spécial
+        if (isResident) {
+          toast.success("Affichage de vos dossiers patients uniquement");
+        }
+
+        setPatients(filteredPatients);
       } catch (error) {
         console.error("Erreur lors de la récupération des patients:", error);
       } finally {
@@ -80,11 +94,7 @@ export function PatientList({ status }: PatientListProps) {
     };
 
     fetchPatients();
-  }, []);
-
-  const filteredPatients = patients.filter(
-    (patient) => patient.status === status
-  );
+  }, [user, status, isResident]);
 
   if (loading) {
     return (
@@ -94,7 +104,7 @@ export function PatientList({ status }: PatientListProps) {
     );
   }
 
-  if (filteredPatients.length === 0) {
+  if (patients.length === 0) {
     return (
       <div className="text-center py-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
         <p className="text-gray-500 dark:text-gray-400">
@@ -107,7 +117,7 @@ export function PatientList({ status }: PatientListProps) {
   return (
     <div className="bg-white dark:bg-gray-800 shadow-sm overflow-hidden sm:rounded-lg">
       <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-        {filteredPatients.map((patient) => (
+        {patients.map((patient) => (
           <li key={patient.id}>
             <Link
               href={`/patients/${patient.id}`}

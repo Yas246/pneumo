@@ -6,6 +6,7 @@ import { deleteAppointment, getAppointment } from "@/firebase/appointments";
 import { db } from "@/firebase/config";
 import { getPatient } from "@/firebase/patients";
 import { useAuth } from "@/hooks/useAuth";
+import { Appointment } from "@/types/appointment";
 import { Dialog } from "@headlessui/react";
 import {
   ArrowLeftIcon,
@@ -20,16 +21,8 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
-interface AppointmentDetails {
-  id: string;
-  patientId: string;
+interface AppointmentDetails extends Omit<Appointment, "patient"> {
   patientName: string;
-  date: string;
-  time: string;
-  duration: number;
-  type: string;
-  notes?: string;
-  createdBy: string;
   doctor?: {
     displayName: string;
     role: string;
@@ -38,7 +31,7 @@ interface AppointmentDetails {
 
 export default function AppointmentDetailsPage() {
   const router = useRouter();
-  const params = useParams();
+  const params = useParams() as { id: string };
   const { user } = useAuth();
   const [appointment, setAppointment] = useState<AppointmentDetails | null>(
     null
@@ -70,9 +63,9 @@ export default function AppointmentDetailsPage() {
 
         // Récupérer les informations du médecin si disponibles
         let doctorInfo = undefined;
-        if (appointmentData.createdBy) {
+        if (appointmentData.creatorId) {
           const doctorDoc = await getDoc(
-            doc(db, "users", appointmentData.createdBy)
+            doc(db, "users", appointmentData.creatorId)
           );
           if (doctorDoc.exists()) {
             const doctorData = doctorDoc.data();
@@ -104,9 +97,19 @@ export default function AppointmentDetailsPage() {
       return;
     }
 
+    if (!appointment) {
+      toast.error("Rendez-vous non trouvé");
+      return;
+    }
+
     setIsDeleting(true);
     try {
-      await deleteAppointment(params.id as string, user.uid);
+      await deleteAppointment(params.id as string, user.uid, user.role, {
+        id: appointment.patientId,
+        firstName: appointment.patientName.split(" ")[0],
+        lastName: appointment.patientName.split(" ")[1],
+        email: "", // Nous n'avons pas l'email dans l'interface AppointmentDetails
+      });
       toast.success("Rendez-vous supprimé avec succès");
       router.push("/appointments");
     } catch (error) {

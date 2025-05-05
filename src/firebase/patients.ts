@@ -44,43 +44,50 @@ const patientConverter = {
 // Créer un nouveau patient
 export const createPatient = async (
   patientData: CreatePatientData,
-  userId?: string
-): Promise<string> => {
+  userId: string
+): Promise<Patient> => {
   try {
-    const now = new Date();
-    const initialStatus: StatusChange = {
-      status: patientData.status || "active",
-      date: now,
-    };
+    console.log("Creating patient with data:", patientData);
 
-    const docRef = await addDoc(collection(db, PATIENTS_COLLECTION), {
-      ...patientData,
-      statusHistory: [initialStatus],
-      statusChangedAt: now,
-      createdAt: now,
-      updatedAt: now,
-    });
-
-    // Ajouter le log de création
-    if (userId) {
-      const user = await getUser(userId);
-      if (user) {
-        await createLog({
-          userId: user.uid,
-          userEmail: user.email,
-          userRole: user.role,
-          action: "CREATION_DOSSIER",
-          details: `Création du dossier patient pour ${patientData.firstName} ${patientData.lastName}`,
-          targetId: docRef.id,
-          targetType: "patient",
-        });
-      }
+    // Récupérer les informations de l'utilisateur créateur
+    const creator = await getUser(userId);
+    if (!creator) {
+      throw new Error("Utilisateur non trouvé");
     }
 
-    return docRef.id;
+    // Ajouter les informations du créateur
+    const patientWithCreator = {
+      ...patientData,
+      creatorId: userId,
+      creatorRole: creator.role,
+      creatorName: creator.displayName,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    const docRef = await addDoc(
+      collection(db, PATIENTS_COLLECTION),
+      patientConverter.toFirestore(patientWithCreator as Patient)
+    );
+
+    // Créer un log pour la création du patient
+    await createLog({
+      userId,
+      userEmail: creator.email,
+      userRole: creator.role,
+      action: "CREATION_DOSSIER",
+      details: `Création du dossier patient pour ${patientData.firstName} ${patientData.lastName}`,
+      targetId: docRef.id,
+      targetType: "patient",
+    });
+
+    return {
+      ...patientWithCreator,
+      id: docRef.id,
+    } as Patient;
   } catch (error) {
-    console.error("Erreur lors de la création du patient:", error);
-    throw new Error("Erreur lors de la création du patient");
+    console.error("Error creating patient:", error);
+    throw error;
   }
 };
 
@@ -277,3 +284,33 @@ export async function updatePatientStatus(
     throw new Error("Erreur lors de la mise à jour du statut du patient");
   }
 }
+
+export const getPatients = async (
+  userId: string,
+  userRole: string
+): Promise<Patient[]> => {
+  try {
+    let q = query(collection(db, PATIENTS_COLLECTION));
+
+    // Si c'est un résident, on ne récupère que ses patients
+    if (userRole === "resident") {
+      q = query(
+        collection(db, PATIENTS_COLLECTION),
+        where("creatorId", "==", userId)
+      );
+    }
+
+    const querySnapshot = await getDocs(q);
+    const patients: Patient[] = [];
+
+    querySnapshot.forEach((doc) => {
+      const patient = patientConverter.fromFirestore(doc);
+      patients.push(patient);
+    });
+
+    return patients;
+  } catch (error) {
+    console.error("Error getting patients:", error);
+    throw error;
+  }
+};

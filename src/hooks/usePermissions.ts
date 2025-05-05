@@ -9,11 +9,40 @@ export function usePermissions() {
     loading,
   });
 
-  const canCreate = user?.role === "super-admin" || user?.role === "medecin";
-  const canEdit = user?.role === "super-admin" || user?.role === "medecin";
-  const canArchive = user?.role === "super-admin" || user?.role === "medecin";
+  const canCreate =
+    user?.role === "super-admin" ||
+    user?.role === "chef-service" ||
+    user?.role === "medecin" ||
+    user?.role === "prof" ||
+    user?.role === "resident";
+
+  const canEdit =
+    user?.role === "super-admin" ||
+    user?.role === "chef-service" ||
+    user?.role === "medecin" ||
+    user?.role === "prof" ||
+    user?.role === "resident";
+
+  const canArchive =
+    user?.role === "super-admin" ||
+    user?.role === "chef-service" ||
+    user?.role === "medecin" ||
+    user?.role === "prof";
+
   const canCreateAppointment =
-    user?.role === "super-admin" || user?.role === "medecin";
+    user?.role === "super-admin" ||
+    user?.role === "chef-service" ||
+    user?.role === "medecin" ||
+    user?.role === "prof" ||
+    user?.role === "resident";
+
+  const canManageUsers =
+    user?.role === "super-admin" || user?.role === "chef-service";
+
+  const canViewResidentAppointments =
+    user?.role === "super-admin" ||
+    user?.role === "chef-service" ||
+    user?.role === "prof";
 
   console.log("Calculated permissions:", {
     loading,
@@ -21,6 +50,8 @@ export function usePermissions() {
     canEdit,
     canArchive,
     canCreateAppointment,
+    canManageUsers,
+    canViewResidentAppointments,
     userRole: user?.role,
   });
 
@@ -30,5 +61,7 @@ export function usePermissions() {
     canEdit,
     canArchive,
     canCreateAppointment,
+    canManageUsers,
+    canViewResidentAppointments,
   };
 }

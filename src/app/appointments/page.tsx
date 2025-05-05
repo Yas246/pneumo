@@ -101,7 +101,7 @@ export default function AppointmentsPage() {
           {view === "calendar" ? (
             <AppointmentCalendar appointments={appointments} />
           ) : (
-            <AppointmentList appointments={appointments} />
+            <AppointmentList initialAppointments={appointments} />
           )}
         </div>
       </main>

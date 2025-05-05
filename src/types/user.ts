@@ -1,15 +1,16 @@
-export type UserRole = "medecin" | "infirmier" | "super-admin";
+export type UserRole =
+  | "super-admin"
+  | "chef-service"
+  | "medecin"
+  | "prof"
+  | "resident"
+  | "infirmier";
 
 export interface UserData {
   uid: string;
   email: string;
   displayName: string;
   role: UserRole;
-  createdAt: Date;
-}
-
-export interface CreateUserData extends Omit<UserData, "uid" | "createdAt"> {
-  password: string;
   createdAt: Date;
 }
 
@@ -24,6 +25,14 @@ export type LogActionType =
   | "MODIFICATION_DOSSIER"
   | "ARCHIVAGE_DOSSIER"
   | "DESARCHIVAGE_DOSSIER";
+
+export interface CreateUserData {
+  email: string;
+  password: string;
+  displayName: string;
+  role: UserRole;
+  createdAt: Date;
+}
 
 export interface LogEntry {
   id: string;

@@ -1,26 +1,31 @@
 "use client";
 
 import { Button } from "@/components/shared/Button";
+import { getAppointments } from "@/firebase/appointments";
 import { useAuth } from "@/hooks/useAuth";
 import { AppointmentWithPatient } from "@/types/appointment";
 import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "react-hot-toast";
 
 interface AppointmentListProps {
-  appointments: AppointmentWithPatient[];
+  initialAppointments: AppointmentWithPatient[];
 }
 
-export function AppointmentList({ appointments }: AppointmentListProps) {
-  const { isSuperAdmin } = useAuth();
+export function AppointmentList({ initialAppointments }: AppointmentListProps) {
+  const { isSuperAdmin, user, isResident, isProf } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedDoctors, setSelectedDoctors] = useState<string[]>([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [appointments, setAppointments] =
+    useState<AppointmentWithPatient[]>(initialAppointments);
 
   // Extraire tous les types uniques de rendez-vous
   const appointmentTypes = useMemo(() => {
@@ -78,6 +83,50 @@ export function AppointmentList({ appointments }: AppointmentListProps) {
     startDate,
     endDate,
   ]);
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        if (!user) return;
+
+        const appointmentsList = await getAppointments(user.uid, user.role);
+
+        // Messages spécifiques selon le rôle
+        if (isResident) {
+          toast.success("Affichage de vos rendez-vous uniquement");
+        } else if (isProf) {
+          toast.success("Affichage de vos rendez-vous et ceux des résidents");
+        }
+
+        setAppointments(appointmentsList);
+      } catch (error) {
+        console.error("Error fetching appointments:", error);
+        toast.error("Erreur lors de la récupération des rendez-vous");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAppointments();
+  }, [user, isResident, isProf]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+      </div>
+    );
+  }
+
+  if (appointments.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-500 dark:text-gray-400">
+          Aucun rendez-vous trouvé
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">

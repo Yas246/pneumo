@@ -13,7 +13,7 @@ import { toast } from "react-hot-toast";
 
 function EditPatientContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams() as URLSearchParams;
   const id = searchParams.get("id");
   const { canEdit, loading: permissionsLoading } = usePermissions();
   const [patient, setPatient] = useState<Patient | null>(null);
@@ -82,7 +82,21 @@ function EditPatientContent() {
 
           <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
             <div className="p-8">
-              <PatientForm isEditing={true} initialData={patient} />
+              <PatientForm
+                isEditing={true}
+                initialData={{
+                  ...patient,
+                  complementaryExams: {
+                    ventilationPolygraphy:
+                      !!patient.complementaryExams?.polygraphyDate,
+                    psg: false,
+                    tensionalHolter: false,
+                    nightOximetry: false,
+                    imaging: { chestXray: false, orlScan: false },
+                    ...patient.complementaryExams,
+                  },
+                }}
+              />
             </div>
           </div>
         </div>
