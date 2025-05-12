@@ -1,7 +1,5 @@
-{
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-}
-import { FormSectionProps } from "./types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FormSectionProps } from "../../types";
 
 export function ConsultationReasonForm({
   register,

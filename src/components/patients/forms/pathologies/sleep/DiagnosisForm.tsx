@@ -1,4 +1,5 @@
-import { FormSectionProps } from "./types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FormSectionProps } from "../../types";
 
 export function DiagnosisForm({ register }: FormSectionProps) {
   return (
@@ -10,7 +11,7 @@ export function DiagnosisForm({ register }: FormSectionProps) {
         <div className="flex items-center">
           <input
             type="checkbox"
-            {...register("diagnosis.saos")}
+            {...register("diagnosis.saos" as any)}
             className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
           />
           <label className="ml-3 text-sm text-gray-700 dark:text-gray-300">
@@ -21,7 +22,7 @@ export function DiagnosisForm({ register }: FormSectionProps) {
         <div className="flex items-center">
           <input
             type="checkbox"
-            {...register("diagnosis.sacs")}
+            {...register("diagnosis.sacs" as any)}
             className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
           />
           <label className="ml-3 text-sm text-gray-700 dark:text-gray-300">
@@ -32,7 +33,7 @@ export function DiagnosisForm({ register }: FormSectionProps) {
         <div className="flex items-center">
           <input
             type="checkbox"
-            {...register("diagnosis.soh")}
+            {...register("diagnosis.soh" as any)}
             className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
           />
           <label className="ml-3 text-sm text-gray-700 dark:text-gray-300">
@@ -43,7 +44,7 @@ export function DiagnosisForm({ register }: FormSectionProps) {
         <div className="flex items-center">
           <input
             type="checkbox"
-            {...register("diagnosis.nocturalHypoventilation")}
+            {...register("diagnosis.nocturalHypoventilation" as any)}
             className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
           />
           <label className="ml-3 text-sm text-gray-700 dark:text-gray-300">
@@ -54,7 +55,7 @@ export function DiagnosisForm({ register }: FormSectionProps) {
         <div className="flex items-center">
           <input
             type="checkbox"
-            {...register("diagnosis.simpleSnoring")}
+            {...register("diagnosis.simpleSnoring" as any)}
             className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
           />
           <label className="ml-3 text-sm text-gray-700 dark:text-gray-300">

@@ -1,4 +1,5 @@
-import { FormSectionProps } from "./types";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { FormSectionProps } from "../../types";
 
 export function ClinicalExamForm({ register }: FormSectionProps) {
   return (
@@ -22,7 +23,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               <input
                 type="number"
                 step="0.1"
-                {...register("clinicalExam.weight", {
+                {...register("clinicalExam.weight" as any, {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -39,7 +40,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               <input
                 type="number"
                 step="0.1"
-                {...register("clinicalExam.height", {
+                {...register("clinicalExam.height" as any, {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -56,7 +57,9 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               <input
                 type="number"
                 step="0.1"
-                {...register("clinicalExam.bmi", { valueAsNumber: true })}
+                {...register("clinicalExam.bmi" as any, {
+                  valueAsNumber: true,
+                })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
               />
             </div>
@@ -71,7 +74,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               <input
                 type="number"
                 step="0.1"
-                {...register("clinicalExam.neckCircumference", {
+                {...register("clinicalExam.neckCircumference" as any, {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -88,7 +91,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               <input
                 type="number"
                 step="0.1"
-                {...register("clinicalExam.abdominalPerimeter", {
+                {...register("clinicalExam.abdominalPerimeter" as any, {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -104,7 +107,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               </label>
               <input
                 type="text"
-                {...register("clinicalExam.bloodPressure")}
+                {...register("clinicalExam.bloodPressure" as any)}
                 placeholder="ex: 120/80"
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
               />
@@ -119,7 +122,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               </label>
               <input
                 type="number"
-                {...register("clinicalExam.heartRate", {
+                {...register("clinicalExam.heartRate" as any, {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -135,7 +138,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               </label>
               <input
                 type="number"
-                {...register("clinicalExam.saturation", {
+                {...register("clinicalExam.saturation" as any, {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -152,7 +155,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
             Auscultation pulmonaire
           </label>
           <textarea
-            {...register("clinicalExam.pulmonaryAuscultation")}
+            {...register("clinicalExam.pulmonaryAuscultation" as any)}
             rows={3}
             className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
           />
@@ -173,7 +176,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               </label>
               <input
                 type="text"
-                {...register("orlExam.vasAnatomy")}
+                {...register("orlExam.vasAnatomy" as any)}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
               />
             </div>
@@ -183,7 +186,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
                 <div className="flex h-5 items-center">
                   <input
                     type="checkbox"
-                    {...register("orlExam.nasalObstruction")}
+                    {...register("orlExam.nasalObstruction" as any)}
                     className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                   />
                 </div>
@@ -198,7 +201,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
                 <div className="flex h-5 items-center">
                   <input
                     type="checkbox"
-                    {...register("orlExam.amygdalineHypertrophy")}
+                    {...register("orlExam.amygdalineHypertrophy" as any)}
                     className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                   />
                 </div>
@@ -213,7 +216,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
                 <div className="flex h-5 items-center">
                   <input
                     type="checkbox"
-                    {...register("orlExam.retrognathia")}
+                    {...register("orlExam.retrognathia" as any)}
                     className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                   />
                 </div>
@@ -228,7 +231,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
                 <div className="flex h-5 items-center">
                   <input
                     type="checkbox"
-                    {...register("orlExam.micromandible")}
+                    {...register("orlExam.micromandible" as any)}
                     className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                   />
                 </div>
@@ -243,7 +246,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
                 <div className="flex h-5 items-center">
                   <input
                     type="checkbox"
-                    {...register("orlExam.macroglossia")}
+                    {...register("orlExam.macroglossia" as any)}
                     className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                   />
                 </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
 import { FormSectionProps } from "./types";
@@ -185,7 +186,7 @@ export function PersonalInfoForm({
           </label>
           <input
             type="date"
-            {...register("lastVisit")}
+            {...register("lastVisit" as any)}
             disabled={disabled}
             className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           />

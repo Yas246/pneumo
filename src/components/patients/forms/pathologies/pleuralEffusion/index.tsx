@@ -1,13 +1,17 @@
 import { FormSectionProps } from "../../types";
+import { BiologyForm } from "./BiologyForm";
+import { ChestXRayForm } from "./ChestXRayForm";
 import { ClinicalExamForm } from "./ClinicalExamForm";
-import { ComplementaryExamsForm } from "./ComplementaryExamsForm";
-import { DiagnosisForm } from "./DiagnosisForm";
-import { MedicalHistoryForm } from "./MedicalHistoryForm";
-import { PPCFollowUpForm } from "./PPCFollowUpForm";
-import { TreatmentForm } from "./TreatmentForm";
 import { ConsultationReasonForm } from "./ConsultationReasonForm";
+import { DiagnosisForm } from "./DiagnosisForm";
+import { EvolutionForm } from "./EvolutionForm";
+import { ImagingForm } from "./ImagingForm";
+import { MedicalHistoryForm } from "./MedicalHistoryForm";
+import { OtherAssessmentsForm } from "./OtherAssessmentsForm";
+import { PleuralPunctureForm } from "./PleuralPunctureForm";
+import { TreatmentForm } from "./TreatmentForm";
 
-export function SleepPathologyForm({
+export function PleuralEffusionForm({
   register,
   errors,
   getValues,
@@ -37,7 +41,35 @@ export function SleepPathologyForm({
         setValue={setValue}
         watch={watch}
       />
-      <ComplementaryExamsForm
+      <ChestXRayForm
+        register={register}
+        errors={errors}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
+      />
+      <ImagingForm
+        register={register}
+        errors={errors}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
+      />
+      <PleuralPunctureForm
+        register={register}
+        errors={errors}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
+      />
+      <BiologyForm
+        register={register}
+        errors={errors}
+        getValues={getValues}
+        setValue={setValue}
+        watch={watch}
+      />
+      <OtherAssessmentsForm
         register={register}
         errors={errors}
         getValues={getValues}
@@ -58,7 +90,7 @@ export function SleepPathologyForm({
         setValue={setValue}
         watch={watch}
       />
-      <PPCFollowUpForm
+      <EvolutionForm
         register={register}
         errors={errors}
         getValues={getValues}

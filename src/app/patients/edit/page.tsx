@@ -1,6 +1,7 @@
 "use client";
 
 import { PatientForm } from "@/components/patients/PatientForm";
+import { patientSchema } from "@/components/patients/schema";
 import { Navbar } from "@/components/shared/Navbar";
 import { getPatient } from "@/firebase/patients";
 import { usePermissions } from "@/hooks/usePermissions";
@@ -10,6 +11,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { z } from "zod";
 
 function EditPatientContent() {
   const router = useRouter();
@@ -84,18 +86,20 @@ function EditPatientContent() {
             <div className="p-8">
               <PatientForm
                 isEditing={true}
-                initialData={{
-                  ...patient,
-                  complementaryExams: {
-                    ventilationPolygraphy:
-                      !!patient.complementaryExams?.polygraphyDate,
-                    psg: false,
-                    tensionalHolter: false,
-                    nightOximetry: false,
-                    imaging: { chestXray: false, orlScan: false },
-                    ...patient.complementaryExams,
-                  },
-                }}
+                initialData={
+                  {
+                    ...patient,
+                    complementaryExams: {
+                      ventilationPolygraphy:
+                        !!patient.complementaryExams?.polygraphyDate,
+                      psg: false,
+                      tensionalHolter: false,
+                      nightOximetry: false,
+                      imaging: { chestXray: false, orlScan: false },
+                      ...patient.complementaryExams,
+                    },
+                  } as unknown as z.infer<typeof patientSchema>
+                }
               />
             </div>
           </div>

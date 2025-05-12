@@ -20,13 +20,27 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
+// Interface pour étendre le type Patient avec des champs dynamiques
+interface ExtendedPatient extends Patient {
+  pleuralEffusionDiagnosis?: {
+    type?: string;
+    etiology?: string;
+  };
+  pleuralEffusionTreatment?: {
+    conservative?: string;
+    drainage?: string;
+    surgical?: string;
+    specificTreatment?: string;
+  };
+}
+
 export default function PatientPage() {
   const params = useParams() as { id: string };
   const { id } = params;
   const router = useRouter();
   const { user } = useAuth();
   const { canEdit, canArchive, canCreateAppointment } = usePermissions();
-  const [patient, setPatient] = useState<Patient | null>(null);
+  const [patient, setPatient] = useState<ExtendedPatient | null>(null);
   const [loading, setLoading] = useState(true);
   const [isArchiving, setIsArchiving] = useState(false);
 
@@ -35,7 +49,22 @@ export default function PatientPage() {
       try {
         if (typeof id === "string") {
           const patientData = await getPatient(id);
-          setPatient(patientData);
+          if (patientData) {
+            console.log("Patient pathologies:", patientData.pathologies);
+            console.log(
+              "Has pleuralEffusion:",
+              Array.isArray(patientData.pathologies) &&
+                patientData.pathologies.includes("pleuralEffusion")
+            );
+            console.log(
+              "Has sleep:",
+              Array.isArray(patientData.pathologies) &&
+                patientData.pathologies.includes("sleep")
+            );
+            setPatient(patientData as ExtendedPatient);
+          } else {
+            console.log("Patient data is null");
+          }
         }
       } catch (error) {
         console.error("Erreur lors de la récupération du patient:", error);
@@ -333,76 +362,84 @@ export default function PatientPage() {
                       {patient.symptomsDuration || "Non spécifié"}
                     </p>
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Symptômes diurnes
-                    </p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {patient.diurnalSymptoms?.excessiveSleepiness && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
-                          Somnolence excessive
-                        </span>
-                      )}
-                      {patient.diurnalSymptoms?.headaches && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
-                          Céphalées
-                        </span>
-                      )}
-                      {patient.diurnalSymptoms?.asthenia && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
-                          Asthénie
-                        </span>
-                      )}
-                    </div>
-                    {patient.diurnalSymptoms?.epworthScore > 0 && (
-                      <p className="mt-2 text-sm text-gray-900 dark:text-white">
-                        Score d&apos;Epworth:{" "}
-                        {patient.diurnalSymptoms.epworthScore}
-                      </p>
+
+                  {/* Afficher les symptômes diurnes et nocturnes uniquement pour la pathologie du sommeil */}
+                  {Array.isArray(patient.pathologies) &&
+                    patient.pathologies.includes("sleep") && (
+                      <>
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Symptômes diurnes
+                          </p>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {patient.diurnalSymptoms?.excessiveSleepiness && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                                Somnolence excessive
+                              </span>
+                            )}
+                            {patient.diurnalSymptoms?.headaches && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                                Céphalées
+                              </span>
+                            )}
+                            {patient.diurnalSymptoms?.asthenia && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                                Asthénie
+                              </span>
+                            )}
+                          </div>
+                          {patient.diurnalSymptoms?.epworthScore > 0 && (
+                            <p className="mt-2 text-sm text-gray-900 dark:text-white">
+                              Score d&apos;Epworth:{" "}
+                              {patient.diurnalSymptoms.epworthScore}
+                            </p>
+                          )}
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Symptômes nocturnes
+                          </p>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {patient.nocturnalSymptoms?.snoring && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                                Ronflement
+                              </span>
+                            )}
+                            {patient.nocturnalSymptoms?.sleepApnea && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                                Apnées
+                              </span>
+                            )}
+                            {patient.nocturnalSymptoms?.choking && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                                Étouffements
+                              </span>
+                            )}
+                            {patient.nocturnalSymptoms?.agitation && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                                Agitation
+                              </span>
+                            )}
+                            {patient.nocturnalSymptoms?.insomnia && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                                Insomnie
+                              </span>
+                            )}
+                            {patient.nocturnalSymptoms?.nocturia && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                                Nycturie
+                              </span>
+                            )}
+                          </div>
+                          {patient.nocturnalSymptoms?.other && (
+                            <p className="mt-2 text-sm text-gray-900 dark:text-white">
+                              Autres symptômes :{" "}
+                              {patient.nocturnalSymptoms.other}
+                            </p>
+                          )}
+                        </div>
+                      </>
                     )}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Symptômes nocturnes
-                    </p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {patient.nocturnalSymptoms?.snoring && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
-                          Ronflement
-                        </span>
-                      )}
-                      {patient.nocturnalSymptoms?.sleepApnea && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
-                          Apnées
-                        </span>
-                      )}
-                      {patient.nocturnalSymptoms?.choking && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
-                          Étouffements
-                        </span>
-                      )}
-                      {patient.nocturnalSymptoms?.agitation && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
-                          Agitation
-                        </span>
-                      )}
-                      {patient.nocturnalSymptoms?.insomnia && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
-                          Insomnie
-                        </span>
-                      )}
-                      {patient.nocturnalSymptoms?.nocturia && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
-                          Nycturie
-                        </span>
-                      )}
-                    </div>
-                    {patient.nocturnalSymptoms?.other && (
-                      <p className="mt-2 text-sm text-gray-900 dark:text-white">
-                        Autres symptômes : {patient.nocturnalSymptoms.other}
-                      </p>
-                    )}
-                  </div>
                 </div>
               </div>
 
@@ -587,71 +624,78 @@ export default function PatientPage() {
                   Examens complémentaires
                 </h2>
                 <div className="space-y-6">
-                  {/* Polygraphie */}
-                  {(exams.polygraphyDate ||
-                    exams.iah > 0 ||
-                    exams.iahCentral > 0 ||
-                    exams.oxygenDesaturation > 0 ||
-                    exams.ct90 > 0) && (
-                    <div>
-                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-                        Polygraphie
-                      </p>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {exams.polygraphyDate && (
+                  {/* Examens spécifiques à la pathologie du sommeil */}
+                  {Array.isArray(patient.pathologies) &&
+                    patient.pathologies.includes("sleep") && (
+                      <>
+                        {/* Polygraphie */}
+                        {(exams.polygraphyDate ||
+                          exams.iah > 0 ||
+                          exams.iahCentral > 0 ||
+                          exams.oxygenDesaturation > 0 ||
+                          exams.ct90 > 0) && (
                           <div>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                              Date
+                            <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                              Polygraphie
                             </p>
-                            <p className="text-sm text-gray-900 dark:text-white">
-                              {exams.polygraphyDate}
-                            </p>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                              {exams.polygraphyDate && (
+                                <div>
+                                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    Date
+                                  </p>
+                                  <p className="text-sm text-gray-900 dark:text-white">
+                                    {exams.polygraphyDate}
+                                  </p>
+                                </div>
+                              )}
+                              {exams.iah > 0 && (
+                                <div>
+                                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    IAH
+                                  </p>
+                                  <p className="text-sm text-gray-900 dark:text-white">
+                                    {exams.iah}
+                                  </p>
+                                </div>
+                              )}
+                              {exams.iahCentral > 0 && (
+                                <div>
+                                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    IAH Central
+                                  </p>
+                                  <p className="text-sm text-gray-900 dark:text-white">
+                                    {exams.iahCentral}
+                                  </p>
+                                </div>
+                              )}
+                              {exams.oxygenDesaturation > 0 && (
+                                <div>
+                                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    Désaturation en O2
+                                  </p>
+                                  <p className="text-sm text-gray-900 dark:text-white">
+                                    {exams.oxygenDesaturation}%
+                                  </p>
+                                </div>
+                              )}
+                              {exams.ct90 > 0 && (
+                                <div>
+                                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    CT90
+                                  </p>
+                                  <p className="text-sm text-gray-900 dark:text-white">
+                                    {exams.ct90}%
+                                  </p>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         )}
-                        {exams.iah > 0 && (
-                          <div>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                              IAH
-                            </p>
-                            <p className="text-sm text-gray-900 dark:text-white">
-                              {exams.iah}
-                            </p>
-                          </div>
-                        )}
-                        {exams.iahCentral > 0 && (
-                          <div>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                              IAH Central
-                            </p>
-                            <p className="text-sm text-gray-900 dark:text-white">
-                              {exams.iahCentral}
-                            </p>
-                          </div>
-                        )}
-                        {exams.oxygenDesaturation > 0 && (
-                          <div>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                              Désaturation en O2
-                            </p>
-                            <p className="text-sm text-gray-900 dark:text-white">
-                              {exams.oxygenDesaturation}%
-                            </p>
-                          </div>
-                        )}
-                        {exams.ct90 > 0 && (
-                          <div>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                              CT90
-                            </p>
-                            <p className="text-sm text-gray-900 dark:text-white">
-                              {exams.ct90}%
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
+                      </>
+                    )}
 
+                  {/* Examens communs à toutes les pathologies */}
                   {/* Gazométrie */}
                   {(exams.gazometryDate ||
                     exams.ph > 0 ||
@@ -792,6 +836,15 @@ export default function PatientPage() {
                       </div>
                     </div>
                   )}
+
+                  {/* Examens spécifiques à l'épanchement pleural à implémenter ici si nécessaire */}
+                  {Array.isArray(patient.pathologies) &&
+                    patient.pathologies.includes("pleuralEffusion") && (
+                      <>
+                        {/* Section pour les examens spécifiques à l'épanchement pleural 
+                         À compléter avec les examens spécifiques à cette pathologie */}
+                      </>
+                    )}
                 </div>
               </div>
 
@@ -801,33 +854,62 @@ export default function PatientPage() {
                   Diagnostic
                 </h2>
                 <div className="space-y-4">
-                  <div className="flex flex-wrap gap-2">
-                    {patient.diagnosis?.saos && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
-                        SAOS
-                      </span>
+                  {/* Diagnostic pour la pathologie du sommeil */}
+                  {Array.isArray(patient.pathologies) &&
+                    patient.pathologies.includes("sleep") && (
+                      <div className="flex flex-wrap gap-2">
+                        {patient.diagnosis?.saos && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                            SAOS
+                          </span>
+                        )}
+                        {patient.diagnosis?.sacs && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                            SACS
+                          </span>
+                        )}
+                        {patient.diagnosis?.soh && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                            SOH
+                          </span>
+                        )}
+                        {patient.diagnosis?.nocturalHypoventilation && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                            Hypoventilation nocturne
+                          </span>
+                        )}
+                        {patient.diagnosis?.simpleSnoring && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                            Ronflement simple
+                          </span>
+                        )}
+                      </div>
                     )}
-                    {patient.diagnosis?.sacs && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
-                        SACS
-                      </span>
+
+                  {/* Diagnostic pour l'épanchement pleural */}
+                  {Array.isArray(patient.pathologies) &&
+                    patient.pathologies.includes("pleuralEffusion") && (
+                      <div className="space-y-3">
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Type
+                          </p>
+                          <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                            {patient.pleuralEffusionDiagnosis?.type ||
+                              "Non spécifié"}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Étiologie
+                          </p>
+                          <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                            {patient.pleuralEffusionDiagnosis?.etiology ||
+                              "Non spécifié"}
+                          </p>
+                        </div>
+                      </div>
                     )}
-                    {patient.diagnosis?.soh && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
-                        SOH
-                      </span>
-                    )}
-                    {patient.diagnosis?.nocturalHypoventilation && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
-                        Hypoventilation nocturne
-                      </span>
-                    )}
-                    {patient.diagnosis?.simpleSnoring && (
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
-                        Ronflement simple
-                      </span>
-                    )}
-                  </div>
                 </div>
               </div>
 
@@ -837,55 +919,108 @@ export default function PatientPage() {
                   Traitement
                 </h2>
                 <div className="space-y-6">
-                  {patient.treatment?.hygieneDietetic?.weightLoss && (
-                    <div>
-                      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                        Mesures hygiéno-diététiques
-                      </p>
-                      <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                        • Perte de poids
-                      </p>
-                    </div>
-                  )}
-                  {patient.treatment?.hygieneDietetic
-                    ?.alcoholAndSedativesStop && (
-                    <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                      • Arrêt alcool et sédatifs
-                    </p>
-                  )}
-                  {patient.treatment?.hygieneDietetic
-                    ?.sleepHygieneImprovement && (
-                    <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                      • Amélioration de l&apos;hygiène du sommeil
-                    </p>
-                  )}
-                  <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Appareillage
-                    </p>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      {patient.treatment?.medicalTreatments?.ppc && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300">
-                          PPC
-                        </span>
-                      )}
-                      {patient.treatment?.medicalTreatments?.oam && (
-                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300">
-                          OAM
-                        </span>
-                      )}
-                    </div>
-                    {patient.treatment?.medicalTreatments?.medications && (
-                      <div>
-                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                          Traitement médical
-                        </p>
-                        <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                          {patient.treatment.medicalTreatments.medications}
-                        </p>
+                  {/* Traitement pour la pathologie du sommeil */}
+                  {Array.isArray(patient.pathologies) &&
+                    patient.pathologies.includes("sleep") && (
+                      <>
+                        {patient.treatment?.hygieneDietetic?.weightLoss && (
+                          <div>
+                            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                              Mesures hygiéno-diététiques
+                            </p>
+                            <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                              • Perte de poids
+                            </p>
+                          </div>
+                        )}
+                        {patient.treatment?.hygieneDietetic
+                          ?.alcoholAndSedativesStop && (
+                          <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                            • Arrêt alcool et sédatifs
+                          </p>
+                        )}
+                        {patient.treatment?.hygieneDietetic
+                          ?.sleepHygieneImprovement && (
+                          <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                            • Amélioration de l&apos;hygiène du sommeil
+                          </p>
+                        )}
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Appareillage
+                          </p>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {patient.treatment?.medicalTreatments?.ppc && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300">
+                                PPC
+                              </span>
+                            )}
+                            {patient.treatment?.medicalTreatments?.oam && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300">
+                                OAM
+                              </span>
+                            )}
+                          </div>
+                          {patient.treatment?.medicalTreatments
+                            ?.medications && (
+                            <div>
+                              <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                Traitement médical
+                              </p>
+                              <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                                {
+                                  patient.treatment.medicalTreatments
+                                    .medications
+                                }
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      </>
+                    )}
+
+                  {/* Traitement pour l'épanchement pleural */}
+                  {Array.isArray(patient.pathologies) &&
+                    patient.pathologies.includes("pleuralEffusion") && (
+                      <div className="space-y-4">
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Traitement conservateur
+                          </p>
+                          <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                            {patient.pleuralEffusionTreatment?.conservative ||
+                              "Non spécifié"}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Drainage
+                          </p>
+                          <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                            {patient.pleuralEffusionTreatment?.drainage ||
+                              "Non spécifié"}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Traitement chirurgical
+                          </p>
+                          <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                            {patient.pleuralEffusionTreatment?.surgical ||
+                              "Non spécifié"}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Traitement spécifique
+                          </p>
+                          <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                            {patient.pleuralEffusionTreatment
+                              ?.specificTreatment || "Non spécifié"}
+                          </p>
+                        </div>
                       </div>
                     )}
-                  </div>
                 </div>
               </div>
             </div>

@@ -10,7 +10,6 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { z } from "zod";
-import { ConsultationReasonForm } from "./forms/ConsultationReasonForm";
 import { PersonalInfoForm } from "./forms/PersonalInfoForm";
 import { PathologyFormSelector } from "./forms/pathologies/PathologyFormSelector";
 import { patientSchema } from "./schema";
@@ -78,7 +77,11 @@ export function PatientForm({
 
     try {
       if (isEditing && initialData?.id) {
-        await updatePatient(initialData.id, data as Partial<Patient>, user.uid);
+        await updatePatient(
+          initialData.id,
+          data as unknown as Partial<Patient>,
+          user.uid
+        );
         toast.success("Patient mis à jour avec succès");
         router.push(`/patients/${initialData.id}`);
       } else {
@@ -92,7 +95,7 @@ export function PatientForm({
             creatorName: user.displayName || "",
             statusHistory: [{ status: data.status, date: now }],
             statusChangedAt: now,
-          } as CreatePatientData,
+          } as unknown as CreatePatientData,
           user.uid
         );
         toast.success("Patient créé avec succès");
@@ -106,8 +109,8 @@ export function PatientForm({
     }
   };
 
-  // Si ce n'est pas la pathologie sleep, afficher uniquement le message
-  if (pathologies[0] !== "sleep") {
+  // Si ce n'est pas la pathologie sleep ou pleuralEffusion, afficher uniquement le message
+  if (pathologies[0] !== "sleep" && pathologies[0] !== "pleuralEffusion") {
     return (
       <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg text-center">
         <p className="text-gray-600 dark:text-gray-400 text-lg">
@@ -121,15 +124,6 @@ export function PatientForm({
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       {/* Informations personnelles - commun à toutes les pathologies */}
       <PersonalInfoForm
-        register={register}
-        errors={errors}
-        getValues={getValues}
-        setValue={setValue}
-        watch={watch}
-      />
-
-      {/* Motif de consultation - commun à toutes les pathologies */}
-      <ConsultationReasonForm
         register={register}
         errors={errors}
         getValues={getValues}

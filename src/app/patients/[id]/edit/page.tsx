@@ -1,6 +1,7 @@
 "use client";
 
 import { PatientForm } from "@/components/patients/PatientForm";
+import { patientSchema } from "@/components/patients/schema";
 import { Navbar } from "@/components/shared/Navbar";
 import { getPatient } from "@/firebase/patients";
 import { useAuth } from "@/hooks/useAuth";
@@ -11,6 +12,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { z } from "zod";
 
 export default function EditPatientPage() {
   const params = useParams() as { id: string };
@@ -112,18 +114,20 @@ export default function EditPatientPage() {
           </div>
 
           <PatientForm
-            initialData={{
-              ...patient,
-              complementaryExams: {
-                ventilationPolygraphy:
-                  !!patient.complementaryExams?.polygraphyDate,
-                psg: false,
-                tensionalHolter: false,
-                nightOximetry: false,
-                imaging: { chestXray: false, orlScan: false },
-                ...patient.complementaryExams,
-              },
-            }}
+            initialData={
+              {
+                ...patient,
+                complementaryExams: {
+                  ventilationPolygraphy:
+                    !!patient.complementaryExams?.polygraphyDate,
+                  psg: false,
+                  tensionalHolter: false,
+                  nightOximetry: false,
+                  imaging: { chestXray: false, orlScan: false },
+                  ...patient.complementaryExams,
+                },
+              } as unknown as z.infer<typeof patientSchema>
+            }
             isEditing={true}
             pathologies={patient.pathologies}
           />

@@ -30,4 +30,10 @@ export const pathologies: Pathology[] = [
     icon: "/icons/infection.svg",
     description: "Infections respiratoires",
   },
+  {
+    id: "pleuralEffusion",
+    name: "Épanchement pleural",
+    icon: "/icons/pleuralEffusion.svg",
+    description: "Diagnostic et traitement des épanchements pleuraux",
+  },
 ];
