@@ -36,4 +36,11 @@ export const pathologies: Pathology[] = [
     icon: "/icons/pleuralEffusion.svg",
     description: "Diagnostic et traitement des épanchements pleuraux",
   },
+  {
+    id: "pid",
+    name: "Pneumopathie Interstitielle Diffuse",
+    icon: "/icons/pid.svg",
+    description:
+      "Diagnostic et traitement des pneumopathies interstitielles diffuses",
+  },
 ];

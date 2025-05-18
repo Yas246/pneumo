@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+const zNullableNumber = z.preprocess((val) => {
+  if (val === "" || val === null || val === undefined) return null;
+  const n = Number(val);
+  return isNaN(n) ? null : n;
+}, z.number().nullable());
+
 export const pleuralEffusionSchema = z.object({
   // Motif de consultation
   consultationReason: z
@@ -83,8 +89,8 @@ export const pleuralEffusionSchema = z.object({
           sniffingTobacco: z.boolean().default(false),
         })
         .default({}),
-      startAge: z.number().optional(),
-      packYears: z.number().optional(),
+      startAge: zNullableNumber.optional(),
+      packYears: zNullableNumber.optional(),
       stopped: z.boolean().default(false),
       stoppedDuration: z.string().optional(),
 
@@ -151,7 +157,7 @@ export const pleuralEffusionSchema = z.object({
         })
         .default({}),
 
-      psOms: z.number().optional(),
+      psOms: zNullableNumber.optional(),
       hemodynamicState: z.enum(["Stable", "Instable"]).optional(),
       sao2: z.enum([">95%", "<95%"]).optional(),
       respiratoryRate: z.enum(["<20", ">20"]).optional(),
@@ -235,20 +241,20 @@ export const pleuralEffusionSchema = z.object({
 
       biochemistry: z
         .object({
-          proteins: z.number().optional(),
-          ldh: z.number().optional(),
-          glucose: z.number().optional(),
+          proteins: zNullableNumber.optional(),
+          ldh: zNullableNumber.optional(),
+          glucose: zNullableNumber.optional(),
           others: z.string().optional(),
         })
         .default({}),
 
       cytology: z
         .object({
-          redBloodCells: z.number().optional(),
-          whiteBloodCells: z.number().optional(),
-          lymphocytes: z.number().optional(),
-          neutrophils: z.number().optional(),
-          eosinophils: z.number().optional(),
+          redBloodCells: zNullableNumber.optional(),
+          whiteBloodCells: zNullableNumber.optional(),
+          lymphocytes: zNullableNumber.optional(),
+          neutrophils: zNullableNumber.optional(),
+          eosinophils: zNullableNumber.optional(),
         })
         .default({}),
 
@@ -263,7 +269,7 @@ export const pleuralEffusionSchema = z.object({
         .default({}),
 
       pleuralBiopsy: z.string().optional(),
-      evacuatedAmount: z.number().optional(),
+      evacuatedAmount: zNullableNumber.optional(),
       anapathResults: z.string().optional(),
     })
     .default({}),
@@ -272,7 +278,7 @@ export const pleuralEffusionSchema = z.object({
   biology: z
     .object({
       idrt: z.boolean().default(false),
-      idrtResult: z.number().optional(),
+      idrtResult: zNullableNumber.optional(),
 
       quantiferon: z.boolean().default(false),
       quantiferonResult: z.enum(["Positif", "Négatif"]).optional(),
@@ -288,41 +294,41 @@ export const pleuralEffusionSchema = z.object({
 
       cbc: z
         .object({
-          hemoglobin: z.number().optional(),
-          whiteBloodCells: z.number().optional(),
-          neutrophils: z.number().optional(),
-          lymphocytes: z.number().optional(),
-          eosinophils: z.number().optional(),
-          platelets: z.number().optional(),
+          hemoglobin: zNullableNumber.optional(),
+          whiteBloodCells: zNullableNumber.optional(),
+          neutrophils: zNullableNumber.optional(),
+          lymphocytes: zNullableNumber.optional(),
+          eosinophils: zNullableNumber.optional(),
+          platelets: zNullableNumber.optional(),
         })
         .default({}),
 
-      tp: z.number().optional(),
-      dDimers: z.number().optional(),
-      albuminemia: z.number().optional(),
-      proteins: z.number().optional(),
-      ldh: z.number().optional(),
-      crp: z.number().optional(),
-      esr: z.number().optional(),
-      procalcitonin: z.number().optional(),
+      tp: zNullableNumber.optional(),
+      dDimers: zNullableNumber.optional(),
+      albuminemia: zNullableNumber.optional(),
+      proteins: zNullableNumber.optional(),
+      ldh: zNullableNumber.optional(),
+      crp: zNullableNumber.optional(),
+      esr: zNullableNumber.optional(),
+      procalcitonin: zNullableNumber.optional(),
       hivSerology: z.enum(["Non demandée", "Positive", "Négative"]).optional(),
-      urea: z.number().optional(),
-      creatinine: z.number().optional(),
+      urea: zNullableNumber.optional(),
+      creatinine: zNullableNumber.optional(),
       bnp: z.boolean().default(false),
-      bnpValue: z.number().optional(),
-      glucose: z.number().optional(),
+      bnpValue: zNullableNumber.optional(),
+      glucose: zNullableNumber.optional(),
       proteinuria24h: z
         .enum(["Non demandée", "Positive", "Négative"])
         .optional(),
 
       liverFunction: z
         .object({
-          alat: z.number().optional(),
-          asat: z.number().optional(),
-          ggt: z.number().optional(),
-          alp: z.number().optional(),
-          directBilirubin: z.number().optional(),
-          indirectBilirubin: z.number().optional(),
+          alat: zNullableNumber.optional(),
+          asat: zNullableNumber.optional(),
+          ggt: zNullableNumber.optional(),
+          alp: zNullableNumber.optional(),
+          directBilirubin: zNullableNumber.optional(),
+          indirectBilirubin: zNullableNumber.optional(),
         })
         .default({}),
 
@@ -374,7 +380,7 @@ export const pleuralEffusionSchema = z.object({
           nonSpecificAntibiotherapy: z.boolean().default(false),
           guidedAntibiotherapy: z.boolean().default(false),
           pleuralPhysiotherapy: z.boolean().default(false),
-          physiotherapySessions: z.number().optional(),
+          physiotherapySessions: zNullableNumber.optional(),
           surgery: z.boolean().default(false),
           surgeryType: z
             .object({

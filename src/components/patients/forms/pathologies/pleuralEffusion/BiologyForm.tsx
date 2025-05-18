@@ -328,7 +328,7 @@ export function BiologyForm({ register, watch }: FormSectionProps) {
                   <input
                     type="number"
                     id="biology.bnpValue"
-                    {...register("biology.bnpValue", { valueAsNumber: true })}
+                    {...register("biology.bnpValue")}
                     className="block w-full sm:w-32 rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
                   />
                 </div>
