@@ -1,4 +1,4 @@
-import { FormSectionProps } from "./types";
+import { FormSectionProps } from "../../types";
 
 export function PPCFollowUpForm({ register }: FormSectionProps) {
   return (
@@ -94,8 +94,10 @@ export function PPCFollowUpForm({ register }: FormSectionProps) {
                 Numéro de série
               </label>
               <input
-                type="text"
-                {...register("ppcFollowUp.serialNumber")}
+                type="number"
+                {...register("ppcFollowUp.serialNumber", {
+                  valueAsNumber: true,
+                })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
               />
             </div>

@@ -21,6 +21,13 @@ export interface Patient {
   statusChangedAt: Date;
   lastVisit: string;
   pathologies: string[]; // Liste des IDs des pathologies
+  pathologyType?:
+    | "sleep"
+    | "tumor"
+    | "bronchial"
+    | "infection"
+    | "pleuralEffusion"
+    | "pid"; // Type de pathologie principal
 
   // Informations sur le créateur
   creatorId: string;

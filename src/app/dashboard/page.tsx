@@ -3,6 +3,7 @@
 import { PatientList } from "@/components/patients/PatientList";
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
+import { PathologyFilter } from "@/components/shared/PathologyFilter";
 import { SearchBar } from "@/components/shared/SearchBar";
 import {
   ChevronDownIcon,
@@ -14,6 +15,7 @@ import { useState } from "react";
 
 export default function DashboardPage() {
   const [isArchivedOpen, setIsArchivedOpen] = useState(false);
+  const [selectedPathologies, setSelectedPathologies] = useState<string[]>([]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -33,8 +35,9 @@ export default function DashboardPage() {
             </Link>
           </div>
 
-          <div className="mb-6 sm:mb-8">
+          <div className="mb-6 sm:mb-8 space-y-4">
             <SearchBar />
+            <PathologyFilter onFilterChange={setSelectedPathologies} />
           </div>
 
           <div className="space-y-6 sm:space-y-8">
@@ -42,7 +45,10 @@ export default function DashboardPage() {
               <h2 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-3 sm:mb-4 px-4 sm:px-0">
                 Patients en cours de traitement
               </h2>
-              <PatientList status="active" />
+              <PatientList
+                status="active"
+                selectedPathologies={selectedPathologies}
+              />
             </div>
 
             <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
@@ -67,7 +73,10 @@ export default function DashboardPage() {
                 }`}
               >
                 <div className="px-4 pb-4">
-                  <PatientList status="archived" />
+                  <PatientList
+                    status="archived"
+                    selectedPathologies={selectedPathologies}
+                  />
                 </div>
               </div>
             </div>

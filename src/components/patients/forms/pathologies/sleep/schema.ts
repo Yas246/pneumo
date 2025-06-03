@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+const zNullableNumber = z.preprocess((val) => {
+  if (val === "" || val === null || val === undefined) return null;
+  const n = Number(val);
+  return isNaN(n) ? null : n;
+}, z.number().nullable());
+
 export const sleepPathologySchema = z.object({
   // Antécédents
   personalHistory: z
@@ -40,12 +46,38 @@ export const sleepPathologySchema = z.object({
     .default({}),
   orlExam: z
     .object({
-      vasAnatomy: z.string().optional(),
-      nasalObstruction: z.boolean().default(false),
-      amygdalineHypertrophy: z.boolean().default(false),
-      retrognathia: z.boolean().default(false),
-      micromandible: z.boolean().default(false),
-      macroglossia: z.boolean().default(false),
+      facialMorphology: z
+        .object({
+          retrognathism: z.boolean().default(false),
+          prognathism: z.boolean().default(false),
+          retromaxillia: z.boolean().default(false),
+          other: z.string().optional(),
+        })
+        .default({}),
+      hyoidBone: z.preprocess(
+        (val) => (val === null ? undefined : val),
+        z.string().optional()
+      ),
+      dentalClass: z.string().optional(),
+      ogivalPalate: z.boolean().default(false),
+      mallampati: z.string().optional(),
+      friedman: z.string().optional(),
+      nasofibroscopy: z
+        .object({
+          nasalFossae: z.string().optional(),
+          retrovelarObstacle: z.string().optional(),
+          retrobasillingualObstacle: z.string().optional(),
+        })
+        .default({}),
+      maneuvers: z
+        .object({
+          tongueProtraction: z.boolean().default(false),
+          simulatedSnoring: z.boolean().default(false),
+          prognathism: z.boolean().default(false),
+          otherExam: z.string().optional(),
+        })
+        .default({}),
+      otherClinicalExams: z.string().optional(),
     })
     .default({}),
 
@@ -64,25 +96,40 @@ export const sleepPathologySchema = z.object({
         .default({}),
       // Polygraphie
       polygraphyDate: z.string().optional(),
-      iah: z.number().optional(),
-      iahCentral: z.number().optional(),
-      oxygenDesaturation: z.number().optional(),
-      ct90: z.number().optional(),
+      iah: zNullableNumber.optional(),
+      iahCentral: zNullableNumber.optional(),
+      oxygenDesaturation: zNullableNumber.optional(),
+      ct90: zNullableNumber.optional(),
       // Gazométrie
       gazometryDate: z.string().optional(),
-      ph: z.number().optional(),
-      pao2: z.number().optional(),
-      paco2: z.number().optional(),
-      hco3: z.number().optional(),
-      sao2: z.number().optional(),
+      ph: zNullableNumber.optional(),
+      pao2: zNullableNumber.optional(),
+      paco2: zNullableNumber.optional(),
+      hco3: zNullableNumber.optional(),
+      sao2: zNullableNumber.optional(),
       // EFR
       efrDate: z.string().optional(),
-      cvf: z.number().optional(),
-      vems: z.number().optional(),
-      dlco: z.number().optional(),
-      cpt: z.number().optional(),
+      cvf: zNullableNumber.optional(),
+      vems: zNullableNumber.optional(),
+      dlco: zNullableNumber.optional(),
+      cpt: zNullableNumber.optional(),
       // Autres
       otherExams: z.string().optional(),
+      metabolicAssessment: z.string().optional(),
+      chestXray: z
+        .object({
+          imageUrl: z.string().optional(),
+          notes: z.string().optional(),
+        })
+        .default({}),
+      scanner: z
+        .object({
+          imageUrl: z.string().optional(),
+          videoUrl: z.string().optional(),
+          notes: z.string().optional(),
+        })
+        .default({}),
+      otherComplementaryExams: z.string().optional(),
     })
     .default({}),
 
@@ -94,6 +141,23 @@ export const sleepPathologySchema = z.object({
       soh: z.boolean().default(false),
       nocturalHypoventilation: z.boolean().default(false),
       simpleSnoring: z.boolean().default(false),
+      pathologies: z
+        .array(
+          z.object({
+            name: z.string(),
+            selected: z.boolean().default(false),
+            treatments: z
+              .array(
+                z.object({
+                  name: z.string(),
+                  selected: z.boolean().default(false),
+                })
+              )
+              .default([]),
+          })
+        )
+        .default([]),
+      otherTreatments: z.string().optional(),
     })
     .default({}),
 
@@ -113,7 +177,8 @@ export const sleepPathologySchema = z.object({
           ppc: z.boolean().default(false),
           oam: z.boolean().default(false),
           oxygenotherapy: z.boolean().default(false),
-          medications: z.string().optional(),
+          medications: z.array(z.string()).default([]),
+          other: z.string().optional(),
         })
         .default({}),
       surgicalTreatments: z
@@ -123,7 +188,22 @@ export const sleepPathologySchema = z.object({
           notes: z.string().optional(),
         })
         .default({}),
-      comments: z.string().optional(),
+      equipment: z
+        .object({
+          ppc: z.boolean().default(false),
+          oam: z.boolean().default(false),
+          oxygenotherapy: z.boolean().default(false),
+          vni: z.boolean().default(false),
+          other: z.string().optional(),
+        })
+        .default({}),
+      exitPrescription: z
+        .object({
+          content: z.string().optional(),
+          documentUrl: z.string().optional(),
+        })
+        .default({}),
+      other: z.string().optional(),
     })
     .default({}),
 
@@ -134,13 +214,13 @@ export const sleepPathologySchema = z.object({
       ppcStartDate: z.string().optional(),
       deviceModel: z.string().optional(),
       deviceSupplier: z.string().optional(),
-      initialPressure: z.number().optional(),
-      ventilationMode: z.enum(["CPAP", "APAP", "Bi-level"]).optional(),
+      initialPressure: zNullableNumber.optional(),
+      ventilationMode: z.enum(["", "CPAP", "APAP", "Bi-level"]).optional(),
       humidifier: z.boolean().default(false),
       maskType: z.string().optional(),
       maskModel: z.string().optional(),
       maskSize: z.string().optional(),
-      serialNumber: z.string().optional(),
+      serialNumber: zNullableNumber.optional(),
       provider: z.string().optional(),
       otherAccessories: z.string().optional(),
     })

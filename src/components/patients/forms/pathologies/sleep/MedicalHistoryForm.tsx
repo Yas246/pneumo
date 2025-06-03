@@ -1,4 +1,4 @@
-import { FormSectionProps } from "./types";
+import { FormSectionProps } from "../../types";
 
 export function MedicalHistoryForm({ register }: FormSectionProps) {
   return (

@@ -6,6 +6,8 @@ export function ConsultationReasonForm({
   setValue,
   watch,
 }: FormSectionProps) {
+  const showEpworthQuestionnaire = watch("diurnalSymptoms.showEpworth" as any);
+
   return (
     <div className="bg-white dark:bg-gray-800 shadow-soft rounded-xl p-6">
       <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-6">
@@ -74,127 +76,134 @@ export function ConsultationReasonForm({
                 </span>
               </div>
             </label>
-          </div>
-          <div className="space-y-2">
-            <label
-              htmlFor="epworthScore"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              Score d&apos;Epworth
-            </label>
-            <div className="mt-2 space-y-4">
-              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead>
-                  <tr>
-                    <th className="px-4 py-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400">
-                      Situation
-                    </th>
-                    <th className="px-4 py-2 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
-                      0
-                    </th>
-                    <th className="px-4 py-2 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
-                      1
-                    </th>
-                    <th className="px-4 py-2 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
-                      2
-                    </th>
-                    <th className="px-4 py-2 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
-                      3
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                  {[
-                    "Assis en train de lire",
-                    "En train de regarder la télévision",
-                    "Assis, inactif dans un endroit public (au théâtre, en réunion...)",
-                    "Comme passager dans une voiture roulant sans arrêt pendant une heure",
-                    "Allongé l'après-midi pour se reposer quand les circonstances le permettent",
-                    "Assis en train de parler à quelqu'un",
-                    "Assis calmement après un repas sans alcool",
-                    "Dans une voiture immobilisée quelques minutes dans un embouteillage",
-                  ].map((situation, index) => (
-                    <tr key={index}>
-                      <td className="px-4 py-2 text-sm text-gray-900 dark:text-white">
-                        {situation}
-                      </td>
-                      {[0, 1, 2, 3].map((value) => (
-                        <td key={value} className="px-4 py-2 text-center">
-                          <input
-                            type="radio"
-                            name={`epworth_${index}`}
-                            value={value}
-                            checked={
-                              Number(
-                                watch(
-                                  `diurnalSymptoms.epworthDetails.${index}` as any
-                                )
-                              ) === value
-                            }
-                            className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500"
-                            onChange={(e) => {
-                              const newValue = Number(e.target.value);
-
-                              // Initialize the array if it doesn't exist
-                              const currentDetails =
-                                watch(
-                                  "diurnalSymptoms.epworthDetails" as any
-                                ) || Array(8).fill(0);
-                              let newDetails;
-
-                              if (Array.isArray(currentDetails)) {
-                                newDetails = [...currentDetails];
-                              } else {
-                                // If it's an object, convert it to array
-                                newDetails = Array(8).fill(0);
-                                Object.entries(currentDetails).forEach(
-                                  ([idx, val]) => {
-                                    const index = parseInt(idx);
-                                    if (
-                                      !isNaN(index) &&
-                                      index >= 0 &&
-                                      index < 8
-                                    ) {
-                                      newDetails[index] = Number(val) || 0;
-                                    }
-                                  }
-                                );
-                              }
-
-                              // Update the value
-                              newDetails[index] = newValue;
-
-                              // Ensure we're setting an array
-                              setValue(
-                                "diurnalSymptoms.epworthDetails" as any,
-                                newDetails
-                              );
-                              setValue(
-                                "diurnalSymptoms.epworthScore" as any,
-                                newDetails.reduce((sum, val) => sum + val, 0)
-                              );
-                            }}
-                          />
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <div className="flex justify-end">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
-                  Score total:{" "}
-                  {Number(watch("diurnalSymptoms.epworthScore")) || 0}
-                </p>
+            <label className="relative flex items-start">
+              <div className="flex h-5 items-center">
+                <input
+                  type="checkbox"
+                  {...register("diurnalSymptoms.showEpworth" as any)}
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                />
               </div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">
-                <p>0 = ne s&apos;endormirait jamais</p>
-                <p>1 = faible chance de s&apos;endormir</p>
-                <p>2 = chance moyenne de s&apos;endormir</p>
-                <p>3 = forte chance de s&apos;endormir</p>
+              <div className="ml-3 text-sm">
+                <span className="text-gray-700 dark:text-gray-300">
+                  Score d&apos;Epworth
+                </span>
+              </div>
+            </label>
+          </div>
+
+          {/* Questionnaire Epworth - affiché conditionnellement */}
+          {showEpworthQuestionnaire && (
+            <div className="space-y-2">
+              <div className="mt-2 space-y-4">
+                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                  <thead>
+                    <tr>
+                      <th className="px-4 py-2 text-left text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Situation
+                      </th>
+                      <th className="px-4 py-2 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
+                        0
+                      </th>
+                      <th className="px-4 py-2 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
+                        1
+                      </th>
+                      <th className="px-4 py-2 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
+                        2
+                      </th>
+                      <th className="px-4 py-2 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
+                        3
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                    {[
+                      "Assis en train de lire",
+                      "En train de regarder la télévision",
+                      "Assis, inactif dans un endroit public (au théâtre, en réunion...)",
+                      "Comme passager dans une voiture roulant sans arrêt pendant une heure",
+                      "Allongé l'après-midi pour se reposer quand les circonstances le permettent",
+                      "Assis en train de parler à quelqu'un",
+                      "Assis calmement après un repas sans alcool",
+                      "Dans une voiture immobilisée quelques minutes dans un embouteillage",
+                    ].map((situation, index) => (
+                      <tr key={index}>
+                        <td className="px-4 py-2 text-sm text-gray-900 dark:text-white">
+                          {situation}
+                        </td>
+                        {[0, 1, 2, 3].map((value) => (
+                          <td key={value} className="px-4 py-2 text-center">
+                            <input
+                              type="radio"
+                              name={`epworth_${index}`}
+                              value={value}
+                              checked={
+                                Number(
+                                  watch(
+                                    `diurnalSymptoms.epworthDetails.${index}` as any
+                                  )
+                                ) === value
+                              }
+                              className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500"
+                              onChange={(e) => {
+                                const newValue = Number(e.target.value);
+                                const currentDetails =
+                                  watch(
+                                    "diurnalSymptoms.epworthDetails" as any
+                                  ) || Array(8).fill(0);
+                                let newDetails;
+
+                                if (Array.isArray(currentDetails)) {
+                                  newDetails = [...currentDetails];
+                                } else {
+                                  newDetails = Array(8).fill(0);
+                                  Object.entries(currentDetails).forEach(
+                                    ([idx, val]) => {
+                                      const index = parseInt(idx);
+                                      if (
+                                        !isNaN(index) &&
+                                        index >= 0 &&
+                                        index < 8
+                                      ) {
+                                        newDetails[index] = Number(val) || 0;
+                                      }
+                                    }
+                                  );
+                                }
+
+                                newDetails[index] = newValue;
+
+                                setValue(
+                                  "diurnalSymptoms.epworthDetails" as any,
+                                  newDetails
+                                );
+                                setValue(
+                                  "diurnalSymptoms.epworthScore" as any,
+                                  newDetails.reduce((sum, val) => sum + val, 0)
+                                );
+                              }}
+                            />
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div className="flex justify-end">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    Score total:{" "}
+                    {Number(watch("diurnalSymptoms.epworthScore")) || 0}
+                  </p>
+                </div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  <p>0 = ne s&apos;endormirait jamais</p>
+                  <p>1 = faible chance de s&apos;endormir</p>
+                  <p>2 = chance moyenne de s&apos;endormir</p>
+                  <p>3 = forte chance de s&apos;endormir</p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Symptômes nocturnes */}

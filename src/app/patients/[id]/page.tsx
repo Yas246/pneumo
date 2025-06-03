@@ -32,6 +32,33 @@ interface ExtendedPatient extends Patient {
     surgical?: string;
     specificTreatment?: string;
   };
+  complementaryExams?: {
+    polygraphyDate: string;
+    iah: number;
+    iahCentral: number;
+    oxygenDesaturation: number;
+    ct90: number;
+    gazometryDate: string;
+    ph: number;
+    pao2: number;
+    paco2: number;
+    hco3: number;
+    sao2: number;
+    efrDate: string;
+    cvf: number;
+    vems: number;
+    dlco: number;
+    cpt: number;
+    chestXray?: {
+      imageUrl: string;
+      notes?: string;
+    };
+    scanner?: {
+      imageUrl?: string;
+      videoUrl?: string;
+      notes?: string;
+    };
+  };
 }
 
 export default function PatientPage() {
@@ -156,7 +183,7 @@ export default function PatientPage() {
     return age;
   };
 
-  const exams = (patient.complementaryExams || {
+  const defaultExams: NonNullable<ExtendedPatient["complementaryExams"]> = {
     polygraphyDate: "",
     iah: 0,
     iahCentral: 0,
@@ -173,24 +200,18 @@ export default function PatientPage() {
     vems: 0,
     dlco: 0,
     cpt: 0,
-  }) as {
-    polygraphyDate: string;
-    iah: number;
-    iahCentral: number;
-    oxygenDesaturation: number;
-    ct90: number;
-    gazometryDate: string;
-    ph: number;
-    pao2: number;
-    paco2: number;
-    hco3: number;
-    sao2: number;
-    efrDate: string;
-    cvf: number;
-    vems: number;
-    dlco: number;
-    cpt: number;
+    chestXray: {
+      imageUrl: "",
+      notes: "",
+    },
+    scanner: {
+      imageUrl: "",
+      videoUrl: "",
+      notes: "",
+    },
   };
+
+  const exams = patient.complementaryExams || defaultExams;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -628,6 +649,84 @@ export default function PatientPage() {
                   {Array.isArray(patient.pathologies) &&
                     patient.pathologies.includes("sleep") && (
                       <>
+                        {/* Images et Vidéos */}
+                        <div className="space-y-4">
+                          {/* Radiographie thoracique */}
+                          {patient.complementaryExams?.chestXray?.imageUrl && (
+                            <div>
+                              <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                                Radiographie thoracique
+                              </p>
+                              <div className="relative w-full max-w-lg mx-auto">
+                                <Image
+                                  src={
+                                    patient.complementaryExams.chestXray
+                                      .imageUrl
+                                  }
+                                  alt="Radiographie thoracique"
+                                  width={500}
+                                  height={500}
+                                  className="rounded-lg shadow-lg"
+                                />
+                              </div>
+                              {patient.complementaryExams.chestXray.notes && (
+                                <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                                  Notes:{" "}
+                                  {patient.complementaryExams.chestXray.notes}
+                                </p>
+                              )}
+                            </div>
+                          )}
+
+                          {/* Scanner/TDM */}
+                          {(patient.complementaryExams?.scanner?.imageUrl ||
+                            patient.complementaryExams?.scanner?.videoUrl) && (
+                            <div>
+                              <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                                Scanner/TDM
+                              </p>
+                              {patient.complementaryExams.scanner.imageUrl && (
+                                <div className="relative w-full max-w-lg mx-auto mb-4">
+                                  <Image
+                                    src={
+                                      patient.complementaryExams.scanner
+                                        .imageUrl
+                                    }
+                                    alt="Scanner"
+                                    width={500}
+                                    height={500}
+                                    className="rounded-lg shadow-lg"
+                                  />
+                                </div>
+                              )}
+                              {patient.complementaryExams.scanner.videoUrl && (
+                                <div className="relative w-full max-w-lg mx-auto mb-4">
+                                  <video
+                                    controls
+                                    className="w-full rounded-lg shadow-lg"
+                                  >
+                                    <source
+                                      src={
+                                        patient.complementaryExams.scanner
+                                          .videoUrl
+                                      }
+                                      type="video/mp4"
+                                    />
+                                    Votre navigateur ne supporte pas la lecture
+                                    de vidéos.
+                                  </video>
+                                </div>
+                              )}
+                              {patient.complementaryExams.scanner.notes && (
+                                <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                                  Notes:{" "}
+                                  {patient.complementaryExams.scanner.notes}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+
                         {/* Polygraphie */}
                         {(exams.polygraphyDate ||
                           exams.iah > 0 ||

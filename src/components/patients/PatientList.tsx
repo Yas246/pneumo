@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 
 interface PatientListProps {
   status: "active" | "archived";
+  selectedPathologies?: string[];
 }
 
 interface PatientListItemProps {
@@ -33,8 +34,8 @@ function PatientListItem({ patient, status }: PatientListItemProps) {
             {calculateAge(patient.birthDate)} ans
           </div>
         </div>
-        <div className="flex-shrink-0">
-          <p
+        <div className="flex items-center">
+          <span
             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
               status === "active"
                 ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300"
@@ -42,7 +43,7 @@ function PatientListItem({ patient, status }: PatientListItemProps) {
             }`}
           >
             {status === "active" ? "En cours" : "Archivé"}
-          </p>
+          </span>
         </div>
       </div>
       <div className="mt-2 flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-4">
@@ -65,7 +66,10 @@ function PatientListItem({ patient, status }: PatientListItemProps) {
   );
 }
 
-export function PatientList({ status }: PatientListProps) {
+export function PatientList({
+  status,
+  selectedPathologies = [],
+}: PatientListProps) {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState(true);
   const { user, isResident } = useAuth();
@@ -76,9 +80,19 @@ export function PatientList({ status }: PatientListProps) {
         if (!user) return;
 
         const patientsData = await getPatients(user.uid, user.role);
-        const filteredPatients = patientsData.filter(
-          (p) => p.status === status
-        );
+        let filteredPatients = patientsData.filter((p) => p.status === status);
+
+        // Appliquer le filtre par pathologie si des pathologies sont sélectionnées
+        if (selectedPathologies.length > 0) {
+          filteredPatients = filteredPatients.filter(
+            (patient) =>
+              // S'assurer que patient.pathologies est un tableau
+              Array.isArray(patient.pathologies) &&
+              selectedPathologies.some((pathology) =>
+                patient.pathologies.includes(pathology)
+              )
+          );
+        }
 
         // Si c'est un résident, on affiche un message spécial
         if (isResident) {
@@ -94,7 +108,7 @@ export function PatientList({ status }: PatientListProps) {
     };
 
     fetchPatients();
-  }, [user, status, isResident]);
+  }, [user, status, isResident, selectedPathologies]);
 
   if (loading) {
     return (
@@ -109,6 +123,8 @@ export function PatientList({ status }: PatientListProps) {
       <div className="text-center py-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
         <p className="text-gray-500 dark:text-gray-400">
           Aucun patient {status === "active" ? "en cours" : "archivé"}
+          {selectedPathologies.length > 0 &&
+            " pour les pathologies sélectionnées"}
         </p>
       </div>
     );
