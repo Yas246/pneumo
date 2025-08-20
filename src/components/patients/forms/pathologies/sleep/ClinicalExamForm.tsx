@@ -182,79 +182,59 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              <label className="relative flex items-start">
-                <div className="flex h-5 items-center">
-                  <input
-                    type="checkbox"
-                    {...register("orlExam.nasalObstruction" as any)}
-                    className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Obstruction nasale
-                  </span>
-                </div>
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <input
+                  type="checkbox"
+                  {...register("orlExam.nasalObstruction" as any)}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">
+                  Obstruction nasale
+                </span>
               </label>
 
-              <label className="relative flex items-start">
-                <div className="flex h-5 items-center">
-                  <input
-                    type="checkbox"
-                    {...register("orlExam.amygdalineHypertrophy" as any)}
-                    className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Hypertrophie amygdalienne
-                  </span>
-                </div>
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <input
+                  type="checkbox"
+                  {...register("orlExam.amygdalineHypertrophy" as any)}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">
+                  Hypertrophie amygdalienne
+                </span>
               </label>
 
-              <label className="relative flex items-start">
-                <div className="flex h-5 items-center">
-                  <input
-                    type="checkbox"
-                    {...register("orlExam.retrognathia" as any)}
-                    className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Rétrognathie
-                  </span>
-                </div>
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <input
+                  type="checkbox"
+                  {...register("orlExam.retrognathia" as any)}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">
+                  Rétrognathie
+                </span>
               </label>
 
-              <label className="relative flex items-start">
-                <div className="flex h-5 items-center">
-                  <input
-                    type="checkbox"
-                    {...register("orlExam.micromandible" as any)}
-                    className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Micromandibule
-                  </span>
-                </div>
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <input
+                  type="checkbox"
+                  {...register("orlExam.micromandible" as any)}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">
+                  Micromandibule
+                </span>
               </label>
 
-              <label className="relative flex items-start">
-                <div className="flex h-5 items-center">
-                  <input
-                    type="checkbox"
-                    {...register("orlExam.macroglossia" as any)}
-                    className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-                  />
-                </div>
-                <div className="ml-3 text-sm">
-                  <span className="text-gray-700 dark:text-gray-300">
-                    Macroglossie
-                  </span>
-                </div>
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <input
+                  type="checkbox"
+                  {...register("orlExam.macroglossia" as any)}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">
+                  Macroglossie
+                </span>
               </label>
             </div>
           </div>

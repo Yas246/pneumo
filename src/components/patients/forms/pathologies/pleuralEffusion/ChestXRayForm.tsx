@@ -69,7 +69,7 @@ export function ChestXRayForm({ register, watch }: FormSectionProps) {
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="chestXRay.otherAnomalies"

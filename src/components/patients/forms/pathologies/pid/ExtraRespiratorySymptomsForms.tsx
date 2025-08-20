@@ -24,7 +24,7 @@ export function ExtraRespiratorySymptomsForms({
       <div className="space-y-6">
         {/* Arthralgie */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidExtraRespiratorySymptoms.arthralgia.present"
@@ -64,7 +64,7 @@ export function ExtraRespiratorySymptomsForms({
 
         {/* Signes oculaires et buccaux */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidExtraRespiratorySymptoms.xerophthalmia"
@@ -79,7 +79,7 @@ export function ExtraRespiratorySymptomsForms({
             </label>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidExtraRespiratorySymptoms.xerostomia"
@@ -97,7 +97,7 @@ export function ExtraRespiratorySymptomsForms({
 
         {/* Signes cutanés */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidExtraRespiratorySymptoms.cutaneousSigns.present"
@@ -138,7 +138,7 @@ export function ExtraRespiratorySymptomsForms({
 
         {/* Signes neurologiques */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidExtraRespiratorySymptoms.neurologicalSigns.present"
@@ -179,7 +179,7 @@ export function ExtraRespiratorySymptomsForms({
 
         {/* Signes digestifs */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidExtraRespiratorySymptoms.digestiveSigns.present"

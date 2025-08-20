@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { bpcoSchema } from "./forms/pathologies/bpco/schema";
 import { pidSchema } from "./forms/pathologies/pid/schema";
 import { pleuralEffusionSchema } from "./forms/pathologies/pleuralEffusion/schema";
 import { sleepPathologySchema } from "./forms/pathologies/sleep/schema";
@@ -22,6 +23,7 @@ export const patientSchema = z.object({
   ...sleepPathologySchema.shape,
   ...pleuralEffusionSchema.shape,
   ...pidSchema.shape,
+  ...bpcoSchema.shape,
 
   // Motif de consultation
   consultationReason: z.string().optional(),
@@ -50,3 +52,5 @@ export const patientSchema = z.object({
   // Reference to selected pathologies
   pathologies: z.array(z.string()).optional(),
 });
+
+export type PatientFormData = z.infer<typeof patientSchema>;

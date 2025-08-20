@@ -87,7 +87,7 @@ export function DiagnosisForm({ register, watch, setValue }: FormSectionProps) {
               );
               return (
                 <div key={pathology.name} className="space-y-4">
-                  <label className="relative flex items-start">
+                  <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <div className="flex h-5 items-center">
                       <input
                         type="checkbox"
@@ -116,7 +116,7 @@ export function DiagnosisForm({ register, watch, setValue }: FormSectionProps) {
                         {pathology.treatments.map((treatment) => (
                           <label
                             key={`${pathology.name}-${treatment}`}
-                            className="relative flex items-start"
+                            className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
                           >
                             <div className="flex h-5 items-center">
                               <input

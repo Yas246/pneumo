@@ -43,4 +43,10 @@ export const pathologies: Pathology[] = [
     description:
       "Diagnostic et traitement des pneumopathies interstitielles diffuses",
   },
+  {
+    id: "bpco",
+    name: "Bronchopneumopathie Chronique Obstructive",
+    icon: "/icons/bpco.svg",
+    description: "Diagnostic et traitement de la BPCO",
+  },
 ];

@@ -27,7 +27,8 @@ export interface Patient {
     | "bronchial"
     | "infection"
     | "pleuralEffusion"
-    | "pid"; // Type de pathologie principal
+    | "pid"
+    | "bpco"; // Type de pathologie principal
 
   // Informations sur le créateur
   creatorId: string;
@@ -160,6 +161,148 @@ export interface Patient {
     serialNumber?: string;
     provider?: string;
     otherAccessories?: string;
+  };
+
+  // Champs spécifiques BPCO
+  bpcoConsultationReason?: {
+    chronicCough?: boolean;
+    chronicBronchitis?: boolean;
+    chronicDyspnea?: boolean;
+    acuteDyspneaAggravation?: boolean;
+    frequentRespiratoryInfections?: boolean;
+    other?: string;
+  };
+
+  bpcoMedicalHistory?: {
+    asthma?: boolean;
+    asthmaExacerbationsPerYear?: number;
+    bpco?: boolean;
+    bpcoExacerbationsPerYear?: number;
+    tuberculosis?: boolean;
+    pneumonia?: boolean;
+    recurrentRespiratoryInfections?: boolean;
+    professionalPollutants?: string;
+    domesticPollutants?: string;
+    urbanPollutants?: string;
+    rgo?: boolean;
+    hepatopathy?: string;
+    nephropathy?: string;
+    cardiopathy?: string;
+    connectiveTissue?: string;
+    neoplasia?: string;
+    other?: string;
+    surgicalHistory?: string;
+    vaccinations?: string[];
+    smokingStatus?: string;
+    paquetsAnnees?: number;
+    cannabis?: boolean;
+    alcohol?: boolean;
+  };
+
+  bpcoClinicalExam?: {
+    performanceScore?: string;
+    generalState?: {
+      goodConsciousness?: boolean;
+      confusion?: boolean;
+      asthenia?: boolean;
+      generalStateAlteration?: boolean;
+    };
+    // Add other clinical exam fields as needed
+  };
+
+  bpcoDiseaseHistory?: {
+    firstSymptomsDate?: string;
+    evolution?: string;
+    triggeringFactors?: {
+      tobacco?: boolean;
+      pollution?: boolean;
+      professional?: boolean;
+    };
+    exacerbationsPerYear?: number;
+    hospitalizationsForBpco?: boolean;
+    hospitalizationsCount?: number;
+    associatedSigns?: string;
+  };
+
+  bpcoDiagnosticTests?: {
+    spirometry?: {
+      vems?: number;
+      vemsCv?: number;
+      goldStage?: number;
+    };
+    plethysmography?: {
+      cpt?: number;
+      vr?: number;
+      crf?: number;
+    };
+    biology?: {
+      cbc?: {
+        done?: boolean;
+        hemoglobin?: number;
+        mcv?: number;
+        whiteBloodCells?: number;
+      };
+      biochemistry?: {
+        done?: boolean;
+        creatinine?: number;
+        ast?: number;
+        alt?: number;
+        crp?: number;
+      };
+    };
+    microbiology?: {
+      bkSputum?: string;
+      ecbc?: string;
+      pcr?: string;
+    };
+    bronchoscopy?: {
+      findings?: string;
+      bal?: string;
+    };
+    functionalAssessment?: {
+      walkTest?: string;
+      ecg?: string;
+      echocardiography?: string;
+    };
+  };
+
+  bpcoImpactAssessment?: {
+    bloodGas?: {
+      ph?: number;
+      paO2?: number;
+      paCO2?: number;
+    };
+    exerciseTest?: {
+      sixMinWalkTest?: number;
+      vo2Max?: number;
+    };
+  };
+
+  bpcoTreatment?: {
+    maintenance?: string;
+    prescribedTreatments?: string[];
+    longTermOxygen?: boolean;
+    therapeuticEducation?: boolean;
+    smokingCessation?: boolean;
+  };
+
+  bpcoFollowUp?: {
+    lastConsultation?: string;
+    nextEvaluation?: string;
+    pneumologyFollowUp?: boolean;
+    vaccinationsUpToDate?: boolean;
+  };
+
+  bpcoComplementaryExams?: {
+    vems?: number;
+    vemsCvf?: number;
+    goldStage?: string;
+    cpt?: number;
+    vr?: number;
+    crf?: number;
+    ph?: number;
+    pao2?: number;
+    paco2?: number;
   };
 
   createdAt?: Date;

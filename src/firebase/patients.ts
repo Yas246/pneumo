@@ -102,6 +102,17 @@ export const getPatient = async (id: string): Promise<Patient | null> => {
     }
 
     const data = docSnap.data();
+    console.log("Raw patient data from Firestore:", data);
+    console.log("BPCO fields in data:", {
+      bpcoConsultationReason: data.bpcoConsultationReason,
+      bpcoMedicalHistory: data.bpcoMedicalHistory,
+      bpcoClinicalExam: data.bpcoClinicalExam,
+      bpcoDiagnosis: data.bpcoDiagnosis,
+      bpcoTreatment: data.bpcoTreatment,
+      bpcoFollowUp: data.bpcoFollowUp,
+      bpcoComplementaryExams: data.bpcoComplementaryExams,
+    });
+
     return {
       ...data,
       id: docSnap.id,

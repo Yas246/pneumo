@@ -22,7 +22,7 @@ export function RespiratorySymptomsForms({
       <div className="space-y-8">
         {/* TOUX */}
         <div className="space-y-4">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidRespiratorySymptoms.cough.present"
@@ -62,7 +62,7 @@ export function RespiratorySymptomsForms({
                   Intensité
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.cough.intensity"
@@ -79,7 +79,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.cough.intensity.emetic"
@@ -96,7 +96,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.cough.intensity.painful"
@@ -113,7 +113,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.cough.intensity.withUrinaryIncontinence"
@@ -175,7 +175,7 @@ export function RespiratorySymptomsForms({
                   Déclencheurs
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.cough.triggers.noFactor"
@@ -192,7 +192,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.cough.triggers.tobacco"
@@ -209,7 +209,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.cough.triggers.postMeal"
@@ -226,7 +226,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.cough.triggers.duringMeal"
@@ -243,7 +243,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.cough.triggers.decubitus"
@@ -282,7 +282,7 @@ export function RespiratorySymptomsForms({
 
         {/* DYSPNÉE */}
         <div className="space-y-4">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidRespiratorySymptoms.dyspnea.present"
@@ -344,7 +344,7 @@ export function RespiratorySymptomsForms({
                   Circonstances
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.dyspnea.circumstances.effort"
@@ -361,7 +361,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.dyspnea.circumstances.rest"
@@ -378,7 +378,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.dyspnea.circumstances.decubitus"
@@ -419,7 +419,7 @@ export function RespiratorySymptomsForms({
 
         {/* DOULEUR THORACIQUE */}
         <div className="space-y-4">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidRespiratorySymptoms.chestPain.present"
@@ -441,7 +441,7 @@ export function RespiratorySymptomsForms({
                   Siège
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-2">
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.chestPain.location.right"
@@ -458,7 +458,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.chestPain.location.left"
@@ -475,7 +475,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.chestPain.location.bilateral"
@@ -499,7 +499,7 @@ export function RespiratorySymptomsForms({
                   Localisation
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.chestPain.site.medioThoracic"
@@ -516,7 +516,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.chestPain.site.basiThoracic"
@@ -533,7 +533,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.chestPain.site.retrosternal"
@@ -550,7 +550,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.chestPain.site.diffuse"
@@ -574,7 +574,7 @@ export function RespiratorySymptomsForms({
                   Type
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.chestPain.type.oppression"
@@ -591,7 +591,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.chestPain.type.constrictive"
@@ -608,7 +608,7 @@ export function RespiratorySymptomsForms({
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidRespiratorySymptoms.chestPain.type.burning"
@@ -662,7 +662,7 @@ export function RespiratorySymptomsForms({
 
         {/* HÉMOPTYSIE */}
         <div className="space-y-4">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidRespiratorySymptoms.hemoptysis.present"
@@ -701,7 +701,7 @@ export function RespiratorySymptomsForms({
 
         {/* EXPECTORATION */}
         <div className="space-y-4">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidRespiratorySymptoms.expectoration.present"

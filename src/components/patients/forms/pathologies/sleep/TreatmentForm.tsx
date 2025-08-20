@@ -59,7 +59,7 @@ export function TreatmentForm({ register }: FormSectionProps) {
             Appareillage
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <label className="relative flex items-start">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
@@ -72,7 +72,7 @@ export function TreatmentForm({ register }: FormSectionProps) {
               </div>
             </label>
 
-            <label className="relative flex items-start">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
@@ -85,7 +85,7 @@ export function TreatmentForm({ register }: FormSectionProps) {
               </div>
             </label>
 
-            <label className="relative flex items-start">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"

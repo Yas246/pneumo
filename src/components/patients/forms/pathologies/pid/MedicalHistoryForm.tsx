@@ -24,7 +24,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
       <div className="space-y-6">
         {/* Tuberculose */}
         <div className="space-y-4">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="medicalHistory.tuberculosis.present"
@@ -129,7 +129,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
         {/* Asthme */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="medicalHistory.asthma.present"
@@ -165,7 +165,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
         </div>
 
         {/* Hypersensibilité */}
-        <div className="flex items-center">
+        <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
           <input
             type="checkbox"
             id="medicalHistory.hypersensitivity"
@@ -182,7 +182,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
         {/* Bronchite chronique */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="medicalHistory.chronicBronchitis.present"
@@ -252,7 +252,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
           {/* Diabète */}
           <div className="space-y-2">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="medicalHistory.diabetes.present"
@@ -281,7 +281,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* HTA */}
           <div className="space-y-2">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="medicalHistory.hypertension.present"
@@ -310,7 +310,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Cardiopathie */}
           <div className="space-y-2">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="medicalHistory.heartDisease.present"
@@ -339,7 +339,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Maladie de système */}
           <div className="space-y-2">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="medicalHistory.systemicDisease.present"
@@ -368,7 +368,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Néoplasie */}
           <div className="space-y-2">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="medicalHistory.neoplasia.present"
@@ -397,7 +397,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* RGO */}
           <div className="space-y-2">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="medicalHistory.gerd.present"

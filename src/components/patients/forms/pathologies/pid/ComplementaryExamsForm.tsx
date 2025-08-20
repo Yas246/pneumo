@@ -44,7 +44,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* Radiographie thoracique */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.chestXRay.done"
@@ -132,7 +132,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* Scanner thoracique */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.chestCT.done"
@@ -216,7 +216,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* Radiographie des mains */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.handXRay.done"
@@ -251,7 +251,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* Scanner des sinus */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.sinusCT.done"
@@ -293,7 +293,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* NFS */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.biology.cbc.done"
@@ -446,7 +446,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* Biochimie */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.biology.biochemistry.done"
@@ -525,7 +525,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* Immunologie */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.biology.immunology.done"
@@ -640,7 +640,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* Sérologies virales */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.biology.viralSerology.done"
@@ -722,7 +722,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* Fibroscopie bronchique */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.bronchoscopy.done"
@@ -776,7 +776,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* Histologie */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.biology.histology.done"
@@ -860,7 +860,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* Microbiologie */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.biology.microbiology.done"
@@ -942,7 +942,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* Phtisiologie */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.phthisiology.done"
@@ -977,7 +977,7 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
 
         {/* Impact / Retentissement */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center mb-4 space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidComplementaryExams.functionalAssessment.done"

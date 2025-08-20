@@ -10,7 +10,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
             Morphologie faciale
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <label className="relative flex items-start">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
@@ -24,7 +24,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
                 </span>
               </div>
             </label>
-            <label className="relative flex items-start">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
@@ -38,7 +38,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
                 </span>
               </div>
             </label>
-            <label className="relative flex items-start">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
@@ -63,7 +63,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
             <input
               type="text"
               {...register("orlExam.facialMorphology.other")}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
+              className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
         </div>
@@ -74,7 +74,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
             Os hyoïde
           </h4>
           <div className="space-y-2">
-            <label className="relative flex items-start">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <div className="flex h-5 items-center">
                 <input
                   type="radio"
@@ -89,7 +89,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
                 </span>
               </div>
             </label>
-            <label className="relative flex items-start">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <div className="flex h-5 items-center">
                 <input
                   type="radio"
@@ -118,13 +118,13 @@ export function OrlExamForm({ register }: FormSectionProps) {
           <input
             type="text"
             {...register("orlExam.dentalClass")}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
+            className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
           />
         </div>
 
         {/* Palais ogival */}
         <div>
-          <label className="relative flex items-start">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <div className="flex h-5 items-center">
               <input
                 type="checkbox"
@@ -152,7 +152,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
             <input
               type="text"
               {...register("orlExam.mallampati")}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
+              className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
           <div className="space-y-2">
@@ -165,7 +165,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
             <input
               type="text"
               {...register("orlExam.friedman")}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
+              className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
         </div>
@@ -226,7 +226,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
             Manœuvres et résultats
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <label className="relative flex items-start">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
@@ -240,7 +240,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
                 </span>
               </div>
             </label>
-            <label className="relative flex items-start">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
@@ -254,7 +254,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
                 </span>
               </div>
             </label>
-            <label className="relative flex items-start">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"

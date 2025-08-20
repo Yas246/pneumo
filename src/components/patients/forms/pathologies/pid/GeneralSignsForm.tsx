@@ -17,7 +17,7 @@ export function GeneralSignsForm({ register, watch }: FormSectionProps) {
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Asthénie */}
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="generalSigns.asthenia"
@@ -33,7 +33,7 @@ export function GeneralSignsForm({ register, watch }: FormSectionProps) {
           </div>
 
           {/* Anorexie */}
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="generalSigns.anorexia"
@@ -51,7 +51,7 @@ export function GeneralSignsForm({ register, watch }: FormSectionProps) {
 
         {/* Amaigrissement */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="generalSigns.weightLoss.present"
@@ -105,7 +105,7 @@ export function GeneralSignsForm({ register, watch }: FormSectionProps) {
 
         {/* Fièvre */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="generalSigns.fever.present"
@@ -156,7 +156,7 @@ export function GeneralSignsForm({ register, watch }: FormSectionProps) {
         </div>
 
         {/* Sueurs nocturnes */}
-        <div className="flex items-center">
+        <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
           <input
             type="checkbox"
             id="generalSigns.nightSweats"

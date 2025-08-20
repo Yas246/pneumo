@@ -18,7 +18,7 @@ export function DiagnosisForm({ register, watch }: FormSectionProps) {
             Diagnostic
           </label>
           <div className="space-y-2">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="radio"
                 id="diagnosis.type.tuberculosis"
@@ -34,7 +34,7 @@ export function DiagnosisForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="radio"
                 id="diagnosis.type.metastasis"
@@ -50,7 +50,7 @@ export function DiagnosisForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="radio"
                 id="diagnosis.type.other"
@@ -66,7 +66,7 @@ export function DiagnosisForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="radio"
                 id="diagnosis.type.unknown"

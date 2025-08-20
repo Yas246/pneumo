@@ -16,7 +16,7 @@ export function FinalDiagnosisForm({ register, watch }: FormSectionProps) {
           </label>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="pidFinalDiagnosis.diagnosisType.idiopathicPulmonaryFibrosis"
@@ -33,7 +33,7 @@ export function FinalDiagnosisForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="pidFinalDiagnosis.diagnosisType.sarcoidosis"
@@ -48,7 +48,7 @@ export function FinalDiagnosisForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="pidFinalDiagnosis.diagnosisType.rheumatoidArthritis"
@@ -65,7 +65,7 @@ export function FinalDiagnosisForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="pidFinalDiagnosis.diagnosisType.hypersensitivityPneumonitis"
@@ -82,7 +82,7 @@ export function FinalDiagnosisForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="pidFinalDiagnosis.diagnosisType.scleroderma"
@@ -97,7 +97,7 @@ export function FinalDiagnosisForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="pidFinalDiagnosis.diagnosisType.mixedConnectiveTissueDisease"
@@ -114,7 +114,7 @@ export function FinalDiagnosisForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="pidFinalDiagnosis.diagnosisType.drugInducedIld"
@@ -129,7 +129,7 @@ export function FinalDiagnosisForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="pidFinalDiagnosis.diagnosisType.indeterminateIld"
@@ -146,7 +146,7 @@ export function FinalDiagnosisForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors ">
               <input
                 type="checkbox"
                 id="pidFinalDiagnosis.diagnosisType.other.present"

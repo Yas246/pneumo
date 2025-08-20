@@ -30,20 +30,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           Examen général
         </h4>
         <div className="mb-4">
-          <div className="flex items-center">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.generalExam.normal"
               {...register("pidClinicalExam.generalExam.normal")}
-              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
-            <label
-              htmlFor="clinicalExam.generalExam.normal"
-              className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <span className="text-sm text-gray-700 dark:text-gray-300">
               Normal
-            </label>
-          </div>
+            </span>
+          </label>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -193,20 +190,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           Examen pleuro-pulmonaire
         </h4>
         <div className="mb-4">
-          <div className="flex items-center">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.pleuroPulmonaryExam.normal"
               {...register("pidClinicalExam.pleuroPulmonaryExam.normal")}
-              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
-            <label
-              htmlFor="clinicalExam.pleuroPulmonaryExam.normal"
-              className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <span className="text-sm text-gray-700 dark:text-gray-300">
               Normal
-            </label>
-          </div>
+            </span>
+          </label>
         </div>
 
         {!pleuroPulmonaryNormal && (
@@ -280,20 +274,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           Aires ganglionnaires
         </h4>
         <div className="mb-4">
-          <div className="flex items-center">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.lymphNodes.normal"
               {...register("pidClinicalExam.lymphNodes.normal")}
-              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
-            <label
-              htmlFor="clinicalExam.lymphNodes.normal"
-              className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <span className="text-sm text-gray-700 dark:text-gray-300">
               Normal
-            </label>
-          </div>
+            </span>
+          </label>
         </div>
 
         {!lymphNodesNormal && (
@@ -320,20 +311,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           Examen cardiovasculaire
         </h4>
         <div className="mb-4">
-          <div className="flex items-center">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.cardiovascularExam.normal"
               {...register("pidClinicalExam.cardiovascularExam.normal")}
-              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
-            <label
-              htmlFor="clinicalExam.cardiovascularExam.normal"
-              className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <span className="text-sm text-gray-700 dark:text-gray-300">
               Normal
-            </label>
-          </div>
+            </span>
+          </label>
         </div>
 
         {!cardiovascularNormal && (
@@ -360,20 +348,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           Examen cutané
         </h4>
         <div className="mb-4">
-          <div className="flex items-center">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.cutaneousExam.normal"
               {...register("pidClinicalExam.cutaneousExam.normal")}
-              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
-            <label
-              htmlFor="clinicalExam.cutaneousExam.normal"
-              className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <span className="text-sm text-gray-700 dark:text-gray-300">
               Normal
-            </label>
-          </div>
+            </span>
+          </label>
         </div>
 
         {!cutaneousNormal && (
@@ -400,20 +385,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           Examen ORL
         </h4>
         <div className="mb-4">
-          <div className="flex items-center">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.ent.normal"
               {...register("pidClinicalExam.ent.normal")}
-              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
-            <label
-              htmlFor="clinicalExam.ent.normal"
-              className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <span className="text-sm text-gray-700 dark:text-gray-300">
               Normal
-            </label>
-          </div>
+            </span>
+          </label>
         </div>
 
         {!entNormal && (
@@ -440,20 +422,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           Examen articulaire
         </h4>
         <div className="mb-4">
-          <div className="flex items-center">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.jointExam.normal"
               {...register("pidClinicalExam.jointExam.normal")}
-              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
-            <label
-              htmlFor="clinicalExam.jointExam.normal"
-              className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <span className="text-sm text-gray-700 dark:text-gray-300">
               Normal
-            </label>
-          </div>
+            </span>
+          </label>
         </div>
 
         {!jointNormal && (
@@ -480,20 +459,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           Examen neurologique
         </h4>
         <div className="mb-4">
-          <div className="flex items-center">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.neurologicalExam.normal"
               {...register("pidClinicalExam.neurologicalExam.normal")}
-              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
-            <label
-              htmlFor="clinicalExam.neurologicalExam.normal"
-              className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <span className="text-sm text-gray-700 dark:text-gray-300">
               Normal
-            </label>
-          </div>
+            </span>
+          </label>
         </div>
 
         {!neurologicalNormal && (
@@ -520,20 +496,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           Examen abdominal
         </h4>
         <div className="mb-4">
-          <div className="flex items-center">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.abdominalExam.normal"
               {...register("pidClinicalExam.abdominalExam.normal")}
-              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
-            <label
-              htmlFor="clinicalExam.abdominalExam.normal"
-              className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <span className="text-sm text-gray-700 dark:text-gray-300">
               Normal
-            </label>
-          </div>
+            </span>
+          </label>
         </div>
 
         {!abdominalNormal && (
@@ -560,20 +533,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           Examen ophtalmologique
         </h4>
         <div className="mb-4">
-          <div className="flex items-center">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.ophthalmologicExam.normal"
               {...register("pidClinicalExam.ophthalmologicExam.normal")}
-              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
-            <label
-              htmlFor="clinicalExam.ophthalmologicExam.normal"
-              className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <span className="text-sm text-gray-700 dark:text-gray-300">
               Normal
-            </label>
-          </div>
+            </span>
+          </label>
         </div>
 
         {!ophthalmologicNormal && (
@@ -600,20 +570,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           Examen rénal
         </h4>
         <div className="mb-4">
-          <div className="flex items-center">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.renalExam.normal"
               {...register("pidClinicalExam.renalExam.normal")}
-              className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
-            <label
-              htmlFor="clinicalExam.renalExam.normal"
-              className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
+            <span className="text-sm text-gray-700 dark:text-gray-300">
               Normal
-            </label>
-          </div>
+            </span>
+          </label>
         </div>
 
         {!renalNormal && (

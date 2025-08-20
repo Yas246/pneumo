@@ -140,7 +140,7 @@ export function PPCFollowUpForm({ register }: FormSectionProps) {
             <div className="space-y-2">
               <label
                 htmlFor="ppcFollowUp.humidifier"
-                className="relative flex items-start"
+                className=" mt-5 flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
               >
                 <div className="flex h-5 items-center">
                   <input

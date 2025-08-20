@@ -16,7 +16,7 @@ export function LifestyleForm({ register, watch }: FormSectionProps) {
       <div className="space-y-6">
         {/* Exposition professionnelle */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="lifestyle.professionalExposure.present"
@@ -53,7 +53,7 @@ export function LifestyleForm({ register, watch }: FormSectionProps) {
 
         {/* Contact aviaire */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="lifestyle.avianContact.present"
@@ -89,7 +89,7 @@ export function LifestyleForm({ register, watch }: FormSectionProps) {
         </div>
 
         {/* Contact foin moisi */}
-        <div className="flex items-center">
+        <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
           <input
             type="checkbox"
             id="lifestyle.moltyHayContact"
@@ -106,7 +106,7 @@ export function LifestyleForm({ register, watch }: FormSectionProps) {
 
         {/* Voyage en zone tropicale */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="lifestyle.tropicalTravel.present"

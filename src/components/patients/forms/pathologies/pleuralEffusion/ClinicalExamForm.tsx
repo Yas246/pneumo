@@ -20,18 +20,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
 
       {/* Dyspnée */}
       <div className="mb-6">
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="clinicalExam.dyspnea"
-            {...register("clinicalExam.dyspnea")}
-            className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
-          />
-          <label
-            htmlFor="clinicalExam.dyspnea"
-            className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Dyspnée
+        <div className="mb-4">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+            <input
+              type="checkbox"
+              id="clinicalExam.dyspnea"
+              {...register("clinicalExam.dyspnea")}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Dyspnée
+            </span>
           </label>
         </div>
 
@@ -55,18 +54,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
 
       {/* Douleur basi-thoracique */}
       <div className="mb-6">
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="clinicalExam.basiThoracicPain"
-            {...register("clinicalExam.basiThoracicPain")}
-            className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
-          />
-          <label
-            htmlFor="clinicalExam.basiThoracicPain"
-            className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Douleur basi-thoracique
+        <div className="mb-4">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+            <input
+              type="checkbox"
+              id="clinicalExam.basiThoracicPain"
+              {...register("clinicalExam.basiThoracicPain")}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Douleur basi-thoracique
+            </span>
           </label>
         </div>
 
@@ -111,18 +109,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
 
       {/* Toux */}
       <div className="mb-6">
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="clinicalExam.cough"
-            {...register("clinicalExam.cough")}
-            className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
-          />
-          <label
-            htmlFor="clinicalExam.cough"
-            className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Toux
+        <div className="mb-4">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+            <input
+              type="checkbox"
+              id="clinicalExam.cough"
+              {...register("clinicalExam.cough")}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Toux
+            </span>
           </label>
         </div>
 
@@ -166,18 +163,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
 
       {/* Hémoptysie */}
       <div className="mb-6">
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="clinicalExam.hemoptysis"
-            {...register("clinicalExam.hemoptysis")}
-            className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
-          />
-          <label
-            htmlFor="clinicalExam.hemoptysis"
-            className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Hémoptysie
+        <div className="mb-4">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+            <input
+              type="checkbox"
+              id="clinicalExam.hemoptysis"
+              {...register("clinicalExam.hemoptysis")}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Hémoptysie
+            </span>
           </label>
         </div>
 
@@ -205,18 +201,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
 
       {/* Autres signes */}
       <div className="mb-6">
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="clinicalExam.otherSigns"
-            {...register("clinicalExam.otherSigns")}
-            className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
-          />
-          <label
-            htmlFor="clinicalExam.otherSigns"
-            className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Autres signes
+        <div className="mb-4">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+            <input
+              type="checkbox"
+              id="clinicalExam.otherSigns"
+              {...register("clinicalExam.otherSigns")}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Autres signes
+            </span>
           </label>
         </div>
 
@@ -244,7 +239,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           Signes généraux
         </h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.generalSigns.asthenia"
@@ -259,7 +254,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             </label>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.generalSigns.amg"
@@ -274,7 +269,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             </label>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.generalSigns.anorexia"
@@ -289,7 +284,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             </label>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.generalSigns.fever"
@@ -381,7 +376,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="clinicalExam.respiratoryStruggle"
@@ -400,18 +395,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
 
       {/* Syndrome d'épanchement */}
       <div className="mb-6">
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="clinicalExam.liquidEffusionSyndrome"
-            {...register("clinicalExam.liquidEffusionSyndrome")}
-            className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
-          />
-          <label
-            htmlFor="clinicalExam.liquidEffusionSyndrome"
-            className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Syndrome d&apos;épanchement liquidien
+        <div className="mb-4">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+            <input
+              type="checkbox"
+              id="clinicalExam.liquidEffusionSyndrome"
+              {...register("clinicalExam.liquidEffusionSyndrome")}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Syndrome d&apos;épanchement liquidien
+            </span>
           </label>
         </div>
 
@@ -439,18 +433,17 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
 
       {/* Syndrome d'épanchement mixte */}
       <div className="mb-6">
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="clinicalExam.mixedEffusionSyndrome"
-            {...register("clinicalExam.mixedEffusionSyndrome")}
-            className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
-          />
-          <label
-            htmlFor="clinicalExam.mixedEffusionSyndrome"
-            className="ml-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Syndrome d&apos;épanchement mixte
+        <div className="mb-4">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+            <input
+              type="checkbox"
+              id="clinicalExam.mixedEffusionSyndrome"
+              {...register("clinicalExam.mixedEffusionSyndrome")}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Syndrome d&apos;épanchement mixte
+            </span>
           </label>
         </div>
 

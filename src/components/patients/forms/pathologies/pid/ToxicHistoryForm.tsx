@@ -18,7 +18,7 @@ export function ToxicHistoryForm({ register, watch }: FormSectionProps) {
         <div className="space-y-4">
           {/* Tabagisme */}
           <div className="space-y-2">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="pidToxicHistory.smoking.present"
@@ -36,7 +36,7 @@ export function ToxicHistoryForm({ register, watch }: FormSectionProps) {
             {smoking && (
               <div className="pl-6 pt-2 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidToxicHistory.smoking.type.active"
@@ -51,7 +51,7 @@ export function ToxicHistoryForm({ register, watch }: FormSectionProps) {
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidToxicHistory.smoking.type.passive"
@@ -102,7 +102,7 @@ export function ToxicHistoryForm({ register, watch }: FormSectionProps) {
                     />
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="pidToxicHistory.smoking.stopped"
@@ -122,7 +122,7 @@ export function ToxicHistoryForm({ register, watch }: FormSectionProps) {
           </div>
 
           {/* Alcoolisme */}
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="pidToxicHistory.alcoholism"
@@ -139,7 +139,7 @@ export function ToxicHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Toxicomanie */}
           <div className="space-y-2">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="  pidToxicHistory.drugAddiction.present"
@@ -176,7 +176,7 @@ export function ToxicHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Médicaments au long cours */}
           <div className="space-y-2">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="pidToxicHistory.longTermMedication.present"
@@ -228,7 +228,7 @@ export function ToxicHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Plantes médicinales */}
           <div className="space-y-2">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="pidToxicHistory.medicinalPlants.present"

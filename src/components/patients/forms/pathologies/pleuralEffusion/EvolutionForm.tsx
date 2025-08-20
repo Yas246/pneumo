@@ -13,7 +13,7 @@ export function EvolutionForm({ register }: FormSectionProps) {
             Évolution
           </label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="evolution.outcome.iatrogenicComplication"
@@ -28,7 +28,7 @@ export function EvolutionForm({ register }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="evolution.outcome.parietalSuppuration"
@@ -43,7 +43,7 @@ export function EvolutionForm({ register }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="evolution.outcome.recovery"
@@ -58,7 +58,7 @@ export function EvolutionForm({ register }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="evolution.outcome.regression"
@@ -73,7 +73,7 @@ export function EvolutionForm({ register }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="evolution.outcome.encystment"
@@ -88,7 +88,7 @@ export function EvolutionForm({ register }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="evolution.outcome.pachypleuritis"
@@ -103,7 +103,7 @@ export function EvolutionForm({ register }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="evolution.outcome.recurrence"
@@ -118,7 +118,7 @@ export function EvolutionForm({ register }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="evolution.outcome.lostToFollowUp"
@@ -133,7 +133,7 @@ export function EvolutionForm({ register }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="evolution.outcome.death"

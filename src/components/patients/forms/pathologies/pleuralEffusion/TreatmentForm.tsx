@@ -16,7 +16,7 @@ export function TreatmentForm({ register, watch }: FormSectionProps) {
             Types de traitement
           </label>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="treatment.types.iterativePuncture"
@@ -31,7 +31,7 @@ export function TreatmentForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="treatment.types.intraPleuralInfiltration"
@@ -46,7 +46,7 @@ export function TreatmentForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="treatment.types.drainage"
@@ -61,7 +61,7 @@ export function TreatmentForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="treatment.types.analgesics"
@@ -76,7 +76,7 @@ export function TreatmentForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="treatment.types.antituberculosis"
@@ -91,7 +91,7 @@ export function TreatmentForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="treatment.types.nonSpecificAntibiotherapy"
@@ -106,7 +106,7 @@ export function TreatmentForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="treatment.types.guidedAntibiotherapy"
@@ -121,7 +121,7 @@ export function TreatmentForm({ register, watch }: FormSectionProps) {
               </label>
             </div>
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="treatment.types.pleuralPhysiotherapy"
@@ -155,7 +155,7 @@ export function TreatmentForm({ register, watch }: FormSectionProps) {
               </div>
             )}
 
-            <div className="flex items-center">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="treatment.types.surgery"
@@ -173,7 +173,7 @@ export function TreatmentForm({ register, watch }: FormSectionProps) {
             {surgery && (
               <div className="md:col-span-2 ml-6">
                 <div className="space-y-1 mb-3">
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="treatment.types.surgeryType.talcage"
@@ -187,7 +187,7 @@ export function TreatmentForm({ register, watch }: FormSectionProps) {
                       Talcage
                     </label>
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="treatment.types.surgeryType.refreshing"
@@ -201,7 +201,7 @@ export function TreatmentForm({ register, watch }: FormSectionProps) {
                       Avivement
                     </label>
                   </div>
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="treatment.types.surgeryType.decortication"

@@ -165,7 +165,7 @@ export function ComplementaryExamsForm({
               <input
                 type="date"
                 {...register("complementaryExams.polygraphyDate")}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
+                className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
 
@@ -180,7 +180,7 @@ export function ComplementaryExamsForm({
                 type="number"
                 step="0.1"
                 {...register("complementaryExams.iah", { valueAsNumber: true })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
+                className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
 
@@ -197,7 +197,7 @@ export function ComplementaryExamsForm({
                 {...register("complementaryExams.iahCentral", {
                   valueAsNumber: true,
                 })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
+                className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
 
@@ -214,7 +214,7 @@ export function ComplementaryExamsForm({
                 {...register("complementaryExams.oxygenDesaturation", {
                   valueAsNumber: true,
                 })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
+                className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
 
@@ -231,7 +231,7 @@ export function ComplementaryExamsForm({
                 {...register("complementaryExams.ct90", {
                   valueAsNumber: true,
                 })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
+                className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
           </div>

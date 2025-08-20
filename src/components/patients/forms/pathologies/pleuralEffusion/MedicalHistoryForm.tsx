@@ -29,7 +29,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
       {/* Tuberculose */}
       <div className="mb-6">
-        <div className="flex items-center mb-4">
+        <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
           <input
             type="checkbox"
             id="tuberculosis.present"
@@ -49,7 +49,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
             <div className="space-y-2">
               <label
                 htmlFor="tuberculosis.date"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="mt-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Date
               </label>
@@ -111,7 +111,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
       {/* Contage TB */}
       <div className="mb-6">
-        <div className="flex items-center mb-4">
+        <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
           <input
             type="checkbox"
             id="tbContact.present"
@@ -131,7 +131,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
             <div className="space-y-2">
               <label
                 htmlFor="tbContact.who"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className=" mt-2 block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Qui?
               </label>
@@ -163,7 +163,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
       {/* Antécédent de pleurésie */}
       <div className="mb-6">
-        <div className="flex items-center mb-4">
+        <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
           <input
             type="checkbox"
             id="pleurisyHistory.present"
@@ -179,8 +179,8 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
         </div>
 
         {pleurisyHistoryPresent && (
-          <div className="ml-6 space-y-4">
-            <div className="flex items-center mb-2">
+          <div className="mt-2 ml-6 space-y-4">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="pleurisyHistory.diagnosed"
@@ -253,7 +253,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
           Antécédents médicaux
         </h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="medicalHistory.hta"
@@ -268,7 +268,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
             </label>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="medicalHistory.diabetes"
@@ -283,7 +283,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
             </label>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="medicalHistory.hepatopathy"
@@ -298,7 +298,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
             </label>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="medicalHistory.renalFailure"
@@ -313,7 +313,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
             </label>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="medicalHistory.generalDisease"
@@ -349,7 +349,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
         <div className="space-y-4">
           {/* Cardiopathie connue */}
           <div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="medicalHistory.knownCardiopathy"
@@ -416,7 +416,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Cancer connu */}
           <div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="medicalHistory.knownCancer"
@@ -488,7 +488,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Prise médicamenteuse chronique */}
           <div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="medicalHistory.chronicMedication"
@@ -523,7 +523,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Exposition professionnelle */}
           <div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="medicalHistory.professionalExposure"
@@ -558,7 +558,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Autres maladies */}
           <div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="medicalHistory.otherDiseases"
@@ -607,7 +607,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Tabagisme actif */}
           <div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="smoking.active"
@@ -629,7 +629,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
                     Type
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    <div className="flex items-center">
+                    <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                       <input
                         type="checkbox"
                         id="smoking.type.cigarette"
@@ -644,7 +644,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
                       </label>
                     </div>
 
-                    <div className="flex items-center">
+                    <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                       <input
                         type="checkbox"
                         id="smoking.type.chicha"
@@ -659,7 +659,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
                       </label>
                     </div>
 
-                    <div className="flex items-center">
+                    <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                       <input
                         type="checkbox"
                         id="smoking.type.chewingTobacco"
@@ -674,7 +674,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
                       </label>
                     </div>
 
-                    <div className="flex items-center">
+                    <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                       <input
                         type="checkbox"
                         id="smoking.type.sniffingTobacco"
@@ -726,7 +726,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
                 </div>
 
                 <div>
-                  <div className="flex items-center mb-2">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="smoking.stopped"
@@ -764,7 +764,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Tabagisme passif */}
           <div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="smoking.passive"
@@ -785,7 +785,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
                   Lieu
                 </label>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="smoking.passiveLocation.home"
@@ -800,7 +800,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="smoking.passiveLocation.work"
@@ -815,7 +815,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
                     </label>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="smoking.passiveLocation.publicPlace"
@@ -843,7 +843,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Cannabis */}
           <div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="substanceUse.cannabis"
@@ -876,7 +876,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
                 </div>
 
                 <div>
-                  <div className="flex items-center mb-2">
+                  <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                     <input
                       type="checkbox"
                       id="substanceUse.cannabisStopped"
@@ -914,7 +914,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
           {/* Alcool */}
           <div>
-            <div className="flex items-center mb-2">
+            <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 id="substanceUse.alcohol"
@@ -931,7 +931,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
             {alcoholUse && (
               <div className="ml-6 space-y-3">
-                <div className="flex items-center mb-2">
+                <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     id="substanceUse.alcoholStopped"
@@ -987,7 +987,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
         {/* Antécédents chirurgicaux */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="otherHistory.surgical"
@@ -1003,7 +1003,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
           </div>
 
           {surgicalHistory && (
-            <div className="ml-6 space-y-2">
+            <div className="mt-2 ml-6 space-y-2">
               <textarea
                 id="otherHistory.surgicalDetails"
                 {...register("otherHistory.surgicalDetails")}
@@ -1016,7 +1016,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
 
         {/* Antécédents familiaux */}
         <div className="mb-6">
-          <div className="flex items-center mb-4">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="otherHistory.family"
@@ -1032,7 +1032,7 @@ export function MedicalHistoryForm({ register, watch }: FormSectionProps) {
           </div>
 
           {familyHistory && (
-            <div className="ml-6 space-y-2">
+            <div className="mt-2 ml-6 space-y-2">
               <textarea
                 id="otherHistory.familyDetails"
                 {...register("otherHistory.familyDetails")}

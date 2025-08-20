@@ -17,7 +17,7 @@ export function BiologyForm({ register, watch }: FormSectionProps) {
       <div className="space-y-6">
         {/* IDR à la tuberculine */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="biology.idrt"
@@ -52,7 +52,7 @@ export function BiologyForm({ register, watch }: FormSectionProps) {
 
         {/* Quantiferon */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="biology.quantiferon"
@@ -90,7 +90,7 @@ export function BiologyForm({ register, watch }: FormSectionProps) {
 
         {/* BK ED des expectorations */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="biology.bkEDSputum"
@@ -125,7 +125,7 @@ export function BiologyForm({ register, watch }: FormSectionProps) {
 
         {/* BK Culture des expectorations */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="biology.bkCSputum"
@@ -160,7 +160,7 @@ export function BiologyForm({ register, watch }: FormSectionProps) {
 
         {/* GeneXpert */}
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="biology.geneXpert"
@@ -308,7 +308,7 @@ export function BiologyForm({ register, watch }: FormSectionProps) {
             </div>
 
             <div className="space-y-2">
-              <div className="flex items-center">
+              <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   id="biology.bnp"

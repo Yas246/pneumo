@@ -1,5 +1,7 @@
 "use client";
 
+import { PatientConsultationReason } from "@/components/patients/PatientConsultationReason";
+import { PatientMedicalHistory } from "@/components/patients/PatientMedicalHistory";
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
 import { pathologies } from "@/config/pathologies";
@@ -21,7 +23,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 // Interface pour étendre le type Patient avec des champs dynamiques
-interface ExtendedPatient extends Patient {
+export interface ExtendedPatient extends Patient {
   pleuralEffusionDiagnosis?: {
     type?: string;
     etiology?: string;
@@ -31,6 +33,119 @@ interface ExtendedPatient extends Patient {
     drainage?: string;
     surgical?: string;
     specificTreatment?: string;
+  };
+  bpcoConsultationReason?: {
+    chronicCough?: boolean;
+    chronicBronchitis?: boolean;
+    chronicDyspnea?: boolean;
+    acuteDyspneaAggravation?: boolean;
+    frequentRespiratoryInfections?: boolean;
+    other?: string;
+  };
+  bpcoMedicalHistory?: {
+    asthma?: boolean;
+    asthmaExacerbationsPerYear?: number;
+    bpco?: boolean;
+    bpcoExacerbationsPerYear?: number;
+    tuberculosis?: boolean;
+    pneumonia?: boolean;
+    recurrentRespiratoryInfections?: boolean;
+    professionalPollutants?: string;
+    domesticPollutants?: string;
+    urbanPollutants?: string;
+    rgo?: boolean;
+    hepatopathy?: string;
+    nephropathy?: string;
+    cardiopathy?: string;
+    connectiveTissue?: string;
+    neoplasia?: string;
+    other?: string;
+    surgicalHistory?: string;
+    vaccinations?: string[];
+    smokingStatus?: string;
+    paquetsAnnees?: number;
+    cannabis?: boolean;
+    alcohol?: boolean;
+  };
+  bpcoClinicalExam?: {
+    performanceScore?: string;
+    generalState?: {
+      goodConsciousness?: boolean;
+      confusion?: boolean;
+      asthenia?: boolean;
+      generalStateAlteration?: boolean;
+    };
+  };
+  bpcoDiagnosis?: {
+    stage?: string;
+    acuteExacerbation?: boolean;
+    bronchialSuperinfection?: boolean;
+    chronicRespiratoryFailure?: boolean;
+  };
+  bpcoTreatment?: {
+    maintenance?: string;
+    prescribedTreatments?: string[];
+    longTermOxygen?: boolean;
+    therapeuticEducation?: boolean;
+    smokingCessation?: boolean;
+  };
+  bpcoFollowUp?: {
+    lastConsultation?: string;
+    nextEvaluation?: string;
+    pneumologyFollowUp?: boolean;
+    vaccinationsUpToDate?: boolean;
+  };
+  bpcoComplementaryExams?: {
+    vems?: number;
+    vemsCvf?: number;
+    goldStage?: string;
+    cpt?: number;
+    vr?: number;
+    crf?: number;
+    ph?: number;
+    pao2?: number;
+    paco2?: number;
+  };
+  bpcoDiagnosticTests?: {
+    spirometry?: {
+      vems?: number;
+      vemsCv?: number;
+      goldStage?: number;
+    };
+    plethysmography?: {
+      cpt?: number;
+      vr?: number;
+      crf?: number;
+    };
+    biology?: {
+      cbc?: {
+        done?: boolean;
+        hemoglobin?: number;
+        mcv?: number;
+        whiteBloodCells?: number;
+      };
+      biochemistry?: {
+        done?: boolean;
+        creatinine?: number;
+        ast?: number;
+        alt?: number;
+        crp?: number;
+      };
+    };
+    microbiology?: {
+      bkSputum?: string;
+      ecbc?: string;
+      pcr?: string;
+    };
+    bronchoscopy?: {
+      findings?: string;
+      bal?: string;
+    };
+    functionalAssessment?: {
+      walkTest?: string;
+      ecg?: string;
+      echocardiography?: string;
+    };
   };
   complementaryExams?: {
     polygraphyDate: string;
@@ -88,6 +203,12 @@ export default function PatientPage() {
               Array.isArray(patientData.pathologies) &&
                 patientData.pathologies.includes("sleep")
             );
+            console.log(
+              "Has bpco:",
+              Array.isArray(patientData.pathologies) &&
+                patientData.pathologies.includes("bpco")
+            );
+
             setPatient(patientData as ExtendedPatient);
           } else {
             console.log("Patient data is null");
@@ -109,7 +230,7 @@ export default function PatientPage() {
 
     setIsArchiving(true);
     try {
-      const newStatus = patient.status === "archived" ? "active" : "archived";
+      const newStatus = patient?.status === "archived" ? "active" : "archived";
       await updatePatientStatus(id, newStatus, user.uid);
 
       // Mettre à jour l'état local
@@ -133,7 +254,7 @@ export default function PatientPage() {
     } catch (error) {
       console.error("Erreur lors de la modification du statut:", error);
       toast.error(
-        patient.status === "archived"
+        patient?.status === "archived"
           ? "Erreur lors de la désarchivation du patient"
           : "Erreur lors de l'archivage du patient"
       );
@@ -211,7 +332,7 @@ export default function PatientPage() {
     },
   };
 
-  const exams = patient.complementaryExams || defaultExams;
+  const exams = patient?.complementaryExams || defaultExams;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -231,7 +352,7 @@ export default function PatientPage() {
             <div className="flex flex-col sm:flex-row justify-between items-start mb-8 gap-4">
               <div>
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                  {patient.firstName} {patient.lastName}
+                  {patient?.firstName} {patient?.lastName}
                 </h1>
                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                   Patient ID: {id}
@@ -275,7 +396,7 @@ export default function PatientPage() {
                       Âge
                     </p>
                     <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {calculateAge(patient.birthDate)} ans
+                      {calculateAge(patient?.birthDate)} ans
                     </p>
                   </div>
                   <div>
@@ -283,7 +404,7 @@ export default function PatientPage() {
                       Téléphone
                     </p>
                     <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {patient.phone}
+                      {patient?.phone}
                     </p>
                   </div>
                   <div>
@@ -291,7 +412,7 @@ export default function PatientPage() {
                       Profession
                     </p>
                     <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {patient.profession}
+                      {patient?.profession}
                     </p>
                   </div>
                   <div>
@@ -299,7 +420,7 @@ export default function PatientPage() {
                       Adresse
                     </p>
                     <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {patient.address}
+                      {patient?.address}
                     </p>
                   </div>
                   <div>
@@ -307,7 +428,7 @@ export default function PatientPage() {
                       Médecin traitant
                     </p>
                     <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {patient.treatingDoctor}
+                      {patient?.treatingDoctor}
                     </p>
                   </div>
                   <div>
@@ -315,7 +436,7 @@ export default function PatientPage() {
                       Couverture Sociale
                     </p>
                     <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {patient.socialSecurity}
+                      {patient?.socialSecurity}
                     </p>
                   </div>
                 </div>
@@ -327,7 +448,7 @@ export default function PatientPage() {
                   Pathologies
                 </h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {Array.isArray(patient.pathologies)
+                  {Array.isArray(patient?.pathologies)
                     ? patient.pathologies.map((pathologyId) => {
                         const pathology = pathologies.find(
                           (p) => p.id === pathologyId
@@ -372,7 +493,7 @@ export default function PatientPage() {
                       Raison
                     </p>
                     <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {patient.consultationReason || "Non spécifié"}
+                      {patient?.consultationReason || "Non spécifié"}
                     </p>
                   </div>
                   <div>
@@ -380,12 +501,12 @@ export default function PatientPage() {
                       Durée des symptômes
                     </p>
                     <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                      {patient.symptomsDuration || "Non spécifié"}
+                      {patient?.symptomsDuration || "Non spécifié"}
                     </p>
                   </div>
 
                   {/* Afficher les symptômes diurnes et nocturnes uniquement pour la pathologie du sommeil */}
-                  {Array.isArray(patient.pathologies) &&
+                  {Array.isArray(patient?.pathologies) &&
                     patient.pathologies.includes("sleep") && (
                       <>
                         <div>
@@ -461,6 +582,9 @@ export default function PatientPage() {
                         </div>
                       </>
                     )}
+
+                  {/* Consultation Reason - Dynamic par pathologie */}
+                  <PatientConsultationReason patient={patient} />
                 </div>
               </div>
 
@@ -534,6 +658,9 @@ export default function PatientPage() {
                         </p>
                       )}
                     </div>
+
+                    {/* Antécédents médicaux - Dynamiques par pathologie */}
+                    <PatientMedicalHistory patient={patient} />
                   </div>
                 </div>
               </div>
@@ -545,53 +672,53 @@ export default function PatientPage() {
                 </h2>
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {patient.clinicalExam?.weight > 0 && (
+                    {patient?.clinicalExam?.weight > 0 && (
                       <div>
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                           Poids
                         </p>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                          {patient.clinicalExam.weight} kg
+                          {patient?.clinicalExam?.weight} kg
                         </p>
                       </div>
                     )}
-                    {patient.clinicalExam?.height > 0 && (
+                    {patient?.clinicalExam?.height > 0 && (
                       <div>
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                           Taille
                         </p>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                          {patient.clinicalExam.height} cm
+                          {patient?.clinicalExam?.height} cm
                         </p>
                       </div>
                     )}
-                    {patient.clinicalExam?.bmi > 0 && (
+                    {patient?.clinicalExam?.bmi > 0 && (
                       <div>
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                           IMC
                         </p>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                          {patient.clinicalExam.bmi} kg/m²
+                          {patient?.clinicalExam?.bmi} kg/m²
                         </p>
                       </div>
                     )}
-                    {patient.clinicalExam?.neckCircumference > 0 && (
+                    {patient?.clinicalExam?.neckCircumference > 0 && (
                       <div>
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                           Tour de cou
                         </p>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                          {patient.clinicalExam.neckCircumference} cm
+                          {patient?.clinicalExam?.neckCircumference} cm
                         </p>
                       </div>
                     )}
-                    {patient.clinicalExam?.abdominalPerimeter > 0 && (
+                    {patient?.clinicalExam?.abdominalPerimeter > 0 && (
                       <div>
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
                           Périmètre abdominal
                         </p>
                         <p className="mt-1 text-sm text-gray-900 dark:text-white">
-                          {patient.clinicalExam.abdominalPerimeter} cm
+                          {patient?.clinicalExam?.abdominalPerimeter} cm
                         </p>
                       </div>
                     )}
@@ -636,6 +763,62 @@ export default function PatientPage() {
                       </p>
                     </div>
                   )}
+
+                  {/* Examen clinique spécifique BPCO */}
+                  {Array.isArray(patient?.pathologies) &&
+                    patient.pathologies.includes("bpco") && (
+                      <>
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Score de performance
+                          </p>
+                          <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                            {patient.bpcoClinicalExam?.performanceScore ||
+                              "Non spécifié"}
+                          </p>
+                        </div>
+
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            État de conscience
+                          </p>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {patient.bpcoClinicalExam?.generalState
+                              ?.goodConsciousness && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                                Bonne conscience
+                              </span>
+                            )}
+                            {patient.bpcoClinicalExam?.generalState
+                              ?.confusion && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                                Confusion
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Signes généraux
+                          </p>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {patient.bpcoClinicalExam?.generalState
+                              ?.asthenia && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300">
+                                Asthénie
+                              </span>
+                            )}
+                            {patient.bpcoClinicalExam?.generalState
+                              ?.generalStateAlteration && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300">
+                                Altération de l&apos;état général
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </>
+                    )}
                 </div>
               </div>
 
@@ -646,7 +829,7 @@ export default function PatientPage() {
                 </h2>
                 <div className="space-y-6">
                   {/* Examens spécifiques à la pathologie du sommeil */}
-                  {Array.isArray(patient.pathologies) &&
+                  {Array.isArray(patient?.pathologies) &&
                     patient.pathologies.includes("sleep") && (
                       <>
                         {/* Images et Vidéos */}
@@ -936,11 +1119,131 @@ export default function PatientPage() {
                     </div>
                   )}
 
+                  {/* Examens spécifiques BPCO */}
+                  {Array.isArray(patient?.pathologies) &&
+                    patient.pathologies.includes("bpco") && (
+                      <>
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                            EFR / Spirométrie BPCO
+                          </p>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {patient.bpcoComplementaryExams?.vems && (
+                              <div>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                  VEMS
+                                </p>
+                                <p className="text-sm text-gray-900 dark:text-white">
+                                  {patient.bpcoComplementaryExams?.vems} L
+                                </p>
+                              </div>
+                            )}
+                            {patient.bpcoComplementaryExams?.vemsCvf && (
+                              <div>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                  VEMS/CV
+                                </p>
+                                <p className="text-sm text-gray-900 dark:text-white">
+                                  {patient.bpcoComplementaryExams?.vemsCvf} %
+                                </p>
+                              </div>
+                            )}
+                            {patient.bpcoComplementaryExams?.goldStage && (
+                              <div>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                  Stade GOLD
+                                </p>
+                                <p className="text-sm text-gray-900 dark:text-white">
+                                  {patient.bpcoComplementaryExams?.goldStage}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                            Pléthysmographie BPCO
+                          </p>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {patient.bpcoComplementaryExams?.cpt && (
+                              <div>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                  CPT
+                                </p>
+                                <p className="text-sm text-gray-900 dark:text-white">
+                                  {patient.bpcoComplementaryExams?.cpt}
+                                </p>
+                              </div>
+                            )}
+                            {patient.bpcoComplementaryExams?.vr && (
+                              <div>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                  VR
+                                </p>
+                                <p className="text-sm text-gray-900 dark:text-white">
+                                  {patient.bpcoComplementaryExams?.vr}
+                                </p>
+                              </div>
+                            )}
+                            {patient.bpcoComplementaryExams?.crf && (
+                              <div>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                  CRF
+                                </p>
+                                <p className="text-sm text-gray-900 dark:text-white">
+                                  {patient.bpcoComplementaryExams?.crf}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
+                            Gaz du sang BPCO
+                          </p>
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {patient.bpcoComplementaryExams?.ph && (
+                              <div>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                  pH
+                                </p>
+                                <p className="text-sm text-gray-900 dark:text-white">
+                                  {patient.bpcoComplementaryExams?.ph}
+                                </p>
+                              </div>
+                            )}
+                            {patient.bpcoComplementaryExams?.pao2 && (
+                              <div>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                  PaO2
+                                </p>
+                                <p className="text-sm text-gray-900 dark:text-white">
+                                  {patient.bpcoComplementaryExams?.pao2} mmHg
+                                </p>
+                              </div>
+                            )}
+                            {patient.bpcoComplementaryExams?.paco2 && (
+                              <div>
+                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                  PaCO2
+                                </p>
+                                <p className="text-sm text-gray-900 dark:text-white">
+                                  {patient.bpcoComplementaryExams?.paco2} mmHg
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </>
+                    )}
+
                   {/* Examens spécifiques à l'épanchement pleural à implémenter ici si nécessaire */}
-                  {Array.isArray(patient.pathologies) &&
+                  {Array.isArray(patient?.pathologies) &&
                     patient.pathologies.includes("pleuralEffusion") && (
                       <>
-                        {/* Section pour les examens spécifiques à l'épanchement pleural 
+                        {/* Section pour les examens spécifiques à l'épanchement pleural
                          À compléter avec les examens spécifiques à cette pathologie */}
                       </>
                     )}
@@ -954,7 +1257,7 @@ export default function PatientPage() {
                 </h2>
                 <div className="space-y-4">
                   {/* Diagnostic pour la pathologie du sommeil */}
-                  {Array.isArray(patient.pathologies) &&
+                  {Array.isArray(patient?.pathologies) &&
                     patient.pathologies.includes("sleep") && (
                       <div className="flex flex-wrap gap-2">
                         {patient.diagnosis?.saos && (
@@ -985,8 +1288,46 @@ export default function PatientPage() {
                       </div>
                     )}
 
+                  {/* Diagnostic BPCO */}
+                  {Array.isArray(patient?.pathologies) &&
+                    patient.pathologies.includes("bpco") && (
+                      <div className="space-y-3">
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Stade BPCO
+                          </p>
+                          <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                            {patient.bpcoDiagnosis?.stage || "Non spécifié"}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Complications
+                          </p>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {patient.bpcoDiagnosis?.acuteExacerbation && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300">
+                                Exacerbation aiguë
+                              </span>
+                            )}
+                            {patient.bpcoDiagnosis?.bronchialSuperinfection && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300">
+                                Surinfection bronchique
+                              </span>
+                            )}
+                            {patient.bpcoDiagnosis
+                              ?.chronicRespiratoryFailure && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300">
+                                Insuffisance respiratoire chronique
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                   {/* Diagnostic pour l'épanchement pleural */}
-                  {Array.isArray(patient.pathologies) &&
+                  {Array.isArray(patient?.pathologies) &&
                     patient.pathologies.includes("pleuralEffusion") && (
                       <div className="space-y-3">
                         <div>
@@ -1019,7 +1360,7 @@ export default function PatientPage() {
                 </h2>
                 <div className="space-y-6">
                   {/* Traitement pour la pathologie du sommeil */}
-                  {Array.isArray(patient.pathologies) &&
+                  {Array.isArray(patient?.pathologies) &&
                     patient.pathologies.includes("sleep") && (
                       <>
                         {patient.treatment?.hygieneDietetic?.weightLoss && (
@@ -1078,8 +1419,83 @@ export default function PatientPage() {
                       </>
                     )}
 
+                  {/* Traitement BPCO */}
+                  {Array.isArray(patient?.pathologies) &&
+                    patient.pathologies.includes("bpco") && (
+                      <div className="space-y-4">
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Traitement de fond
+                          </p>
+                          <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                            {patient.bpcoTreatment?.maintenance ||
+                              "Non spécifié"}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Traitements prescrits
+                          </p>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {Array.isArray(
+                              patient?.bpcoTreatment?.prescribedTreatments
+                            ) &&
+                              patient.bpcoTreatment.prescribedTreatments.includes(
+                                "antibiotherapy"
+                              ) && (
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                                  Antibiotothérapie
+                                </span>
+                              )}
+                            {Array.isArray(
+                              patient?.bpcoTreatment?.prescribedTreatments
+                            ) &&
+                              patient.bpcoTreatment.prescribedTreatments.includes(
+                                "corticosteroidsOral"
+                              ) && (
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                                  Corticoïdes oraux
+                                </span>
+                              )}
+                            {Array.isArray(
+                              patient?.bpcoTreatment?.prescribedTreatments
+                            ) &&
+                              patient.bpcoTreatment.prescribedTreatments.includes(
+                                "respiratoryPhysiotherapy"
+                              ) && (
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                                  Kinésithérapie respiratoire
+                                </span>
+                              )}
+                          </div>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                            Autres traitements
+                          </p>
+                          <div className="mt-2 flex flex-wrap gap-2">
+                            {patient.bpcoTreatment?.longTermOxygen && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                                Oxygénothérapie de longue durée
+                              </span>
+                            )}
+                            {patient.bpcoTreatment?.therapeuticEducation && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                                Éducation thérapeutique
+                              </span>
+                            )}
+                            {patient.bpcoTreatment?.smokingCessation && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                                Sevrage tabagique
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                   {/* Traitement pour l'épanchement pleural */}
-                  {Array.isArray(patient.pathologies) &&
+                  {Array.isArray(patient?.pathologies) &&
                     patient.pathologies.includes("pleuralEffusion") && (
                       <div className="space-y-4">
                         <div>
@@ -1124,6 +1540,72 @@ export default function PatientPage() {
               </div>
             </div>
           </div>
+
+          {/* Suivi BPCO */}
+          {Array.isArray(patient?.pathologies) &&
+            patient.pathologies.includes("bpco") && (
+              <div className="mt-8 px-4 sm:px-0">
+                <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
+                  <div className="px-6 py-5">
+                    <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                      Suivi BPCO
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Dernière consultation
+                        </p>
+                        <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                          {patient.bpcoFollowUp?.lastConsultation ||
+                            "Non spécifié"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Prochaine évaluation
+                        </p>
+                        <p className="mt-1 text-sm text-gray-900 dark:text-white">
+                          {patient.bpcoFollowUp?.nextEvaluation ||
+                            "Non spécifié"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Suivi en pneumologie
+                        </p>
+                        <div className="mt-2">
+                          {patient.bpcoFollowUp?.pneumologyFollowUp ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                              Oui
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-900/30 text-gray-800 dark:text-gray-300">
+                              Non
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                          Vaccinations à jour
+                        </p>
+                        <div className="mt-2">
+                          {patient.bpcoFollowUp?.vaccinationsUpToDate ? (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                              À jour
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300">
+                              À mettre à jour
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
           <div className="text-right mt-8 px-4 sm:px-0">
             {canArchive && (

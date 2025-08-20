@@ -10,7 +10,7 @@ export function FamilyHistoryForm({ register, watch }: FormSectionProps) {
       </h3>
 
       <div className="space-y-6">
-        <div className="flex items-center">
+        <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
           <input
             type="checkbox"
             id="familyHistory.similarCaseInFamily"
@@ -26,7 +26,7 @@ export function FamilyHistoryForm({ register, watch }: FormSectionProps) {
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
               id="familyHistory.autoImmuneDisease.present"
