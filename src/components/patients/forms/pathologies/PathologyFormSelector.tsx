@@ -1,4 +1,5 @@
 import { FormSectionProps } from "../types";
+import { AsthmaForm } from "./asthma";
 import { BPCOForm } from "./bpco";
 import { PIDForm } from "./pid";
 import { PleuralEffusionForm } from "./pleuralEffusion";
@@ -10,7 +11,9 @@ interface PathologyFormSelectorProps extends FormSectionProps {
 
 export function PathologyFormSelector(props: PathologyFormSelectorProps) {
   // Render different forms based on selected pathologies
-  if (props.selectedPathologies.includes("bpco")) {
+  if (props.selectedPathologies.includes("asthma")) {
+    return <AsthmaForm {...props} />;
+  } else if (props.selectedPathologies.includes("bpco")) {
     return <BPCOForm {...props} />;
   } else if (props.selectedPathologies.includes("pid")) {
     return <PIDForm {...props} />;

@@ -93,6 +93,76 @@ const medicalHistoryConfig = {
       },
     ],
   },
+  asthma: {
+    sections: [
+      {
+        title: "Antécédents médicaux Asthme",
+        items: [
+          { key: "knownAsthma", label: "Asthme connu" },
+          { key: "asthmaSince", label: "Asthme depuis", prefix: "• " },
+          { key: "allergicRhinitis", label: "Rhinite allergique" },
+          {
+            key: "eczemaAtopicDermatitis",
+            label: "Eczéma / Dermatite atopique",
+          },
+          { key: "gerd", label: "RGO" },
+          { key: "other", label: "Autres", prefix: "• " },
+        ],
+      },
+      {
+        title: "Antécédents chirurgicaux Asthme",
+        key: "surgicalHistory",
+        isTextArea: true,
+        placeholder: "Aucun",
+      },
+      {
+        title: "Allergies connues",
+        items: [
+          {
+            key: "respiratoryAllergens",
+            label: "Allergènes respiratoires",
+            isArray: true,
+            color:
+              "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300",
+          },
+          {
+            key: "drugAllergies",
+            label: "Allergies médicamenteuses",
+            hasCount: "drugAllergiesDetails",
+            suffix: "",
+          },
+          {
+            key: "otherAllergies",
+            label: "Autres allergies",
+            hasCount: "otherAllergiesDetails",
+            suffix: "",
+          },
+        ],
+      },
+      {
+        title: "Antécédents familiaux",
+        items: [
+          { key: "parentAsthmatic", label: "Parent asthmatique" },
+          { key: "familyAtopy", label: "Atopie familiale" },
+          { key: "familyOther", label: "Autres", prefix: "• " },
+        ],
+      },
+      {
+        title: "Tabac",
+        items: [
+          { key: "smokingStatus", label: "Statut tabagique", prefix: "• " },
+          {
+            key: "tobaccoQuantity",
+            label: "Quantité (Tabac)",
+            prefix: "• ",
+            suffix: " PA",
+          },
+          { key: "cannabis", label: "Cannabis", prefix: "• " },
+          { key: "otherToxic", label: "Autres (Toxiques)", prefix: "• " },
+        ],
+      },
+    ],
+  },
 };
 
 interface PatientMedicalHistoryProps {

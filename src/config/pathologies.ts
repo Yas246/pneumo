@@ -49,4 +49,10 @@ export const pathologies: Pathology[] = [
     icon: "/icons/bpco.svg",
     description: "Diagnostic et traitement de la BPCO",
   },
+  {
+    id: "asthma",
+    name: "Asthme",
+    icon: "/icons/asthma.svg",
+    description: "Diagnostic et traitement de l'asthme",
+  },
 ];

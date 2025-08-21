@@ -289,12 +289,13 @@ export function PatientForm({
     }
   };
 
-  // Si ce n'est pas la pathologie sleep ou pleuralEffusion, afficher uniquement le message
+  // Si ce n'est pas une pathologie supportée, afficher uniquement le message
   if (
     pathologies[0] !== "sleep" &&
     pathologies[0] !== "pleuralEffusion" &&
     pathologies[0] !== "pid" &&
-    pathologies[0] !== "bpco"
+    pathologies[0] !== "bpco" &&
+    pathologies[0] !== "asthma"
   ) {
     return (
       <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg text-center">

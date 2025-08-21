@@ -2,6 +2,7 @@
 
 import { PatientConsultationReason } from "@/components/patients/PatientConsultationReason";
 import { PatientMedicalHistory } from "@/components/patients/PatientMedicalHistory";
+import { PatientSectionRenderer } from "@/components/patients/PatientSectionRenderer";
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
 import { pathologies } from "@/config/pathologies";
@@ -105,6 +106,181 @@ export interface ExtendedPatient extends Patient {
     ph?: number;
     pao2?: number;
     paco2?: number;
+  };
+  // Champs spécifiques Asthme
+  asthmaConsultationReason?: {
+    expiratoryDyspnea?: boolean;
+    dryCough?: boolean;
+    nocturnalCrisis?: boolean;
+    thoracicOppression?: boolean;
+    other?: boolean;
+    otherDetails?: string;
+  };
+  asthmaMedicalHistory?: {
+    knownAsthma?: boolean;
+    asthmaSince?: string;
+    allergicRhinitis?: boolean;
+    eczemaAtopicDermatitis?: boolean;
+    gerd?: boolean;
+    other?: string;
+    surgicalHistory?: string;
+    respiratoryAllergens?: string[];
+    drugAllergies?: boolean;
+    drugAllergiesDetails?: string;
+    otherAllergies?: boolean;
+    otherAllergiesDetails?: string;
+    familyHistory?: string[];
+    parentAsthmatic?: boolean;
+    familyAtopy?: boolean;
+    familyOther?: string;
+    smokingStatus?: string;
+    tobaccoQuantity?: number;
+    cannabis?: boolean;
+    otherToxic?: string;
+  };
+  asthmaDiseaseHistory?: {
+    firstSymptomOnset?: string;
+    evolution?: string;
+    previousHospitalizations?: boolean;
+    hospitalizationsCount?: number;
+    symptomOnset?: string;
+    crisisFrequency?: string;
+    crisisTiming?: string[];
+    crisisDuration?: string;
+    triggeringFactors?: string[];
+    otherTriggeringFactor?: string;
+    sabaResponse?: string;
+    hospitalUrgency?: boolean;
+    hospitalUrgencyCount?: number;
+    intubationResuscitation?: boolean;
+    intubationCount?: number;
+    otherDiseaseHistory?: string;
+  };
+  asthmaGeneralState?: {
+    consciousness?: string[];
+    asthenia?: boolean;
+    generalStateAlteration?: boolean;
+    bloodPressure?: string;
+    heartRate?: number;
+    temperature?: number;
+    spO2?: number;
+    weight?: number;
+    height?: number;
+    bmi?: number;
+  };
+  asthmaRespiratorySystem?: {
+    vesicularMurmur?: string;
+    auscultationAnomalies?: string[];
+    respiratoryDistressSigns?: string[];
+    pleuropulmonarySyndromes?: string[];
+    syndromeLocation?: string;
+    otherRespiratory?: string;
+  };
+  asthmaCardiovascularSystem?: {
+    regularBdc?: boolean;
+    heartMurmur?: boolean;
+    murmurTiming?: string;
+    murmurLocation?: string[];
+    murmurType?: string[];
+    murmurIntensity?: number;
+    murmurIrradiation?: string;
+    muffledNoises?: boolean;
+    pericardialFriction?: boolean;
+    irregularRhythm?: boolean;
+    lowerLimbEdema?: boolean;
+    rhj?: boolean;
+    tjPlus?: boolean;
+    marbling?: boolean;
+  };
+  asthmaDigestiveSystem?: {
+    abdomenInspection?: string[];
+    abdomenPalpation?: string[];
+    hepatomegaly?: boolean;
+    hepatomegalySize?: number;
+    splenomegaly?: boolean;
+    splenomegalySize?: number;
+    abdomenPercussion?: string[];
+    abdomenAuscultation?: string[];
+  };
+  asthmaUrinarySystem?: {
+    diuresis?: string;
+    bladderGlobe?: boolean;
+    urinaryFunctionalSigns?: string[];
+    puBuPerformed?: boolean;
+    puBuResult?: string;
+  };
+  asthmaMusculoskeletalSystem?: {
+    symptoms?: string[];
+    mobility?: string;
+    affectedJoints?: string;
+  };
+  asthmaNervousSystem?: {
+    consciousness?: string;
+    neurologicalSigns?: string[];
+    motorDeficit?: string;
+    sensoryDeficit?: string;
+    rot?: string;
+    rotDescription?: string;
+    balance?: string[];
+  };
+  asthmaSkinMucous?: {
+    inspection?: string[];
+    dermatologicalLesions?: string;
+  };
+  asthmaOrlEyesMouth?: {
+    conjunctiva?: string;
+    oralCavity?: string[];
+    tonsils?: string;
+    orlSymptoms?: string[];
+  };
+  asthmaOtherClinicalRemarks?: {
+    otherClinicalRemarks?: string;
+  };
+  asthmaComplementaryExams?: {
+    morningPef?: number;
+    eveningPef?: number;
+    efrReversibleObstruction?: boolean;
+    efrVems?: number;
+    efrVemsCv?: number;
+    chestXray?: string[];
+    chestXrayOther?: string;
+    nfsHyperEosinophilia?: boolean;
+    hyperEosinophiliaValue?: number;
+    totalIge?: number;
+    reversibilityTest?: string;
+    variationPercentage?: number;
+    variationMl?: number;
+    positivePrickTests?: string;
+    otherComplementaryExams?: string;
+  };
+  asthmaSeverityClassification?: {
+    classification?: string[];
+    allergicAsthma?: boolean;
+    nonAllergicAsthma?: boolean;
+    intermittentAsthma?: boolean;
+    persistentAsthmaSeverity?: string;
+    exerciseInducedAsthma?: boolean;
+    otherForms?: string;
+  };
+  asthmaTreatment?: {
+    maintenanceTreatment?: {
+      inhaledCorticosteroids?: string;
+      csiDose?: number;
+      csiFrequency?: number;
+      laba?: string;
+      antiLeukotrienes?: boolean;
+      otherMaintenance?: string;
+    };
+    crisisTreatment?: {
+      salbutamolInstruction?: string;
+      otherCrisis?: string;
+    };
+    associatedMeasures?: string[];
+  };
+  asthmaFollowUp?: {
+    nextConsultation?: string;
+    spirometryDelay?: number;
+    controlObjective?: string;
   };
   bpcoDiagnosticTests?: {
     spirometry?: {
@@ -670,6 +846,11 @@ export default function PatientPage() {
                 <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
                   Examen clinique
                 </h2>
+                <PatientSectionRenderer
+                  patient={patient}
+                  sectionName="clinicalExam"
+                  dataPrefix=""
+                />
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {patient?.clinicalExam?.weight > 0 && (
@@ -827,6 +1008,11 @@ export default function PatientPage() {
                 <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
                   Examens complémentaires
                 </h2>
+                <PatientSectionRenderer
+                  patient={patient}
+                  sectionName="complementaryExams"
+                  dataPrefix="ComplementaryExams"
+                />
                 <div className="space-y-6">
                   {/* Examens spécifiques à la pathologie du sommeil */}
                   {Array.isArray(patient?.pathologies) &&
@@ -1255,6 +1441,11 @@ export default function PatientPage() {
                 <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
                   Diagnostic
                 </h2>
+                <PatientSectionRenderer
+                  patient={patient}
+                  sectionName="diagnosis"
+                  dataPrefix="SeverityClassification"
+                />
                 <div className="space-y-4">
                   {/* Diagnostic pour la pathologie du sommeil */}
                   {Array.isArray(patient?.pathologies) &&
@@ -1358,6 +1549,11 @@ export default function PatientPage() {
                 <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
                   Traitement
                 </h2>
+                <PatientSectionRenderer
+                  patient={patient}
+                  sectionName="treatment"
+                  dataPrefix="Treatment"
+                />
                 <div className="space-y-6">
                   {/* Traitement pour la pathologie du sommeil */}
                   {Array.isArray(patient?.pathologies) &&

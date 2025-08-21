@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { asthmaSchema } from "./forms/pathologies/asthma/schema";
 import { bpcoSchema } from "./forms/pathologies/bpco/schema";
 import { pidSchema } from "./forms/pathologies/pid/schema";
 import { pleuralEffusionSchema } from "./forms/pathologies/pleuralEffusion/schema";
@@ -24,6 +25,7 @@ export const patientSchema = z.object({
   ...pleuralEffusionSchema.shape,
   ...pidSchema.shape,
   ...bpcoSchema.shape,
+  ...asthmaSchema.shape,
 
   // Motif de consultation
   consultationReason: z.string().optional(),

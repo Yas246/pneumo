@@ -52,6 +52,42 @@ const consultationReasonsConfig = {
       // Configuration pour la pathologie du sommeil
     ],
   },
+  asthma: {
+    title: "Motifs de consultation Asthme",
+    reasons: [
+      {
+        key: "expiratoryDyspnea" as keyof ExtendedPatient["asthmaConsultationReason"],
+        label: "Dyspnée expiratoire",
+        color:
+          "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300",
+      },
+      {
+        key: "dryCough" as keyof ExtendedPatient["asthmaConsultationReason"],
+        label: "Toux sèche",
+        color:
+          "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300",
+      },
+      {
+        key: "nocturnalCrisis" as keyof ExtendedPatient["asthmaConsultationReason"],
+        label: "Crise nocturne",
+        color:
+          "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300",
+      },
+      {
+        key: "thoracicOppression" as keyof ExtendedPatient["asthmaConsultationReason"],
+        label: "Oppression thoracique",
+        color:
+          "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300",
+      },
+      {
+        key: "other" as keyof ExtendedPatient["asthmaConsultationReason"],
+        label: "Autre",
+        color:
+          "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300",
+        isOther: true,
+      },
+    ],
+  },
 };
 
 interface PatientConsultationReasonProps {
