@@ -64,7 +64,8 @@ export function PatientSectionRenderer({
         }
       } else {
         // Pour les autres pathologies
-        sectionData = patient[`${pathologyId}${dataPrefix}` as keyof ExtendedPatient];
+        sectionData =
+          patient[`${pathologyId}${dataPrefix}` as keyof ExtendedPatient];
       }
 
       if (!sectionData) return null;
@@ -113,16 +114,24 @@ export function PatientSectionRenderer({
                         {subSection.items.map((item: any) => {
                           // Pour asthma, on doit d'abord trouver le bon sous-objet
                           let value: any = null;
-                          if (pathologyId === "asthma" && (sectionName as string) === "clinicalExam") {
+                          if (
+                            pathologyId === "asthma" &&
+                            (sectionName as string) === "clinicalExam"
+                          ) {
                             for (const subObjKey of Object.keys(sectionData)) {
                               const subObj = sectionData[subObjKey];
-                              if (subObj && typeof subObj === 'object' && item.key in subObj) {
+                              if (
+                                subObj &&
+                                typeof subObj === "object" &&
+                                item.key in subObj
+                              ) {
                                 value = subObj[item.key as keyof typeof subObj];
                                 break;
                               }
                             }
                           } else {
-                            value = sectionData[item.key as keyof typeof sectionData];
+                            value =
+                              sectionData[item.key as keyof typeof sectionData];
                           }
 
                           if (!value && !item.isArray) return null;
@@ -131,16 +140,31 @@ export function PatientSectionRenderer({
                           if (item.hasCount) {
                             // Pour asthma, chercher la valeur de comptage dans les sous-objets
                             let countValue: any = null;
-                            if (pathologyId === "asthma" && (sectionName as string) === "clinicalExam") {
-                              for (const subObjKey of Object.keys(sectionData)) {
+                            if (
+                              pathologyId === "asthma" &&
+                              (sectionName as string) === "clinicalExam"
+                            ) {
+                              for (const subObjKey of Object.keys(
+                                sectionData
+                              )) {
                                 const subObj = sectionData[subObjKey];
-                                if (subObj && typeof subObj === 'object' && item.hasCount in subObj) {
-                                  countValue = subObj[item.hasCount as keyof typeof subObj];
+                                if (
+                                  subObj &&
+                                  typeof subObj === "object" &&
+                                  item.hasCount in subObj
+                                ) {
+                                  countValue =
+                                    subObj[
+                                      item.hasCount as keyof typeof subObj
+                                    ];
                                   break;
                                 }
                               }
                             } else {
-                              countValue = sectionData[item.hasCount as keyof typeof sectionData];
+                              countValue =
+                                sectionData[
+                                  item.hasCount as keyof typeof sectionData
+                                ];
                             }
                             return (
                               <p
@@ -213,16 +237,24 @@ export function PatientSectionRenderer({
                         {subSection.items.map((item: any) => {
                           // Pour asthma, on doit d'abord trouver le bon sous-objet
                           let value: any = null;
-                          if (pathologyId === "asthma" && (sectionName as string) === "clinicalExam") {
+                          if (
+                            pathologyId === "asthma" &&
+                            (sectionName as string) === "clinicalExam"
+                          ) {
                             for (const subObjKey of Object.keys(sectionData)) {
                               const subObj = sectionData[subObjKey];
-                              if (subObj && typeof subObj === 'object' && item.key in subObj) {
+                              if (
+                                subObj &&
+                                typeof subObj === "object" &&
+                                item.key in subObj
+                              ) {
                                 value = subObj[item.key as keyof typeof subObj];
                                 break;
                               }
                             }
                           } else {
-                            value = sectionData[item.key as keyof typeof sectionData];
+                            value =
+                              sectionData[item.key as keyof typeof sectionData];
                           }
 
                           if (!value && !item.isArray && !item.condition)
@@ -232,16 +264,31 @@ export function PatientSectionRenderer({
                           if (item.condition) {
                             // Pour asthma, chercher la condition dans les sous-objets
                             let conditionValue: any = null;
-                            if (pathologyId === "asthma" && (sectionName as string) === "clinicalExam") {
-                              for (const subObjKey of Object.keys(sectionData)) {
+                            if (
+                              pathologyId === "asthma" &&
+                              (sectionName as string) === "clinicalExam"
+                            ) {
+                              for (const subObjKey of Object.keys(
+                                sectionData
+                              )) {
                                 const subObj = sectionData[subObjKey];
-                                if (subObj && typeof subObj === 'object' && item.condition in subObj) {
-                                  conditionValue = subObj[item.condition as keyof typeof subObj];
+                                if (
+                                  subObj &&
+                                  typeof subObj === "object" &&
+                                  item.condition in subObj
+                                ) {
+                                  conditionValue =
+                                    subObj[
+                                      item.condition as keyof typeof subObj
+                                    ];
                                   break;
                                 }
                               }
                             } else {
-                              conditionValue = sectionData[item.condition as keyof typeof sectionData];
+                              conditionValue =
+                                sectionData[
+                                  item.condition as keyof typeof sectionData
+                                ];
                             }
                             if (!conditionValue) return null;
                           }
@@ -250,16 +297,31 @@ export function PatientSectionRenderer({
                           if (item.hasCount) {
                             // Pour asthma, chercher la valeur de comptage dans les sous-objets
                             let countValue: any = null;
-                            if (pathologyId === "asthma" && (sectionName as string) === "clinicalExam") {
-                              for (const subObjKey of Object.keys(sectionData)) {
+                            if (
+                              pathologyId === "asthma" &&
+                              (sectionName as string) === "clinicalExam"
+                            ) {
+                              for (const subObjKey of Object.keys(
+                                sectionData
+                              )) {
                                 const subObj = sectionData[subObjKey];
-                                if (subObj && typeof subObj === 'object' && item.hasCount in subObj) {
-                                  countValue = subObj[item.hasCount as keyof typeof subObj];
+                                if (
+                                  subObj &&
+                                  typeof subObj === "object" &&
+                                  item.hasCount in subObj
+                                ) {
+                                  countValue =
+                                    subObj[
+                                      item.hasCount as keyof typeof subObj
+                                    ];
                                   break;
                                 }
                               }
                             } else {
-                              countValue = sectionData[item.hasCount as keyof typeof sectionData];
+                              countValue =
+                                sectionData[
+                                  item.hasCount as keyof typeof sectionData
+                                ];
                             }
                             return (
                               <p
@@ -328,16 +390,24 @@ export function PatientSectionRenderer({
                         {subSection.items.map((item: any) => {
                           // Pour asthma, on doit d'abord trouver le bon sous-objet
                           let value: any = null;
-                          if (pathologyId === "asthma" && (sectionName as string) === "clinicalExam") {
+                          if (
+                            pathologyId === "asthma" &&
+                            (sectionName as string) === "clinicalExam"
+                          ) {
                             for (const subObjKey of Object.keys(sectionData)) {
                               const subObj = sectionData[subObjKey];
-                              if (subObj && typeof subObj === 'object' && item.key in subObj) {
+                              if (
+                                subObj &&
+                                typeof subObj === "object" &&
+                                item.key in subObj
+                              ) {
                                 value = subObj[item.key as keyof typeof subObj];
                                 break;
                               }
                             }
                           } else {
-                            value = sectionData[item.key as keyof typeof sectionData];
+                            value =
+                              sectionData[item.key as keyof typeof sectionData];
                           }
 
                           if (!value && !item.condition) return null;
@@ -346,16 +416,31 @@ export function PatientSectionRenderer({
                           if (item.condition) {
                             // Pour asthma, chercher la condition dans les sous-objets
                             let conditionValue: any = null;
-                            if (pathologyId === "asthma" && (sectionName as string) === "clinicalExam") {
-                              for (const subObjKey of Object.keys(sectionData)) {
+                            if (
+                              pathologyId === "asthma" &&
+                              (sectionName as string) === "clinicalExam"
+                            ) {
+                              for (const subObjKey of Object.keys(
+                                sectionData
+                              )) {
                                 const subObj = sectionData[subObjKey];
-                                if (subObj && typeof subObj === 'object' && item.condition in subObj) {
-                                  conditionValue = subObj[item.condition as keyof typeof subObj];
+                                if (
+                                  subObj &&
+                                  typeof subObj === "object" &&
+                                  item.condition in subObj
+                                ) {
+                                  conditionValue =
+                                    subObj[
+                                      item.condition as keyof typeof subObj
+                                    ];
                                   break;
                                 }
                               }
                             } else {
-                              conditionValue = sectionData[item.condition as keyof typeof sectionData];
+                              conditionValue =
+                                sectionData[
+                                  item.condition as keyof typeof sectionData
+                                ];
                             }
                             if (!conditionValue) return null;
                           }
@@ -394,16 +479,24 @@ export function PatientSectionRenderer({
                         {subSection.items.map((item: any) => {
                           // Pour asthma, on doit d'abord trouver le bon sous-objet
                           let value: any = null;
-                          if (pathologyId === "asthma" && (sectionName as string) === "clinicalExam") {
+                          if (
+                            pathologyId === "asthma" &&
+                            (sectionName as string) === "clinicalExam"
+                          ) {
                             for (const subObjKey of Object.keys(sectionData)) {
                               const subObj = sectionData[subObjKey];
-                              if (subObj && typeof subObj === 'object' && item.key in subObj) {
+                              if (
+                                subObj &&
+                                typeof subObj === "object" &&
+                                item.key in subObj
+                              ) {
                                 value = subObj[item.key as keyof typeof subObj];
                                 break;
                               }
                             }
                           } else {
-                            value = sectionData[item.key as keyof typeof sectionData];
+                            value =
+                              sectionData[item.key as keyof typeof sectionData];
                           }
 
                           if (!value) return null;
@@ -441,16 +534,24 @@ export function PatientSectionRenderer({
                         {subSection.items.map((item: any) => {
                           // Pour asthma, on doit d'abord trouver le bon sous-objet
                           let value: any = null;
-                          if (pathologyId === "asthma" && (sectionName as string) === "clinicalExam") {
+                          if (
+                            pathologyId === "asthma" &&
+                            (sectionName as string) === "clinicalExam"
+                          ) {
                             for (const subObjKey of Object.keys(sectionData)) {
                               const subObj = sectionData[subObjKey];
-                              if (subObj && typeof subObj === 'object' && item.key in subObj) {
+                              if (
+                                subObj &&
+                                typeof subObj === "object" &&
+                                item.key in subObj
+                              ) {
                                 value = subObj[item.key as keyof typeof subObj];
                                 break;
                               }
                             }
                           } else {
-                            value = sectionData[item.key as keyof typeof sectionData];
+                            value =
+                              sectionData[item.key as keyof typeof sectionData];
                           }
 
                           if (!value && !item.isArray) return null;
@@ -519,16 +620,24 @@ export function PatientSectionRenderer({
                         {subSection.items.map((item: any) => {
                           // Pour asthma, on doit d'abord trouver le bon sous-objet
                           let value: any = null;
-                          if (pathologyId === "asthma" && (sectionName as string) === "clinicalExam") {
+                          if (
+                            pathologyId === "asthma" &&
+                            (sectionName as string) === "clinicalExam"
+                          ) {
                             for (const subObjKey of Object.keys(sectionData)) {
                               const subObj = sectionData[subObjKey];
-                              if (subObj && typeof subObj === 'object' && item.key in subObj) {
+                              if (
+                                subObj &&
+                                typeof subObj === "object" &&
+                                item.key in subObj
+                              ) {
                                 value = subObj[item.key as keyof typeof subObj];
                                 break;
                               }
                             }
                           } else {
-                            value = sectionData[item.key as keyof typeof sectionData];
+                            value =
+                              sectionData[item.key as keyof typeof sectionData];
                           }
 
                           if (!value) return null;
