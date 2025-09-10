@@ -157,35 +157,34 @@ export default function UsersPage() {
                         Créé le {new Date(user.createdAt).toLocaleDateString()}
                       </p>
 
-                      {user.role !== "super-admin" &&
-                        user.role !== "chef-service" && (
-                          <div className="flex gap-2">
-                            <button
-                              onClick={() => {
-                                setSelectedUser(user);
-                                setIsAdminChangePasswordModalOpen(true);
-                              }}
-                              className="flex-1 group inline-flex items-center justify-center px-3 py-2 bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-200 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-md transition-all duration-200 hover:shadow-sm"
-                            >
-                              <KeyIcon className="h-4 w-4 mr-1.5 transition-transform duration-200 group-hover:scale-110" />
-                              <span className="text-xs font-medium">
-                                Modifier MDP
-                              </span>
-                            </button>
-                            <button
-                              onClick={() => {
-                                setSelectedUser(user);
-                                setIsDeleteModalOpen(true);
-                              }}
-                              className="flex-1 group inline-flex items-center justify-center px-3 py-2 bg-red-50 dark:bg-red-900/50 text-red-700 dark:text-red-200 hover:bg-red-100 dark:hover:bg-red-800 rounded-md transition-all duration-200 hover:shadow-sm"
-                            >
-                              <TrashIcon className="h-4 w-4 mr-1.5 transition-transform duration-200 group-hover:scale-110" />
-                              <span className="text-xs font-medium">
-                                Supprimer
-                              </span>
-                            </button>
-                          </div>
-                        )}
+                      {user.role !== "super-admin" && (
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => {
+                              setSelectedUser(user);
+                              setIsAdminChangePasswordModalOpen(true);
+                            }}
+                            className="flex-1 group inline-flex items-center justify-center px-3 py-2 bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-200 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-md transition-all duration-200 hover:shadow-sm"
+                          >
+                            <KeyIcon className="h-4 w-4 mr-1.5 transition-transform duration-200 group-hover:scale-110" />
+                            <span className="text-xs font-medium">
+                              Modifier MDP
+                            </span>
+                          </button>
+                          <button
+                            onClick={() => {
+                              setSelectedUser(user);
+                              setIsDeleteModalOpen(true);
+                            }}
+                            className="flex-1 group inline-flex items-center justify-center px-3 py-2 bg-red-50 dark:bg-red-900/50 text-red-700 dark:text-red-200 hover:bg-red-100 dark:hover:bg-red-800 rounded-md transition-all duration-200 hover:shadow-sm"
+                          >
+                            <TrashIcon className="h-4 w-4 mr-1.5 transition-transform duration-200 group-hover:scale-110" />
+                            <span className="text-xs font-medium">
+                              Supprimer
+                            </span>
+                          </button>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -258,34 +257,33 @@ export default function UsersPage() {
                           {new Date(user.createdAt).toLocaleDateString()}
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                          {user.role !== "super-admin" &&
-                            user.role !== "chef-service" && (
-                              <div className="flex justify-end space-x-2">
-                                <button
-                                  onClick={() => {
-                                    setSelectedUser(user);
-                                    setIsAdminChangePasswordModalOpen(true);
-                                  }}
-                                  className="group inline-flex items-center px-2.5 py-1.5 bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-200 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-md transition-all duration-200 hover:shadow-sm"
-                                  title="Modifier le mot de passe"
-                                >
-                                  <KeyIcon className="h-4 w-4 mr-1.5 transition-transform duration-200 group-hover:scale-110" />
-                                  <span className="text-xs font-medium">
-                                    Modifier MDP
-                                  </span>
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    setSelectedUser(user);
-                                    setIsDeleteModalOpen(true);
-                                  }}
-                                  className="group inline-flex items-center px-2 py-1.5 bg-red-50 dark:bg-red-900/50 text-red-700 dark:text-red-200 hover:bg-red-100 dark:hover:bg-red-800 rounded-md transition-all duration-200 hover:shadow-sm"
-                                  title="Supprimer l'utilisateur"
-                                >
-                                  <TrashIcon className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
-                                </button>
-                              </div>
-                            )}
+                          {user.role !== "super-admin" && (
+                            <div className="flex justify-end space-x-2">
+                              <button
+                                onClick={() => {
+                                  setSelectedUser(user);
+                                  setIsAdminChangePasswordModalOpen(true);
+                                }}
+                                className="group inline-flex items-center px-2.5 py-1.5 bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-200 hover:bg-blue-100 dark:hover:bg-blue-800 rounded-md transition-all duration-200 hover:shadow-sm"
+                                title="Modifier le mot de passe"
+                              >
+                                <KeyIcon className="h-4 w-4 mr-1.5 transition-transform duration-200 group-hover:scale-110" />
+                                <span className="text-xs font-medium">
+                                  Modifier MDP
+                                </span>
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setSelectedUser(user);
+                                  setIsDeleteModalOpen(true);
+                                }}
+                                className="group inline-flex items-center px-2 py-1.5 bg-red-50 dark:bg-red-900/50 text-red-700 dark:text-red-200 hover:bg-red-100 dark:hover:bg-red-800 rounded-md transition-all duration-200 hover:shadow-sm"
+                                title="Supprimer l'utilisateur"
+                              >
+                                <TrashIcon className="h-4 w-4 transition-transform duration-200 group-hover:scale-110" />
+                              </button>
+                            </div>
+                          )}
                         </td>
                       </tr>
                     ))}

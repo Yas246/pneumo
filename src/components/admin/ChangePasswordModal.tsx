@@ -131,6 +131,15 @@ export function ChangePasswordModal({
               >
                 Nouveau mot de passe
               </label>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 mb-1">
+                6 caractères minimum
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 mb-1">
+                6 caractères minimum
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 mb-1">
+                6 caractères minimum
+              </p>
               <div className="relative mt-1">
                 <input
                   {...register("newPassword")}

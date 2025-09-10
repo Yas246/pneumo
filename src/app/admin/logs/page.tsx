@@ -2,7 +2,8 @@
 
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
-import { getLogs } from "@/firebase/logs";
+import { getLogsPaginated } from "@/firebase/logs";
+import type { QueryDocumentSnapshot } from "firebase/firestore";
 import { useAuth } from "@/hooks/useAuth";
 import type { LogActionType, LogEntry, UserRole } from "@/types/user";
 import { Dialog } from "@headlessui/react";
@@ -14,7 +15,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { toast } from "react-hot-toast";
 
 const ACTIONS: LogActionType[] = [
@@ -118,6 +119,10 @@ export default function LogsPage() {
   const [endDate, setEndDate] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [isConfirmExportOpen, setIsConfirmExportOpen] = useState(false);
+  const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot | null>(null);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!loading && !isSuperAdmin) {
@@ -128,8 +133,11 @@ export default function LogsPage() {
   useEffect(() => {
     const fetchLogs = async () => {
       try {
-        const logsList = await getLogs();
-        setLogs(logsList);
+        const { logs: initialLogs, lastDoc: initialLastDoc } =
+          await getLogsPaginated(undefined, 10);
+        setLogs(initialLogs);
+        setLastDoc(initialLastDoc);
+        setHasMore(!!initialLastDoc);
       } catch (error) {
         console.error("Erreur lors de la récupération des logs:", error);
         toast.error("Erreur lors de la récupération des logs");
@@ -142,6 +150,55 @@ export default function LogsPage() {
       fetchLogs();
     }
   }, [isSuperAdmin]);
+
+  const loadMore = useCallback(async () => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    try {
+      const { logs: newLogs, lastDoc: newLastDoc } = await getLogsPaginated(
+        lastDoc,
+        10
+      );
+      setLogs((prev) => [...prev, ...newLogs]);
+      setLastDoc(newLastDoc);
+      setHasMore(!!newLastDoc);
+    } catch (error) {
+      console.error("Erreur lors du chargement des logs:", error);
+      toast.error("Erreur lors du chargement des logs");
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [
+    lastDoc,
+    loadingMore,
+    hasMore,
+    setLogs,
+    setLastDoc,
+    setHasMore,
+    setLoadingMore,
+  ]);
+
+  useEffect(() => {
+    const currentRef = sentinelRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasMore && !loadingMore) {
+          loadMore();
+        }
+      },
+      { threshold: 1 }
+    );
+
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [hasMore, loadingMore, loadMore]);
 
   const filteredLogs = useMemo(() => {
     return logs.filter((log) => {
@@ -587,6 +644,14 @@ export default function LogsPage() {
                     </tbody>
                   </table>
                 </div>
+                {hasMore && (
+                  <div ref={sentinelRef} className="h-1 bg-transparent" />
+                )}
+                {loadingMore && (
+                  <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-center items-center h-8">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary-500"></div>
+                  </div>
+                )}
               </>
             )}
           </div>

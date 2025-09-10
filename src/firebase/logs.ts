@@ -1,4 +1,5 @@
 import type { LogEntry } from "@/types/user";
+import type { QueryDocumentSnapshot } from "firebase/firestore";
 import {
   addDoc,
   collection,
@@ -6,6 +7,7 @@ import {
   limit,
   orderBy,
   query,
+  startAfter,
   Timestamp,
 } from "firebase/firestore";
 import { db } from "./config";
@@ -46,6 +48,41 @@ export const getLogs = async (
     })) as LogEntry[];
   } catch (error) {
     console.error("Erreur lors de la récupération des logs:", error);
+    throw error;
+  }
+};
+
+// Récupérer les logs avec pagination
+export const getLogsPaginated = async (
+  lastDoc?: QueryDocumentSnapshot | null,
+  limit_count: number = 10
+): Promise<{ logs: LogEntry[]; lastDoc: QueryDocumentSnapshot | null }> => {
+  try {
+    let logsQuery = query(
+      collection(db, LOGS_COLLECTION),
+      orderBy("timestamp", "desc"),
+      limit(limit_count + 1) // +1 pour vérifier s'il y en a plus
+    );
+
+    if (lastDoc) {
+      logsQuery = query(logsQuery, startAfter(lastDoc));
+    }
+
+    const snapshot = await getDocs(logsQuery);
+    const logsData = snapshot.docs.slice(0, limit_count).map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+      timestamp: (doc.data().timestamp as Timestamp).toDate(),
+    })) as LogEntry[];
+
+    const newLastDoc =
+      snapshot.docs.length > limit_count
+        ? snapshot.docs[limit_count - 1]
+        : null;
+
+    return { logs: logsData, lastDoc: newLastDoc };
+  } catch (error) {
+    console.error("Erreur lors de la récupération des logs paginés:", error);
     throw error;
   }
 };
