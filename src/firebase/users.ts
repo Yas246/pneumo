@@ -97,7 +97,7 @@ export const getUser = async (uid: string): Promise<UserData | null> => {
     // Vérifier que les données contiennent un rôle valide
     if (
       !data.role ||
-      !["super-admin", "medecin", "infirmier"].includes(data.role)
+      !["super-admin", "medecin", "infirmier", "chef-service", "prof", "resident"].includes(data.role)
     ) {
       console.error("Invalid or missing role in user data:", data);
       return null;
@@ -133,13 +133,15 @@ export const getAllUsers = async (): Promise<UserData[]> => {
 // Vérifier si l'utilisateur a les permissions d'écriture
 export const hasWritePermission = async (uid: string): Promise<boolean> => {
   const role = await getUserRole(uid);
-  return role === "super-admin" || role === "medecin";
+  return (
+    role === "super-admin" || role === "medecin" || role === "chef-service"
+  );
 };
 
 // Vérifier si l'utilisateur est super-admin
 export const isSuperAdmin = async (uid: string): Promise<boolean> => {
   const role = await getUserRole(uid);
-  return role === "super-admin";
+  return role === "super-admin" || role === "chef-service";
 };
 
 export const getUserByEmail = async (
@@ -169,13 +171,27 @@ export const deleteUser = async (uid: string): Promise<void> => {
     const userData = userDoc.data() as UserData;
 
     // Appeler l'API de suppression
-    const response = await fetch(`/api/users/${uid}/delete`, {
+    const response = await fetch(`/api/users/delete`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ uid }),
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "Erreur lors de la suppression");
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        // Gestion des réponses non-JSON (ex. 404 HTML)
+        console.error("Parse error:", e);
+        console.error("Réponse non-JSON:", await response.text());
+        throw new Error(
+          "Erreur serveur: Route non trouvée ou réponse invalide"
+        );
+      }
+      throw new Error(errorData.message || "Erreur lors de la suppression");
     }
 
     // Supprimer le document Firestore

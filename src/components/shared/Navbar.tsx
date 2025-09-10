@@ -93,7 +93,7 @@ export function Navbar() {
               )}
             </button>
             <div className="flex-shrink-0">
-              <div className="relative w-8 h-8">
+              <div className="relative w-10 h-10">
                 <Image
                   src="/logo.svg"
                   alt="Logo"

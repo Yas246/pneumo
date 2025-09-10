@@ -25,7 +25,7 @@ export default function Home() {
       <div className="max-w-md w-full space-y-8 px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <div className="flex justify-center mb-6">
-            <div className="relative w-20 h-20">
+            <div className="relative w-40 h-40">
               <Image
                 src="/logo.svg"
                 alt="Logo"

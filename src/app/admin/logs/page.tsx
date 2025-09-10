@@ -30,7 +30,12 @@ const ACTIONS: LogActionType[] = [
   "DESARCHIVAGE_DOSSIER",
 ];
 
-const ROLES: UserRole[] = ["medecin", "infirmier", "super-admin"];
+const ROLES: UserRole[] = [
+  "medecin",
+  "infirmier",
+  "super-admin",
+  "chef-service",
+];
 
 const ACTION_LABELS: Record<LogActionType, string> = {
   CREATION_COMPTE: "Création de compte",
@@ -318,6 +323,8 @@ export default function LogsPage() {
                             ? "Médecin"
                             : role === "super-admin"
                             ? "Super Admin"
+                            : role === "chef-service"
+                            ? "Chef de Service"
                             : "Infirmier"}
                         </option>
                       ))}
@@ -472,6 +479,8 @@ export default function LogsPage() {
                               ? "Médecin"
                               : log.userRole === "super-admin"
                               ? "Super Admin"
+                              : log.userRole === "chef-service"
+                              ? "Chef de Service"
                               : "Infirmier"}
                           </div>
                         </div>
@@ -539,6 +548,8 @@ export default function LogsPage() {
                                 ? "Médecin"
                                 : log.userRole === "super-admin"
                                 ? "Super Admin"
+                                : log.userRole === "chef-service"
+                                ? "Chef de Service"
                                 : "Infirmier"}
                             </div>
                           </td>
