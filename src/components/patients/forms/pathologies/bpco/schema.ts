@@ -117,6 +117,18 @@ export const bpcoSchema = z.object({
       hospitalizationsForBpco: z.boolean().default(false),
       hospitalizationsCount: zNullableNumber,
       associatedSigns: z.string().optional(),
+      dyspneaMmrc: zNullableNumber.refine(
+        (val) => val === null || (val >= 0 && val <= 4),
+        {
+          message: "La valeur doit être entre 0 et 4",
+        }
+      ),
+      expectorationAspect: z
+        .enum(["", "Muqueuses", "Mucopurulentes", "Purulentes"])
+        .optional(),
+      expectorationAbundance: z.enum(["", "Faible", "Grande"]).optional(),
+      hemoptysis: z.boolean().default(false),
+      chestPain: z.boolean().default(false),
     })
     .default({}),
 
@@ -251,7 +263,8 @@ export const bpcoSchema = z.object({
   // 5. Appareil urinaire
   bpcoUrinarySystem: z
     .object({
-      diuresis: z.enum(["", "conservée", "Rétention"]).optional(),
+      diuresisConserved: z.boolean().default(false),
+      retention: z.boolean().default(false),
       bladderGlobe: z.boolean().default(false),
       urinarySymptoms: z
         .object({
@@ -261,7 +274,7 @@ export const bpcoSchema = z.object({
           lumbarPain: z.boolean().default(false),
         })
         .default({}),
-      urinalysisDone: z.boolean().default(false),
+      urinalysisDone: z.enum(["", "Oui", "Non"]).optional(),
       urinalysisResult: z.string().optional(),
     })
     .default({}),
@@ -306,6 +319,11 @@ export const bpcoSchema = z.object({
           ataxia: z.boolean().default(false),
         })
         .default({}),
+      reflexesOsteotendineux: z
+        .enum(["", "Normaux", "Abolis", "Exagérés"])
+        .optional(),
+      rotDetails: z.string().optional(),
+      equilibrium: z.enum(["", "Normal", "Romberg +", "Ataxie"]).optional(),
     })
     .default({}),
 
@@ -346,6 +364,9 @@ export const bpcoSchema = z.object({
           cervicalAdenopathy: z.boolean().default(false),
         })
         .default({}),
+      oralCavityHydratedMucous: z.boolean().default(false),
+      oralCavityDryMucous: z.boolean().default(false),
+      oralCavityLesions: z.boolean().default(false),
     })
     .default({}),
 
@@ -381,6 +402,7 @@ export const bpcoSchema = z.object({
       chestXRay: z
         .object({
           image: z.string().optional(),
+          imageFiles: z.array(z.string()).default([]),
           result: z.enum(["", "Normal", "anormal"]).optional(),
           abnormalDetails: z
             .object({
@@ -410,12 +432,20 @@ export const bpcoSchema = z.object({
               crp: zNullableNumber,
             })
             .default({}),
+          nfs: z.string().optional(),
+          crp: z.string().optional(),
+          alpha1At: z.string().optional(),
+          dDimers: z.string().optional(),
+          bnp: z.string().optional(),
+          vitaminD: z.string().optional(),
+          otherBiology: z.string().optional(),
         })
         .default({}),
       // Imagerie - TDM thoracique
       chestCT: z
         .object({
           video: z.string().optional(),
+          videoFiles: z.array(z.string()).default([]),
           result: z.enum(["", "normal", "anormal"]).optional(),
           abnormalDetails: z
             .object({
@@ -453,6 +483,11 @@ export const bpcoSchema = z.object({
       otherTests: z
         .object({
           details: z.string().optional(),
+          sixMinWalkTest: z.string().optional(),
+          vo2Max: z.string().optional(),
+          echoHeartConclusion: z.string().optional(),
+          sleepRecording: z.string().optional(),
+          otherRetentissement: z.string().optional(),
         })
         .default({}),
     })
@@ -484,6 +519,17 @@ export const bpcoSchema = z.object({
       longTermOxygenTherapy: z.boolean().default(false),
       therapeuticEducation: z.boolean().default(false),
       smokingCessationOffered: z.boolean().default(false),
+      longTermOxygenTherapyStartDate: z.string().optional(),
+      longTermOxygenTherapyDuration: z.string().optional(),
+      longTermOxygenTherapyRestFlow: z.string().optional(),
+      longTermOxygenTherapyEffortFlow: z.string().optional(),
+      vni: z.enum(["", "Non indiqué", "Indiqué"]).optional(),
+      vniParameters: z.string().optional(),
+      therapeuticEducationDone: z.enum(["", "Oui", "Non"]).optional(),
+      fluVaccination: z.boolean().default(false),
+      fluVaccinationDate: z.string().optional(),
+      pneumococcalVaccination: z.boolean().default(false),
+      pneumococcalVaccinationDate: z.string().optional(),
     })
     .default({}),
 

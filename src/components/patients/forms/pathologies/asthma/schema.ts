@@ -8,6 +8,14 @@ const booleanOrArray = () =>
     return [];
   }, z.array(z.string()).default([]));
 
+// Helper function to handle array to boolean conversion
+const arrayToBoolean = () =>
+  z.preprocess((val) => {
+    if (Array.isArray(val)) return val.length > 0;
+    if (typeof val === "boolean") return val;
+    return false;
+  }, z.boolean().default(false));
+
 const zNullableNumber = z.preprocess((val) => {
   if (val === "" || val === null || val === undefined) return null;
   const n = Number(val);
@@ -48,8 +56,15 @@ export const asthmaSchema = z.object({
       familyOther: z.string().optional(),
       smokingStatus: z.string().optional(),
       tobaccoQuantity: zNullableNumber,
-      cannabis: z.boolean().default(false),
+      cannabis: arrayToBoolean(),
       otherToxic: z.string().optional(),
+      orlAffection: booleanOrArray(),
+      endocrineFactors: z.string().optional(),
+      endocrineFactorsDetails: booleanOrArray(),
+      professionalExposure: z.string().optional(),
+      professionalExposureDetails: z.string().optional(),
+      dustAllergy: z.boolean().default(false),
+      passiveSmoking: z.boolean().default(false),
     })
     .default({}),
 
@@ -124,15 +139,15 @@ export const asthmaSchema = z.object({
 
   asthmaDigestiveSystem: z
     .object({
-      abdomenInspection: z.array(z.string()).default([]),
-      abdomenPalpation: z.array(z.string()).default([]),
+      abdomenInspection: booleanOrArray(),
+      abdomenPalpation: booleanOrArray(),
       hepatomegaly: z.boolean().default(false),
       hepatomegalySize: zNullableNumber,
       splenomegaly: z.boolean().default(false),
       splenomegalySize: zNullableNumber,
       matiteDeclive: z.boolean().default(false),
       tympanisme: z.boolean().default(false),
-      abdomenAuscultation: z.array(z.string()).default([]),
+      abdomenAuscultation: booleanOrArray(),
     })
     .default({}),
 
@@ -140,7 +155,7 @@ export const asthmaSchema = z.object({
     .object({
       diuresis: z.string().optional(),
       bladderGlobe: z.boolean().default(false),
-      urinaryFunctionalSigns: z.array(z.string()).default([]),
+      urinaryFunctionalSigns: booleanOrArray(),
       puBuPerformed: z.boolean().default(false),
       puBuResult: z.string().optional(),
     })
@@ -148,7 +163,7 @@ export const asthmaSchema = z.object({
 
   asthmaMusculoskeletalSystem: z
     .object({
-      symptoms: z.array(z.string()).default([]),
+      symptoms: booleanOrArray(),
       mobility: z.string().optional(),
       affectedJoints: z.string().optional(),
     })
@@ -157,7 +172,7 @@ export const asthmaSchema = z.object({
   asthmaNervousSystem: z
     .object({
       consciousness: z.string().optional(),
-      neurologicalSigns: z.array(z.string()).default([]),
+      neurologicalSigns: booleanOrArray(),
       motorDeficit: z.string().optional(),
       sensoryDeficit: z.string().optional(),
       rot: z.string().optional(),
@@ -168,7 +183,7 @@ export const asthmaSchema = z.object({
 
   asthmaSkinMucous: z
     .object({
-      inspection: z.array(z.string()).default([]),
+      inspection: booleanOrArray(),
       dermatologicalLesions: z.string().optional(),
     })
     .default({}),
@@ -180,7 +195,7 @@ export const asthmaSchema = z.object({
       seches: z.boolean().default(false),
       lesions: z.boolean().default(false),
       tonsils: z.string().optional(),
-      orlSymptoms: z.array(z.string()).default([]),
+      orlSymptoms: booleanOrArray(),
     })
     .default({}),
 
@@ -208,17 +223,32 @@ export const asthmaSchema = z.object({
       variationMl: zNullableNumber,
       positivePrickTests: z.string().optional(),
       otherComplementaryExams: z.string().optional(),
+      specificIgePerformed: z.boolean().default(false),
+      specificIgeDust: z.string().optional(),
+      specificIgeMitesDp: z.string().optional(),
+      specificIgeMitesDf: z.string().optional(),
+      specificIgePollen: z.string().optional(),
+      specificIgeOther: z.string().optional(),
+      idr: z.string().optional(),
+      idrPositiveDetails: z.string().optional(),
+      blondScannerPerformed: z.boolean().default(false),
+      blondScannerResult: z.string().optional(),
+      thoracicCtdPerformed: z.boolean().default(false),
+      thoracicCtdConclusion: z.string().optional(),
     })
     .default({}),
 
   // VII. CLASSIFICATION DE LA GRAVITÉ
   asthmaSeverityClassification: z
     .object({
-      classification: z.array(z.string()).default([]),
+      classification: booleanOrArray(),
       allergicAsthma: z.boolean().default(false),
       nonAllergicAsthma: z.boolean().default(false),
       intermittentAsthma: z.boolean().default(false),
-      persistentAsthmaSeverity: z.string().optional(),
+      persistentAsthmaSeverity: z.preprocess((val) => {
+        if (typeof val === "boolean") return val ? "oui" : "non";
+        return val;
+      }, z.string().optional()),
       exerciseInducedAsthma: z.boolean().default(false),
       otherForms: z.string().optional(),
     })
@@ -243,7 +273,7 @@ export const asthmaSchema = z.object({
           otherCrisis: z.string().optional(),
         })
         .default({}),
-      associatedMeasures: z.array(z.string()).default([]),
+      associatedMeasures: booleanOrArray(),
     })
     .default({}),
 

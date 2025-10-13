@@ -268,6 +268,212 @@ export function ComplementaryExamsForm({
               />
             </div>
 
+            {/* IgE sériques spécifiques */}
+            <div>
+              <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+                IgE sériques spécifiques
+              </h5>
+              <div className="space-y-4">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                  <input
+                    type="checkbox"
+                    {...register(
+                      "asthmaComplementaryExams.specificIgePerformed"
+                    )}
+                    disabled={disabled}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Réalisé
+                  </span>
+                </label>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Poussière de maison
+                    </label>
+                    <input
+                      type="text"
+                      {...register("asthmaComplementaryExams.specificIgeDust")}
+                      disabled={disabled}
+                      placeholder="Valeur..."
+                      className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Acariens (DP)
+                    </label>
+                    <input
+                      type="text"
+                      {...register(
+                        "asthmaComplementaryExams.specificIgeMitesDp"
+                      )}
+                      disabled={disabled}
+                      placeholder="Valeur..."
+                      className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Acariens (DF)
+                    </label>
+                    <input
+                      type="text"
+                      {...register(
+                        "asthmaComplementaryExams.specificIgeMitesDf"
+                      )}
+                      disabled={disabled}
+                      placeholder="Valeur..."
+                      className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Pollens
+                    </label>
+                    <input
+                      type="text"
+                      {...register(
+                        "asthmaComplementaryExams.specificIgePollen"
+                      )}
+                      disabled={disabled}
+                      placeholder="Valeur..."
+                      className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      Autres
+                    </label>
+                    <input
+                      type="text"
+                      {...register("asthmaComplementaryExams.specificIgeOther")}
+                      disabled={disabled}
+                      placeholder="Valeur..."
+                      className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* IDR (Intradermoréaction) */}
+            <div>
+              <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+                IDR (Intradermoréaction)
+              </h5>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Résultat
+                  </label>
+                  <select
+                    {...register("asthmaComplementaryExams.idr")}
+                    disabled={disabled}
+                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                  >
+                    <option value="">Sélectionnez</option>
+                    <option value="nonFaites">
+                      Non faites (ou non indiquées)
+                    </option>
+                    <option value="negatif">Négatif</option>
+                    <option value="positif">Positif</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Si positif
+                  </label>
+                  <input
+                    type="text"
+                    {...register("asthmaComplementaryExams.idrPositiveDetails")}
+                    disabled={disabled}
+                    placeholder="Précisez..."
+                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* BLONDO-SCANNER (ou Rx des sinus) */}
+            <div>
+              <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+                BLONDO-SCANNER (ou Rx des sinus)
+              </h5>
+              <div className="space-y-4">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                  <input
+                    type="checkbox"
+                    {...register(
+                      "asthmaComplementaryExams.blondScannerPerformed"
+                    )}
+                    disabled={disabled}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Réalisé
+                  </span>
+                </label>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Résultat
+                  </label>
+                  <input
+                    type="text"
+                    {...register("asthmaComplementaryExams.blondScannerResult")}
+                    disabled={disabled}
+                    placeholder="Précisez le résultat..."
+                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* TDM thoracique */}
+            <div>
+              <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+                TDM thoracique
+              </h5>
+              <div className="space-y-4">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                  <input
+                    type="checkbox"
+                    {...register(
+                      "asthmaComplementaryExams.thoracicCtdPerformed"
+                    )}
+                    disabled={disabled}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Réalisé
+                  </span>
+                </label>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Conclusion
+                  </label>
+                  <input
+                    type="text"
+                    {...register(
+                      "asthmaComplementaryExams.thoracicCtdConclusion"
+                    )}
+                    disabled={disabled}
+                    placeholder="Précisez la conclusion..."
+                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                  />
+                </div>
+              </div>
+            </div>
+
             {/* Autres examens */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

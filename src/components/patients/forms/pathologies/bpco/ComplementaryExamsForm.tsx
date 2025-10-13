@@ -1,8 +1,10 @@
+import { MediaUploadDragDrop } from "../../../../shared/MediaUploadDragDrop";
 import { ExtendedPatientFormData, FormSectionProps } from "../../types";
 
 export function ComplementaryExamsForm({
   register,
   disabled,
+  watch,
 }: FormSectionProps<ExtendedPatientFormData>) {
   return (
     <div className="bg-white dark:bg-gray-800 shadow-soft rounded-xl p-6">
@@ -139,6 +141,262 @@ export function ComplementaryExamsForm({
           </div>
         </div>
 
+        {/* Imagerie */}
+        <div>
+          <h4 className="text-md font-medium text-gray-900 dark:text-white mb-4">
+            Imagerie
+          </h4>
+
+          {/* Rx thoracique */}
+          <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+              Rx thoracique
+            </h5>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Image
+              </label>
+              <textarea
+                {...register("bpcoDiagnosticTests.chestXRay.image")}
+                disabled={disabled}
+                rows={3}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                placeholder="Description de l'image..."
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Upload Images/Vidéos
+              </label>
+              <MediaUploadDragDrop
+                accept="image/*,video/*"
+                placeholder="Glissez-déposez des images ou vidéos ici ou cliquez pour sélectionner"
+                disabled={disabled}
+                currentFiles={
+                  watch?.("bpcoDiagnosticTests.chestXRay.imageFiles") || []
+                }
+                onFileSelect={(files: File[], urls?: string[]) => {
+                  if (urls && urls.length > 0) {
+                    // Mettre à jour le champ avec les URLs des fichiers uploadés
+                    register(
+                      "bpcoDiagnosticTests.chestXRay.imageFiles"
+                    ).onChange({
+                      target: { value: urls },
+                    });
+                  }
+                }}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Statut
+              </label>
+              <select
+                {...register("bpcoDiagnosticTests.chestXRay.result")}
+                disabled={disabled}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              >
+                <option value="">Sélectionnez</option>
+                <option value="Normal">Normal</option>
+                <option value="anormal">Anormal</option>
+              </select>
+            </div>
+
+            {/* Détails si anormal */}
+            {watch &&
+              watch("bpcoDiagnosticTests.chestXRay.result") === "anormal" && (
+                <div className="ml-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg space-y-4">
+                  <div className="space-y-3">
+                    <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                      <input
+                        type="checkbox"
+                        {...register(
+                          "bpcoDiagnosticTests.chestXRay.abnormalDetails.distensionSigns"
+                        )}
+                        disabled={disabled}
+                        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Signes de distension
+                      </span>
+                    </label>
+
+                    <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                      <input
+                        type="checkbox"
+                        {...register(
+                          "bpcoDiagnosticTests.chestXRay.abnormalDetails.bronchialSyndrome"
+                        )}
+                        disabled={disabled}
+                        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Sd bronchique
+                      </span>
+                    </label>
+
+                    <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                      <input
+                        type="checkbox"
+                        {...register(
+                          "bpcoDiagnosticTests.chestXRay.abnormalDetails.emphysema"
+                        )}
+                        disabled={disabled}
+                        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Emphysème
+                      </span>
+                    </label>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Autres
+                    </label>
+                    <textarea
+                      {...register(
+                        "bpcoDiagnosticTests.chestXRay.otherAbnormalities"
+                      )}
+                      disabled={disabled}
+                      rows={2}
+                      className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                      placeholder="Autres anomalies..."
+                    />
+                  </div>
+                </div>
+              )}
+          </div>
+
+          {/* TDM thoracique */}
+          <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+            <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+              TDM thoracique
+            </h5>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Vidéo
+              </label>
+              <textarea
+                {...register("bpcoDiagnosticTests.chestCT.video")}
+                disabled={disabled}
+                rows={2}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                placeholder="Description de la vidéo..."
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Upload Images/Vidéos
+              </label>
+              <MediaUploadDragDrop
+                accept="image/*,video/*"
+                placeholder="Glissez-déposez des images ou vidéos ici ou cliquez pour sélectionner"
+                disabled={disabled}
+                currentFiles={
+                  watch?.("bpcoDiagnosticTests.chestCT.videoFiles") || []
+                }
+                onFileSelect={(files: File[], urls?: string[]) => {
+                  if (urls && urls.length > 0) {
+                    // Mettre à jour le champ avec les URLs des fichiers uploadés
+                    register("bpcoDiagnosticTests.chestCT.videoFiles").onChange(
+                      {
+                        target: { value: urls },
+                      }
+                    );
+                  }
+                }}
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Statut
+              </label>
+              <select
+                {...register("bpcoDiagnosticTests.chestCT.result")}
+                disabled={disabled}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              >
+                <option value="">Sélectionnez</option>
+                <option value="normal">Normal</option>
+                <option value="anormal">Anormal</option>
+              </select>
+            </div>
+
+            {/* Détails si anormal */}
+            {watch &&
+              watch("bpcoDiagnosticTests.chestCT.result") === "anormal" && (
+                <div className="ml-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg space-y-4">
+                  <div className="space-y-3">
+                    <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                      <input
+                        type="checkbox"
+                        {...register(
+                          "bpcoDiagnosticTests.chestCT.abnormalDetails.bronchialThickening"
+                        )}
+                        disabled={disabled}
+                        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Épaississement bronchique
+                      </span>
+                    </label>
+
+                    <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                      <input
+                        type="checkbox"
+                        {...register(
+                          "bpcoDiagnosticTests.chestCT.abnormalDetails.emphysema"
+                        )}
+                        disabled={disabled}
+                        className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      />
+                      <span className="text-sm text-gray-700 dark:text-gray-300">
+                        Emphysème
+                      </span>
+                    </label>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Lésions associées : type
+                    </label>
+                    <textarea
+                      {...register(
+                        "bpcoDiagnosticTests.chestCT.associatedLesionsDetails"
+                      )}
+                      disabled={disabled}
+                      rows={2}
+                      className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                      placeholder="Type de lésions associées..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Autres
+                    </label>
+                    <textarea
+                      {...register(
+                        "bpcoDiagnosticTests.chestCT.otherAbnormalities"
+                      )}
+                      disabled={disabled}
+                      rows={2}
+                      className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                      placeholder="Autres anomalies..."
+                    />
+                  </div>
+                </div>
+              )}
+          </div>
+        </div>
+
         {/* Bilan de retentissement */}
         <div>
           <h4 className="text-md font-medium text-gray-900 dark:text-white mb-4">
@@ -170,7 +428,7 @@ export function ComplementaryExamsForm({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  PaO2 (mmHg)
+                  PaO2
                 </label>
                 <input
                   type="number"
@@ -186,7 +444,7 @@ export function ComplementaryExamsForm({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  PaCO2 (mmHg)
+                  PaCO2
                 </label>
                 <input
                   type="number"
@@ -202,11 +460,171 @@ export function ComplementaryExamsForm({
             </div>
           </div>
 
+          <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+            <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+              Test de tolérance à la marche de 6 min
+            </h5>
+            <input
+              type="text"
+              {...register("bpcoImpactAssessment.otherTests.sixMinWalkTest")}
+              disabled={disabled}
+              className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              placeholder="Distance parcourue, dyspnée..."
+            />
+          </div>
+
+          <div className="mb-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+            <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+              VO2 max
+            </h5>
+            <input
+              type="text"
+              {...register("bpcoImpactAssessment.otherTests.vo2Max")}
+              disabled={disabled}
+              className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              placeholder="Résultats VO2 max..."
+            />
+          </div>
+
+          <div className="mb-6 p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+            <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+              Echo cœur - Conclusion
+            </h5>
+            <input
+              type="text"
+              {...register(
+                "bpcoImpactAssessment.otherTests.echoHeartConclusion"
+              )}
+              disabled={disabled}
+              className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              placeholder="Conclusion échocardiographie..."
+            />
+          </div>
+
+          <div className="mb-6 p-4 bg-teal-50 dark:bg-teal-900/20 rounded-lg">
+            <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+              Enregistrement du sommeil (PG, PSG)
+            </h5>
+            <input
+              type="text"
+              {...register("bpcoImpactAssessment.otherTests.sleepRecording")}
+              disabled={disabled}
+              className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              placeholder="Résultats enregistrement sommeil..."
+            />
+          </div>
+
+          <div className="mb-6 p-4 bg-pink-50 dark:bg-pink-900/20 rounded-lg">
+            <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
+              Autres (retentissement)
+            </h5>
+            <input
+              type="text"
+              {...register(
+                "bpcoImpactAssessment.otherTests.otherRetentissement"
+              )}
+              disabled={disabled}
+              className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              placeholder="Autres examens de retentissement..."
+            />
+          </div>
+
           {/* Bilan biologique */}
           <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
             <h5 className="text-sm font-medium text-gray-900 dark:text-white mb-3">
               Bilan biologique
             </h5>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                NFS
+              </label>
+              <input
+                type="text"
+                {...register("bpcoDiagnosticTests.biology.nfs")}
+                disabled={disabled}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                placeholder="Résultats NFS..."
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                CRP
+              </label>
+              <input
+                type="text"
+                {...register("bpcoDiagnosticTests.biology.crp")}
+                disabled={disabled}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                placeholder="Résultats CRP..."
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Alpha-1 AT
+              </label>
+              <input
+                type="text"
+                {...register("bpcoDiagnosticTests.biology.alpha1At")}
+                disabled={disabled}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                placeholder="Résultats Alpha-1 AT..."
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                D-dimères
+              </label>
+              <input
+                type="text"
+                {...register("bpcoDiagnosticTests.biology.dDimers")}
+                disabled={disabled}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                placeholder="Résultats D-dimères..."
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                BNP
+              </label>
+              <input
+                type="text"
+                {...register("bpcoDiagnosticTests.biology.bnp")}
+                disabled={disabled}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                placeholder="Résultats BNP..."
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Dosage de vitD
+              </label>
+              <input
+                type="text"
+                {...register("bpcoDiagnosticTests.biology.vitaminD")}
+                disabled={disabled}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                placeholder="Résultats vitD..."
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Autres (biologie)
+              </label>
+              <input
+                type="text"
+                {...register("bpcoDiagnosticTests.biology.otherBiology")}
+                disabled={disabled}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                placeholder="Autres examens biologiques..."
+              />
+            </div>
 
             {/* CBC */}
             <div className="mb-4">

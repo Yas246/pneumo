@@ -1,9 +1,11 @@
 import { z } from "zod";
 import { asthmaSchema } from "./forms/pathologies/asthma/schema";
 import { bpcoSchema } from "./forms/pathologies/bpco/schema";
+import { ddbSchema } from "./forms/pathologies/ddb/schema";
 import { pidSchema } from "./forms/pathologies/pid/schema";
 import { pleuralEffusionSchema } from "./forms/pathologies/pleuralEffusion/schema";
 import { sleepPathologySchema } from "./forms/pathologies/sleep/schema";
+import { tbkSchema } from "./forms/pathologies/tbk/schema";
 
 // Common schema for all patients
 export const patientSchema = z.object({
@@ -26,6 +28,8 @@ export const patientSchema = z.object({
   ...pidSchema.shape,
   ...bpcoSchema.shape,
   ...asthmaSchema.shape,
+  ...ddbSchema.shape,
+  ...tbkSchema.shape,
 
   // Motif de consultation
   consultationReason: z.string().optional(),

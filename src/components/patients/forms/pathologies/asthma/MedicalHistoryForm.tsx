@@ -129,7 +129,7 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
                 Allergènes respiratoires
               </label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     value="acariens"
@@ -141,7 +141,7 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
                     Acariens
                   </span>
                 </label>
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     value="pollen"
@@ -153,7 +153,7 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
                     Pollen
                   </span>
                 </label>
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     value="animaux"
@@ -163,6 +163,17 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
                   />
                   <span className="text-sm text-gray-700 dark:text-gray-300">
                     Poils animaux
+                  </span>
+                </label>
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                  <input
+                    type="checkbox"
+                    {...register("asthmaMedicalHistory.dustAllergy")}
+                    disabled={disabled}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Allergie à la poussière
                   </span>
                 </label>
               </div>
@@ -307,6 +318,17 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
             <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
+                {...register("asthmaMedicalHistory.passiveSmoking")}
+                disabled={disabled}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Tabagisme passif
+              </span>
+            </label>
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+              <input
+                type="checkbox"
                 {...register("asthmaMedicalHistory.cannabis")}
                 disabled={disabled}
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
@@ -329,6 +351,181 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
               className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
             />
           </div>
+        </div>
+
+        {/* Affections ORL */}
+        <div>
+          <h4 className="text-md font-medium text-gray-900 dark:text-white mb-4">
+            Affections ORL
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                value="rhiniteChronique"
+                {...register("asthmaMedicalHistory.orlAffection")}
+                disabled={disabled}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Rhinite chronique
+              </span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                value="sinusiteChronique"
+                {...register("asthmaMedicalHistory.orlAffection")}
+                disabled={disabled}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Sinusite chronique
+              </span>
+            </label>
+            <label className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                value="polyposeNasale"
+                {...register("asthmaMedicalHistory.orlAffection")}
+                disabled={disabled}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Polypose nasale
+              </span>
+            </label>
+          </div>
+        </div>
+
+        {/* Facteurs endocriniens */}
+        <div>
+          <h4 className="text-md font-medium text-gray-900 dark:text-white mb-4">
+            Facteurs endocriniens
+          </h4>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Facteurs endocriniens
+              </label>
+              <select
+                {...register("asthmaMedicalHistory.endocrineFactors")}
+                disabled={disabled}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              >
+                <option value="">Sélectionnez</option>
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Si oui
+              </label>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    value="obesite"
+                    {...register(
+                      "asthmaMedicalHistory.endocrineFactorsDetails"
+                    )}
+                    disabled={disabled}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Obésité
+                  </span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    value="grossesse"
+                    {...register(
+                      "asthmaMedicalHistory.endocrineFactorsDetails"
+                    )}
+                    disabled={disabled}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Grossesse
+                  </span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    value="puberte"
+                    {...register(
+                      "asthmaMedicalHistory.endocrineFactorsDetails"
+                    )}
+                    disabled={disabled}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Puberté
+                  </span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    value="periMenopause"
+                    {...register(
+                      "asthmaMedicalHistory.endocrineFactorsDetails"
+                    )}
+                    disabled={disabled}
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  />
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    Péri-ménopause
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Exposition professionnelle */}
+        <div>
+          <h4 className="text-md font-medium text-gray-900 dark:text-white mb-4">
+            Exposition professionnelle
+          </h4>
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Exposition professionnelle
+              </label>
+              <select
+                {...register("asthmaMedicalHistory.professionalExposure")}
+                disabled={disabled}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              >
+                <option value="">Sélectionnez</option>
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Détails
+              </label>
+              <input
+                type="text"
+                {...register(
+                  "asthmaMedicalHistory.professionalExposureDetails"
+                )}
+                disabled={disabled}
+                placeholder="Précisez l'exposition professionnelle..."
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Allergie à la poussière et tabagisme passif */}
+        <div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
       </div>
     </div>

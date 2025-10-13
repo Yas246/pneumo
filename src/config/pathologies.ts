@@ -55,4 +55,16 @@ export const pathologies: Pathology[] = [
     icon: "/icons/asthma.svg",
     description: "Diagnostic et traitement de l'asthme",
   },
+  {
+    id: "ddb",
+    name: "Dilatation des Bronches",
+    icon: "/icons/ddb.svg",
+    description: "Diagnostic et traitement de la dilatation des bronches",
+  },
+  {
+    id: "tbk",
+    name: "Tuberculose",
+    icon: "/icons/infection.svg",
+    description: "Diagnostic et traitement de la tuberculose",
+  },
 ];

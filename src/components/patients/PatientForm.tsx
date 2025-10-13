@@ -214,7 +214,8 @@ export function PatientForm({
               key.includes("weight") ||
               key.includes("height") ||
               key.includes("temperature") ||
-              key.includes("value"))
+              key.includes("value")) &&
+            key !== "dosage"
           ) {
             validationErrorMessages.push(
               `Attention: Chaîne vide dans un champ qui pourrait être numérique à '${currentPath}'`
@@ -295,7 +296,9 @@ export function PatientForm({
     pathologies[0] !== "pleuralEffusion" &&
     pathologies[0] !== "pid" &&
     pathologies[0] !== "bpco" &&
-    pathologies[0] !== "asthma"
+    pathologies[0] !== "asthma" &&
+    pathologies[0] !== "ddb" &&
+    pathologies[0] !== "tbk"
   ) {
     return (
       <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg text-center">

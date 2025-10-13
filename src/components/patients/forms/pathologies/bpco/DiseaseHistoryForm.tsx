@@ -150,6 +150,84 @@ export function DiseaseHistoryForm({
             placeholder="Décrivez les signes associés..."
           />
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Dyspnée / mMRC
+            </label>
+            <input
+              type="number"
+              min="0"
+              max="4"
+              {...register("bpcoDiseaseHistory.dyspneaMmrc", {
+                setValueAs: (value) => (value === "" ? null : Number(value)),
+              })}
+              disabled={disabled}
+              className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              placeholder="0-4"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Expectoration - Aspect
+            </label>
+            <select
+              {...register("bpcoDiseaseHistory.expectorationAspect")}
+              disabled={disabled}
+              className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+            >
+              <option value="">Sélectionnez</option>
+              <option value="Muqueuses">Muqueuses</option>
+              <option value="Mucopurulentes">Mucopurulentes</option>
+              <option value="Purulentes">Purulentes</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Expectoration - Abondance
+            </label>
+            <select
+              {...register("bpcoDiseaseHistory.expectorationAbundance")}
+              disabled={disabled}
+              className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+            >
+              <option value="">Sélectionnez</option>
+              <option value="Faible">Faible</option>
+              <option value="Grande">Grande</option>
+            </select>
+          </div>
+
+          <div className="space-y-3">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+              <input
+                type="checkbox"
+                {...register("bpcoDiseaseHistory.hemoptysis")}
+                disabled={disabled}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Hémoptysie
+              </span>
+            </label>
+
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+              <input
+                type="checkbox"
+                {...register("bpcoDiseaseHistory.chestPain")}
+                disabled={disabled}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Douleur thoracique
+              </span>
+            </label>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import { FormSectionProps } from "../../types";
 
 export function ClinicalExamForm({
   register,
-  
+
   disabled,
   watch,
 }: FormSectionProps) {
@@ -11,6 +11,9 @@ export function ClinicalExamForm({
     : false;
   const watchHepatomegaly = watch
     ? watch("bpcoDigestiveSystem.hepatomegaly")
+    : false;
+  const watchSplenomegaly = watch
+    ? watch("bpcoDigestiveSystem.splenomegaly")
     : false;
   const watchUrinalysisDone = watch
     ? watch("bpcoUrinarySystem.urinalysisDone")
@@ -150,6 +153,30 @@ export function ClinicalExamForm({
         </div>
 
         <div className="mt-4 space-y-2">
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+            <input
+              type="checkbox"
+              {...register("bpcoGeneralState.consciousnessState.goodConsciousness")}
+              disabled={disabled}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Bonne conscience
+            </span>
+          </label>
+
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+            <input
+              type="checkbox"
+              {...register("bpcoGeneralState.consciousnessState.confusion")}
+              disabled={disabled}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Confusion
+            </span>
+          </label>
+
           <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
             <input
               type="checkbox"
@@ -331,6 +358,35 @@ export function ClinicalExamForm({
               />
             </div>
           )}
+
+          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+            <input
+              type="checkbox"
+              {...register("bpcoDigestiveSystem.splenomegaly")}
+              disabled={disabled}
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+            />
+            <span className="text-sm text-gray-700 dark:text-gray-300">
+              Splénomégalie
+            </span>
+          </label>
+
+          {watchSplenomegaly && (
+            <div className="ml-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Taille (cm)
+              </label>
+              <input
+                type="number"
+                {...register("bpcoDigestiveSystem.splenomegalySize", {
+                  setValueAs: (value) => (value === "" ? null : Number(value)),
+                })}
+                disabled={disabled}
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                placeholder="12"
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -340,32 +396,58 @@ export function ClinicalExamForm({
           5. Appareil urinaire
         </h4>
         <div className="space-y-4">
+          <div className="space-y-3">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+              <input
+                type="checkbox"
+                {...register("bpcoUrinarySystem.diuresisConserved")}
+                disabled={disabled}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Diurèse conservée
+              </span>
+            </label>
+
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+              <input
+                type="checkbox"
+                {...register("bpcoUrinarySystem.retention")}
+                disabled={disabled}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Rétention
+              </span>
+            </label>
+
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+              <input
+                type="checkbox"
+                {...register("bpcoUrinarySystem.bladderGlobe")}
+                disabled={disabled}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <span className="text-sm text-gray-700 dark:text-gray-300">
+                Globe vésical
+              </span>
+            </label>
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-              Diurèse
+              PU/BU réalisé
             </label>
             <select
-              {...register("bpcoUrinarySystem.diuresis")}
+              {...register("bpcoUrinarySystem.urinalysisDone")}
               disabled={disabled}
               className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
             >
               <option value="">Sélectionnez</option>
-              <option value="conservée">Conservée</option>
-              <option value="Rétention">Rétention</option>
+              <option value="Oui">Oui</option>
+              <option value="Non">Non</option>
             </select>
           </div>
-
-          <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-            <input
-              type="checkbox"
-              {...register("bpcoUrinarySystem.urinalysisDone")}
-              disabled={disabled}
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-            />
-            <span className="text-sm text-gray-700 dark:text-gray-300">
-              PU/BU réalisé
-            </span>
-          </label>
 
           {watchUrinalysisDone && (
             <div className="ml-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
@@ -393,7 +475,7 @@ export function ClinicalExamForm({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Mobilité
+                Mobilité conservée
               </label>
               <select
                 {...register("bpcoMusculoskeletalSystem.mobility")}
@@ -401,8 +483,8 @@ export function ClinicalExamForm({
                 className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
               >
                 <option value="">Sélectionnez</option>
-                <option value="conservée">Conservée</option>
-                <option value="Limitation">Limitation</option>
+                <option value="conservée">Oui</option>
+                <option value="Limitation">Non</option>
               </select>
             </div>
 
@@ -559,6 +641,51 @@ export function ClinicalExamForm({
               </span>
             </label>
           </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Réflexes ostéotendineux
+            </label>
+            <select
+              {...register("bpcoNervousSystem.reflexesOsteotendineux")}
+              disabled={disabled}
+              className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+            >
+              <option value="">Sélectionnez</option>
+              <option value="Normaux">Normaux</option>
+              <option value="Abolis">Abolis</option>
+              <option value="Exagérés">Exagérés</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              ROT (détails)
+            </label>
+            <textarea
+              {...register("bpcoNervousSystem.rotDetails")}
+              disabled={disabled}
+              rows={2}
+              className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              placeholder="Détails des ROT..."
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Équilibre
+            </label>
+            <select
+              {...register("bpcoNervousSystem.equilibrium")}
+              disabled={disabled}
+              className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+            >
+              <option value="">Sélectionnez</option>
+              <option value="Normal">Normal</option>
+              <option value="Romberg +">Romberg +</option>
+              <option value="Ataxie">Ataxie</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -689,36 +816,36 @@ export function ClinicalExamForm({
             <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
-                {...register("bpcoEntEyesMouth.oralCavity.hydratedMucous")}
+                {...register("bpcoEntEyesMouth.oralCavityHydratedMucous")}
                 disabled={disabled}
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
               <span className="text-sm text-gray-700 dark:text-gray-300">
-                Muqueuses hydratées
+                Cavité buccale - Muqueuses hydratées
               </span>
             </label>
 
             <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
-                {...register("bpcoEntEyesMouth.oralCavity.dry")}
+                {...register("bpcoEntEyesMouth.oralCavityDryMucous")}
                 disabled={disabled}
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
               <span className="text-sm text-gray-700 dark:text-gray-300">
-                Muqueuses sèches
+                Cavité buccale - Muqueuses Sèches
               </span>
             </label>
 
             <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
-                {...register("bpcoEntEyesMouth.oralCavity.lesions")}
+                {...register("bpcoEntEyesMouth.oralCavityLesions")}
                 disabled={disabled}
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
               <span className="text-sm text-gray-700 dark:text-gray-300">
-                Lésions
+                Cavité buccale - Lésions
               </span>
             </label>
           </div>
