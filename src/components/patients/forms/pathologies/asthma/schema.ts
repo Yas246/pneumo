@@ -215,6 +215,7 @@ export const asthmaSchema = z.object({
       efrVemsCv: zNullableNumber,
       chestXray: z.string().optional(),
       chestXrayOther: z.string().optional(),
+      chestXrayImages: z.array(z.string()).optional(),
       nfsHyperEosinophilia: z.boolean().default(false),
       hyperEosinophiliaValue: zNullableNumber,
       totalIge: zNullableNumber,
@@ -233,8 +234,10 @@ export const asthmaSchema = z.object({
       idrPositiveDetails: z.string().optional(),
       blondScannerPerformed: z.boolean().default(false),
       blondScannerResult: z.string().optional(),
+      blondScannerImages: z.array(z.string()).optional(),
       thoracicCtdPerformed: z.boolean().default(false),
       thoracicCtdConclusion: z.string().optional(),
+      thoracicCtdImages: z.array(z.string()).optional(),
     })
     .default({}),
 

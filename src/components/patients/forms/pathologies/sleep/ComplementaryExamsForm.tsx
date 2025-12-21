@@ -1,37 +1,11 @@
-import { useFileUpload } from "../../../../../hooks/useFileUpload";
+import { MediaUploadDragDrop } from "../../../../shared/MediaUploadDragDrop";
 import { FormSectionProps } from "../../types";
 
 export function ComplementaryExamsForm({
   register,
   setValue,
+  watch,
 }: FormSectionProps) {
-  const { uploadFile, uploading, progress } = useFileUpload();
-
-  const handleFileUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-    field: "chestXray" | "scanner",
-    type: "image" | "video" = "image"
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    try {
-      const downloadURL = await uploadFile(
-        file,
-        `complementary-exams/${field}/${type}`
-      );
-      if (downloadURL) {
-        if (type === "image") {
-          setValue(`complementaryExams.${field}.imageUrl`, downloadURL);
-        } else if (field === "scanner") {
-          setValue("complementaryExams.scanner.videoUrl", downloadURL);
-        }
-      }
-    } catch (error) {
-      console.error("Erreur lors de l'upload:", error);
-    }
-  };
-
   return (
     <div className="bg-white dark:bg-gray-800 shadow-soft rounded-xl p-6">
       <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-6">
@@ -62,24 +36,18 @@ export function ComplementaryExamsForm({
             Radiographie thoracique
           </label>
           <div className="space-y-4">
-            <div>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handleFileUpload(e, "chestXray")}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
-              />
-              {uploading && (
-                <div className="mt-2">
-                  <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <div
-                      className="bg-primary-600 h-2.5 rounded-full"
-                      style={{ width: `${progress}%` }}
-                    ></div>
-                  </div>
-                </div>
-              )}
-            </div>
+            <MediaUploadDragDrop
+              accept="image/*"
+              placeholder="Glissez-déposez des images ici ou cliquez pour sélectionner"
+              currentUrls={
+                watch?.("complementaryExams.chestXray.imageUrls") || []
+              }
+              onFileSelect={(files, urls) => {
+                if (urls && urls.length > 0) {
+                  setValue("complementaryExams.chestXray.imageUrls", urls);
+                }
+              }}
+            />
             <textarea
               {...register("complementaryExams.chestXray.notes")}
               placeholder="Notes"
@@ -100,45 +68,37 @@ export function ComplementaryExamsForm({
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Image
+                Images
               </label>
-              <input
-                type="file"
+              <MediaUploadDragDrop
                 accept="image/*"
-                onChange={(e) => handleFileUpload(e, "scanner")}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
+                placeholder="Glissez-déposez des images ici ou cliquez pour sélectionner"
+                currentUrls={
+                  watch?.("complementaryExams.scanner.imageUrls") || []
+                }
+                onFileSelect={(files, urls) => {
+                  if (urls && urls.length > 0) {
+                    setValue("complementaryExams.scanner.imageUrls", urls);
+                  }
+                }}
               />
-              {uploading && (
-                <div className="mt-2">
-                  <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <div
-                      className="bg-primary-600 h-2.5 rounded-full"
-                      style={{ width: `${progress}%` }}
-                    ></div>
-                  </div>
-                </div>
-              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Vidéo
+                Vidéos
               </label>
-              <input
-                type="file"
+              <MediaUploadDragDrop
                 accept="video/*"
-                onChange={(e) => handleFileUpload(e, "scanner", "video")}
-                className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100"
+                placeholder="Glissez-déposez des vidéos ici ou cliquez pour sélectionner"
+                currentUrls={
+                  watch?.("complementaryExams.scanner.videoUrls") || []
+                }
+                onFileSelect={(files, urls) => {
+                  if (urls && urls.length > 0) {
+                    setValue("complementaryExams.scanner.videoUrls", urls);
+                  }
+                }}
               />
-              {uploading && (
-                <div className="mt-2">
-                  <div className="w-full bg-gray-200 rounded-full h-2.5">
-                    <div
-                      className="bg-primary-600 h-2.5 rounded-full"
-                      style={{ width: `${progress}%` }}
-                    ></div>
-                  </div>
-                </div>
-              )}
             </div>
             <textarea
               {...register("complementaryExams.scanner.notes")}

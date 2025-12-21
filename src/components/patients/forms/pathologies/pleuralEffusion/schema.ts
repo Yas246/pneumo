@@ -207,17 +207,22 @@ export const pleuralEffusionSchema = z.object({
     .object({
       thoracicEcho: z.boolean().default(false),
       thoracicEchoResults: z.string().optional(),
+      thoracicEchoImages: z.array(z.string()).optional(),
 
       thoracicCT: z.boolean().default(false),
       thoracicCTResults: z.string().optional(),
+      thoracicCTImages: z.array(z.string()).optional(),
 
       abdominalEcho: z.boolean().default(false),
       abdominalEchoResults: z.string().optional(),
+      abdominalEchoImages: z.array(z.string()).optional(),
 
       ett: z.boolean().default(false),
       ettResults: z.string().optional(),
+      ettImages: z.array(z.string()).optional(),
 
       otherImaging: z.string().optional(),
+      otherImagingImages: z.array(z.string()).optional(),
     })
     .default({}),
 

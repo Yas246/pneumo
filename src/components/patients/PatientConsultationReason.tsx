@@ -1,6 +1,6 @@
 "use client";
 
-import { ExtendedPatient } from "@/app/patients/[id]/page";
+import { ExtendedPatient } from "@/components/patients/display/types";
 
 // Configuration des motifs de consultation par pathologie
 const consultationReasonsConfig = {
@@ -84,6 +84,47 @@ const consultationReasonsConfig = {
         label: "Autre",
         color:
           "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300",
+        isOther: true,
+      },
+    ],
+  },
+  pneumothorax: {
+    title: "Motifs de consultation Pneumothorax",
+    reasons: [
+      {
+        key: "thoracicPain" as keyof ExtendedPatient["pneumothoraxConsultationReason"],
+        label: "Douleur thoracique",
+        color: "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+      },
+      {
+        key: "dyspnea" as keyof ExtendedPatient["pneumothoraxConsultationReason"],
+        label: "Dyspnée",
+        color: "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+      },
+      {
+        key: "cough" as keyof ExtendedPatient["pneumothoraxConsultationReason"],
+        label: "Toux",
+        color: "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+      },
+      {
+        key: "thoracicOppression" as keyof ExtendedPatient["pneumothoraxConsultationReason"],
+        label: "Oppression thoracique",
+        color: "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+      },
+      {
+        key: "malaiseSyncope" as keyof ExtendedPatient["pneumothoraxConsultationReason"],
+        label: "Malaise/Syncope",
+        color: "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+      },
+      {
+        key: "radiologicalDiscovery" as keyof ExtendedPatient["pneumothoraxConsultationReason"],
+        label: "Découverte radiologique",
+        color: "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+      },
+      {
+        key: "other" as keyof ExtendedPatient["pneumothoraxConsultationReason"],
+        label: "Autre",
+        color: "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
         isOther: true,
       },
     ],

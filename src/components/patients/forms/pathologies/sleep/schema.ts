@@ -118,14 +118,14 @@ export const sleepPathologySchema = z.object({
       metabolicAssessment: z.string().optional(),
       chestXray: z
         .object({
-          imageUrl: z.string().optional(),
+          imageUrls: z.array(z.string()).optional(),
           notes: z.string().optional(),
         })
         .default({}),
       scanner: z
         .object({
-          imageUrl: z.string().optional(),
-          videoUrl: z.string().optional(),
+          imageUrls: z.array(z.string()).optional(),
+          videoUrls: z.array(z.string()).optional(),
           notes: z.string().optional(),
         })
         .default({}),

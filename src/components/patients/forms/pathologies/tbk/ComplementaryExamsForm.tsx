@@ -1,8 +1,13 @@
 "use client";
 
+import { MediaUploadDragDrop } from "../../../../shared/MediaUploadDragDrop";
 import { FormSectionProps } from "../../types";
 
-export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
+export function ComplementaryExamsForm({
+  register,
+  watch,
+  setValue,
+}: FormSectionProps) {
   const thoracicCt = watch("tbkOtherAssessments.thoracicCt");
   const bronchoscopy = watch("tbkOtherAssessments.bronchoscopy");
   const pleuralPuncture = watch("tbkOtherAssessments.pleuralPuncture");
@@ -128,6 +133,22 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
                 {...register("tbkChestXRay.otherAssociatedLesions")}
                 placeholder="Autres lésions associées..."
                 className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Images de la Rx Thoracique
+              </label>
+              <MediaUploadDragDrop
+                onFileSelect={(files, urls) => {
+                  if (urls && urls.length > 0) {
+                    setValue("tbkChestXRay.imageFiles", urls);
+                  }
+                }}
+                accept="image/*"
+                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                currentUrls={watch?.("tbkChestXRay.imageFiles") || []}
               />
             </div>
           </div>
@@ -880,6 +901,27 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
                       className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                     />
                   </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Images de la TDM Thoracique
+                    </label>
+                    <MediaUploadDragDrop
+                      onFileSelect={(files, urls) => {
+                        if (urls && urls.length > 0) {
+                          setValue(
+                            "tbkOtherAssessments.thoracicCtImages",
+                            urls
+                          );
+                        }
+                      }}
+                      accept="image/*"
+                      placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                      currentUrls={
+                        watch?.("tbkOtherAssessments.thoracicCtImages") || []
+                      }
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -1090,6 +1132,27 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
                       className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                     />
                   </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Images de la Bronchoscopie
+                    </label>
+                    <MediaUploadDragDrop
+                      onFileSelect={(files, urls) => {
+                        if (urls && urls.length > 0) {
+                          setValue(
+                            "tbkOtherAssessments.bronchoscopyImages",
+                            urls
+                          );
+                        }
+                      }}
+                      accept="image/*"
+                      placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                      currentUrls={
+                        watch?.("tbkOtherAssessments.bronchoscopyImages") || []
+                      }
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -1160,6 +1223,28 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
                       className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                     />
                   </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Images de la Ponction Pleurale
+                    </label>
+                    <MediaUploadDragDrop
+                      onFileSelect={(files, urls) => {
+                        if (urls && urls.length > 0) {
+                          setValue(
+                            "tbkOtherAssessments.pleuralPunctureImages",
+                            urls
+                          );
+                        }
+                      }}
+                      accept="image/*"
+                      placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                      currentUrls={
+                        watch?.("tbkOtherAssessments.pleuralPunctureImages") ||
+                        []
+                      }
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -1220,6 +1305,27 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
                       className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                     />
                   </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Images de la Biopsie Pleurale
+                    </label>
+                    <MediaUploadDragDrop
+                      onFileSelect={(files, urls) => {
+                        if (urls && urls.length > 0) {
+                          setValue(
+                            "tbkOtherAssessments.pleuralBiopsyImages",
+                            urls
+                          );
+                        }
+                      }}
+                      accept="image/*"
+                      placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                      currentUrls={
+                        watch?.("tbkOtherAssessments.pleuralBiopsyImages") || []
+                      }
+                    />
+                  </div>
                 </div>
               )}
             </div>
@@ -1253,6 +1359,27 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
                   className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Images des Autres Bilans Paracliniques
+              </label>
+              <MediaUploadDragDrop
+                onFileSelect={(files, urls) => {
+                  if (urls && urls.length > 0) {
+                    setValue(
+                      "tbkOtherAssessments.otherAssessmentsImages",
+                      urls
+                    );
+                  }
+                }}
+                accept="image/*"
+                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                currentUrls={
+                  watch?.("tbkOtherAssessments.otherAssessmentsImages") || []
+                }
+              />
             </div>
           </div>
         </div>

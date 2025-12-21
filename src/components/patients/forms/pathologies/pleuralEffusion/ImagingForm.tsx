@@ -1,6 +1,7 @@
 import { FormSectionProps } from "../../types";
+import { MediaUploadDragDrop } from "../../../../shared/MediaUploadDragDrop";
 
-export function ImagingForm({ register, watch }: FormSectionProps) {
+export function ImagingForm({ register, watch, setValue }: FormSectionProps) {
   const thoracicEcho = watch("imaging.thoracicEcho");
   const thoracicCT = watch("imaging.thoracicCT");
   const abdominalEcho = watch("imaging.abdominalEcho");
@@ -31,19 +32,37 @@ export function ImagingForm({ register, watch }: FormSectionProps) {
           </div>
 
           {thoracicEcho && (
-            <div className="ml-6 space-y-2">
-              <label
-                htmlFor="imaging.thoracicEchoResults"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Résultats
-              </label>
-              <textarea
-                id="imaging.thoracicEchoResults"
-                {...register("imaging.thoracicEchoResults")}
-                rows={3}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
-              />
+            <div className="ml-6 space-y-4">
+              <div>
+                <label
+                  htmlFor="imaging.thoracicEchoResults"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Résultats
+                </label>
+                <textarea
+                  id="imaging.thoracicEchoResults"
+                  {...register("imaging.thoracicEchoResults")}
+                  rows={3}
+                  className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue("imaging.thoracicEchoImages", urls);
+                    }
+                  }}
+                  accept="image/*,video/*"
+                  placeholder="Glissez-déposez les images ou vidéos de l'échographie thoracique ici"
+                  currentUrls={watch?.("imaging.thoracicEchoImages") || []}
+                />
+              </div>
             </div>
           )}
         </div>
@@ -66,19 +85,37 @@ export function ImagingForm({ register, watch }: FormSectionProps) {
           </div>
 
           {thoracicCT && (
-            <div className="ml-6 space-y-2">
-              <label
-                htmlFor="imaging.thoracicCTResults"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Résultats
-              </label>
-              <textarea
-                id="imaging.thoracicCTResults"
-                {...register("imaging.thoracicCTResults")}
-                rows={3}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
-              />
+            <div className="ml-6 space-y-4">
+              <div>
+                <label
+                  htmlFor="imaging.thoracicCTResults"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Résultats
+                </label>
+                <textarea
+                  id="imaging.thoracicCTResults"
+                  {...register("imaging.thoracicCTResults")}
+                  rows={3}
+                  className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue("imaging.thoracicCTImages", urls);
+                    }
+                  }}
+                  accept="image/*,video/*"
+                  placeholder="Glissez-déposez les images ou vidéos du TDM thoracique ici"
+                  currentUrls={watch?.("imaging.thoracicCTImages") || []}
+                />
+              </div>
             </div>
           )}
         </div>
@@ -101,19 +138,37 @@ export function ImagingForm({ register, watch }: FormSectionProps) {
           </div>
 
           {abdominalEcho && (
-            <div className="ml-6 space-y-2">
-              <label
-                htmlFor="imaging.abdominalEchoResults"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Résultats
-              </label>
-              <textarea
-                id="imaging.abdominalEchoResults"
-                {...register("imaging.abdominalEchoResults")}
-                rows={3}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
-              />
+            <div className="ml-6 space-y-4">
+              <div>
+                <label
+                  htmlFor="imaging.abdominalEchoResults"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Résultats
+                </label>
+                <textarea
+                  id="imaging.abdominalEchoResults"
+                  {...register("imaging.abdominalEchoResults")}
+                  rows={3}
+                  className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue("imaging.abdominalEchoImages", urls);
+                    }
+                  }}
+                  accept="image/*,video/*"
+                  placeholder="Glissez-déposez les images ou vidéos de l'échographie abdominale ici"
+                  currentUrls={watch?.("imaging.abdominalEchoImages") || []}
+                />
+              </div>
             </div>
           )}
         </div>
@@ -136,37 +191,73 @@ export function ImagingForm({ register, watch }: FormSectionProps) {
           </div>
 
           {ett && (
-            <div className="ml-6 space-y-2">
-              <label
-                htmlFor="imaging.ettResults"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Résultats
-              </label>
-              <textarea
-                id="imaging.ettResults"
-                {...register("imaging.ettResults")}
-                rows={3}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
-              />
+            <div className="ml-6 space-y-4">
+              <div>
+                <label
+                  htmlFor="imaging.ettResults"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Résultats
+                </label>
+                <textarea
+                  id="imaging.ettResults"
+                  {...register("imaging.ettResults")}
+                  rows={3}
+                  className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue("imaging.ettImages", urls);
+                    }
+                  }}
+                  accept="image/*,video/*"
+                  placeholder="Glissez-déposez les images ou vidéos de l'ETT ici"
+                  currentUrls={watch?.("imaging.ettImages") || []}
+                />
+              </div>
             </div>
           )}
         </div>
 
         {/* Autres imageries */}
-        <div className="space-y-2">
-          <label
-            htmlFor="imaging.otherImaging"
-            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            Autres imageries
-          </label>
-          <textarea
-            id="imaging.otherImaging"
-            {...register("imaging.otherImaging")}
-            rows={3}
-            className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
-          />
+        <div className="space-y-4">
+          <div>
+            <label
+              htmlFor="imaging.otherImaging"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
+              Autres imageries
+            </label>
+            <textarea
+              id="imaging.otherImaging"
+              {...register("imaging.otherImaging")}
+              rows={3}
+              className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Images
+            </label>
+            <MediaUploadDragDrop
+              onFileSelect={(files, urls) => {
+                if (urls && urls.length > 0) {
+                  setValue("imaging.otherImagingImages", urls);
+                }
+              }}
+              accept="image/*,video/*"
+              placeholder="Glissez-déposez les images ou vidéos des autres imageries ici"
+              currentUrls={watch?.("imaging.otherImagingImages") || []}
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -4,8 +4,10 @@ import { bpcoSchema } from "./forms/pathologies/bpco/schema";
 import { ddbSchema } from "./forms/pathologies/ddb/schema";
 import { pidSchema } from "./forms/pathologies/pid/schema";
 import { pleuralEffusionSchema } from "./forms/pathologies/pleuralEffusion/schema";
+import { pneumothoraxSchema } from "./forms/pathologies/pneumothorax/schema";
 import { sleepPathologySchema } from "./forms/pathologies/sleep/schema";
 import { tbkSchema } from "./forms/pathologies/tbk/schema";
+import { lungCancerSchema } from "./forms/pathologies/lungCancer/schema";
 
 // Common schema for all patients
 export const patientSchema = z.object({
@@ -29,6 +31,8 @@ export const patientSchema = z.object({
   ...bpcoSchema.shape,
   ...asthmaSchema.shape,
   ...ddbSchema.shape,
+  ...lungCancerSchema.shape,
+  ...pneumothoraxSchema.shape,
   ...tbkSchema.shape,
 
   // Motif de consultation

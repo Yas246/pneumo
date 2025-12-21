@@ -2,8 +2,10 @@ import { FormSectionProps } from "../types";
 import { AsthmaForm } from "./asthma";
 import { BPCOForm } from "./bpco";
 import { DDBForm } from "./ddb";
+import { LungCancerForm } from "./lungCancer";
 import { PIDForm } from "./pid";
 import { PleuralEffusionForm } from "./pleuralEffusion";
+import { PneumothoraxForm } from "./pneumothorax";
 import { SleepPathologyForm } from "./sleep";
 import TBKForm from "./tbk";
 
@@ -23,6 +25,10 @@ export function PathologyFormSelector(props: PathologyFormSelectorProps) {
     return <PIDForm {...props} />;
   } else if (props.selectedPathologies.includes("pleuralEffusion")) {
     return <PleuralEffusionForm {...props} />;
+  } else if (props.selectedPathologies.includes("pneumothorax")) {
+    return <PneumothoraxForm {...props} />;
+  } else if (props.selectedPathologies.includes("lungCancer")) {
+    return <LungCancerForm {...props} />;
   } else if (props.selectedPathologies.includes("tbk")) {
     return <TBKForm {...props} />;
   } else {

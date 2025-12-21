@@ -1,9 +1,13 @@
 "use client";
 
 import { FormSectionProps } from "../../types";
+import { MediaUploadDragDrop } from "../../../../shared/MediaUploadDragDrop";
+
 export function ComplementaryExamsForm({
   register,
   disabled,
+  watch,
+  setValue,
 }: FormSectionProps) {
   return (
     <div className="bg-white dark:bg-gray-800 shadow-soft rounded-xl p-6">
@@ -133,6 +137,25 @@ export function ComplementaryExamsForm({
                 disabled={disabled}
                 placeholder="Précisez les anomalies..."
                 className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Images
+              </label>
+              <MediaUploadDragDrop
+                onFileSelect={(files, urls) => {
+                  if (urls && urls.length > 0) {
+                    setValue("asthmaComplementaryExams.chestXrayImages", urls);
+                  }
+                }}
+                accept="image/*,video/*"
+                placeholder="Glissez-déposez les images ou vidéos de la radiographie thoracique ici"
+                currentUrls={
+                  watch?.("asthmaComplementaryExams.chestXrayImages") || []
+                }
+                disabled={disabled}
               />
             </div>
           </div>
@@ -434,6 +457,29 @@ export function ComplementaryExamsForm({
                     className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   />
                 </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Images
+                  </label>
+                  <MediaUploadDragDrop
+                    onFileSelect={(files, urls) => {
+                      if (urls && urls.length > 0) {
+                        setValue(
+                          "asthmaComplementaryExams.blondScannerImages",
+                          urls
+                        );
+                      }
+                    }}
+                    accept="image/*,video/*"
+                    placeholder="Glissez-déposez les images ou vidéos du BLONDO-SCANNER ici"
+                    currentUrls={
+                      watch?.("asthmaComplementaryExams.blondScannerImages") ||
+                      []
+                    }
+                    disabled={disabled}
+                  />
+                </div>
               </div>
             </div>
 
@@ -469,6 +515,29 @@ export function ComplementaryExamsForm({
                     disabled={disabled}
                     placeholder="Précisez la conclusion..."
                     className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Images
+                  </label>
+                  <MediaUploadDragDrop
+                    onFileSelect={(files, urls) => {
+                      if (urls && urls.length > 0) {
+                        setValue(
+                          "asthmaComplementaryExams.thoracicCtdImages",
+                          urls
+                        );
+                      }
+                    }}
+                    accept="image/*,video/*"
+                    placeholder="Glissez-déposez les images ou vidéos du TDM thoracique ici"
+                    currentUrls={
+                      watch?.("asthmaComplementaryExams.thoracicCtdImages") ||
+                      []
+                    }
+                    disabled={disabled}
                   />
                 </div>
               </div>

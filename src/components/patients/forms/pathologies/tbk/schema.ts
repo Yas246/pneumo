@@ -167,6 +167,7 @@ export const tbkSchema = z.object({
       associatedPleuralEffusion: z.boolean().default(false),
       associatedAdenopathies: z.boolean().default(false),
       otherAssociatedLesions: z.string().optional(),
+      imageFiles: z.array(z.string()).default([]),
     })
     .default({}),
 
@@ -249,10 +250,12 @@ export const tbkSchema = z.object({
       thoracicCtDate: zNullableDate,
       thoracicCtIndication: z.string().optional(),
       thoracicCtResults: z.string().optional(),
+      thoracicCtImages: z.array(z.string()).default([]),
       bronchoscopy: z.enum(["", "Non faite", "Faite"]).optional(),
       bronchoscopyDate: zNullableDate,
       bronchoscopyIndication: z.string().optional(),
       macroscopicAspect: z.string().optional(),
+      bronchoscopyImages: z.array(z.string()).default([]),
       postFibroBkDirectExam: z.enum(["", "Non faite", "Faite"]).optional(),
       bronchialAspiration: z.enum(["", "Non faite", "Faite"]).optional(),
       bronchialAspirationBkDirect: z
@@ -272,12 +275,15 @@ export const tbkSchema = z.object({
       pleuralFluidAspect: z.string().optional(),
       pleuralBiochemistry: z.string().optional(),
       pleuralCytology: z.string().optional(),
+      pleuralPunctureImages: z.array(z.string()).default([]),
       pleuralBiopsy: z.enum(["", "Non faite", "Faite"]).optional(),
       pleuralBiopsyDate: zNullableDate,
       pleuralHistology: z.string().optional(),
       pleuralFragmentBkCulture: z.string().optional(),
+      pleuralBiopsyImages: z.array(z.string()).default([]),
       otherHistologicalExamsType: z.string().optional(),
       otherHistologicalExamsResults: z.string().optional(),
+      otherAssessmentsImages: z.array(z.string()).default([]),
     })
     .default({}),
 

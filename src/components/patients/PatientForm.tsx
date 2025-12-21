@@ -298,7 +298,9 @@ export function PatientForm({
     pathologies[0] !== "bpco" &&
     pathologies[0] !== "asthma" &&
     pathologies[0] !== "ddb" &&
-    pathologies[0] !== "tbk"
+    pathologies[0] !== "tbk" &&
+    pathologies[0] !== "pneumothorax" &&
+    pathologies[0] !== "lungCancer"
   ) {
     return (
       <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg text-center">

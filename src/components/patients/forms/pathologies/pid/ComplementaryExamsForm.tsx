@@ -1,6 +1,11 @@
+import { MediaUploadDragDrop } from "../../../../shared/MediaUploadDragDrop";
 import { FormSectionProps } from "../../types";
 
-export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
+export function ComplementaryExamsForm({
+  register,
+  watch,
+  setValue,
+}: FormSectionProps) {
   const chestXRayPerformed = watch("pidComplementaryExams.chestXRay.done");
   const chestCTPerformed = watch("pidComplementaryExams.chestCT.done");
   const handsXRayPerformed = watch("pidComplementaryExams.handXRay.done");
@@ -126,6 +131,27 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
                   />
                 </div>
               </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "pidComplementaryExams.chestXRay.imageFiles",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*,video/*"
+                  placeholder="Glissez-déposez les images ou vidéos de la radiographie thoracique ici"
+                  currentUrls={
+                    watch?.("pidComplementaryExams.chestXRay.imageFiles") || []
+                  }
+                />
+              </div>
             </div>
           )}
         </div>
@@ -210,6 +236,27 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
                   />
                 </div>
               </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "pidComplementaryExams.chestCT.imageFiles",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*,video/*"
+                  placeholder="Glissez-déposez les images ou vidéos du scanner thoracique ici"
+                  currentUrls={
+                    watch?.("pidComplementaryExams.chestCT.imageFiles") || []
+                  }
+                />
+              </div>
             </div>
           )}
         </div>
@@ -232,19 +279,42 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
           </div>
 
           {handsXRayPerformed && (
-            <div className="ml-6 space-y-2">
-              <label
-                htmlFor="pidComplementaryExams.handXRay.findings"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Résultats
-              </label>
-              <textarea
-                id="pidComplementaryExams.handXRay.findings"
-                {...register("pidComplementaryExams.handXRay.findings")}
-                rows={3}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
-              />
+            <div className="ml-6 space-y-4">
+              <div>
+                <label
+                  htmlFor="pidComplementaryExams.handXRay.findings"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Résultats
+                </label>
+                <textarea
+                  id="pidComplementaryExams.handXRay.findings"
+                  {...register("pidComplementaryExams.handXRay.findings")}
+                  rows={3}
+                  className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "pidComplementaryExams.handXRay.imageFiles",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*,video/*"
+                  placeholder="Glissez-déposez les images ou vidéos de la radiographie des mains ici"
+                  currentUrls={
+                    watch?.("pidComplementaryExams.handXRay.imageFiles") || []
+                  }
+                />
+              </div>
             </div>
           )}
         </div>
@@ -267,19 +337,42 @@ export function ComplementaryExamsForm({ register, watch }: FormSectionProps) {
           </div>
 
           {sinusCTPerformed && (
-            <div className="ml-6 space-y-2">
-              <label
-                htmlFor="pidComplementaryExams.sinusCT.findings"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Résultats
-              </label>
-              <textarea
-                id="pidComplementaryExams.sinusCT.findings"
-                {...register("pidComplementaryExams.sinusCT.findings")}
-                rows={3}
-                className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
-              />
+            <div className="ml-6 space-y-4">
+              <div>
+                <label
+                  htmlFor="pidComplementaryExams.sinusCT.findings"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Résultats
+                </label>
+                <textarea
+                  id="pidComplementaryExams.sinusCT.findings"
+                  {...register("pidComplementaryExams.sinusCT.findings")}
+                  rows={3}
+                  className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "pidComplementaryExams.sinusCT.imageFiles",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*,video/*"
+                  placeholder="Glissez-déposez les images ou vidéos du scanner des sinus ici"
+                  currentUrls={
+                    watch?.("pidComplementaryExams.sinusCT.imageFiles") || []
+                  }
+                />
+              </div>
             </div>
           )}
         </div>

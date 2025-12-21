@@ -2,7 +2,7 @@
 
 "use client";
 
-import { ExtendedPatient } from "@/app/patients/[id]/page";
+import { ExtendedPatient } from "@/components/patients/display/types";
 import {
   PathologyDisplayConfig,
   getPathologyConfig,
@@ -60,6 +60,21 @@ export function PatientSectionRenderer({
             break;
           case "followUp":
             sectionData = patient.asthmaFollowUp;
+            break;
+        }
+      } else if (pathologyId === "pneumothorax") {
+        // Pour pneumothorax, les données sont organisées différemment
+        switch (sectionName as string) {
+          case "treatment":
+            sectionData = {
+              pneumothoraxManagement: patient.pneumothoraxManagement,
+              pneumothoraxTreatmentDischarge:
+                patient.pneumothoraxTreatmentDischarge,
+            };
+            break;
+          default:
+            sectionData =
+              patient[`${pathologyId}${dataPrefix}` as keyof ExtendedPatient];
             break;
         }
       } else {

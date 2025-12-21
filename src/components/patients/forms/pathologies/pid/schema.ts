@@ -440,6 +440,7 @@ export const pidSchema = z.object({
           type: z.string().optional(),
           location: z.string().optional(),
           distribution: z.string().optional(),
+          imageFiles: z.array(z.string()).optional(),
         })
         .default({}),
       chestCT: z
@@ -450,18 +451,21 @@ export const pidSchema = z.object({
           location: z.string().optional(),
           type: z.string().optional(),
           distribution: z.string().optional(),
+          imageFiles: z.array(z.string()).optional(),
         })
         .default({}),
       handXRay: z
         .object({
           done: z.boolean().default(false),
           findings: z.string().optional(),
+          imageFiles: z.array(z.string()).optional(),
         })
         .default({}),
       sinusCT: z
         .object({
           done: z.boolean().default(false),
           findings: z.string().optional(),
+          imageFiles: z.array(z.string()).optional(),
         })
         .default({}),
       biology: z

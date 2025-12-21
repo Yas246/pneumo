@@ -3,6 +3,7 @@ import { ExtendedPatientFormData, FormSectionProps } from "../../types";
 
 export function ComplementaryExamsForm({
   register,
+  setValue,
   disabled,
   watch,
 }: FormSectionProps<ExtendedPatientFormData>) {
@@ -174,17 +175,13 @@ export function ComplementaryExamsForm({
                 accept="image/*,video/*"
                 placeholder="Glissez-déposez des images ou vidéos ici ou cliquez pour sélectionner"
                 disabled={disabled}
-                currentFiles={
+                currentUrls={
                   watch?.("bpcoDiagnosticTests.chestXRay.imageFiles") || []
                 }
                 onFileSelect={(files: File[], urls?: string[]) => {
                   if (urls && urls.length > 0) {
                     // Mettre à jour le champ avec les URLs des fichiers uploadés
-                    register(
-                      "bpcoDiagnosticTests.chestXRay.imageFiles"
-                    ).onChange({
-                      target: { value: urls },
-                    });
+                    setValue("bpcoDiagnosticTests.chestXRay.imageFiles", urls);
                   }
                 }}
               />
@@ -303,12 +300,7 @@ export function ComplementaryExamsForm({
                 }
                 onFileSelect={(files: File[], urls?: string[]) => {
                   if (urls && urls.length > 0) {
-                    // Mettre à jour le champ avec les URLs des fichiers uploadés
-                    register("bpcoDiagnosticTests.chestCT.videoFiles").onChange(
-                      {
-                        target: { value: urls },
-                      }
-                    );
+                    setValue("bpcoDiagnosticTests.chestCT.videoFiles", urls);
                   }
                 }}
               />

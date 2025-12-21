@@ -2,10 +2,30 @@
 
 "use client";
 
-import { ExtendedPatient } from "@/app/patients/[id]/page";
+import { ExtendedPatient } from "@/components/patients/display/types";
 
 // Configuration des antécédents médicaux par pathologie
-const medicalHistoryConfig = {
+const medicalHistoryConfig: Record<
+  string,
+  {
+    sections: Array<{
+      title: string;
+      items?: Array<{
+        key: string;
+        label: string;
+        hasCount?: string;
+        suffix?: string;
+        prefix?: string;
+        isArray?: boolean;
+        color?: string;
+      }>;
+      key?: string;
+      isTextArea?: boolean;
+      placeholder?: string;
+      isArray?: boolean;
+    }>;
+  }
+> = {
   bpco: {
     sections: [
       {
@@ -159,6 +179,98 @@ const medicalHistoryConfig = {
           },
           { key: "cannabis", label: "Cannabis", prefix: "• " },
           { key: "otherToxic", label: "Autres (Toxiques)", prefix: "• " },
+        ],
+      },
+    ],
+  },
+  pneumothorax: {
+    sections: [
+      {
+        title: "Antécédents personnels Pneumothorax",
+        items: [
+          {
+            key: "previousPneumothorax",
+            label: "Pneumothorax antérieur",
+            hasCount: "previousPneumothoraxCount",
+            suffix: "fois",
+          },
+          { key: "previousPneumothoraxSide", label: "Côté", prefix: "• " },
+          { key: "previousPneumothoraxDate", label: "Date", prefix: "• " },
+          { key: "bpcoEmphysema", label: "BPCO/Emphysème" },
+          { key: "severeAsthma", label: "Asthme sévère" },
+          { key: "tuberculosis", label: "Tuberculose" },
+          { key: "pidFibrosis", label: "PID/Fibrose" },
+          {
+            key: "cancers",
+            label: "Cancers",
+            hasCount: "cancersDetails",
+            suffix: "",
+          },
+          { key: "cardiopathy", label: "Cardiopathie" },
+          { key: "hta", label: "HTA" },
+          { key: "diabetes", label: "Diabète" },
+          { key: "irc", label: "IRC" },
+          { key: "thoracicSurgery", label: "Chirurgie thoracique" },
+          {
+            key: "otherPersonal",
+            label: "Autres",
+            hasCount: "otherPersonalDetails",
+            suffix: "",
+          },
+        ],
+      },
+      {
+        title: "Antécédents iatrogènes/traumatiques Pneumothorax",
+        items: [
+          {
+            key: "recentThoracicTrauma",
+            label: "Traumatisme thoracique récent",
+          },
+          { key: "mechanicalVentilation", label: "Ventilation mécanique" },
+          { key: "cvcPleuralPuncture", label: "CVC/Ponction pleurale" },
+          {
+            key: "otherRecentProcedure",
+            label: "Autre procédure récente",
+            hasCount: "otherRecentProcedureDetails",
+            suffix: "",
+          },
+        ],
+      },
+      {
+        title: "Habitus et facteurs de risque Pneumothorax",
+        items: [
+          {
+            key: "smoking",
+            label: "Tabagisme",
+            hasCount: "smokingQuantity",
+            suffix: "PA",
+          },
+          { key: "cannabisDrugs", label: "Cannabis/Drogues" },
+          { key: "longiligneMorphotype", label: "Morphotype longiligne" },
+          {
+            key: "recentExposure",
+            label: "Expositions récentes",
+            isArray: true,
+            color:
+              "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+          },
+        ],
+      },
+      {
+        title: "Allergies et traitements Pneumothorax",
+        items: [
+          {
+            key: "allergies",
+            label: "Allergies",
+            hasCount: "allergiesDetails",
+            suffix: "",
+          },
+          {
+            key: "chronicTreatments",
+            label: "Traitements chroniques",
+            hasCount: "chronicTreatmentsDetails",
+            suffix: "",
+          },
         ],
       },
     ],

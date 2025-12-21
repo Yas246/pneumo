@@ -1,8 +1,13 @@
 "use client";
 
+import { MediaUploadDragDrop } from "../../../../shared/MediaUploadDragDrop";
 import { FormSectionProps } from "../../types";
 
-export function ComplementaryExamsForm({ register }: FormSectionProps) {
+export function ComplementaryExamsForm({
+  register,
+  watch,
+  setValue,
+}: FormSectionProps) {
   return (
     <div className="bg-white dark:bg-gray-800 shadow-soft rounded-xl p-6">
       <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-6">
@@ -83,6 +88,24 @@ export function ComplementaryExamsForm({ register }: FormSectionProps) {
               </span>
             </label>
           </div>
+
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Images
+            </label>
+            <MediaUploadDragDrop
+              onFileSelect={(files, urls) => {
+                if (urls && urls.length > 0) {
+                  setValue("ddbComplementaryExams.chestXRayImages", urls);
+                }
+              }}
+              accept="image/*,video/*"
+              placeholder="Glissez-déposez les images ou vidéos de la radiographie thoracique ici"
+              currentUrls={
+                watch?.("ddbComplementaryExams.chestXRayImages") || []
+              }
+            />
+          </div>
         </div>
 
         {/* TDM */}
@@ -129,6 +152,22 @@ export function ComplementaryExamsForm({ register }: FormSectionProps) {
                 </span>
               </label>
             </div>
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Images
+            </label>
+            <MediaUploadDragDrop
+              onFileSelect={(files, urls) => {
+                if (urls && urls.length > 0) {
+                  setValue("ddbComplementaryExams.ctImages", urls);
+                }
+              }}
+              accept="image/*,video/*"
+              placeholder="Glissez-déposez les images ou vidéos du TDM ici"
+              currentUrls={watch?.("ddbComplementaryExams.ctImages") || []}
+            />
           </div>
         </div>
 
@@ -200,6 +239,24 @@ export function ComplementaryExamsForm({ register }: FormSectionProps) {
             />
           </div>
 
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Images
+            </label>
+            <MediaUploadDragDrop
+              onFileSelect={(files, urls) => {
+                if (urls && urls.length > 0) {
+                  setValue("ddbComplementaryExams.bronchoscopyImages", urls);
+                }
+              }}
+              accept="image/*,video/*"
+              placeholder="Glissez-déposez les images ou vidéos de l'endoscopie bronchique ici"
+              currentUrls={
+                watch?.("ddbComplementaryExams.bronchoscopyImages") || []
+              }
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               ECBC (Examen Cytobactériologique des Crachats) - Résultat
@@ -212,6 +269,22 @@ export function ComplementaryExamsForm({ register }: FormSectionProps) {
             />
           </div>
 
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Images
+            </label>
+            <MediaUploadDragDrop
+              onFileSelect={(files, urls) => {
+                if (urls && urls.length > 0) {
+                  setValue("ddbComplementaryExams.ecbcImages", urls);
+                }
+              }}
+              accept="image/*,video/*"
+              placeholder="Glissez-déposez les images ou vidéos de l'ECBC ici"
+              currentUrls={watch?.("ddbComplementaryExams.ecbcImages") || []}
+            />
+          </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Gazométrie sanguine - Résultat
@@ -221,6 +294,24 @@ export function ComplementaryExamsForm({ register }: FormSectionProps) {
               rows={3}
               placeholder="Résultat..."
               className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+            />
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Images
+            </label>
+            <MediaUploadDragDrop
+              onFileSelect={(files, urls) => {
+                if (urls && urls.length > 0) {
+                  setValue("ddbComplementaryExams.bloodGasImages", urls);
+                }
+              }}
+              accept="image/*,video/*"
+              placeholder="Glissez-déposez les images ou vidéos de la gazométrie sanguine ici"
+              currentUrls={
+                watch?.("ddbComplementaryExams.bloodGasImages") || []
+              }
             />
           </div>
         </div>

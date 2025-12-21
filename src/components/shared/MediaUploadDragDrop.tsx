@@ -20,6 +20,8 @@ export const MediaUploadDragDrop: React.FC<MediaUploadDragDropProps> = ({
 }) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const [previewUrls, setPreviewUrls] = useState<string[]>(currentUrls || []);
+  const [totalUploading, setTotalUploading] = useState(0);
+  const [multiProgress, setMultiProgress] = useState(0);
   const { uploadFile, uploading, progress, error } = useFileUpload();
 
   const handleDragOver = useCallback(
@@ -74,9 +76,14 @@ export const MediaUploadDragDrop: React.FC<MediaUploadDragDropProps> = ({
 
   const handleFileUpload = async (files: File[]) => {
     try {
+      setTotalUploading(files.length);
+      setMultiProgress(0);
+      let completed = 0;
       const uploadPromises = files.map(async (file) => {
         const path = file.type.startsWith("image/") ? "images" : "videos";
         const url = await uploadFile(file, `patients/${path}`);
+        completed++;
+        setMultiProgress((completed / files.length) * 100);
         return { file, url };
       });
 
@@ -88,8 +95,12 @@ export const MediaUploadDragDrop: React.FC<MediaUploadDragDropProps> = ({
         setPreviewUrls((prev) => [...prev, ...newUrls]);
         onFileSelect(newFiles, newUrls);
       }
+      setTotalUploading(0);
+      setMultiProgress(0);
     } catch (err) {
       console.error("Upload failed:", err);
+      setTotalUploading(0);
+      setMultiProgress(0);
     }
   };
 
@@ -127,24 +138,24 @@ export const MediaUploadDragDrop: React.FC<MediaUploadDragDropProps> = ({
         `}
       >
         {hasFiles ? (
-          <div className="space-y-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {previewUrls.map((url, index) => {
               const isImageFile =
                 url.includes("images") ||
                 url.match(/\.(jpg|jpeg|png|gif|webp)$/i);
               return (
-                <div key={index} className="relative inline-block">
+                <div key={index} className="relative">
                   {isImageFile ? (
                     <img
                       src={url}
                       alt={`Uploaded ${index + 1}`}
-                      className="max-w-full max-h-48 rounded-lg object-contain mx-auto"
+                      className="w-full h-32 object-cover rounded-lg"
                     />
                   ) : (
                     <video
                       src={url}
                       controls
-                      className="max-w-full max-h-48 rounded-lg object-contain mx-auto"
+                      className="w-full h-32 object-cover rounded-lg"
                     />
                   )}
                   {!disabled && (
@@ -215,6 +226,7 @@ export const MediaUploadDragDrop: React.FC<MediaUploadDragDropProps> = ({
             <input
               type="file"
               accept={accept}
+              multiple
               onChange={handleFileInput}
               disabled={disabled}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
@@ -223,17 +235,19 @@ export const MediaUploadDragDrop: React.FC<MediaUploadDragDropProps> = ({
         )}
       </div>
 
-      {uploading && (
+      {(uploading || totalUploading > 0) && (
         <div className="space-y-2">
           <div className="flex items-center space-x-2">
             <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className="bg-primary-500 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${progress}%` }}
+                className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                style={{ width: totalUploading > 1 ? `${multiProgress}%` : `${progress}%` }}
               />
             </div>
             <span className="text-sm text-gray-600 dark:text-gray-400">
-              {Math.round(progress)}%
+              {totalUploading > 1
+                ? `${Math.round(multiProgress)}% (${totalUploading} fichiers)`
+                : `${Math.round(progress)}%`}
             </span>
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-400">

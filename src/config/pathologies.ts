@@ -13,12 +13,6 @@ export const pathologies: Pathology[] = [
     description: "SAOS, SACS, SOH et autres troubles du sommeil",
   },
   {
-    id: "tumor",
-    name: "Pneumopathies tumorales",
-    icon: "/icons/tumor.svg",
-    description: "Cancer et tumeurs pulmonaires",
-  },
-  {
     id: "bronchial",
     name: "Pneumopathies bronchiques",
     icon: "/icons/bronchial.svg",
@@ -66,5 +60,17 @@ export const pathologies: Pathology[] = [
     name: "Tuberculose",
     icon: "/icons/infection.svg",
     description: "Diagnostic et traitement de la tuberculose",
+  },
+  {
+    id: "pneumothorax",
+    name: "Pneumothorax",
+    icon: "/icons/pneumothorax.svg",
+    description: "Diagnostic et traitement du pneumothorax",
+  },
+  {
+    id: "lungCancer",
+    name: "Cancer broncho-pulmonaire",
+    icon: "/icons/lungCancer.svg",
+    description: "Diagnostic et traitement du cancer du poumon",
   },
 ];

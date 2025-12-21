@@ -119,13 +119,18 @@ export const ddbSchema = z.object({
   ddbComplementaryExams: z
     .object({
       chestXRaySigns: booleanOrArray(),
+      chestXRayImages: z.array(z.string()).optional(),
       ctAspect: z.enum(["", "DDB localisée", "DDB généralisée"]).optional(),
       ctSigns: booleanOrArray(),
+      ctImages: z.array(z.string()).optional(),
       ctOtherAnomalies: z.string().optional(),
       efrDisorder: booleanOrArray(),
       bronchoscopyConclusion: z.string().optional(),
+      bronchoscopyImages: z.array(z.string()).optional(),
       ecbcResult: z.string().optional(),
+      ecbcImages: z.array(z.string()).optional(),
       bloodGasResult: z.string().optional(),
+      bloodGasImages: z.array(z.string()).optional(),
       biologyNfs: booleanOrArray(),
       biologyCrp: z.enum(["", "Normale", "Élevée"]).optional(),
       biologyProteinuria: z.enum(["", "Positif (+)", "Négatif (-)"]).optional(),

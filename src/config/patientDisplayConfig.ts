@@ -40,6 +40,7 @@ export interface PathologyDisplayConfig {
           isArray?: boolean;
           condition?: string;
           color?: string;
+          hasCount?: string;
         }>;
       }>;
     };
@@ -67,6 +68,7 @@ export interface PathologyDisplayConfig {
           label: string;
           color?: string;
           prefix?: string;
+          condition?: string;
         }>;
       }>;
     };
@@ -80,6 +82,8 @@ export interface PathologyDisplayConfig {
           isArray?: boolean;
           prefix?: string;
           suffix?: string;
+          condition?: string;
+          hasCount?: string;
         }>;
         key?: string;
         isTextArea?: boolean;
@@ -94,6 +98,9 @@ export interface PathologyDisplayConfig {
           type?: "text" | "date";
           prefix?: string;
           suffix?: string;
+          condition?: string;
+          isArray?: boolean;
+          color?: string;
         }>;
       }>;
     };
@@ -793,6 +800,457 @@ export const pathologyDisplayConfigs: Record<string, PathologyDisplayConfig> = {
               {
                 key: "controlObjective",
                 label: "Objectif de contrôle (ACT)",
+                prefix: "• ",
+              },
+            ],
+          },
+        ],
+      },
+    },
+  },
+  pneumothorax: {
+    id: "pneumothorax",
+    sections: {
+      consultationReason: {
+        title: "Motifs de consultation Pneumothorax",
+        reasons: [
+          {
+            key: "thoracicPain",
+            label: "Douleur thoracique",
+            color:
+              "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+          },
+          {
+            key: "dyspnea",
+            label: "Dyspnée",
+            color:
+              "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+          },
+          {
+            key: "cough",
+            label: "Toux",
+            color:
+              "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+          },
+          {
+            key: "thoracicOppression",
+            label: "Oppression thoracique",
+            color:
+              "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+          },
+          {
+            key: "malaiseSyncope",
+            label: "Malaise/Syncope",
+            color:
+              "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+          },
+          {
+            key: "radiologicalDiscovery",
+            label: "Découverte radiologique",
+            color:
+              "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+          },
+          {
+            key: "other",
+            label: "Autre",
+            color:
+              "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+            isOther: true,
+          },
+        ],
+      },
+      medicalHistory: {
+        sections: [
+          {
+            title: "Antécédents personnels Pneumothorax",
+            items: [
+              {
+                key: "previousPneumothorax",
+                label: "Pneumothorax antérieur",
+                hasCount: "previousPneumothoraxCount",
+                suffix: "fois",
+              },
+              { key: "previousPneumothoraxSide", label: "Côté", prefix: "• " },
+              { key: "previousPneumothoraxDate", label: "Date", prefix: "• " },
+              { key: "bpcoEmphysema", label: "BPCO/Emphysème" },
+              { key: "severeAsthma", label: "Asthme sévère" },
+              { key: "tuberculosis", label: "Tuberculose" },
+              { key: "pidFibrosis", label: "PID/Fibrose" },
+              {
+                key: "cancers",
+                label: "Cancers",
+                hasCount: "cancersDetails",
+                suffix: "",
+              },
+              { key: "cardiopathy", label: "Cardiopathie" },
+              { key: "hta", label: "HTA" },
+              { key: "diabetes", label: "Diabète" },
+              { key: "irc", label: "IRC" },
+              { key: "thoracicSurgery", label: "Chirurgie thoracique" },
+              {
+                key: "otherPersonal",
+                label: "Autres",
+                hasCount: "otherPersonalDetails",
+                suffix: "",
+              },
+            ],
+          },
+          {
+            title: "Antécédents iatrogènes/traumatiques Pneumothorax",
+            items: [
+              {
+                key: "recentThoracicTrauma",
+                label: "Traumatisme thoracique récent",
+              },
+              { key: "mechanicalVentilation", label: "Ventilation mécanique" },
+              { key: "cvcPleuralPuncture", label: "CVC/Ponction pleurale" },
+              {
+                key: "otherRecentProcedure",
+                label: "Autre procédure récente",
+                hasCount: "otherRecentProcedureDetails",
+                suffix: "",
+              },
+            ],
+          },
+          {
+            title: "Habitus et facteurs de risque Pneumothorax",
+            items: [
+              {
+                key: "smoking",
+                label: "Tabagisme",
+                hasCount: "smokingQuantity",
+                suffix: "PA",
+              },
+              { key: "cannabisDrugs", label: "Cannabis/Drogues" },
+              { key: "longiligneMorphotype", label: "Morphotype longiligne" },
+              {
+                key: "recentExposure",
+                label: "Expositions récentes",
+                isArray: true,
+                color:
+                  "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+              },
+            ],
+          },
+          {
+            title: "Allergies et traitements Pneumothorax",
+            items: [
+              {
+                key: "allergies",
+                label: "Allergies",
+                hasCount: "allergiesDetails",
+                suffix: "",
+              },
+              {
+                key: "chronicTreatments",
+                label: "Traitements chroniques",
+                hasCount: "chronicTreatmentsDetails",
+                suffix: "",
+              },
+            ],
+          },
+        ],
+      },
+      clinicalExam: {
+        sections: [
+          {
+            title: "Constantes",
+            items: [
+              { key: "ta", label: "TA", suffix: " mmHg" },
+              { key: "fc", label: "FC", suffix: " bpm" },
+              { key: "fr", label: "FR", suffix: " /min" },
+              { key: "spO2", label: "SpO2", suffix: " %" },
+              { key: "temp", label: "Température", suffix: " °C" },
+              { key: "painEva", label: "Douleur (EVA)", suffix: "/10" },
+            ],
+          },
+          {
+            title: "État général et signes de gravité",
+            items: [
+              { key: "respiratoryDistress", label: "Détresse respiratoire" },
+              { key: "desaturation", label: "Désaturation" },
+              {
+                key: "hemodynamicInstability",
+                label: "Instabilité hémodynamique",
+              },
+              {
+                key: "consciousnessAlteration",
+                label: "Altération de la conscience",
+              },
+              {
+                key: "compressivePneumothorax",
+                label: "Pneumothorax compressif",
+              },
+            ],
+          },
+          {
+            title: "Inspection - Palpation",
+            items: [
+              { key: "thoracicAsymmetry", label: "Asymétrie thoracique" },
+              {
+                key: "thoracicAsymmetrySide",
+                label: "Côté (Asymétrie)",
+                prefix: "• ",
+                condition: "thoracicAsymmetry",
+              },
+              { key: "subcutaneousEmphysema", label: "Emphysème sous-cutané" },
+              { key: "trachealDeviation", label: "Déviation trachéale" },
+              { key: "cyanosis", label: "Cyanose" },
+            ],
+          },
+          {
+            title: "Percussion - Auscultation",
+            items: [
+              { key: "tympaniism", label: "Tympanisme" },
+              {
+                key: "tympaniismSide",
+                label: "Côté (Tympanisme)",
+                prefix: "• ",
+                condition: "tympaniism",
+              },
+              {
+                key: "diminishedVesicularMurmur",
+                label: "Murmure vésiculaire diminué",
+              },
+              {
+                key: "diminishedVesicularMurmurSide",
+                label: "Côté (Murmure diminué)",
+                prefix: "• ",
+                condition: "diminishedVesicularMurmur",
+              },
+              { key: "associatedRales", label: "Râles associés" },
+              {
+                key: "associatedRalesDetails",
+                label: "Détails (Râles)",
+                prefix: "• ",
+                condition: "associatedRales",
+              },
+            ],
+          },
+          {
+            title: "Examen cardio-vasculaire",
+            items: [
+              { key: "tachycardia", label: "Tachycardie" },
+              { key: "shockSigns", label: "Signes de choc" },
+              {
+                key: "otherCardiovascular",
+                label: "Autres",
+                hasCount: "otherCardiovascularDetails",
+                suffix: "",
+              },
+            ],
+          },
+          {
+            title: "Autres examens",
+            items: [
+              { key: "otherExams", label: "Autres examens", prefix: "• " },
+            ],
+          },
+        ],
+      },
+      complementaryExams: {
+        sections: [
+          {
+            title: "Imagerie",
+            items: [
+              { key: "chestXray", label: "Radiographie thoracique" },
+              {
+                key: "chestXrayReport",
+                label: "Compte-rendu RX thorax",
+                prefix: "• ",
+                condition: "chestXray",
+              },
+              { key: "pleuralUltrasound", label: "Échographie pleurale" },
+              {
+                key: "pleuralUltrasoundReport",
+                label: "Compte-rendu Écho pleurale",
+                prefix: "• ",
+                condition: "pleuralUltrasound",
+              },
+              { key: "thoracicCtd", label: "TDM thoracique" },
+              {
+                key: "imagingResults",
+                label: "Résultats d'imagerie",
+                prefix: "• ",
+              },
+            ],
+          },
+          {
+            title: "Biologie",
+            items: [
+              { key: "bloodGas", label: "Gaz du sang", prefix: "• " },
+              { key: "nfs", label: "NFS" },
+              { key: "crp", label: "CRP" },
+              { key: "ionogram", label: "Ionogramme" },
+              { key: "hemostasis", label: "Hémostase" },
+              { key: "bloodGroup", label: "Groupe sanguin" },
+            ],
+          },
+        ],
+      },
+      diagnosis: {
+        sections: [
+          {
+            title: "Type de pneumothorax",
+            items: [
+              { key: "spontaneousPrimary", label: "Spontané primaire" },
+              { key: "spontaneousSecondary", label: "Spontané secondaire" },
+              {
+                key: "spontaneousSecondaryTerrain",
+                label: "Terrain (Spontané secondaire)",
+                prefix: "• ",
+                condition: "spontaneousSecondary",
+              },
+              { key: "traumatic", label: "Traumatique" },
+              { key: "iatrogenic", label: "Iatrogène" },
+            ],
+          },
+          {
+            title: "Évaluation de la tolérance et de la taille",
+            items: [
+              { key: "wellTolerated", label: "Bien toléré" },
+              { key: "poorlyTolerated", label: "Mal toléré" },
+              { key: "compressiveTension", label: "Compressif/tensionnel" },
+              { key: "small", label: "Petit" },
+              { key: "medium", label: "Moyen" },
+              { key: "large", label: "Grand" },
+              {
+                key: "diagnosticConclusion",
+                label: "Conclusion diagnostique",
+                prefix: "• ",
+              },
+            ],
+          },
+        ],
+      },
+      treatment: {
+        sections: [
+          {
+            title: "Mesures immédiates",
+            items: [
+              { key: "oxygenTherapy", label: "Oxygénothérapie" },
+              {
+                key: "oxygenModality",
+                label: "Modalité (Oxygène)",
+                prefix: "• ",
+                condition: "oxygenTherapy",
+              },
+              {
+                key: "oxygenFlow",
+                label: "Débit (Oxygène)",
+                suffix: " L/min",
+                condition: "oxygenTherapy",
+              },
+              {
+                key: "analgesia",
+                label: "Analgésie",
+                hasCount: "analgesiaDetails",
+                suffix: "",
+              },
+              { key: "peripheralIv", label: "Voie veineuse périphérique" },
+              { key: "monitoring", label: "Monitorage" },
+              { key: "bloodGasIndication", label: "Indication gaz du sang" },
+              {
+                key: "specializedAdvice",
+                label: "Avis spécialisé demandé",
+                isArray: true,
+                color:
+                  "bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300",
+              },
+            ],
+          },
+          {
+            title: "Traitement spécifique",
+            items: [
+              { key: "simpleMonitoring", label: "Surveillance simple" },
+              { key: "needleAspiration", label: "Aspiration à l'aiguille" },
+              { key: "pleuralDrainage", label: "Drainage pleural" },
+              {
+                key: "drainageSide",
+                label: "Côté (Drainage)",
+                prefix: "• ",
+                condition: "pleuralDrainage",
+              },
+              {
+                key: "drainageType",
+                label: "Type (Drainage)",
+                prefix: "• ",
+                condition: "pleuralDrainage",
+              },
+              {
+                key: "drainageSystem",
+                label: "Système (Drainage)",
+                prefix: "• ",
+                condition: "pleuralDrainage",
+              },
+              {
+                key: "drainageAspiration",
+                label: "Aspiration (Drainage)",
+                prefix: "• ",
+                condition: "pleuralDrainage",
+              },
+              {
+                key: "drainageAspirationPressure",
+                label: "Pression (Aspiration)",
+                suffix: " cmH2O",
+                condition: "pleuralDrainage",
+              },
+              {
+                key: "localAnesthesia",
+                label: "Anesthésie locale",
+                condition: "pleuralDrainage",
+              },
+              {
+                key: "postProcedureXray",
+                label: "RX post-procédure",
+                condition: "pleuralDrainage",
+              },
+            ],
+          },
+          {
+            title: "Situations particulières",
+            items: [
+              {
+                key: "compressiveDecompression",
+                label: "Décompression pneumothorax compressif",
+              },
+              { key: "persistentAirLeak", label: "Fuite aérienne persistante" },
+              { key: "highRiskTerrain", label: "Terrain à haut risque" },
+            ],
+          },
+        ],
+      },
+      followUp: {
+        sections: [
+          {
+            title: "Surveillance évolutive",
+            items: [
+              {
+                key: "regularClinicalMonitoring",
+                label: "Monitorage clinique régulier",
+              },
+              {
+                key: "monitoringDetails",
+                label: "Détails (Monitorage)",
+                prefix: "• ",
+                condition: "regularClinicalMonitoring",
+              },
+              {
+                key: "radiologicalControl",
+                label: "Contrôle radiologique",
+                prefix: "• ",
+              },
+              { key: "drainMonitoring", label: "Monitorage du drain" },
+              {
+                key: "complications",
+                label: "Complications",
+                isArray: true,
+                color:
+                  "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300",
+              },
+              {
+                key: "evolutionRemarks",
+                label: "Remarques évolutives",
                 prefix: "• ",
               },
             ],
