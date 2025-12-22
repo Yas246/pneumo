@@ -1,7 +1,11 @@
 "use client";
 
-import { ExtendedPatient, PathologyConfig, PathologySectionProps } from "../types";
 import { ImageGallery } from "../shared/ImageGallery";
+import {
+  ExtendedPatient,
+  PathologyConfig,
+  PathologySectionProps,
+} from "../types";
 import { PathologySection } from "./PathologySection";
 
 export function AsthmaPathology({
@@ -76,25 +80,26 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
               État général
             </p>
             <div className="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-              {patient.asthmaGeneralState.consciousness && (
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Conscience
-                  </p>
-                  <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaGeneralState.consciousness.map(
-                      (state, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300"
-                        >
-                          {state}
-                        </span>
-                      )
-                    )}
+              {patient.asthmaGeneralState?.consciousness &&
+                Array.isArray(patient.asthmaGeneralState.consciousness) && (
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Conscience
+                    </p>
+                    <div className="mt-1 flex flex-wrap gap-2">
+                      {patient.asthmaGeneralState.consciousness.map(
+                        (state, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300"
+                          >
+                            {state}
+                          </span>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {patient.asthmaGeneralState.asthenia && (
                 <div>
@@ -216,65 +221,74 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                 </div>
               )}
 
-              {patient.asthmaRespiratorySystem.auscultationAnomalies && (
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Anomalies auscultation
-                  </p>
-                  <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaRespiratorySystem.auscultationAnomalies.map(
-                      (anomaly, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300"
-                        >
-                          {anomaly}
-                        </span>
-                      )
-                    )}
+              {patient.asthmaRespiratorySystem?.auscultationAnomalies &&
+                Array.isArray(
+                  patient.asthmaRespiratorySystem.auscultationAnomalies
+                ) && (
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Anomalies auscultation
+                    </p>
+                    <div className="mt-1 flex flex-wrap gap-2">
+                      {patient.asthmaRespiratorySystem.auscultationAnomalies.map(
+                        (anomaly, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300"
+                          >
+                            {anomaly}
+                          </span>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {patient.asthmaRespiratorySystem.respiratoryDistressSigns && (
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Signes détresse respiratoire
-                  </p>
-                  <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaRespiratorySystem.respiratoryDistressSigns.map(
-                      (sign, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300"
-                        >
-                          {sign}
-                        </span>
-                      )
-                    )}
+              {patient.asthmaRespiratorySystem?.respiratoryDistressSigns &&
+                Array.isArray(
+                  patient.asthmaRespiratorySystem.respiratoryDistressSigns
+                ) && (
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Signes détresse respiratoire
+                    </p>
+                    <div className="mt-1 flex flex-wrap gap-2">
+                      {patient.asthmaRespiratorySystem.respiratoryDistressSigns.map(
+                        (sign, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300"
+                          >
+                            {sign}
+                          </span>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {patient.asthmaRespiratorySystem.pleuropulmonarySyndromes && (
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Syndromes pleuropulmonaires
-                  </p>
-                  <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaRespiratorySystem.pleuropulmonarySyndromes.map(
-                      (syndrome, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300"
-                        >
-                          {syndrome}
-                        </span>
-                      )
-                    )}
+              {patient.asthmaRespiratorySystem?.pleuropulmonarySyndromes &&
+                Array.isArray(
+                  patient.asthmaRespiratorySystem.pleuropulmonarySyndromes
+                ) && (
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Syndromes pleuropulmonaires
+                    </p>
+                    <div className="mt-1 flex flex-wrap gap-2">
+                      {patient.asthmaRespiratorySystem.pleuropulmonarySyndromes.map(
+                        (syndrome, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300"
+                          >
+                            {syndrome}
+                          </span>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {patient.asthmaRespiratorySystem.syndromeLocation && (
                 <div>
@@ -349,16 +363,19 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                     Localisation souffle
                   </p>
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaCardiovascularSystem.murmurLocation.map(
-                      (location, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300"
-                        >
-                          {location}
-                        </span>
-                      )
-                    )}
+                    {Array.isArray(
+                      patient.asthmaCardiovascularSystem.murmurLocation
+                    ) &&
+                      patient.asthmaCardiovascularSystem.murmurLocation.map(
+                        (location, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300"
+                          >
+                            {location}
+                          </span>
+                        )
+                      )}
                   </div>
                 </div>
               )}
@@ -369,16 +386,19 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                     Type souffle
                   </p>
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaCardiovascularSystem.murmurType.map(
-                      (type, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300"
-                        >
-                          {type}
-                        </span>
-                      )
-                    )}
+                    {Array.isArray(
+                      patient.asthmaCardiovascularSystem.murmurType
+                    ) &&
+                      patient.asthmaCardiovascularSystem.murmurType.map(
+                        (type, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300"
+                          >
+                            {type}
+                          </span>
+                        )
+                      )}
                   </div>
                 </div>
               )}
@@ -498,16 +518,19 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                     Inspection abdomen
                   </p>
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaDigestiveSystem.abdomenInspection.map(
-                      (finding, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300"
-                        >
-                          {finding}
-                        </span>
-                      )
-                    )}
+                    {Array.isArray(
+                      patient.asthmaDigestiveSystem.abdomenInspection
+                    ) &&
+                      patient.asthmaDigestiveSystem.abdomenInspection.map(
+                        (finding, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300"
+                          >
+                            {finding}
+                          </span>
+                        )
+                      )}
                   </div>
                 </div>
               )}
@@ -518,16 +541,19 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                     Palpation abdomen
                   </p>
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaDigestiveSystem.abdomenPalpation.map(
-                      (finding, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300"
-                        >
-                          {finding}
-                        </span>
-                      )
-                    )}
+                    {Array.isArray(
+                      patient.asthmaDigestiveSystem.abdomenPalpation
+                    ) &&
+                      patient.asthmaDigestiveSystem.abdomenPalpation.map(
+                        (finding, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-100 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300"
+                          >
+                            {finding}
+                          </span>
+                        )
+                      )}
                   </div>
                 </div>
               )}
@@ -564,16 +590,19 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                     Percussion abdomen
                   </p>
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaDigestiveSystem.abdomenPercussion.map(
-                      (finding, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-300"
-                        >
-                          {finding}
-                        </span>
-                      )
-                    )}
+                    {Array.isArray(
+                      patient.asthmaDigestiveSystem.abdomenPercussion
+                    ) &&
+                      patient.asthmaDigestiveSystem.abdomenPercussion.map(
+                        (finding, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-cyan-100 dark:bg-cyan-900/30 text-cyan-800 dark:text-cyan-300"
+                          >
+                            {finding}
+                          </span>
+                        )
+                      )}
                   </div>
                 </div>
               )}
@@ -584,16 +613,19 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                     Auscultation abdomen
                   </p>
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaDigestiveSystem.abdomenAuscultation.map(
-                      (finding, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300"
-                        >
-                          {finding}
-                        </span>
-                      )
-                    )}
+                    {Array.isArray(
+                      patient.asthmaDigestiveSystem.abdomenAuscultation
+                    ) &&
+                      patient.asthmaDigestiveSystem.abdomenAuscultation.map(
+                        (finding, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300"
+                          >
+                            {finding}
+                          </span>
+                        )
+                      )}
                   </div>
                 </div>
               )}
@@ -636,16 +668,19 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                     Signes fonctionnels urinaires
                   </p>
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaUrinarySystem.urinaryFunctionalSigns.map(
-                      (sign, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300"
-                        >
-                          {sign}
-                        </span>
-                      )
-                    )}
+                    {Array.isArray(
+                      patient.asthmaUrinarySystem.urinaryFunctionalSigns
+                    ) &&
+                      patient.asthmaUrinarySystem.urinaryFunctionalSigns.map(
+                        (sign, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300"
+                          >
+                            {sign}
+                          </span>
+                        )
+                      )}
                   </div>
                 </div>
               )}
@@ -682,25 +717,26 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
               Système musculo-squelettique
             </p>
             <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-              {patient.asthmaMusculoskeletalSystem.symptoms && (
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">
-                    Symptômes
-                  </p>
-                  <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaMusculoskeletalSystem.symptoms.map(
-                      (symptom, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-lime-100 dark:bg-lime-900/30 text-lime-800 dark:text-lime-300"
-                        >
-                          {symptom}
-                        </span>
-                      )
-                    )}
+              {patient.asthmaMusculoskeletalSystem?.symptoms &&
+                Array.isArray(patient.asthmaMusculoskeletalSystem.symptoms) && (
+                  <div>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Symptômes
+                    </p>
+                    <div className="mt-1 flex flex-wrap gap-2">
+                      {patient.asthmaMusculoskeletalSystem.symptoms.map(
+                        (symptom, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-lime-100 dark:bg-lime-900/30 text-lime-800 dark:text-lime-300"
+                          >
+                            {symptom}
+                          </span>
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               {patient.asthmaMusculoskeletalSystem.mobility && (
                 <div>
@@ -751,16 +787,19 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                     Signes neurologiques
                   </p>
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaNervousSystem.neurologicalSigns.map(
-                      (sign, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-100 dark:bg-rose-900/30 text-rose-800 dark:text-rose-300"
-                        >
-                          {sign}
-                        </span>
-                      )
-                    )}
+                    {Array.isArray(
+                      patient.asthmaNervousSystem.neurologicalSigns
+                    ) &&
+                      patient.asthmaNervousSystem.neurologicalSigns.map(
+                        (sign, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-rose-100 dark:bg-rose-900/30 text-rose-800 dark:text-rose-300"
+                          >
+                            {sign}
+                          </span>
+                        )
+                      )}
                   </div>
                 </div>
               )}
@@ -815,16 +854,17 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                     Équilibre
                   </p>
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaNervousSystem.balance.map(
-                      (finding, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 dark:bg-violet-900/30 text-violet-800 dark:text-violet-300"
-                        >
-                          {finding}
-                        </span>
-                      )
-                    )}
+                    {Array.isArray(patient.asthmaNervousSystem.balance) &&
+                      patient.asthmaNervousSystem.balance.map(
+                        (finding, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 dark:bg-violet-900/30 text-violet-800 dark:text-violet-300"
+                          >
+                            {finding}
+                          </span>
+                        )
+                      )}
                   </div>
                 </div>
               )}
@@ -845,16 +885,17 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                     Inspection
                   </p>
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaSkinMucous.inspection.map(
-                      (finding, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 dark:bg-pink-900/30 text-pink-800 dark:text-pink-300"
-                        >
-                          {finding}
-                        </span>
-                      )
-                    )}
+                    {Array.isArray(patient.asthmaSkinMucous.inspection) &&
+                      patient.asthmaSkinMucous.inspection.map(
+                        (finding, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-pink-100 dark:bg-pink-900/30 text-pink-800 dark:text-pink-300"
+                          >
+                            {finding}
+                          </span>
+                        )
+                      )}
                   </div>
                 </div>
               )}
@@ -897,16 +938,17 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                     Cavité buccale
                   </p>
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaOrlEyesMouth.oralCavity.map(
-                      (finding, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sky-100 dark:bg-sky-900/30 text-sky-800 dark:text-sky-300"
-                        >
-                          {finding}
-                        </span>
-                      )
-                    )}
+                    {Array.isArray(patient.asthmaOrlEyesMouth.oralCavity) &&
+                      patient.asthmaOrlEyesMouth.oralCavity.map(
+                        (finding, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sky-100 dark:bg-sky-900/30 text-sky-800 dark:text-sky-300"
+                          >
+                            {finding}
+                          </span>
+                        )
+                      )}
                   </div>
                 </div>
               )}
@@ -928,16 +970,17 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                     Symptômes ORL
                   </p>
                   <div className="mt-1 flex flex-wrap gap-2">
-                    {patient.asthmaOrlEyesMouth.orlSymptoms.map(
-                      (symptom, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300"
-                        >
-                          {symptom}
-                        </span>
-                      )
-                    )}
+                    {Array.isArray(patient.asthmaOrlEyesMouth.orlSymptoms) &&
+                      patient.asthmaOrlEyesMouth.orlSymptoms.map(
+                        (symptom, index) => (
+                          <span
+                            key={index}
+                            className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 dark:bg-emerald-900/30 text-emerald-800 dark:text-emerald-300"
+                          >
+                            {symptom}
+                          </span>
+                        )
+                      )}
                   </div>
                 </div>
               )}
@@ -1242,14 +1285,15 @@ function SeverityClassificationSection({
               Classification
             </p>
             <div className="mt-2 flex flex-wrap gap-2">
-              {classification.classification.map((type, index) => (
-                <span
-                  key={index}
-                  className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300"
-                >
-                  {type}
-                </span>
-              ))}
+              {Array.isArray(classification.classification) &&
+                classification.classification.map((type, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300"
+                  >
+                    {type}
+                  </span>
+                ))}
             </div>
           </div>
         )}
@@ -1457,14 +1501,15 @@ function TreatmentSection({ patient }: { patient: ExtendedPatient }) {
                 Mesures associées
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
-                {treatment.associatedMeasures.map((measure, index) => (
-                  <span
-                    key={index}
-                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300"
-                  >
-                    {measure}
-                  </span>
-                ))}
+                {Array.isArray(treatment.associatedMeasures) &&
+                  treatment.associatedMeasures.map((measure, index) => (
+                    <span
+                      key={index}
+                      className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300"
+                    >
+                      {measure}
+                    </span>
+                  ))}
               </div>
             </div>
           )}
