@@ -5,24 +5,18 @@ export interface Pathology {
   description: string;
 }
 
+export interface PathologyGroup {
+  id: string;
+  name: string;
+  pathologies: string[];
+}
+
 export const pathologies: Pathology[] = [
   {
     id: "sleep",
     name: "Troubles respiratoires du sommeil",
     icon: "/icons/allergy.svg",
     description: "SAOS, SACS, SOH et autres troubles du sommeil",
-  },
-  {
-    id: "bronchial",
-    name: "Pneumopathies bronchiques",
-    icon: "/icons/bronchial.svg",
-    description: "BPCO et maladies bronchiques",
-  },
-  {
-    id: "infection",
-    name: "Infections pulmonaires",
-    icon: "/icons/infection.svg",
-    description: "Infections respiratoires",
   },
   {
     id: "pleuralEffusion",
@@ -72,5 +66,38 @@ export const pathologies: Pathology[] = [
     name: "Cancer broncho-pulmonaire",
     icon: "/icons/lungCancer.svg",
     description: "Diagnostic et traitement du cancer du poumon",
+  },
+];
+
+export const pathologyGroups: PathologyGroup[] = [
+  {
+    id: "bronchial",
+    name: "Pathologie bronchique",
+    pathologies: ["asthma", "bpco", "ddb"],
+  },
+  {
+    id: "pleural",
+    name: "Pathologie pleurale",
+    pathologies: ["pneumothorax", "pleuralEffusion"],
+  },
+  {
+    id: "interstitial",
+    name: "Pneumopathie Interstitielle Diffuse",
+    pathologies: ["pid"],
+  },
+  {
+    id: "sleep",
+    name: "Troubles respiratoires du sommeil",
+    pathologies: ["sleep"],
+  },
+  {
+    id: "cancer",
+    name: "Cancer broncho-pulmonaire",
+    pathologies: ["lungCancer"],
+  },
+  {
+    id: "infections",
+    name: "Infections pulmonaires",
+    pathologies: ["tbk"],
   },
 ];
