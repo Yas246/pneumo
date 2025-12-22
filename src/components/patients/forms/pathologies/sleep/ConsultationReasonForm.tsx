@@ -5,6 +5,7 @@ export function ConsultationReasonForm({
   register,
   setValue,
   watch,
+  disabled,
 }: FormSectionProps) {
   const showEpworthQuestionnaire = watch("diurnalSymptoms.showEpworth" as any);
 
@@ -24,7 +25,8 @@ export function ConsultationReasonForm({
           <textarea
             {...register("consultationReason")}
             rows={4}
-            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           />
         </div>
 
@@ -39,7 +41,8 @@ export function ConsultationReasonForm({
                 <input
                   type="checkbox"
                   {...register("diurnalSymptoms.excessiveSleepiness")}
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  disabled={disabled}
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50"
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -53,7 +56,8 @@ export function ConsultationReasonForm({
                 <input
                   type="checkbox"
                   {...register("diurnalSymptoms.headaches")}
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  disabled={disabled}
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50"
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -67,7 +71,8 @@ export function ConsultationReasonForm({
                 <input
                   type="checkbox"
                   {...register("diurnalSymptoms.asthenia")}
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  disabled={disabled}
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50"
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -81,7 +86,8 @@ export function ConsultationReasonForm({
                 <input
                   type="checkbox"
                   {...register("diurnalSymptoms.showEpworth" as any)}
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  disabled={disabled}
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50"
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -137,6 +143,7 @@ export function ConsultationReasonForm({
                               type="radio"
                               name={`epworth_${index}`}
                               value={value}
+                              disabled={disabled}
                               checked={
                                 Number(
                                   watch(
@@ -144,8 +151,9 @@ export function ConsultationReasonForm({
                                   )
                                 ) === value
                               }
-                              className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500"
+                              className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50"
                               onChange={(e) => {
+                                if (disabled) return;
                                 const newValue = Number(e.target.value);
                                 const currentDetails =
                                   watch(
@@ -217,7 +225,8 @@ export function ConsultationReasonForm({
                 <input
                   type="checkbox"
                   {...register("nocturnalSymptoms.snoring")}
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  disabled={disabled}
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50"
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -231,7 +240,8 @@ export function ConsultationReasonForm({
                 <input
                   type="checkbox"
                   {...register("nocturnalSymptoms.sleepApnea")}
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  disabled={disabled}
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50"
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -245,7 +255,8 @@ export function ConsultationReasonForm({
                 <input
                   type="checkbox"
                   {...register("nocturnalSymptoms.choking")}
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  disabled={disabled}
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50"
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -259,7 +270,8 @@ export function ConsultationReasonForm({
                 <input
                   type="checkbox"
                   {...register("nocturnalSymptoms.agitation")}
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  disabled={disabled}
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50"
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -273,7 +285,8 @@ export function ConsultationReasonForm({
                 <input
                   type="checkbox"
                   {...register("nocturnalSymptoms.insomnia")}
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  disabled={disabled}
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50"
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -287,7 +300,8 @@ export function ConsultationReasonForm({
                 <input
                   type="checkbox"
                   {...register("nocturnalSymptoms.nocturia")}
-                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
+                  disabled={disabled}
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 disabled:opacity-50"
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -307,7 +321,8 @@ export function ConsultationReasonForm({
             <input
               type="text"
               {...register("nocturnalSymptoms.other")}
-              className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+              disabled={disabled}
+              className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
             />
           </div>
         </div>
@@ -322,7 +337,8 @@ export function ConsultationReasonForm({
           <input
             type="text"
             {...register("symptomsDuration")}
-            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
           />
         </div>
       </div>

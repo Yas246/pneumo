@@ -22,6 +22,7 @@ export const MediaUploadDragDrop: React.FC<MediaUploadDragDropProps> = ({
   const [previewUrls, setPreviewUrls] = useState<string[]>(currentUrls || []);
   const [totalUploading, setTotalUploading] = useState(0);
   const [multiProgress, setMultiProgress] = useState(0);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const { uploadFile, uploading, progress, error } = useFileUpload();
 
   const handleDragOver = useCallback(
@@ -149,7 +150,8 @@ export const MediaUploadDragDrop: React.FC<MediaUploadDragDropProps> = ({
                     <img
                       src={url}
                       alt={`Uploaded ${index + 1}`}
-                      className="w-full h-32 object-cover rounded-lg"
+                      className="w-full h-32 object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity"
+                      onClick={() => setSelectedImage(url)}
                     />
                   ) : (
                     <video
@@ -162,7 +164,7 @@ export const MediaUploadDragDrop: React.FC<MediaUploadDragDropProps> = ({
                     <button
                       type="button"
                       onClick={() => handleRemove(index)}
-                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600 z-10"
                     >
                       ×
                     </button>
@@ -241,7 +243,10 @@ export const MediaUploadDragDrop: React.FC<MediaUploadDragDropProps> = ({
             <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
                 className="bg-blue-500 h-2 rounded-full transition-all duration-300"
-                style={{ width: totalUploading > 1 ? `${multiProgress}%` : `${progress}%` }}
+                style={{
+                  width:
+                    totalUploading > 1 ? `${multiProgress}%` : `${progress}%`,
+                }}
               />
             </div>
             <span className="text-sm text-gray-600 dark:text-gray-400">
@@ -260,6 +265,42 @@ export const MediaUploadDragDrop: React.FC<MediaUploadDragDropProps> = ({
         <p className="text-sm text-red-600 dark:text-red-400">
           Erreur: {error}
         </p>
+      )}
+
+      {/* Modal pour afficher l'image en grand */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <img
+              src={selectedImage}
+              alt="Image agrandie"
+              className="max-w-full max-h-full object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              type="button"
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 bg-white text-gray-800 rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-200 transition-colors"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

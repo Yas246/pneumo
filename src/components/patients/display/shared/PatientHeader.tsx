@@ -71,7 +71,7 @@ export function PatientHeader({
               <Button className="w-full sm:w-auto">
                 <span className="flex items-center">
                   <ClipboardDocumentListIcon className="h-5 w-5 mr-2" />
-                  Modifier le dossier
+                  Voir le dossier complet
                 </span>
               </Button>
             </Link>

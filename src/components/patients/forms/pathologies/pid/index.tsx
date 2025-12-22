@@ -19,6 +19,7 @@ export function PIDForm({
   getValues,
   setValue,
   watch,
+  disabled,
 }: FormSectionProps) {
   return (
     <>
@@ -28,6 +29,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <ToxicHistoryForm
         register={register}
@@ -35,6 +37,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <MedicalHistoryForm
         register={register}
@@ -42,6 +45,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <GynecoObstetricHistoryForm
         register={register}
@@ -49,6 +53,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <LifestyleForm
         register={register}
@@ -56,6 +61,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <FamilyHistoryForm
         register={register}
@@ -63,6 +69,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <DiseaseHistoryForm
         register={register}
@@ -70,6 +77,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <RespiratorySymptomsForms
         register={register}
@@ -77,6 +85,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <ExtraRespiratorySymptomsForms
         register={register}
@@ -84,6 +93,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <GeneralSignsForm
         register={register}
@@ -91,6 +101,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <ClinicalExamForm
         register={register}
@@ -98,6 +109,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <ComplementaryExamsForm
         register={register}
@@ -105,6 +117,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <FinalDiagnosisForm
         register={register}
@@ -112,6 +125,7 @@ export function PIDForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
     </>
   );

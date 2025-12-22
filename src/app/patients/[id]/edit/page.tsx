@@ -2,6 +2,7 @@
 
 import { PatientForm } from "@/components/patients/PatientForm";
 import { patientSchema } from "@/components/patients/schema";
+import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
 import { getPatient } from "@/firebase/patients";
 import { useAuth } from "@/hooks/useAuth";
@@ -22,6 +23,7 @@ export default function EditPatientPage() {
   const { canEdit, loading: permissionsLoading } = usePermissions();
   const [patient, setPatient] = useState<Patient | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   useEffect(() => {
     const checkPermissionsAndFetchPatient = async () => {
@@ -104,13 +106,20 @@ export default function EditPatientPage() {
             </Link>
           </div>
 
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Modifier le dossier patient
-            </h1>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              {patient.firstName} {patient.lastName}
-            </p>
+          <div className="mb-8 flex justify-between items-start">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Dossier patient
+              </h1>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                {patient.firstName} {patient.lastName}
+              </p>
+            </div>
+            {!isEditMode && (
+              <Button onClick={() => setIsEditMode(true)} variant="primary">
+                Modifier le dossier
+              </Button>
+            )}
           </div>
 
           <PatientForm
@@ -130,6 +139,9 @@ export default function EditPatientPage() {
             }
             isEditing={true}
             pathologies={patient.pathologies}
+            disabled={!isEditMode}
+            isEditMode={isEditMode}
+            onCancel={() => setIsEditMode(false)}
           />
         </div>
       </main>

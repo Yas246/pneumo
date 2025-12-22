@@ -14,6 +14,7 @@ export function BPCOForm({
   getValues,
   setValue,
   watch,
+  disabled,
 }: FormSectionProps) {
   return (
     <div className="space-y-6">
@@ -23,6 +24,7 @@ export function BPCOForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
 
       <MedicalHistoryForm
@@ -31,6 +33,7 @@ export function BPCOForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
 
       <DiseaseHistoryForm
@@ -39,6 +42,7 @@ export function BPCOForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
 
       <ClinicalExamForm
@@ -47,6 +51,7 @@ export function BPCOForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
 
       <ComplementaryExamsForm
@@ -55,6 +60,7 @@ export function BPCOForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
 
       <DiagnosisForm
@@ -63,6 +69,7 @@ export function BPCOForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
 
       <TreatmentForm
@@ -71,6 +78,7 @@ export function BPCOForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
 
       <FollowUpForm
@@ -79,6 +87,7 @@ export function BPCOForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
     </div>
   );

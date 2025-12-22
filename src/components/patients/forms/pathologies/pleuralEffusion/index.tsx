@@ -17,6 +17,7 @@ export function PleuralEffusionForm({
   getValues,
   setValue,
   watch,
+  disabled,
 }: FormSectionProps) {
   return (
     <>
@@ -26,6 +27,7 @@ export function PleuralEffusionForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <MedicalHistoryForm
         register={register}
@@ -33,6 +35,7 @@ export function PleuralEffusionForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <ClinicalExamForm
         register={register}
@@ -40,6 +43,7 @@ export function PleuralEffusionForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <ChestXRayForm
         register={register}
@@ -47,6 +51,7 @@ export function PleuralEffusionForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <ImagingForm
         register={register}
@@ -54,6 +59,7 @@ export function PleuralEffusionForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <PleuralPunctureForm
         register={register}
@@ -61,6 +67,7 @@ export function PleuralEffusionForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <BiologyForm
         register={register}
@@ -68,6 +75,7 @@ export function PleuralEffusionForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <OtherAssessmentsForm
         register={register}
@@ -75,6 +83,7 @@ export function PleuralEffusionForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <DiagnosisForm
         register={register}
@@ -82,6 +91,7 @@ export function PleuralEffusionForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <TreatmentForm
         register={register}
@@ -89,6 +99,7 @@ export function PleuralEffusionForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <EvolutionForm
         register={register}
@@ -96,6 +107,7 @@ export function PleuralEffusionForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
     </>
   );

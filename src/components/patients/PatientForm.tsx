@@ -22,12 +22,18 @@ interface PatientFormProps {
   initialData?: PatientFormData;
   isEditing?: boolean;
   pathologies?: string[];
+  disabled?: boolean;
+  isEditMode?: boolean;
+  onCancel?: () => void;
 }
 
 export function PatientForm({
   initialData,
   isEditing = false,
   pathologies = [],
+  disabled = false,
+  isEditMode = true,
+  onCancel,
 }: PatientFormProps) {
   const router = useRouter();
   const { user } = useAuth();
@@ -149,7 +155,14 @@ export function PatientForm({
           user.uid
         );
         toast.success("Patient mis à jour avec succès");
-        router.push(`/patients/${initialData.id}`);
+
+        // Si nous sommes en mode édition avec un callback onCancel, revenir en mode lecture seule
+        if (onCancel) {
+          onCancel();
+        } else {
+          // Sinon, rediriger vers la page du patient
+          router.push(`/patients/${initialData.id}`);
+        }
       } else {
         const now = new Date();
         await createPatient(
@@ -312,7 +325,7 @@ export function PatientForm({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={isEditMode ? handleSubmit(onSubmit) : (e) => e.preventDefault()} className="space-y-6">
       {/* Afficher les erreurs de validation si présentes */}
       {validationErrors.length > 0 && (
         <div className="bg-red-50 border border-red-200 text-red-800 p-4 rounded-lg mb-4">
@@ -346,6 +359,7 @@ export function PatientForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
 
       {/* Formulaire spécifique à la pathologie */}
@@ -356,33 +370,36 @@ export function PatientForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
 
-      <div className="flex justify-end space-x-4">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => router.back()}
-          disabled={isSubmitting}
-        >
-          Annuler
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={checkValidation}
-          disabled={isSubmitting}
-        >
-          Vérifier le formulaire
-        </Button>
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting
-            ? "Enregistrement..."
-            : isEditing
-            ? "Mettre à jour"
-            : "Créer"}
-        </Button>
-      </div>
+      {isEditMode && (
+        <div className="flex justify-end space-x-4">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel || (() => router.back())}
+            disabled={isSubmitting}
+          >
+            {onCancel ? "Annuler la modification" : "Annuler"}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={checkValidation}
+            disabled={isSubmitting}
+          >
+            Vérifier le formulaire
+          </Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting
+              ? "Enregistrement..."
+              : isEditing
+              ? "Mettre à jour"
+              : "Créer"}
+          </Button>
+        </div>
+      )}
     </form>
   );
 }

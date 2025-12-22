@@ -9,13 +9,11 @@ import {
 } from "@/components/patients/display";
 import { PatientConsultationReason } from "@/components/patients/PatientConsultationReason";
 import { PatientMedicalHistory } from "@/components/patients/PatientMedicalHistory";
-import { PatientSectionRenderer } from "@/components/patients/PatientSectionRenderer";
 import { Navbar } from "@/components/shared/Navbar";
 import { getPatient, updatePatientStatus } from "@/firebase/patients";
 import { useAuth } from "@/hooks/useAuth";
 import { usePatientPDF } from "@/hooks/usePatientPDF";
 import { usePermissions } from "@/hooks/usePermissions";
-import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -126,14 +124,6 @@ export default function PatientPage() {
       <main className="py-10">
         <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div className="px-4 sm:px-0">
-            <Link
-              href="/dashboard"
-              className="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 mb-8 transition-colors"
-            >
-              <ArrowLeftIcon className="h-4 w-4 mr-1" />
-              Retour au tableau de bord
-            </Link>
-
             {/* Header avec actions */}
             <PatientHeader
               patient={patient}
@@ -158,65 +148,10 @@ export default function PatientPage() {
               {/* Antécédents */}
               <PatientMedicalHistory patient={patient} />
 
-              {/* Examen clinique */}
-              <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
-                <div className="px-6 py-5">
-                  <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                    Examen clinique
-                  </h2>
-                  <PatientSectionRenderer
-                    patient={patient}
-                    sectionName="clinicalExam"
-                    dataPrefix=""
-                  />
-                  {/* Ajouter ici les champs spécifiques d'examen clinique si nécessaire */}
-                </div>
-              </div>
-
-              {/* Examens complémentaires */}
-              <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
-                <div className="px-6 py-5">
-                  <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                    Examens complémentaires
-                  </h2>
-                  <PatientSectionRenderer
-                    patient={patient}
-                    sectionName="complementaryExams"
-                    dataPrefix="ComplementaryExams"
-                  />
-                </div>
-              </div>
-
               {/* Pathologies spécifiques */}
               <PathologyRenderer patient={patient} />
 
-              {/* Diagnostic */}
-              <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
-                <div className="px-6 py-5">
-                  <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                    Diagnostic
-                  </h2>
-                  <PatientSectionRenderer
-                    patient={patient}
-                    sectionName="diagnosis"
-                    dataPrefix="SeverityClassification"
-                  />
-                </div>
-              </div>
-
               {/* Traitement */}
-              <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg overflow-hidden">
-                <div className="px-6 py-5">
-                  <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-4">
-                    Traitement
-                  </h2>
-                  <PatientSectionRenderer
-                    patient={patient}
-                    sectionName="treatment"
-                    dataPrefix="Treatment"
-                  />
-                </div>
-              </div>
             </div>
 
             {/* Actions d'archivage */}

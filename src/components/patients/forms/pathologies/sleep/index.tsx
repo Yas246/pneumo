@@ -14,6 +14,7 @@ export function SleepPathologyForm({
   getValues,
   setValue,
   watch,
+  disabled,
 }: FormSectionProps) {
   return (
     <>
@@ -23,6 +24,7 @@ export function SleepPathologyForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <MedicalHistoryForm
         register={register}
@@ -30,6 +32,7 @@ export function SleepPathologyForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <ClinicalExamForm
         register={register}
@@ -37,6 +40,7 @@ export function SleepPathologyForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <OrlExamForm
         register={register}
@@ -44,6 +48,7 @@ export function SleepPathologyForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <ComplementaryExamsForm
         register={register}
@@ -51,6 +56,7 @@ export function SleepPathologyForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <DiagnosisForm
         register={register}
@@ -58,6 +64,7 @@ export function SleepPathologyForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <TreatmentForm
         register={register}
@@ -65,6 +72,7 @@ export function SleepPathologyForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
       <PPCFollowUpForm
         register={register}
@@ -72,6 +80,7 @@ export function SleepPathologyForm({
         getValues={getValues}
         setValue={setValue}
         watch={watch}
+        disabled={disabled}
       />
     </>
   );
