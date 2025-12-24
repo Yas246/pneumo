@@ -50,7 +50,7 @@ export function PatientForm({
       birthDate: "",
       sex: "M" as const,
       address: "",
-      phone: "",
+      phone: "+212", // Indicatif par défaut : Maroc
       profession: "",
       treatingDoctor: "",
       socialSecurity: "Aucun" as const,
@@ -211,6 +211,9 @@ export function PatientForm({
         const currentPath = path ? `${path}.${key}` : key;
 
         if (typeof value === "string") {
+          // Ignorer le champ phone car il contient l'indicatif avec le signe +
+          if (key === "phone") return;
+
           // Vérifier si c'est un nombre stocké comme chaîne
           if (!isNaN(Number(value)) && value.trim() !== "") {
             validationErrorMessages.push(
@@ -325,7 +328,10 @@ export function PatientForm({
   }
 
   return (
-    <form onSubmit={isEditMode ? handleSubmit(onSubmit) : (e) => e.preventDefault()} className="space-y-6">
+    <form
+      onSubmit={isEditMode ? handleSubmit(onSubmit) : (e) => e.preventDefault()}
+      className="space-y-6"
+    >
       {/* Afficher les erreurs de validation si présentes */}
       {validationErrors.length > 0 && (
         <div className="bg-red-50 border border-red-200 text-red-800 p-4 rounded-lg mb-4">

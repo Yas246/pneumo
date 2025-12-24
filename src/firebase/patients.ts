@@ -24,6 +24,7 @@ const patientConverter = {
   toFirestore: (patient: Patient) => {
     return {
       ...patient,
+      phone: String(patient.phone || ""), // Force le stockage en string pour éviter les erreurs de type
       createdAt: patient.createdAt
         ? Timestamp.fromDate(patient.createdAt)
         : Timestamp.now(),
