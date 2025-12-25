@@ -16,7 +16,7 @@ export function MedicalHistoryForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
-                  {...register("personalHistory.obesity")}
+                  {...register("sleepPersonalHistory.obesity")}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>
@@ -30,7 +30,7 @@ export function MedicalHistoryForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
-                  {...register("personalHistory.hta")}
+                  {...register("sleepPersonalHistory.hta")}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>
@@ -44,126 +44,126 @@ export function MedicalHistoryForm({ register }: FormSectionProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="space-y-2">
             <label
-              htmlFor="personalHistory.orl"
+              htmlFor="sleepPersonalHistory.orl"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               ORL
             </label>
             <input
               type="text"
-              {...register("personalHistory.orl")}
+              {...register("sleepPersonalHistory.orl")}
               className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
             />
           </div>
 
           <div className="space-y-2">
             <label
-              htmlFor="personalHistory.neuro"
+              htmlFor="sleepPersonalHistory.neuro"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Neuro
             </label>
             <input
               type="text"
-              {...register("personalHistory.neuro")}
+              {...register("sleepPersonalHistory.neuro")}
               className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
             />
           </div>
 
           <div className="space-y-2">
             <label
-              htmlFor="personalHistory.smoking"
+              htmlFor="sleepPersonalHistory.smoking"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Tabagisme
             </label>
             <input
               type="text"
-              {...register("personalHistory.smoking")}
+              {...register("sleepPersonalHistory.smoking")}
               className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
             />
           </div>
 
           <div className="space-y-2">
             <label
-              htmlFor="personalHistory.alcoholism"
+              htmlFor="sleepPersonalHistory.alcoholism"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Alcoolisme
             </label>
             <input
               type="text"
-              {...register("personalHistory.alcoholism")}
+              {...register("sleepPersonalHistory.alcoholism")}
               className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
             />
           </div>
 
           <div className="space-y-2">
             <label
-              htmlFor="personalHistory.diabetes"
+              htmlFor="sleepPersonalHistory.diabetes"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Diabète
             </label>
             <input
               type="text"
-              {...register("personalHistory.diabetes")}
+              {...register("sleepPersonalHistory.diabetes")}
               className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
             />
           </div>
 
           <div className="space-y-2">
             <label
-              htmlFor="personalHistory.cardiovascularDiseases"
+              htmlFor="sleepPersonalHistory.cardiovascularDiseases"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Maladies cardiovasculaires
             </label>
             <input
               type="text"
-              {...register("personalHistory.cardiovascularDiseases")}
+              {...register("sleepPersonalHistory.cardiovascularDiseases")}
               className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
             />
           </div>
 
           <div className="space-y-2">
             <label
-              htmlFor="personalHistory.lifestyle"
+              htmlFor="sleepPersonalHistory.lifestyle"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Mode de vie
             </label>
             <input
               type="text"
-              {...register("personalHistory.lifestyle")}
+              {...register("sleepPersonalHistory.lifestyle")}
               className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
             />
           </div>
 
           <div className="space-y-2">
             <label
-              htmlFor="personalHistory.respiratoryPathology"
+              htmlFor="sleepPersonalHistory.respiratoryPathology"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Pathologie respiratoire
             </label>
             <input
               type="text"
-              {...register("personalHistory.respiratoryPathology")}
+              {...register("sleepPersonalHistory.respiratoryPathology")}
               className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
             />
           </div>
 
           <div className="space-y-2">
             <label
-              htmlFor="personalHistory.currentMedications"
+              htmlFor="sleepPersonalHistory.currentMedications"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Médicaments en cours
             </label>
             <input
               type="text"
-              {...register("personalHistory.currentMedications")}
+              {...register("sleepPersonalHistory.currentMedications")}
               className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
             />
           </div>
@@ -179,7 +179,7 @@ export function MedicalHistoryForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
-                  {...register("familyHistory.saosHistory")}
+                  {...register("sleepFamilyHistory.saosHistory")}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>
@@ -193,7 +193,7 @@ export function MedicalHistoryForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
-                  {...register("familyHistory.respiratoryPathologies")}
+                  {...register("sleepFamilyHistory.respiratoryPathologies")}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>

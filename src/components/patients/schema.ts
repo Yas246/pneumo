@@ -9,6 +9,12 @@ import { sleepPathologySchema } from "./forms/pathologies/sleep/schema";
 import { tbkSchema } from "./forms/pathologies/tbk/schema";
 import { lungCancerSchema } from "./forms/pathologies/lungCancer/schema";
 
+const zNullableNumber = z.preprocess((val) => {
+  if (val === "" || val === null || val === undefined) return null;
+  const n = Number(val);
+  return isNaN(n) ? null : n;
+}, z.number().nullable());
+
 // Common schema for all patients
 export const patientSchema = z.object({
   // Informations personnelles
@@ -23,6 +29,21 @@ export const patientSchema = z.object({
   socialSecurity: z.string().optional(),
   treatingDoctor: z.string().optional(),
   status: z.enum(["active", "archived"]).default("active"),
+
+  // Examen clinique (commun à toutes les pathologies)
+  clinicalExam: z
+    .object({
+      weight: zNullableNumber,
+      height: zNullableNumber,
+      bmi: zNullableNumber,
+      neckCircumference: zNullableNumber,
+      abdominalPerimeter: zNullableNumber,
+      bloodPressure: z.string().optional(),
+      heartRate: zNullableNumber,
+      saturation: zNullableNumber,
+      pulmonaryAuscultation: z.string().optional(),
+    })
+    .optional(),
 
   // Pathologies (mixins)
   ...sleepPathologySchema.shape,

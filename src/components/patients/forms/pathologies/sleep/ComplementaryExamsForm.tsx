@@ -15,13 +15,13 @@ export function ComplementaryExamsForm({
         {/* Bilan métabolique */}
         <div className="space-y-2">
           <label
-            htmlFor="complementaryExams.metabolicAssessment"
+            htmlFor="sleepComplementaryExams.metabolicAssessment"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             Bilan métabolique
           </label>
           <textarea
-            {...register("complementaryExams.metabolicAssessment")}
+            {...register("sleepComplementaryExams.metabolicAssessment")}
             rows={3}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
           />
@@ -30,7 +30,7 @@ export function ComplementaryExamsForm({
         {/* Radiographie thoracique */}
         <div className="space-y-2">
           <label
-            htmlFor="complementaryExams.chestXray"
+            htmlFor="sleepComplementaryExams.chestXray"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             Radiographie thoracique
@@ -40,16 +40,16 @@ export function ComplementaryExamsForm({
               accept="image/*"
               placeholder="Glissez-déposez des images ici ou cliquez pour sélectionner"
               currentUrls={
-                watch?.("complementaryExams.chestXray.imageUrls") || []
+                watch?.("sleepComplementaryExams.chestXray.imageUrls") || []
               }
               onFileSelect={(files, urls) => {
                 if (urls && urls.length > 0) {
-                  setValue("complementaryExams.chestXray.imageUrls", urls);
+                  setValue("sleepComplementaryExams.chestXray.imageUrls", urls);
                 }
               }}
             />
             <textarea
-              {...register("complementaryExams.chestXray.notes")}
+              {...register("sleepComplementaryExams.chestXray.notes")}
               placeholder="Notes"
               rows={2}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
@@ -60,7 +60,7 @@ export function ComplementaryExamsForm({
         {/* Scanner/TDM */}
         <div className="space-y-2">
           <label
-            htmlFor="complementaryExams.scanner"
+            htmlFor="sleepComplementaryExams.scanner"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             Scanner/TDM
@@ -74,11 +74,11 @@ export function ComplementaryExamsForm({
                 accept="image/*"
                 placeholder="Glissez-déposez des images ici ou cliquez pour sélectionner"
                 currentUrls={
-                  watch?.("complementaryExams.scanner.imageUrls") || []
+                  watch?.("sleepComplementaryExams.scanner.imageUrls") || []
                 }
                 onFileSelect={(files, urls) => {
                   if (urls && urls.length > 0) {
-                    setValue("complementaryExams.scanner.imageUrls", urls);
+                    setValue("sleepComplementaryExams.scanner.imageUrls", urls);
                   }
                 }}
               />
@@ -91,17 +91,17 @@ export function ComplementaryExamsForm({
                 accept="video/*"
                 placeholder="Glissez-déposez des vidéos ici ou cliquez pour sélectionner"
                 currentUrls={
-                  watch?.("complementaryExams.scanner.videoUrls") || []
+                  watch?.("sleepComplementaryExams.scanner.videoUrls") || []
                 }
                 onFileSelect={(files, urls) => {
                   if (urls && urls.length > 0) {
-                    setValue("complementaryExams.scanner.videoUrls", urls);
+                    setValue("sleepComplementaryExams.scanner.videoUrls", urls);
                   }
                 }}
               />
             </div>
             <textarea
-              {...register("complementaryExams.scanner.notes")}
+              {...register("sleepComplementaryExams.scanner.notes")}
               placeholder="Notes"
               rows={2}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
@@ -117,21 +117,21 @@ export function ComplementaryExamsForm({
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.polygraphyDate"
+                htmlFor="sleepComplementaryExams.polygraphyDate"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Date
               </label>
               <input
                 type="date"
-                {...register("complementaryExams.polygraphyDate")}
+                {...register("sleepComplementaryExams.polygraphyDate")}
                 className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.iah"
+                htmlFor="sleepComplementaryExams.iah"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 IAH
@@ -139,14 +139,16 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.1"
-                {...register("complementaryExams.iah", { valueAsNumber: true })}
+                {...register("sleepComplementaryExams.iah", {
+                  valueAsNumber: true,
+                })}
                 className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.iahCentral"
+                htmlFor="sleepComplementaryExams.iahCentral"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 IAH Central
@@ -154,7 +156,7 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.1"
-                {...register("complementaryExams.iahCentral", {
+                {...register("sleepComplementaryExams.iahCentral", {
                   valueAsNumber: true,
                 })}
                 className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
@@ -163,7 +165,7 @@ export function ComplementaryExamsForm({
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.oxygenDesaturation"
+                htmlFor="sleepComplementaryExams.oxygenDesaturation"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Désaturation en O2
@@ -171,7 +173,7 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.1"
-                {...register("complementaryExams.oxygenDesaturation", {
+                {...register("sleepComplementaryExams.oxygenDesaturation", {
                   valueAsNumber: true,
                 })}
                 className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
@@ -180,7 +182,7 @@ export function ComplementaryExamsForm({
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.ct90"
+                htmlFor="sleepComplementaryExams.ct90"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 CT90
@@ -188,7 +190,7 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.1"
-                {...register("complementaryExams.ct90", {
+                {...register("sleepComplementaryExams.ct90", {
                   valueAsNumber: true,
                 })}
                 className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
@@ -205,21 +207,21 @@ export function ComplementaryExamsForm({
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.gazometryDate"
+                htmlFor="sleepComplementaryExams.gazometryDate"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Date
               </label>
               <input
                 type="date"
-                {...register("complementaryExams.gazometryDate")}
+                {...register("sleepComplementaryExams.gazometryDate")}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
               />
             </div>
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.ph"
+                htmlFor="sleepComplementaryExams.ph"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 pH
@@ -227,14 +229,16 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.01"
-                {...register("complementaryExams.ph", { valueAsNumber: true })}
+                {...register("sleepComplementaryExams.ph", {
+                  valueAsNumber: true,
+                })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
               />
             </div>
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.pao2"
+                htmlFor="sleepComplementaryExams.pao2"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 PaO2
@@ -242,7 +246,7 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.1"
-                {...register("complementaryExams.pao2", {
+                {...register("sleepComplementaryExams.pao2", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -251,7 +255,7 @@ export function ComplementaryExamsForm({
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.paco2"
+                htmlFor="sleepComplementaryExams.paco2"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 PaCO2
@@ -259,7 +263,7 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.1"
-                {...register("complementaryExams.paco2", {
+                {...register("sleepComplementaryExams.paco2", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -268,7 +272,7 @@ export function ComplementaryExamsForm({
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.hco3"
+                htmlFor="sleepComplementaryExams.hco3"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 HCO3-
@@ -276,7 +280,7 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.1"
-                {...register("complementaryExams.hco3", {
+                {...register("sleepComplementaryExams.hco3", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -285,7 +289,7 @@ export function ComplementaryExamsForm({
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.sao2"
+                htmlFor="sleepComplementaryExams.sao2"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 SaO2
@@ -293,7 +297,7 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.1"
-                {...register("complementaryExams.sao2", {
+                {...register("sleepComplementaryExams.sao2", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -310,21 +314,21 @@ export function ComplementaryExamsForm({
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.efrDate"
+                htmlFor="sleepComplementaryExams.efrDate"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Date
               </label>
               <input
                 type="date"
-                {...register("complementaryExams.efrDate")}
+                {...register("sleepComplementaryExams.efrDate")}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
               />
             </div>
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.cvf"
+                htmlFor="sleepComplementaryExams.cvf"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 CVF
@@ -332,14 +336,16 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.1"
-                {...register("complementaryExams.cvf", { valueAsNumber: true })}
+                {...register("sleepComplementaryExams.cvf", {
+                  valueAsNumber: true,
+                })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
               />
             </div>
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.vems"
+                htmlFor="sleepComplementaryExams.vems"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 VEMS
@@ -347,7 +353,7 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.1"
-                {...register("complementaryExams.vems", {
+                {...register("sleepComplementaryExams.vems", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -356,7 +362,7 @@ export function ComplementaryExamsForm({
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.dlco"
+                htmlFor="sleepComplementaryExams.dlco"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 DLCO
@@ -364,7 +370,7 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.1"
-                {...register("complementaryExams.dlco", {
+                {...register("sleepComplementaryExams.dlco", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -373,7 +379,7 @@ export function ComplementaryExamsForm({
 
             <div className="space-y-2">
               <label
-                htmlFor="complementaryExams.cpt"
+                htmlFor="sleepComplementaryExams.cpt"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 CPT
@@ -381,7 +387,9 @@ export function ComplementaryExamsForm({
               <input
                 type="number"
                 step="0.1"
-                {...register("complementaryExams.cpt", { valueAsNumber: true })}
+                {...register("sleepComplementaryExams.cpt", {
+                  valueAsNumber: true,
+                })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
               />
             </div>
@@ -391,13 +399,13 @@ export function ComplementaryExamsForm({
         {/* Autres examens */}
         <div className="space-y-2">
           <label
-            htmlFor="complementaryExams.otherExams"
+            htmlFor="sleepComplementaryExams.otherExams"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             Autres examens
           </label>
           <textarea
-            {...register("complementaryExams.otherExams")}
+            {...register("sleepComplementaryExams.otherExams")}
             rows={3}
             className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
           />
@@ -406,13 +414,13 @@ export function ComplementaryExamsForm({
         {/* Autres examens complémentaires */}
         <div className="space-y-2">
           <label
-            htmlFor="complementaryExams.otherComplementaryExams"
+            htmlFor="sleepComplementaryExams.otherComplementaryExams"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             Autres examens complémentaires
           </label>
           <textarea
-            {...register("complementaryExams.otherComplementaryExams")}
+            {...register("sleepComplementaryExams.otherComplementaryExams")}
             rows={3}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
           />

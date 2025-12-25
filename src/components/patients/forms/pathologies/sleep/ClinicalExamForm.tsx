@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormSectionProps } from "../../types";
 
 export function ClinicalExamForm({ register }: FormSectionProps) {
@@ -23,7 +22,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               <input
                 type="number"
                 step="0.1"
-                {...register("clinicalExam.weight" as any, {
+                {...register("clinicalExam.weight", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -40,7 +39,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               <input
                 type="number"
                 step="0.1"
-                {...register("clinicalExam.height" as any, {
+                {...register("clinicalExam.height", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -57,7 +56,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               <input
                 type="number"
                 step="0.1"
-                {...register("clinicalExam.bmi" as any, {
+                {...register("clinicalExam.bmi", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -74,7 +73,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               <input
                 type="number"
                 step="0.1"
-                {...register("clinicalExam.neckCircumference" as any, {
+                {...register("clinicalExam.neckCircumference", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -91,7 +90,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               <input
                 type="number"
                 step="0.1"
-                {...register("clinicalExam.abdominalPerimeter" as any, {
+                {...register("clinicalExam.abdominalPerimeter", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -107,7 +106,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               </label>
               <input
                 type="text"
-                {...register("clinicalExam.bloodPressure" as any)}
+                {...register("clinicalExam.bloodPressure")}
                 placeholder="ex: 120/80"
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
               />
@@ -122,7 +121,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               </label>
               <input
                 type="number"
-                {...register("clinicalExam.heartRate" as any, {
+                {...register("clinicalExam.heartRate", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -138,7 +137,7 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
               </label>
               <input
                 type="number"
-                {...register("clinicalExam.saturation" as any, {
+                {...register("clinicalExam.saturation", {
                   valueAsNumber: true,
                 })}
                 className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
@@ -155,12 +154,11 @@ export function ClinicalExamForm({ register }: FormSectionProps) {
             Auscultation pulmonaire
           </label>
           <textarea
-            {...register("clinicalExam.pulmonaryAuscultation" as any)}
+            {...register("clinicalExam.pulmonaryAuscultation")}
             rows={3}
             className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
           />
         </div>
-
       </div>
     </div>
   );

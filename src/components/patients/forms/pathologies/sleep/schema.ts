@@ -8,7 +8,7 @@ const zNullableNumber = z.preprocess((val) => {
 
 export const sleepPathologySchema = z.object({
   // Antécédents
-  personalHistory: z
+  sleepPersonalHistory: z
     .object({
       obesity: z.boolean().default(false),
       hta: z.boolean().default(false),
@@ -23,28 +23,15 @@ export const sleepPathologySchema = z.object({
       currentMedications: z.string().optional(),
     })
     .default({}),
-  familyHistory: z
+  sleepFamilyHistory: z
     .object({
       saosHistory: z.boolean().default(false),
       respiratoryPathologies: z.boolean().default(false),
     })
     .default({}),
 
-  // Examen clinique
-  clinicalExam: z
-    .object({
-      weight: z.number().optional(),
-      height: z.number().optional(),
-      bmi: z.number().optional(),
-      neckCircumference: z.number().optional(),
-      abdominalPerimeter: z.number().optional(),
-      bloodPressure: z.string().optional(),
-      heartRate: z.number().optional(),
-      saturation: z.number().optional(),
-      pulmonaryAuscultation: z.string().optional(),
-    })
-    .default({}),
-  orlExam: z
+  // Note: clinicalExam est maintenant dans le schéma patient commun (patientSchema)
+  sleepOrlExam: z
     .object({
       facialMorphology: z
         .object({
@@ -82,7 +69,7 @@ export const sleepPathologySchema = z.object({
     .default({}),
 
   // Examens complémentaires
-  complementaryExams: z
+  sleepComplementaryExams: z
     .object({
       ventilationPolygraphy: z.boolean().default(false),
       psg: z.boolean().default(false),
@@ -134,7 +121,7 @@ export const sleepPathologySchema = z.object({
     .default({}),
 
   // Diagnostic
-  diagnosis: z
+  sleepDiagnosis: z
     .object({
       saos: z.boolean().default(false),
       sacs: z.boolean().default(false),
@@ -162,7 +149,7 @@ export const sleepPathologySchema = z.object({
     .default({}),
 
   // Plan de Traitement
-  treatment: z
+  sleepTreatment: z
     .object({
       hygieneDietetic: z
         .object({
@@ -177,7 +164,7 @@ export const sleepPathologySchema = z.object({
           ppc: z.boolean().default(false),
           oam: z.boolean().default(false),
           oxygenotherapy: z.boolean().default(false),
-          medications: z.array(z.string()).default([]),
+          medications: z.string().optional(),
           other: z.string().optional(),
         })
         .default({}),
@@ -208,7 +195,7 @@ export const sleepPathologySchema = z.object({
     .default({}),
 
   // PPC Follow-up
-  ppcFollowUp: z
+  sleepPpcFollowUp: z
     .object({
       ppcPrescribingDoctor: z.string().optional(),
       ppcStartDate: z.string().optional(),

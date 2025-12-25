@@ -289,3 +289,35 @@ export const pathologyStyles = StyleSheet.create({
     backgroundColor: "#8b5cf6", // Violet pour sommeil
   },
 });
+
+// Styles pour les images dans le PDF
+export const imageStyles = StyleSheet.create({
+  imageGrid: {
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: 15,
+  },
+  imageContainer: {
+    width: 515, // Largeur A4 (595pt) - marges (40pt * 2)
+    height: 291, // Hauteur fixe pour ratio 16:9 (515 * 9/16 ≈ 291)
+    marginRight: 0,
+    marginBottom: 15,
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    borderStyle: "solid",
+    overflow: "hidden",
+    backgroundColor: "#ffffff",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    objectFit: "contain",
+  },
+  imageLabel: {
+    fontSize: 9,
+    color: COLORS.textLight,
+    textAlign: "center",
+    marginTop: 5,
+    marginBottom: 10,
+  },
+});

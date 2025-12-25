@@ -126,6 +126,17 @@ export default function EditPatientPage() {
             initialData={
               {
                 ...patient,
+                clinicalExam: patient.clinicalExam || {
+                  weight: null,
+                  height: null,
+                  bmi: null,
+                  neckCircumference: null,
+                  abdominalPerimeter: null,
+                  bloodPressure: "",
+                  heartRate: null,
+                  saturation: null,
+                  pulmonaryAuscultation: "",
+                },
                 complementaryExams: {
                   ventilationPolygraphy:
                     !!patient.complementaryExams?.polygraphyDate,
@@ -143,6 +154,17 @@ export default function EditPatientPage() {
             isEditMode={isEditMode}
             onCancel={() => setIsEditMode(false)}
           />
+
+          {/* Bouton de retour au dossier patient en bas à gauche */}
+          <div className="mt-8">
+            <Link
+              href={`/patients/${id}`}
+              className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+            >
+              <ArrowLeftIcon className="h-4 w-4 mr-2" />
+              Retour au dossier patient
+            </Link>
+          </div>
         </div>
       </main>
     </div>

@@ -20,22 +20,25 @@ export function SleepPathology({
 
   return (
     <div className={className}>
-      {/* Section 1: Examens complémentaires - Polygraphie */}
+      {/* Section 1: Examen Clinique */}
+      <ClinicalExamSection patient={patient} />
+
+      {/* Section 2: Examens complémentaires - Polygraphie */}
       <PolygraphySection patient={patient} />
 
-      {/* Section 2: Examens complémentaires - Gazométrie */}
+      {/* Section 3: Examens complémentaires - Gazométrie */}
       <GazometrySection patient={patient} />
 
-      {/* Section 3: Examens complémentaires - EFR */}
+      {/* Section 4: Examens complémentaires - EFR */}
       <EFRSection patient={patient} />
 
-      {/* Section 4: Examens complémentaires - Imagerie */}
+      {/* Section 5: Examens complémentaires - Imagerie */}
       <ImagingSection patient={patient} />
 
-      {/* Section 5: Diagnostic */}
+      {/* Section 6: Diagnostic */}
       <DiagnosticSection patient={patient} />
 
-      {/* Section 6: Traitement */}
+      {/* Section 7: Traitement */}
       <TreatmentSection patient={patient} />
     </div>
   );
@@ -49,15 +52,140 @@ SleepPathology.config = {
   description: "SAOS, SACS, SOH et autres troubles du sommeil",
   component: SleepPathology,
   sections: {
+    clinicalExam: true,
     complementaryExams: true,
     diagnosis: true,
     treatment: true,
   },
 } as PathologyConfig;
 
+// Sous-composant pour la section examen clinique
+function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
+  const clinicalExam = patient?.clinicalExam;
+  if (!clinicalExam) return null;
+
+  const hasAnyClinicalData =
+    clinicalExam?.weight ||
+    clinicalExam?.height ||
+    clinicalExam?.bmi ||
+    clinicalExam?.neckCircumference ||
+    clinicalExam?.abdominalPerimeter ||
+    clinicalExam?.bloodPressure ||
+    clinicalExam?.heartRate ||
+    clinicalExam?.saturation ||
+    clinicalExam?.pulmonaryAuscultation;
+
+  if (!hasAnyClinicalData) return null;
+
+  return (
+    <PathologySection title="Examen Clinique" patient={patient}>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {clinicalExam.weight && (
+          <div>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Poids
+            </p>
+            <p className="text-sm text-gray-900 dark:text-white">
+              {clinicalExam.weight} kg
+            </p>
+          </div>
+        )}
+
+        {clinicalExam.height && (
+          <div>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Taille
+            </p>
+            <p className="text-sm text-gray-900 dark:text-white">
+              {clinicalExam.height} cm
+            </p>
+          </div>
+        )}
+
+        {clinicalExam.bmi && (
+          <div>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              IMC
+            </p>
+            <p className="text-sm text-gray-900 dark:text-white">
+              {clinicalExam.bmi}
+            </p>
+          </div>
+        )}
+
+        {clinicalExam.neckCircumference && (
+          <div>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Tour de cou
+            </p>
+            <p className="text-sm text-gray-900 dark:text-white">
+              {clinicalExam.neckCircumference} cm
+            </p>
+          </div>
+        )}
+
+        {clinicalExam.abdominalPerimeter && (
+          <div>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Périmètre abdominal
+            </p>
+            <p className="text-sm text-gray-900 dark:text-white">
+              {clinicalExam.abdominalPerimeter} cm
+            </p>
+          </div>
+        )}
+
+        {clinicalExam.bloodPressure && (
+          <div>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Tension artérielle
+            </p>
+            <p className="text-sm text-gray-900 dark:text-white">
+              {clinicalExam.bloodPressure}
+            </p>
+          </div>
+        )}
+
+        {clinicalExam.heartRate && (
+          <div>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Fréquence cardiaque
+            </p>
+            <p className="text-sm text-gray-900 dark:text-white">
+              {clinicalExam.heartRate} bpm
+            </p>
+          </div>
+        )}
+
+        {clinicalExam.saturation && (
+          <div>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Saturation
+            </p>
+            <p className="text-sm text-gray-900 dark:text-white">
+              {clinicalExam.saturation}%
+            </p>
+          </div>
+        )}
+
+        {clinicalExam.pulmonaryAuscultation && (
+          <div className="md:col-span-3">
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Auscultation pulmonaire
+            </p>
+            <p className="text-sm text-gray-900 dark:text-white">
+              {clinicalExam.pulmonaryAuscultation}
+            </p>
+          </div>
+        )}
+      </div>
+    </PathologySection>
+  );
+}
+
 // Sous-composant pour la section polygraphie
 function PolygraphySection({ patient }: { patient: ExtendedPatient }) {
-  const exams = patient?.complementaryExams;
+  const exams = patient?.sleepComplementaryExams;
   if (
     !exams ||
     (!exams.polygraphyDate && exams.iah === 0 && exams.iahCentral === 0)
@@ -127,7 +255,7 @@ function PolygraphySection({ patient }: { patient: ExtendedPatient }) {
 
 // Sous-composant pour la section gazométrie
 function GazometrySection({ patient }: { patient: ExtendedPatient }) {
-  const exams = patient?.complementaryExams;
+  const exams = patient?.sleepComplementaryExams;
   if (!exams || (!exams.gazometryDate && exams.ph === 0 && exams.pao2 === 0)) {
     return null;
   }
@@ -180,7 +308,7 @@ function GazometrySection({ patient }: { patient: ExtendedPatient }) {
         {exams.hco3 && exams.hco3 > 0 && (
           <div>
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-              HCO3
+              HCO3-
             </p>
             <p className="text-sm text-gray-900 dark:text-white">
               {exams.hco3} mmol/L
@@ -205,7 +333,7 @@ function GazometrySection({ patient }: { patient: ExtendedPatient }) {
 
 // Sous-composant pour la section EFR
 function EFRSection({ patient }: { patient: ExtendedPatient }) {
-  const exams = patient?.complementaryExams;
+  const exams = patient?.sleepComplementaryExams;
   if (!exams || (!exams.efrDate && exams.cvf === 0 && exams.vems === 0)) {
     return null;
   }
@@ -274,7 +402,7 @@ function EFRSection({ patient }: { patient: ExtendedPatient }) {
 
 // Sous-composant pour la section imagerie
 function ImagingSection({ patient }: { patient: ExtendedPatient }) {
-  const exams = patient?.complementaryExams;
+  const exams = patient?.sleepComplementaryExams;
   const hasImages =
     (exams?.chestXray?.imageUrls && exams.chestXray.imageUrls.length > 0) ||
     (exams?.scanner?.imageUrls && exams.scanner.imageUrls.length > 0) ||
@@ -316,14 +444,14 @@ function ImagingSection({ patient }: { patient: ExtendedPatient }) {
 
 // Sous-composant pour la section diagnostic
 function DiagnosticSection({ patient }: { patient: ExtendedPatient }) {
-  const diagnosis = patient?.diagnosis;
+  const diagnosis = patient?.sleepDiagnosis;
   if (!diagnosis) return null;
 
   const hasAnyDiagnosis =
     diagnosis.saos ||
     diagnosis.sacs ||
     diagnosis.soh ||
-    diagnosis.nocturalHypoventilation ||
+    diagnosis.nocturnalHypoventilation ||
     diagnosis.simpleSnoring;
 
   if (!hasAnyDiagnosis) return null;
@@ -349,7 +477,7 @@ function DiagnosticSection({ patient }: { patient: ExtendedPatient }) {
           </span>
         )}
 
-        {diagnosis.nocturalHypoventilation && (
+        {diagnosis.nocturnalHypoventilation && (
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
             Hypoventilation nocturne
           </span>
@@ -367,7 +495,7 @@ function DiagnosticSection({ patient }: { patient: ExtendedPatient }) {
 
 // Sous-composant pour la section traitement
 function TreatmentSection({ patient }: { patient: ExtendedPatient }) {
-  const treatment = patient?.treatment;
+  const treatment = patient?.sleepTreatment;
   if (!treatment) return null;
 
   const hasAnyTreatment =

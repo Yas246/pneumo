@@ -1,8 +1,6 @@
-#!/usr/bin/env node
-
 /**
- * Script de génération automatique de la configuration PDF
- * Analyse tous les schémas Zod des pathologies et génère PatientPDFConfig.ts
+ * Script de génération de configuration PDF pour toutes les pathologies
+ * Analyse les types TypeScript pour extraire tous les champs et générer la configuration
  */
 
 import fs from "fs";
@@ -12,770 +10,426 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Configuration des libellés français pour les champs
-const FIELD_LABELS = {
-  // Informations personnelles
-  firstName: "Prénom",
-  lastName: "Nom",
-  birthDate: "Date de naissance",
-  sex: "Sexe",
-  address: "Adresse",
-  phone: "Téléphone",
-  email: "Email",
-  profession: "Profession",
-  socialSecurity: "Couverture sociale",
-  treatingDoctor: "Médecin traitant",
-
-  // Consultation
-  consultationReason: "Motif de consultation",
-  symptomsDuration: "Durée des symptômes",
-
-  // Symptômes
-  excessiveSleepiness: "Somnolence excessive",
-  headaches: "Céphalées",
-  asthenia: "Asthénie",
-  epworthScore: "Score d'Epworth",
-  snoring: "Ronflement",
-  sleepApnea: "Apnées du sommeil",
-  choking: "Étouffements",
-  agitation: "Agitation",
-  insomnia: "Insomnie",
-  nocturia: "Nycturie",
-
-  // Examens cliniques
-  weight: "Poids",
-  height: "Taille",
-  bmi: "IMC",
-  bloodPressure: "Tension artérielle",
-  heartRate: "Fréquence cardiaque",
-  pulmonaryAuscultation: "Auscultation pulmonaire",
-  saturation: "Saturation",
-
-  // Examens complémentaires
-  polygraphyDate: "Date de polygraphie",
-  iah: "IAH",
-  iahCentral: "IAH Central",
-  oxygenDesaturation: "Désaturation O2",
-  ct90: "CT90",
-  gazometryDate: "Date de gazométrie",
-  ph: "pH",
-  pao2: "PaO2",
-  paco2: "PaCO2",
-  hco3: "HCO3",
-  sao2: "SaO2",
-  efrDate: "Date d'EFR",
-  cvf: "CVF",
-  vems: "VEMS",
-  dlco: "DLCO",
-  cpt: "CPT",
+// Mapping des sections françaises par pathologie
+const SECTION_TITLES = {
+  sleep: {
+    consultationReason: "Motif de consultation",
+    diurnalSymptoms: "Symptômes diurnes",
+    nocturnalSymptoms: "Symptômes nocturnes",
+    symptomsDuration: "Durée des symptômes",
+    personalHistory: "Antécédents personnels",
+    familyHistory: "Antécédents familiaux",
+    clinicalExam: "Examen clinique",
+    orlExam: "Examen ORL",
+    complementaryExams: "Examens complémentaires",
+    diagnosis: "Diagnostic",
+    treatment: "Traitement",
+    ppcFollowUp: "Suivi PPC",
+  },
+  bpco: {
+    bpcoConsultationReason: "Motif de consultation",
+    bpcoMedicalHistory: "Antécédents médicaux",
+    bpcoClinicalExam: "Examen clinique",
+    bpcoDiseaseHistory: "Histoire de la maladie",
+    bpcoDiagnosticTests: "Bilan à visée diagnostique",
+    bpcoImpactAssessment: "Bilan de retentissement",
+    bpcoTreatment: "Traitement",
+    bpcoFollowUp: "Suivi",
+    bpcoComplementaryExams: "Examens complémentaires",
+  },
+  asthma: {
+    asthmaConsultationReason: "Motif de consultation",
+    asthmaMedicalHistory: "Antécédents médicaux",
+    asthmaDiseaseHistory: "Histoire de la maladie",
+    asthmaGeneralState: "État général",
+    asthmaRespiratorySystem: "Appareil respiratoire",
+    asthmaCardiovascularSystem: "Appareil cardiovasculaire",
+    asthmaDigestiveSystem: "Appareil digestif",
+    asthmaUrinarySystem: "Appareil urinaire",
+    asthmaMusculoskeletalSystem: "Appareil musculo-squelettique",
+    asthmaNervousSystem: "Système nerveux",
+    asthmaSkinMucous: "Peau et muqueuses",
+    asthmaOrlEyesMouth: "ORL, yeux, bouche",
+    asthmaComplementaryExams: "Examens complémentaires",
+    asthmaSeverityClassification: "Classification de sévérité",
+    asthmaTreatment: "Traitement",
+    asthmaFollowUp: "Suivi",
+  },
+  ddb: {
+    ddbConsultationReason: "Motif de consultation",
+    ddbMedicalHistory: "Antécédents médicaux",
+    ddbToxicHistory: "Antécédents toxiques",
+    ddbDiseaseHistory: "Histoire de la maladie",
+    ddbRespiratorySymptoms: "Symptômes respiratoires",
+    ddbExtraRespiratorySymptoms: "Symptômes extra-respiratoires",
+    ddbPhysicalSigns: "Signes physiques",
+    ddbComplementaryExams: "Examens complémentaires",
+    ddbConclusion: "Conclusion",
+    ddbEtiology: "Étiologie",
+    ddbTreatment: "Traitements envisagés",
+    ddbFollowUp: "Suivi",
+  },
+  tbk: {
+    tbkConsultationReason: "Motif d'hospitalisation",
+    tbkComorbidities: "Comorbidités",
+    tbkPersonalHistory: "ATCD personnels",
+    tbkRecentContagion: "Contage récent",
+    tbkToxicHabits: "Habitudes toxiques",
+    tbkDiseaseHistory: "Histoire de la maladie",
+    tbkGeneralSigns: "Signes généraux",
+    tbkFunctionalSigns: "Signes fonctionnels",
+    tbkClinicalExam: "Examen clinique",
+    tbkChestXRay: "Rx thoracique",
+    tbkSputumBacteriology: "Bactériologie expectorations",
+    tbkBkGenetics: "Génétique BK",
+    tbkBiology: "Biologie",
+    tbkOtherAssessments: "Autres bilans",
+    tbkPrescribedTreatment: "Traitement prescrit",
+    tbkSerumDosage: "Dosage sérique AT",
+    tbkEvolution: "Évolution",
+    tbkDischargeConclusion: "Conclusion de sortie",
+  },
+  pleuralEffusion: {
+    pleuralEffusionConsultationReason: "Motif de consultation",
+    pleuralEffusionMedicalHistory: "Antécédents médicaux",
+    pleuralEffusionBiology: "Biologie",
+    pleuralEffusionChestXRay: "Radiographie thoracique",
+    pleuralEffusionClinicalExam: "Examen clinique",
+    pleuralEffusionDiagnosis: "Diagnostic",
+    pleuralEffusionEvolution: "Évolution",
+    pleuralEffusionImaging: "Imagerie",
+    pleuralEffusionOtherAssessments: "Autres bilans",
+    pleuralEffusionPleuralPuncture: "Ponction pleurale",
+    pleuralEffusionTreatment: "Traitement",
+  },
+  pid: {
+    pidAdmissionReason: "Motif d'admission",
+    pidMedicalHistory: "Antécédents médicaux",
+    pidToxicHistory: "Antécédents toxiques",
+    pidFamilyHistory: "Antécédents familiaux",
+    pidLifestyle: "Mode de vie",
+    pidGynecoObstetricHistory: "Antécédents gynéco-obstétricaux",
+    pidGeneralSigns: "Signes généraux",
+    pidRespiratorySymptoms: "Symptômes respiratoires",
+    pidExtraRespiratorySymptoms: "Symptômes extra-respiratoires",
+    pidClinicalExam: "Examen clinique",
+    pidComplementaryExams: "Examens complémentaires",
+    pidFinalDiagnosis: "Diagnostic final",
+  },
+  pneumothorax: {
+    pneumothoraxConsultationReason: "Motif de consultation",
+    pneumothoraxMedicalHistory: "Antécédents médicaux",
+    pneumothoraxDiseaseHistory: "Histoire de la maladie",
+    pneumothoraxClinicalExam: "Examen clinique",
+    pneumothoraxComplementaryExams: "Examens complémentaires",
+    pneumothoraxDiagnosis: "Diagnostic",
+    pneumothoraxTreatment: "Traitement",
+    pneumothoraxFollowUp: "Suivi",
+    pneumothoraxTreatmentDischarge:
+      "Traitement et ordonnance / consignes de sortie",
+  },
+  lungCancer: {
+    lungCancerConsultationReason: "Motif de consultation",
+    lungCancerMedicalHistory: "Antécédents médicaux et facteurs de risque",
+    lungCancerDiseaseHistory: "Histoire de la maladie",
+    lungCancerClinicalExam: "Examen clinique",
+    lungCancerComplementaryExams: "Examens complémentaires",
+    lungCancerDiagnosis: "Diagnostic",
+    lungCancerManagement: "Prise en charge",
+    lungCancerFollowUp: "Surveillance évolutive",
+    lungCancerTreatmentDischarge:
+      "Traitement et ordonnance / consignes de sortie",
+  },
 };
 
-// Configuration des sections par pathologie
-const PATHOLOGY_SECTIONS = {
-  asthma: [
-    {
-      key: "consultation",
-      title: "Motif de consultation",
-      keywords: ["consultationReason"],
-    },
-    {
-      key: "medicalHistory",
-      title: "Antécédents médicaux",
-      keywords: ["medicalHistory"],
-    },
-    {
-      key: "diseaseHistory",
-      title: "Histoire de la maladie",
-      keywords: ["diseaseHistory"],
-    },
-    { key: "generalState", title: "État général", keywords: ["generalState"] },
-    {
-      key: "respiratorySystem",
-      title: "Appareil respiratoire",
-      keywords: ["respiratorySystem"],
-    },
-    {
-      key: "cardiovascularSystem",
-      title: "Appareil cardiovasculaire",
-      keywords: ["cardiovascularSystem"],
-    },
-    {
-      key: "digestiveSystem",
-      title: "Appareil digestif",
-      keywords: ["digestiveSystem"],
-    },
-    {
-      key: "urinarySystem",
-      title: "Appareil urinaire",
-      keywords: ["urinarySystem"],
-    },
-    {
-      key: "musculoskeletalSystem",
-      title: "Appareil musculo-squelettique",
-      keywords: ["musculoskeletalSystem"],
-    },
-    {
-      key: "nervousSystem",
-      title: "Système nerveux",
-      keywords: ["nervousSystem"],
-    },
-    { key: "skinMucous", title: "Peau et muqueuses", keywords: ["skinMucous"] },
-    {
-      key: "orlEyesMouth",
-      title: "ORL, yeux, bouche",
-      keywords: ["orlEyesMouth"],
-    },
-    {
-      key: "complementaryExams",
-      title: "Examens complémentaires",
-      keywords: ["complementaryExams"],
-    },
-    {
-      key: "severityClassification",
-      title: "Classification de sévérité",
-      keywords: ["severityClassification"],
-    },
-    { key: "treatment", title: "Traitement", keywords: ["treatment"] },
-    { key: "followUp", title: "Suivi", keywords: ["followUp"] },
+// Préfixes des champs par pathologie
+const PATHOLOGY_PREFIXES = {
+  sleep: [
+    "consultationReason",
+    "diurnalSymptoms",
+    "nocturnalSymptoms",
+    "symptomsDuration",
+    "personalHistory",
+    "familyHistory",
+    "clinicalExam",
+    "orlExam",
+    "complementaryExams",
+    "diagnosis",
+    "treatment",
+    "ppcFollowUp",
   ],
   bpco: [
-    {
-      key: "consultation",
-      title: "Motif de consultation",
-      keywords: ["consultationReason"],
-    },
-    {
-      key: "comorbidities",
-      title: "Comorbidités",
-      keywords: ["comorbidities"],
-    },
-    {
-      key: "personalHistory",
-      title: "Antécédents personnels",
-      keywords: ["personalTuberculosisHistory"],
-    },
-    {
-      key: "recentContagion",
-      title: "Contage récent",
-      keywords: ["recentTuberculosisContagion"],
-    },
-    {
-      key: "toxicHabits",
-      title: "Habitudes toxiques",
-      keywords: ["toxicHabits"],
-    },
-    {
-      key: "generalSigns",
-      title: "Signes généraux",
-      keywords: ["generalSigns"],
-    },
-    {
-      key: "functionalSigns",
-      title: "Signes fonctionnels",
-      keywords: ["functionalSigns"],
-    },
-    {
-      key: "clinicalExam",
-      title: "Examen clinique",
-      keywords: ["clinicalExam"],
-    },
-    {
-      key: "chestXRay",
-      title: "Radiographie thoracique",
-      keywords: ["chestXRay"],
-    },
-    {
-      key: "sputumBacteriology",
-      title: "Bactériologie des expectorations",
-      keywords: ["sputumBacteriology"],
-    },
-    { key: "genetics", title: "Génétique BK", keywords: ["bkGenetics"] },
-    { key: "biology", title: "Biologie", keywords: ["biology"] },
-    {
-      key: "otherAssessments",
-      title: "Autres bilans",
-      keywords: ["otherAssessments"],
-    },
-    {
-      key: "prescribedTreatment",
-      title: "Traitement prescrit",
-      keywords: ["prescribedTreatment"],
-    },
-    { key: "serumDosage", title: "Dosage sérique", keywords: ["serumDosage"] },
-    { key: "evolution", title: "Évolution", keywords: ["evolution"] },
-    {
-      key: "dischargeConclusion",
-      title: "Conclusion de sortie",
-      keywords: ["dischargeConclusion"],
-    },
+    "bpcoConsultationReason",
+    "bpcoMedicalHistory",
+    "bpcoClinicalExam",
+    "bpcoDiseaseHistory",
+    "bpcoDiagnosticTests",
+    "bpcoImpactAssessment",
+    "bpcoTreatment",
+    "bpcoFollowUp",
+    "bpcoComplementaryExams",
+  ],
+  asthma: [
+    "asthmaConsultationReason",
+    "asthmaMedicalHistory",
+    "asthmaDiseaseHistory",
+    "asthmaGeneralState",
+    "asthmaRespiratorySystem",
+    "asthmaCardiovascularSystem",
+    "asthmaDigestiveSystem",
+    "asthmaUrinarySystem",
+    "asthmaMusculoskeletalSystem",
+    "asthmaNervousSystem",
+    "asthmaSkinMucous",
+    "asthmaOrlEyesMouth",
+    "asthmaComplementaryExams",
+    "asthmaSeverityClassification",
+    "asthmaTreatment",
+    "asthmaFollowUp",
   ],
   ddb: [
-    {
-      key: "consultation",
-      title: "Motif de consultation",
-      keywords: ["consultationReason"],
-    },
-    {
-      key: "medicalHistory",
-      title: "Antécédents médicaux",
-      keywords: ["medicalHistory"],
-    },
-    {
-      key: "toxicHistory",
-      title: "Antécédents toxiques",
-      keywords: ["toxicHistory"],
-    },
-    {
-      key: "diseaseHistory",
-      title: "Histoire de la maladie",
-      keywords: ["diseaseHistory"],
-    },
-    {
-      key: "respiratorySymptoms",
-      title: "Symptômes respiratoires",
-      keywords: ["respiratorySymptoms"],
-    },
-    {
-      key: "extraRespiratorySymptoms",
-      title: "Symptômes extra-respiratoires",
-      keywords: ["extraRespiratorySymptoms"],
-    },
-    {
-      key: "physicalSigns",
-      title: "Signes physiques",
-      keywords: ["physicalSigns"],
-    },
-    {
-      key: "complementaryExams",
-      title: "Examens complémentaires",
-      keywords: ["complementaryExams"],
-    },
-    { key: "conclusion", title: "Conclusion", keywords: ["conclusion"] },
-    { key: "etiology", title: "Étiologie", keywords: ["etiology"] },
-    {
-      key: "treatment",
-      title: "Traitements envisagés",
-      keywords: ["treatment"],
-    },
-    { key: "followUp", title: "Suivi", keywords: ["followUp"] },
+    "ddbConsultationReason",
+    "ddbMedicalHistory",
+    "ddbToxicHistory",
+    "ddbDiseaseHistory",
+    "ddbRespiratorySymptoms",
+    "ddbExtraRespiratorySymptoms",
+    "ddbPhysicalSigns",
+    "ddbComplementaryExams",
+    "ddbConclusion",
+    "ddbEtiology",
+    "ddbTreatment",
+    "ddbFollowUp",
   ],
   tbk: [
-    {
-      key: "consultation",
-      title: "Motif d'hospitalisation",
-      keywords: ["consultationReason"],
-    },
-    {
-      key: "comorbidities",
-      title: "Comorbidités",
-      keywords: ["comorbidities"],
-    },
-    {
-      key: "personalHistory",
-      title: "ATCD personnels",
-      keywords: ["personalTuberculosisHistory"],
-    },
-    {
-      key: "recentContagion",
-      title: "Contage récent",
-      keywords: ["recentTuberculosisContagion"],
-    },
-    {
-      key: "toxicHabits",
-      title: "Habitudes toxiques",
-      keywords: ["toxicHabits"],
-    },
-    {
-      key: "generalSigns",
-      title: "Signes généraux",
-      keywords: ["generalSigns"],
-    },
-    {
-      key: "functionalSigns",
-      title: "Signes fonctionnels",
-      keywords: ["functionalSigns"],
-    },
-    {
-      key: "clinicalExam",
-      title: "Examen clinique",
-      keywords: ["clinicalExam"],
-    },
-    { key: "chestXRay", title: "Rx thoracique", keywords: ["chestXRay"] },
-    {
-      key: "sputumBacteriology",
-      title: "Bactériologie expectorations",
-      keywords: ["sputumBacteriology"],
-    },
-    { key: "bkGenetics", title: "Génétique BK", keywords: ["bkGenetics"] },
-    { key: "biology", title: "Biologie", keywords: ["biology"] },
-    {
-      key: "otherAssessments",
-      title: "Autres bilans",
-      keywords: ["otherAssessments"],
-    },
-    {
-      key: "prescribedTreatment",
-      title: "Traitement prescrit",
-      keywords: ["prescribedTreatment"],
-    },
-    {
-      key: "serumDosage",
-      title: "Dosage sérique AT",
-      keywords: ["serumDosage"],
-    },
-    { key: "evolution", title: "Évolution", keywords: ["evolution"] },
-    {
-      key: "dischargeConclusion",
-      title: "Conclusion de sortie",
-      keywords: ["dischargeConclusion"],
-    },
-  ],
-  sleep: [
-    {
-      key: "consultation",
-      title: "Motif de consultation",
-      keywords: ["consultationReason"],
-    },
-    {
-      key: "medicalHistory",
-      title: "Antécédents médicaux",
-      keywords: ["medicalHistory"],
-    },
-    {
-      key: "clinicalExam",
-      title: "Examen clinique",
-      keywords: ["clinicalExam"],
-    },
-    { key: "orlExam", title: "Examen ORL", keywords: ["orlExam"] },
-    {
-      key: "complementaryExams",
-      title: "Examens complémentaires",
-      keywords: ["complementaryExams"],
-    },
-    { key: "diagnosis", title: "Diagnostic", keywords: ["diagnosis"] },
-    { key: "treatment", title: "Traitement", keywords: ["treatment"] },
-    { key: "followUp", title: "Suivi", keywords: ["followUp"] },
+    "tbkConsultationReason",
+    "tbkComorbidities",
+    "tbkPersonalHistory",
+    "tbkRecentContagion",
+    "tbkToxicHabits",
+    "tbkDiseaseHistory",
+    "tbkGeneralSigns",
+    "tbkFunctionalSigns",
+    "tbkClinicalExam",
+    "tbkChestXRay",
+    "tbkSputumBacteriology",
+    "tbkBkGenetics",
+    "tbkBiology",
+    "tbkOtherAssessments",
+    "tbkPrescribedTreatment",
+    "tbkSerumDosage",
+    "tbkEvolution",
+    "tbkDischargeConclusion",
   ],
   pleuralEffusion: [
-    {
-      key: "consultation",
-      title: "Motif de consultation",
-      keywords: ["consultationReason"],
-    },
-    {
-      key: "medicalHistory",
-      title: "Antécédents médicaux",
-      keywords: ["medicalHistory"],
-    },
-    { key: "biology", title: "Biologie", keywords: ["biology"] },
-    {
-      key: "chestXRay",
-      title: "Radiographie thoracique",
-      keywords: ["chestXRay"],
-    },
-    {
-      key: "clinicalExam",
-      title: "Examen clinique",
-      keywords: ["clinicalExam"],
-    },
-    { key: "diagnosis", title: "Diagnostic", keywords: ["diagnosis"] },
-    { key: "evolution", title: "Évolution", keywords: ["evolution"] },
-    { key: "imaging", title: "Imagerie", keywords: ["imaging"] },
-    {
-      key: "otherAssessments",
-      title: "Autres bilans",
-      keywords: ["otherAssessments"],
-    },
-    {
-      key: "pleuralPuncture",
-      title: "Ponction pleurale",
-      keywords: ["pleuralPuncture"],
-    },
-    { key: "treatment", title: "Traitement", keywords: ["treatment"] },
+    "pleuralEffusionConsultationReason",
+    "pleuralEffusionMedicalHistory",
+    "pleuralEffusionBiology",
+    "pleuralEffusionChestXRay",
+    "pleuralEffusionClinicalExam",
+    "pleuralEffusionDiagnosis",
+    "pleuralEffusionEvolution",
+    "pleuralEffusionImaging",
+    "pleuralEffusionOtherAssessments",
+    "pleuralEffusionPleuralPuncture",
+    "pleuralEffusionTreatment",
   ],
   pid: [
-    {
-      key: "admissionReason",
-      title: "Motif d'admission",
-      keywords: ["admissionReason"],
-    },
-    {
-      key: "medicalHistory",
-      title: "Antécédents médicaux",
-      keywords: ["medicalHistory"],
-    },
-    {
-      key: "toxicHistory",
-      title: "Antécédents toxiques",
-      keywords: ["toxicHistory"],
-    },
-    {
-      key: "familyHistory",
-      title: "Antécédents familiaux",
-      keywords: ["familyHistory"],
-    },
-    { key: "lifestyle", title: "Mode de vie", keywords: ["lifestyle"] },
-    {
-      key: "gynecoObstetricHistory",
-      title: "Antécédents gynéco-obstétricaux",
-      keywords: ["gynecoObstetricHistory"],
-    },
-    {
-      key: "generalSigns",
-      title: "Signes généraux",
-      keywords: ["generalSigns"],
-    },
-    {
-      key: "respiratorySymptoms",
-      title: "Symptômes respiratoires",
-      keywords: ["respiratorySymptoms"],
-    },
-    {
-      key: "extraRespiratorySymptoms",
-      title: "Symptômes extra-respiratoires",
-      keywords: ["extraRespiratorySymptoms"],
-    },
-    {
-      key: "clinicalExam",
-      title: "Examen clinique",
-      keywords: ["clinicalExam"],
-    },
-    {
-      key: "complementaryExams",
-      title: "Examens complémentaires",
-      keywords: ["complementaryExams"],
-    },
-    {
-      key: "finalDiagnosis",
-      title: "Diagnostic final",
-      keywords: ["finalDiagnosis"],
-    },
+    "pidAdmissionReason",
+    "pidMedicalHistory",
+    "pidToxicHistory",
+    "pidFamilyHistory",
+    "pidLifestyle",
+    "pidGynecoObstetricHistory",
+    "pidGeneralSigns",
+    "pidRespiratorySymptoms",
+    "pidExtraRespiratorySymptoms",
+    "pidClinicalExam",
+    "pidComplementaryExams",
+    "pidFinalDiagnosis",
   ],
   pneumothorax: [
-    {
-      key: "consultationReason",
-      title: "Motif de consultation",
-      keywords: ["ConsultationReason"],
-    },
-    {
-      key: "medicalHistory",
-      title: "Antécédents médicaux",
-      keywords: ["MedicalHistory"],
-    },
-    {
-      key: "diseaseHistory",
-      title: "Histoire de la maladie",
-      keywords: ["DiseaseHistory"],
-    },
-    {
-      key: "clinicalExam",
-      title: "Examen clinique",
-      keywords: ["ClinicalExam"],
-    },
-    {
-      key: "complementaryExams",
-      title: "Examens complémentaires",
-      keywords: ["ComplementaryExams"],
-    },
-    {
-      key: "diagnosis",
-      title: "Diagnostic",
-      keywords: ["Diagnosis"],
-    },
-    {
-      key: "treatment",
-      title: "Traitement",
-      keywords: ["Management"],
-    },
-    {
-      key: "followUp",
-      title: "Suivi",
-      keywords: ["Monitoring"],
-    },
-    {
-      key: "treatmentDischarge",
-      title: "Traitement et ordonnance / consignes de sortie",
-      keywords: ["TreatmentDischarge"],
-    },
+    "pneumothoraxConsultationReason",
+    "pneumothoraxMedicalHistory",
+    "pneumothoraxDiseaseHistory",
+    "pneumothoraxClinicalExam",
+    "pneumothoraxComplementaryExams",
+    "pneumothoraxDiagnosis",
+    "pneumothoraxTreatment",
+    "pneumothoraxFollowUp",
+    "pneumothoraxTreatmentDischarge",
   ],
   lungCancer: [
-    {
-      key: "consultationReason",
-      title: "Motif de consultation",
-      keywords: ["lungCancerConsultationReason"],
-    },
-    {
-      key: "medicalHistory",
-      title: "Antécédents médicaux et facteurs de risque",
-      keywords: ["lungCancerMedicalHistory"],
-    },
-    {
-      key: "diseaseHistory",
-      title: "Histoire de la maladie",
-      keywords: ["lungCancerDiseaseHistory"],
-    },
-    {
-      key: "clinicalExam",
-      title: "Examen clinique",
-      keywords: ["lungCancerClinicalExam"],
-    },
-    {
-      key: "complementaryExams",
-      title: "Examens complémentaires",
-      keywords: ["lungCancerComplementaryExams"],
-    },
-    {
-      key: "diagnosis",
-      title: "Diagnostic",
-      keywords: ["lungCancerDiagnosis"],
-    },
-    {
-      key: "treatment",
-      title: "Prise en charge",
-      keywords: ["lungCancerManagement"],
-    },
-    {
-      key: "followUp",
-      title: "Surveillance évolutive",
-      keywords: ["lungCancerFollowUp"],
-    },
-    {
-      key: "treatmentDischarge",
-      title: "Traitement et ordonnance / consignes de sortie",
-      keywords: ["lungCancerTreatmentDischarge"],
-    },
+    "lungCancerConsultationReason",
+    "lungCancerMedicalHistory",
+    "lungCancerDiseaseHistory",
+    "lungCancerClinicalExam",
+    "lungCancerComplementaryExams",
+    "lungCancerDiagnosis",
+    "lungCancerManagement",
+    "lungCancerFollowUp",
+    "lungCancerTreatmentDischarge",
   ],
 };
 
-/**
- * Extrait récursivement tous les champs d'un schéma Zod
- */
-function extractSchemaFields(schema, path = "", fields = []) {
-  if (!schema || !schema._def) return fields;
+// Fonction pour lire le fichier de types
+function readPatientTypes() {
+  const typesPath = path.join(__dirname, "..", "src", "types", "patient.ts");
 
-  const shape = schema._def.shape || {};
+  if (!fs.existsSync(typesPath)) {
+    console.log(`⚠️  Fichier de types non trouvé: ${typesPath}`);
+    return null;
+  }
 
-  Object.entries(shape).forEach(([key, fieldSchema]) => {
-    const currentPath = path ? `${path}.${key}` : key;
+  const typesContent = fs.readFileSync(typesPath, "utf-8");
+  return typesContent;
+}
 
-    if (fieldSchema._def && fieldSchema._def.typeName === "ZodObject") {
-      // Champ objet imbriqué - continuer la récursion
-      extractSchemaFields(fieldSchema, currentPath, fields);
-    } else {
-      // Champ simple
-      fields.push({
-        key: currentPath,
-        label: FIELD_LABELS[key] || generateLabelFromKey(key),
-        type: getFieldType(fieldSchema),
-        required: !fieldSchema._def || fieldSchema._def.optional !== true,
-      });
+// Fonction pour extraire les champs imbriqués d'une propriété d'objet TypeScript
+function extractNestedFields(typesContent, propertyPrefix) {
+  const fields = [];
+
+  // Chercher la définition de la propriété dans l'interface Patient
+  // Pattern: propertyName?: { ... }
+  const propertyPattern = new RegExp(
+    `${propertyPrefix}\\??:\\s*\\{([\\s\\S]*?)\\n\\s*\\};`,
+    "g"
+  );
+  const match = propertyPattern.exec(typesContent);
+
+  if (match) {
+    const propertyContent = match[1];
+
+    // Extraire tous les champs imbriqués
+    // Pattern: fieldName: type;
+    const fieldPattern = /(\w+)\??:\s*[^;]+;/g;
+    let fieldMatch;
+
+    while ((fieldMatch = fieldPattern.exec(propertyContent)) !== null) {
+      const fieldName = fieldMatch[1];
+      const fullKey = `${propertyPrefix}.${fieldName}`;
+
+      // Ignorer les commentaires
+      if (!fieldName.startsWith("//")) {
+        fields.push(fullKey);
+      }
     }
-  });
+  }
 
   return fields;
 }
 
-/**
- * Génère un libellé à partir d'une clé camelCase
- */
-function generateLabelFromKey(key) {
-  return key
-    .replace(/([A-Z])/g, " $1")
-    .replace(/^./, (str) => str.toUpperCase())
-    .trim();
-}
+// Fonction pour extraire les champs imbriqués profonds (3 niveaux)
+function extractDeepNestedFields(typesContent, propertyPrefix) {
+  const fields = [];
 
-/**
- * Détermine le type de champ
- */
-function getFieldType(fieldSchema) {
-  if (!fieldSchema || !fieldSchema._def) return "string";
+  // Chercher la définition de la propriété
+  const propertyPattern = new RegExp(
+    `${propertyPrefix}\\??:\\s*\\{([\\s\\S]*?)\\n\\s*\\};`,
+    "g"
+  );
+  const match = propertyPattern.exec(typesContent);
 
-  const typeName = fieldSchema._def.typeName;
+  if (match) {
+    const propertyContent = match[1];
 
-  switch (typeName) {
-    case "ZodString":
-      return "string";
-    case "ZodNumber":
-      return "number";
-    case "ZodBoolean":
-      return "boolean";
-    case "ZodDate":
-      return "date";
-    case "ZodArray":
-      return "array";
-    case "ZodEnum":
-      return "enum";
-    default:
-      return "string";
+    // Extraire les champs de premier niveau
+    const fieldPattern = /(\w+)\??:\s*\{([\s\S]*?)\n\s*\}/g;
+    let fieldMatch;
+
+    while ((fieldMatch = fieldPattern.exec(propertyContent)) !== null) {
+      const fieldName = fieldMatch[1];
+      const nestedContent = fieldMatch[2];
+
+      // Extraire les champs de deuxième niveau
+      const nestedFieldPattern = /(\w+)\??:\s*[^;]+;/g;
+      let nestedFieldMatch;
+
+      while (
+        (nestedFieldMatch = nestedFieldPattern.exec(nestedContent)) !== null
+      ) {
+        const nestedFieldName = nestedFieldMatch[1];
+        const fullKey = `${propertyPrefix}.${fieldName}.${nestedFieldName}`;
+
+        if (!nestedFieldName.startsWith("//")) {
+          fields.push(fullKey);
+        }
+      }
+    }
+
+    // Extraire les champs simples de premier niveau (non imbriqués)
+    const simpleFieldPattern = /(\w+)\??:\s*[^{;]+;/g;
+    let simpleFieldMatch;
+
+    while (
+      (simpleFieldMatch = simpleFieldPattern.exec(propertyContent)) !== null
+    ) {
+      const fieldName = simpleFieldMatch[1];
+      const fullKey = `${propertyPrefix}.${fieldName}`;
+
+      if (!fieldName.startsWith("//")) {
+        fields.push(fullKey);
+      }
+    }
   }
+
+  return fields;
 }
 
-/**
- * Groupe les champs par sections selon la pathologie
- */
-function groupFieldsBySections(fields, pathology) {
-  const sections = PATHOLOGY_SECTIONS[pathology] || [];
-  const grouped = {};
-
-  sections.forEach((section) => {
-    grouped[section.key] = {
-      title: section.title,
-      fields: fields
-        .filter((field) =>
-          section.keywords.some((keyword) =>
-            field.key.toLowerCase().includes(keyword.toLowerCase())
-          )
-        )
-        .map((field) => field.key),
-      layout: getOptimalLayout(section.key),
-    };
-  });
-
-  return grouped;
-}
-
-/**
- * Détermine le layout optimal pour une section
- */
-function getOptimalLayout(sectionKey) {
-  const gridSections = ["complementaryExams", "clinicalExam", "biology"];
-  return gridSections.includes(sectionKey) ? "grid" : "list";
-}
-
-/**
- * Génère la configuration PDF complète
- */
+// Fonction principale de génération
 function generatePDFConfig() {
-  console.log("🔍 Analyse des schémas de pathologies...");
+  console.log("🚀 Démarrage du script de génération PDF...");
+
+  const typesContent = readPatientTypes();
+
+  if (!typesContent) {
+    console.log("❌ Impossible de lire le fichier de types");
+    return;
+  }
 
   const config = {};
 
-  Object.keys(PATHOLOGY_SECTIONS).forEach((pathology) => {
-    console.log(`📋 Traitement de la pathologie: ${pathology}`);
+  for (const [pathology, prefixes] of Object.entries(PATHOLOGY_PREFIXES)) {
+    console.log(`📝 Génération de la configuration pour ${pathology}...`);
 
-    try {
-      // Importer dynamiquement le schéma de la pathologie
-      const schemaPath = path.join(
-        __dirname,
-        "..",
-        "src",
-        "components",
-        "patients",
-        "forms",
-        "pathologies",
-        `${pathology}`,
-        "schema.ts"
-      );
+    const sectionConfig = {};
+    const sectionTitles = SECTION_TITLES[pathology] || {};
 
-      // Pour les modules ES, on ne peut pas utiliser require
-      // On va analyser le fichier directement
-      const schemaContent = fs.readFileSync(schemaPath, "utf8");
+    for (const prefix of prefixes) {
+      const title = sectionTitles[prefix] || prefix;
 
-      // Extraire tous les champs du schéma en analysant le contenu
-      const fields = extractFieldsFromSchemaContent(schemaContent, pathology);
+      // Extraire les champs imbriqués
+      const fields = extractDeepNestedFields(typesContent, prefix);
 
-      config[pathology] = {
-        sections: groupFieldsBySections(fields, pathology),
+      sectionConfig[prefix] = {
+        title: title,
+        fields: fields,
+        layout:
+          prefix.toLowerCase().includes("exam") ||
+          prefix.toLowerCase().includes("clinical") ||
+          prefix.toLowerCase().includes("complementary") ||
+          prefix.toLowerCase().includes("diagnostic")
+            ? "grid"
+            : "list",
       };
-    } catch (error) {
-      console.warn(
-        `⚠️ Impossible d'analyser le schéma ${pathology}:`,
-        error.message
-      );
-      // Fallback vers des champs mockés
-      const mockFields = [
-        {
-          key: `${pathology}ConsultationReason.consultationReason`,
-          label: "Motif de consultation",
-          type: "string",
-          required: false,
-        },
-      ];
 
-      config[pathology] = {
-        sections: groupFieldsBySections(mockFields, pathology),
-      };
+      console.log(`   ✓ ${prefix}: ${fields.length} champs trouvés`);
     }
-  });
 
-  return config;
-}
-
-/**
- * Extrait les champs d'un schéma en analysant le contenu du fichier
- */
-function extractFieldsFromSchemaContent(content, pathology) {
-  const fields = [];
-
-  // Chercher les objets de schéma dans le contenu
-  const schemaObjects = content.match(/(\w+)\s*=\s*z\.object\(\{[\s\S]*?\}\)/g);
-
-  if (!schemaObjects) return fields;
-
-  schemaObjects.forEach((schemaMatch) => {
-    const objectName = schemaMatch.match(/^(\w+)\s*=/)?.[1];
-    if (!objectName) return;
-
-    // Extraire les champs de cet objet
-    const fieldsMatch = schemaMatch.match(/\{([\s\S]*?)\}/);
-    if (!fieldsMatch) return;
-
-    const fieldsContent = fieldsMatch[1];
-
-    // Analyser chaque champ
-    const fieldMatches = fieldsContent.match(/(\w+):\s*z\.\w+\([^)]*\)/g);
-    if (fieldMatches) {
-      fieldMatches.forEach((fieldMatch) => {
-        const fieldName = fieldMatch.match(/^(\w+):/)?.[1];
-        const fieldType = fieldMatch.match(/z\.(\w+)/)?.[1];
-
-        if (fieldName && fieldType) {
-          const fullKey = `${pathology}${
-            objectName.charAt(0).toUpperCase() + objectName.slice(1)
-          }.${fieldName}`;
-
-          fields.push({
-            key: fullKey,
-            label: FIELD_LABELS[fieldName] || generateLabelFromKey(fieldName),
-            type: getFieldTypeFromString(fieldType),
-            required: !fieldMatch.includes(".optional()"),
-          });
-        }
-      });
-    }
-  });
-
-  return fields;
-}
-
-/**
- * Détermine le type de champ à partir d'une chaîne
- */
-function getFieldTypeFromString(typeString) {
-  switch (typeString) {
-    case "string":
-      return "string";
-    case "number":
-      return "number";
-    case "boolean":
-      return "boolean";
-    case "date":
-      return "date";
-    case "array":
-      return "array";
-    case "enum":
-      return "enum";
-    default:
-      return "string";
+    config[pathology] = { sections: sectionConfig };
   }
-}
 
-/**
- * Génère le fichier de configuration TypeScript
- */
-function generateConfigFile(config) {
-  const content = `/**
+  // Générer le fichier TypeScript
+  const outputPath = path.join(
+    __dirname,
+    "..",
+    "src",
+    "components",
+    "patients",
+    "PatientPDFConfig.ts"
+  );
+
+  const tsContent = `/**
  * Configuration PDF générée automatiquement
  * Généré le: ${new Date().toISOString()}
  * Ne pas modifier manuellement - utiliser scripts/generate-pdf-config.js
@@ -807,29 +461,10 @@ export const PDF_CONFIG: Record<string, PDFPathologyConfig> = ${JSON.stringify(
 export type PDFConfig = typeof PDF_CONFIG;
 `;
 
-  const outputPath = path.join(
-    __dirname,
-    "..",
-    "src",
-    "components",
-    "patients",
-    "PatientPDFConfig.ts"
-  );
-  fs.writeFileSync(outputPath, content, "utf8");
+  fs.writeFileSync(outputPath, tsContent, "utf-8");
   console.log(`✅ Configuration PDF générée: ${outputPath}`);
+  console.log(`🎉 Génération terminée avec succès!`);
 }
 
-// Exécution du script
-console.log("🚀 Démarrage du script de génération PDF...");
-try {
-  const config = generatePDFConfig();
-  console.log("📊 Configuration générée:", Object.keys(config));
-  generateConfigFile(config);
-  console.log("🎉 Génération terminée avec succès!");
-} catch (error) {
-  console.error("❌ Erreur lors de la génération:", error);
-  console.error("Stack:", error.stack);
-  process.exit(1);
-}
-
-export { extractSchemaFields, generatePDFConfig, groupFieldsBySections };
+// Exécuter la génération
+generatePDFConfig();

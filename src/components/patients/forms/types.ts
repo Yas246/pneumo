@@ -56,13 +56,16 @@ export type ExtendedPatientFormData = PatientFormData & {
   };
 };
 
-export type FormSectionProps<T extends FieldValues = ExtendedPatientFormData> =
-  {
-    register: UseFormRegister<T>;
-    getValues: UseFormGetValues<T>;
-    setValue: UseFormSetValue<T>;
-    watch: UseFormWatch<T>;
-    errors: FieldErrors<T>;
-    submitting?: boolean;
-    disabled?: boolean;
-  };
+// Export PatientFormData for use in form components
+export type { PatientFormData };
+
+export type FormSectionProps<T extends FieldValues = PatientFormData> = {
+  register: UseFormRegister<T>;
+  getValues: UseFormGetValues<T>;
+  setValue: UseFormSetValue<T>;
+  watch: UseFormWatch<T>;
+  errors: FieldErrors<T>;
+  submitting?: boolean;
+  disabled?: boolean;
+  isEditing?: boolean;
+};

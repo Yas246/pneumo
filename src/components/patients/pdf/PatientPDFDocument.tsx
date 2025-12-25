@@ -7,6 +7,7 @@ import {
   calculateAge,
   ExtendedPatient,
   generatePathologySummary,
+  getPathologySectionTitle,
 } from "@/utils/pdfFieldExtractor";
 import { Document, Image, Page, Text, View } from "@react-pdf/renderer";
 import { DynamicPDFRenderer } from "./DynamicPDFRenderer";
@@ -157,16 +158,17 @@ export function PatientPDFDocument({ patient }: PatientPDFDocumentProps) {
         {patient.pathologies?.map((pathology) => (
           <View key={pathology} style={baseStyles.pageBreak}>
             <Text style={baseStyles.sectionTitle}>
-              Rapport {pathology.toUpperCase()}
+              {getPathologySectionTitle(pathology)}
             </Text>
-            <DynamicPDFRenderer patient={patient} pathology={pathology} />
+            <DynamicPDFRenderer patient={patient} />
           </View>
         ))}
 
         {/* Pied de page */}
         <View style={baseStyles.footer} fixed>
           <Text>
-            Document généré automatiquement - {patient.firstName}{" "}
+            Document généré automatiquement le{" "}
+            {new Date().toLocaleDateString("fr-FR")} - {patient.firstName}{" "}
             {patient.lastName} - ID: {patient.id}
           </Text>
         </View>

@@ -1259,6 +1259,130 @@ export const pathologyDisplayConfigs: Record<string, PathologyDisplayConfig> = {
       },
     },
   },
+  sleep: {
+    id: "sleep",
+    sections: {
+      clinicalExam: {
+        sections: [
+          {
+            title: "Mesures",
+            items: [
+              { key: "weight", label: "Poids", suffix: " kg" },
+              { key: "height", label: "Taille", suffix: " cm" },
+              { key: "bmi", label: "IMC", suffix: " kg/m²" },
+              { key: "neckCircumference", label: "Tour de cou", suffix: " cm" },
+              {
+                key: "abdominalPerimeter",
+                label: "Périmètre abdominal",
+                suffix: " cm",
+              },
+              { key: "bloodPressure", label: "Tension artérielle" },
+              {
+                key: "heartRate",
+                label: "Fréquence cardiaque",
+                suffix: " bpm",
+              },
+              { key: "saturation", label: "Saturation", suffix: " %" },
+            ],
+          },
+          {
+            title: "Auscultation",
+            items: [
+              {
+                key: "pulmonaryAuscultation",
+                label: "Auscultation pulmonaire",
+              },
+            ],
+          },
+        ],
+      },
+      complementaryExams: {
+        sections: [
+          {
+            title: "Polygraphie",
+            items: [
+              { key: "polygraphyDate", label: "Date" },
+              { key: "iah", label: "IAH" },
+              { key: "iahCentral", label: "IAH Central" },
+              {
+                key: "oxygenDesaturation",
+                label: "Désaturation en O2",
+                suffix: " %",
+              },
+              { key: "ct90", label: "CT90", suffix: " %" },
+            ],
+          },
+          {
+            title: "Gazométrie",
+            items: [
+              { key: "gazometryDate", label: "Date" },
+              { key: "ph", label: "pH" },
+              { key: "pao2", label: "PaO2", suffix: " mmHg" },
+              { key: "paco2", label: "PaCO2", suffix: " mmHg" },
+              { key: "hco3", label: "HCO3-", suffix: " mmol/L" },
+              { key: "sao2", label: "SaO2", suffix: " %" },
+            ],
+          },
+          {
+            title: "EFR",
+            items: [
+              { key: "efrDate", label: "Date" },
+              { key: "cvf", label: "CVF", suffix: " %" },
+              { key: "vems", label: "VEMS", suffix: " %" },
+              { key: "dlco", label: "DLCO", suffix: " %" },
+              { key: "cpt", label: "CPT", suffix: " %" },
+            ],
+          },
+        ],
+      },
+      diagnosis: {
+        sections: [
+          {
+            title: "Diagnostic",
+            items: [
+              { key: "saos", label: "SAOS" },
+              { key: "sacs", label: "SACS" },
+              { key: "soh", label: "SOH" },
+              {
+                key: "nocturalHypoventilation",
+                label: "Hypoventilation nocturne",
+              },
+              { key: "simpleSnoring", label: "Ronflement simple" },
+            ],
+          },
+        ],
+      },
+      treatment: {
+        sections: [
+          {
+            title: "Mesures hygiéno-diététiques",
+            items: [
+              { key: "weightLoss", label: "Perte de poids" },
+              {
+                key: "alcoholAndSedativesStop",
+                label: "Arrêt alcool et sédatifs",
+              },
+              {
+                key: "sleepHygieneImprovement",
+                label: "Amélioration de l'hygiène du sommeil",
+              },
+            ],
+          },
+          {
+            title: "Appareillage",
+            items: [
+              { key: "ppc", label: "PPC" },
+              { key: "oam", label: "OAM" },
+            ],
+          },
+          {
+            title: "Traitement médical",
+            items: [{ key: "medications", label: "Médicaments" }],
+          },
+        ],
+      },
+    },
+  },
 };
 
 // Utilitaires pour accéder aux configurations

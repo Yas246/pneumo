@@ -1,3 +1,7 @@
+import { z } from "zod";
 import { FormSectionProps as BaseFormSectionProps } from "../../types";
+import { sleepPathologySchema } from "./schema";
 
-export type FormSectionProps = BaseFormSectionProps;
+type SleepPathologyFormData = z.infer<typeof sleepPathologySchema>;
+
+export type FormSectionProps = BaseFormSectionProps<SleepPathologyFormData>;

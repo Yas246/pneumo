@@ -1,16 +1,20 @@
 import { FormSectionProps } from "../../types";
 
 export function ClinicalExamForm({ register, watch }: FormSectionProps) {
-  const dyspnea = watch("clinicalExam.dyspnea");
-  const basiThoracicPain = watch("clinicalExam.basiThoracicPain");
-  const cough = watch("clinicalExam.cough");
-  const hemoptysis = watch("clinicalExam.hemoptysis");
-  const otherSigns = watch("clinicalExam.otherSigns");
-  const liquidEffusionSyndrome = watch("clinicalExam.liquidEffusionSyndrome");
-  const mixedEffusionSyndrome = watch("clinicalExam.mixedEffusionSyndrome");
-  const cardioExam = watch("clinicalExam.cardioExam");
-  const abdominalExam = watch("clinicalExam.abdominalExam");
-  const lymphNodes = watch("clinicalExam.lymphNodes");
+  const dyspnea = watch("pleuralClinicalExam.dyspnea");
+  const basiThoracicPain = watch("pleuralClinicalExam.basiThoracicPain");
+  const cough = watch("pleuralClinicalExam.cough");
+  const hemoptysis = watch("pleuralClinicalExam.hemoptysis");
+  const otherSigns = watch("pleuralClinicalExam.otherSigns");
+  const liquidEffusionSyndrome = watch(
+    "pleuralClinicalExam.liquidEffusionSyndrome"
+  );
+  const mixedEffusionSyndrome = watch(
+    "pleuralClinicalExam.mixedEffusionSyndrome"
+  );
+  const cardioExam = watch("pleuralClinicalExam.cardioExam");
+  const abdominalExam = watch("pleuralClinicalExam.abdominalExam");
+  const lymphNodes = watch("pleuralClinicalExam.lymphNodes");
 
   return (
     <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg p-6 mb-6">
@@ -25,7 +29,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="checkbox"
               id="clinicalExam.dyspnea"
-              {...register("clinicalExam.dyspnea")}
+              {...register("pleuralClinicalExam.dyspnea")}
               className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
             <span className="text-sm text-gray-700 dark:text-gray-300">
@@ -45,7 +49,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="text"
               id="clinicalExam.dyspneaSadoulStage"
-              {...register("clinicalExam.dyspneaSadoulStage")}
+              {...register("pleuralClinicalExam.dyspneaSadoulStage")}
               className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
             />
           </div>
@@ -59,7 +63,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="checkbox"
               id="clinicalExam.basiThoracicPain"
-              {...register("clinicalExam.basiThoracicPain")}
+              {...register("pleuralClinicalExam.basiThoracicPain")}
               className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
             <span className="text-sm text-gray-700 dark:text-gray-300">
@@ -79,7 +83,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
               </label>
               <select
                 id="clinicalExam.painLocation"
-                {...register("clinicalExam.painLocation")}
+                {...register("pleuralClinicalExam.painLocation")}
                 className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
               >
                 <option value="">Sélectionner</option>
@@ -99,7 +103,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
               <input
                 type="text"
                 id="clinicalExam.painType"
-                {...register("clinicalExam.painType")}
+                {...register("pleuralClinicalExam.painType")}
                 className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
               />
             </div>
@@ -114,7 +118,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="checkbox"
               id="clinicalExam.cough"
-              {...register("clinicalExam.cough")}
+              {...register("pleuralClinicalExam.cough")}
               className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
             <span className="text-sm text-gray-700 dark:text-gray-300">
@@ -134,7 +138,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
               </label>
               <select
                 id="clinicalExam.coughType"
-                {...register("clinicalExam.coughType")}
+                {...register("pleuralClinicalExam.coughType")}
                 className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
               >
                 <option value="">Sélectionner</option>
@@ -153,7 +157,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
               <input
                 type="text"
                 id="clinicalExam.expectoration"
-                {...register("clinicalExam.expectoration")}
+                {...register("pleuralClinicalExam.expectoration")}
                 className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
               />
             </div>
@@ -168,7 +172,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="checkbox"
               id="clinicalExam.hemoptysis"
-              {...register("clinicalExam.hemoptysis")}
+              {...register("pleuralClinicalExam.hemoptysis")}
               className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
             <span className="text-sm text-gray-700 dark:text-gray-300">
@@ -187,7 +191,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             </label>
             <select
               id="clinicalExam.hemoptysisAbundance"
-              {...register("clinicalExam.hemoptysisAbundance")}
+              {...register("pleuralClinicalExam.hemoptysisAbundance")}
               className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
             >
               <option value="">Sélectionner</option>
@@ -206,7 +210,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="checkbox"
               id="clinicalExam.otherSigns"
-              {...register("clinicalExam.otherSigns")}
+              {...register("pleuralClinicalExam.otherSigns")}
               className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
             <span className="text-sm text-gray-700 dark:text-gray-300">
@@ -225,7 +229,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             </label>
             <textarea
               id="clinicalExam.otherSignsDescription"
-              {...register("clinicalExam.otherSignsDescription")}
+              {...register("pleuralClinicalExam.otherSignsDescription")}
               rows={2}
               className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
             />
@@ -243,7 +247,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="checkbox"
               id="clinicalExam.generalSigns.asthenia"
-              {...register("clinicalExam.generalSigns.asthenia")}
+              {...register("pleuralClinicalExam.generalSigns.asthenia")}
               className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
             />
             <label
@@ -258,7 +262,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="checkbox"
               id="clinicalExam.generalSigns.amg"
-              {...register("clinicalExam.generalSigns.amg")}
+              {...register("pleuralClinicalExam.generalSigns.amg")}
               className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
             />
             <label
@@ -273,7 +277,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="checkbox"
               id="clinicalExam.generalSigns.anorexia"
-              {...register("clinicalExam.generalSigns.anorexia")}
+              {...register("pleuralClinicalExam.generalSigns.anorexia")}
               className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
             />
             <label
@@ -288,7 +292,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="checkbox"
               id="clinicalExam.generalSigns.fever"
-              {...register("clinicalExam.generalSigns.fever")}
+              {...register("pleuralClinicalExam.generalSigns.fever")}
               className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
             />
             <label
@@ -313,7 +317,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           <input
             type="number"
             id="clinicalExam.psOms"
-            {...register("clinicalExam.psOms", { valueAsNumber: true })}
+            {...register("pleuralClinicalExam.psOms", { valueAsNumber: true })}
             className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
           />
         </div>
@@ -327,7 +331,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           </label>
           <select
             id="clinicalExam.hemodynamicState"
-            {...register("clinicalExam.hemodynamicState")}
+            {...register("pleuralClinicalExam.hemodynamicState")}
             className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
           >
             <option value="">Sélectionner</option>
@@ -348,7 +352,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           </label>
           <select
             id="clinicalExam.sao2"
-            {...register("clinicalExam.sao2")}
+            {...register("pleuralClinicalExam.sao2")}
             className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
           >
             <option value="">Sélectionner</option>
@@ -366,7 +370,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           </label>
           <select
             id="clinicalExam.respiratoryRate"
-            {...register("clinicalExam.respiratoryRate")}
+            {...register("pleuralClinicalExam.respiratoryRate")}
             className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
           >
             <option value="">Sélectionner</option>
@@ -380,7 +384,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="checkbox"
               id="clinicalExam.respiratoryStruggle"
-              {...register("clinicalExam.respiratoryStruggle")}
+              {...register("pleuralClinicalExam.respiratoryStruggle")}
               className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
             />
             <label
@@ -400,7 +404,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="checkbox"
               id="clinicalExam.liquidEffusionSyndrome"
-              {...register("clinicalExam.liquidEffusionSyndrome")}
+              {...register("pleuralClinicalExam.liquidEffusionSyndrome")}
               className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
             <span className="text-sm text-gray-700 dark:text-gray-300">
@@ -419,7 +423,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             </label>
             <select
               id="clinicalExam.liquidEffusionLocation"
-              {...register("clinicalExam.liquidEffusionLocation")}
+              {...register("pleuralClinicalExam.liquidEffusionLocation")}
               className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
             >
               <option value="">Sélectionner</option>
@@ -438,7 +442,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="checkbox"
               id="clinicalExam.mixedEffusionSyndrome"
-              {...register("clinicalExam.mixedEffusionSyndrome")}
+              {...register("pleuralClinicalExam.mixedEffusionSyndrome")}
               className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
             />
             <span className="text-sm text-gray-700 dark:text-gray-300">
@@ -457,7 +461,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             </label>
             <select
               id="clinicalExam.mixedEffusionLocation"
-              {...register("clinicalExam.mixedEffusionLocation")}
+              {...register("pleuralClinicalExam.mixedEffusionLocation")}
               className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
             >
               <option value="">Sélectionner</option>
@@ -480,7 +484,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           </label>
           <select
             id="clinicalExam.cardioExam"
-            {...register("clinicalExam.cardioExam")}
+            {...register("pleuralClinicalExam.cardioExam")}
             className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
           >
             <option value="">Sélectionner</option>
@@ -499,7 +503,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             </label>
             <textarea
               id="clinicalExam.cardioExamDescription"
-              {...register("clinicalExam.cardioExamDescription")}
+              {...register("pleuralClinicalExam.cardioExamDescription")}
               rows={2}
               className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
             />
@@ -518,7 +522,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           </label>
           <select
             id="clinicalExam.abdominalExam"
-            {...register("clinicalExam.abdominalExam")}
+            {...register("pleuralClinicalExam.abdominalExam")}
             className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
           >
             <option value="">Sélectionner</option>
@@ -533,7 +537,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
               <input
                 type="checkbox"
                 id="clinicalExam.ascites"
-                {...register("clinicalExam.ascites")}
+                {...register("pleuralClinicalExam.ascites")}
                 className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700"
               />
               <label
@@ -552,7 +556,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
               </label>
               <textarea
                 id="clinicalExam.otherAbdominalFindings"
-                {...register("clinicalExam.otherAbdominalFindings")}
+                {...register("pleuralClinicalExam.otherAbdominalFindings")}
                 rows={2}
                 className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
               />
@@ -572,7 +576,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
           </label>
           <select
             id="clinicalExam.lymphNodes"
-            {...register("clinicalExam.lymphNodes")}
+            {...register("pleuralClinicalExam.lymphNodes")}
             className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
           >
             <option value="">Sélectionner</option>
@@ -592,7 +596,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
             <input
               type="text"
               id="clinicalExam.lymphNodesLocation"
-              {...register("clinicalExam.lymphNodesLocation")}
+              {...register("pleuralClinicalExam.lymphNodesLocation")}
               className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
             />
           </div>
@@ -609,7 +613,7 @@ export function ClinicalExamForm({ register, watch }: FormSectionProps) {
         </label>
         <textarea
           id="clinicalExam.otherExams"
-          {...register("clinicalExam.otherExams")}
+          {...register("pleuralClinicalExam.otherExams")}
           rows={3}
           className="block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-2 px-4"
         />

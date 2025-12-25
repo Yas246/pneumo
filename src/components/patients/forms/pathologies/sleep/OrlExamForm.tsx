@@ -14,7 +14,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
-                  {...register("orlExam.facialMorphology.retrognathism")}
+                  {...register("sleepOrlExam.facialMorphology.retrognathism")}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>
@@ -28,7 +28,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
-                  {...register("orlExam.facialMorphology.prognathism")}
+                  {...register("sleepOrlExam.facialMorphology.prognathism")}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>
@@ -42,7 +42,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
-                  {...register("orlExam.facialMorphology.retromaxillia")}
+                  {...register("sleepOrlExam.facialMorphology.retromaxillia")}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>
@@ -55,14 +55,14 @@ export function OrlExamForm({ register }: FormSectionProps) {
           </div>
           <div className="mt-4">
             <label
-              htmlFor="orlExam.facialMorphology.other"
+              htmlFor="sleepOrlExam.facialMorphology.other"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Autres
             </label>
             <input
               type="text"
-              {...register("orlExam.facialMorphology.other")}
+              {...register("sleepOrlExam.facialMorphology.other")}
               className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
@@ -78,7 +78,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="radio"
-                  {...register("orlExam.hyoidBone")}
+                  {...register("sleepOrlExam.hyoidBone")}
                   value="normal"
                   className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
@@ -93,9 +93,9 @@ export function OrlExamForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="radio"
-                  {...register("orlExam.hyoidBone")}
+                  {...register("sleepOrlExam.hyoidBone")}
                   value="low"
-                  className="h-4 w-4 border-gray-300 text-primary-600 focus:ring-primary-500"
+                  className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>
               <div className="ml-3 text-sm">
@@ -110,14 +110,14 @@ export function OrlExamForm({ register }: FormSectionProps) {
         {/* Classe dentaire */}
         <div className="space-y-2">
           <label
-            htmlFor="orlExam.dentalClass"
+            htmlFor="sleepOrlExam.dentalClass"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             Classe dentaire
           </label>
           <input
             type="text"
-            {...register("orlExam.dentalClass")}
+            {...register("sleepOrlExam.dentalClass")}
             className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
           />
         </div>
@@ -128,7 +128,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
             <div className="flex h-5 items-center">
               <input
                 type="checkbox"
-                {...register("orlExam.ogivalPalate")}
+                {...register("sleepOrlExam.ogivalPalate")}
                 className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
               />
             </div>
@@ -144,27 +144,27 @@ export function OrlExamForm({ register }: FormSectionProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="space-y-2">
             <label
-              htmlFor="orlExam.mallampati"
+              htmlFor="sleepOrlExam.mallampati"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Mallampati
             </label>
             <input
               type="text"
-              {...register("orlExam.mallampati")}
+              {...register("sleepOrlExam.mallampati")}
               className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
           <div className="space-y-2">
             <label
-              htmlFor="orlExam.friedman"
+              htmlFor="sleepOrlExam.friedman"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Friedman
             </label>
             <input
               type="text"
-              {...register("orlExam.friedman")}
+              {...register("sleepOrlExam.friedman")}
               className="mt-1 p-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
@@ -178,40 +178,40 @@ export function OrlExamForm({ register }: FormSectionProps) {
           <div className="space-y-4">
             <div className="space-y-2">
               <label
-                htmlFor="orlExam.nasofibroscopy.nasalFossae"
+                htmlFor="sleepOrlExam.nasofibroscopy.nasalFossae"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Fosses nasales
               </label>
               <textarea
-                {...register("orlExam.nasofibroscopy.nasalFossae")}
+                {...register("sleepOrlExam.nasofibroscopy.nasalFossae")}
                 rows={3}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
             <div className="space-y-2">
               <label
-                htmlFor="orlExam.nasofibroscopy.retrovelarObstacle"
+                htmlFor="sleepOrlExam.nasofibroscopy.retrovelarObstacle"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Obstacle rétro vélaire
               </label>
               <textarea
-                {...register("orlExam.nasofibroscopy.retrovelarObstacle")}
+                {...register("sleepOrlExam.nasofibroscopy.retrovelarObstacle")}
                 rows={3}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
             <div className="space-y-2">
               <label
-                htmlFor="orlExam.nasofibroscopy.retrobasillingualObstacle"
+                htmlFor="sleepOrlExam.nasofibroscopy.retrobasillingualObstacle"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Obstacle rétro basilingual
               </label>
               <textarea
                 {...register(
-                  "orlExam.nasofibroscopy.retrobasillingualObstacle"
+                  "sleepOrlExam.nasofibroscopy.retrobasillingualObstacle"
                 )}
                 rows={3}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
@@ -230,7 +230,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
-                  {...register("orlExam.maneuvers.tongueProtraction")}
+                  {...register("sleepOrlExam.maneuvers.tongueProtraction")}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>
@@ -244,7 +244,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
-                  {...register("orlExam.maneuvers.simulatedSnoring")}
+                  {...register("sleepOrlExam.maneuvers.simulatedSnoring")}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>
@@ -258,7 +258,7 @@ export function OrlExamForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
-                  {...register("orlExam.maneuvers.prognathism")}
+                  {...register("sleepOrlExam.maneuvers.prognathism")}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>
@@ -271,13 +271,13 @@ export function OrlExamForm({ register }: FormSectionProps) {
           </div>
           <div className="mt-4 space-y-2">
             <label
-              htmlFor="orlExam.maneuvers.otherExam"
+              htmlFor="sleepOrlExam.maneuvers.otherExam"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Reste de l&apos;examen
             </label>
             <textarea
-              {...register("orlExam.maneuvers.otherExam")}
+              {...register("sleepOrlExam.maneuvers.otherExam")}
               rows={3}
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
             />
@@ -287,13 +287,13 @@ export function OrlExamForm({ register }: FormSectionProps) {
         {/* Autres examens cliniques */}
         <div className="space-y-2">
           <label
-            htmlFor="orlExam.otherClinicalExams"
+            htmlFor="sleepOrlExam.otherClinicalExams"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             Autres examens cliniques
           </label>
           <textarea
-            {...register("orlExam.otherClinicalExams")}
+            {...register("sleepOrlExam.otherClinicalExams")}
             rows={3}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
           />

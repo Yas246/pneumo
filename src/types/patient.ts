@@ -75,44 +75,81 @@ export interface Patient {
   };
 
   // Examen Clinique
-  clinicalExam: {
-    weight: number;
-    height: number;
-    bmi: number;
-    neckCircumference: number;
-    abdominalPerimeter: number;
-    bloodPressure: string;
-    heartRate: number;
-    saturation: number;
-    pulmonaryAuscultation: string;
+  clinicalExam?: {
+    weight?: number | null;
+    height?: number | null;
+    bmi?: number | null;
+    neckCircumference?: number | null;
+    abdominalPerimeter?: number | null;
+    bloodPressure?: string;
+    heartRate?: number | null;
+    saturation?: number | null;
+    pulmonaryAuscultation?: string;
   };
   orlExam: {
-    vasAnatomy: string;
-    nasalObstruction: boolean;
-    amygdalineHypertrophy: boolean;
-    retrognathia: boolean;
-    micromandible: boolean;
-    macroglossia: boolean;
+    facialMorphology: {
+      retrognathism: boolean;
+      prognathism: boolean;
+      retromaxillia: boolean;
+      other?: string;
+    };
+    hyoidBone?: string;
+    dentalClass?: string;
+    ogivalPalate: boolean;
+    mallampati?: string;
+    friedman?: string;
+    nasofibroscopy: {
+      nasalFossae?: string;
+      retrovelarObstacle?: string;
+      retrobasillingualObstacle?: string;
+    };
+    maneuvers: {
+      tongueProtraction: boolean;
+      simulatedSnoring: boolean;
+      prognathism: boolean;
+      otherExam?: string;
+    };
+    otherClinicalExams?: string;
   };
 
   // Examens Complémentaires
   complementaryExams?: {
-    polygraphyDate: string;
-    iah: number;
-    iahCentral: number;
-    oxygenDesaturation: number;
-    ct90: number;
-    gazometryDate: string;
-    ph: number;
-    pao2: number;
-    paco2: number;
-    hco3: number;
-    sao2: number;
-    efrDate: string;
-    cvf: number;
-    vems: number;
-    dlco: number;
-    cpt: number;
+    ventilationPolygraphy: boolean;
+    psg: boolean;
+    tensionalHolter: boolean;
+    nightOximetry: boolean;
+    imaging: {
+      chestXray: boolean;
+      orlScan: boolean;
+    };
+    polygraphyDate?: string;
+    iah?: number;
+    iahCentral?: number;
+    oxygenDesaturation?: number;
+    ct90?: number;
+    gazometryDate?: string;
+    ph?: number;
+    pao2?: number;
+    paco2?: number;
+    hco3?: number;
+    sao2?: number;
+    efrDate?: string;
+    cvf?: number;
+    vems?: number;
+    dlco?: number;
+    cpt?: number;
+    otherExams?: string;
+    metabolicAssessment?: string;
+    chestXray: {
+      imageUrls?: string[];
+      notes?: string;
+    };
+    scanner: {
+      imageUrls?: string[];
+      videoUrls?: string[];
+      notes?: string;
+    };
+    otherComplementaryExams?: string;
   };
 
   // Diagnostic Principal
@@ -122,6 +159,15 @@ export interface Patient {
     soh: boolean;
     nocturalHypoventilation: boolean;
     simpleSnoring: boolean;
+    pathologies: Array<{
+      name: string;
+      selected: boolean;
+      treatments: Array<{
+        name: string;
+        selected: boolean;
+      }>;
+    }>;
+    otherTreatments?: string;
   };
 
   // Plan de Traitement
@@ -136,14 +182,26 @@ export interface Patient {
       ppc: boolean;
       oam: boolean;
       oxygenotherapy: boolean;
-      medications?: string;
+      medications: string[];
+      other?: string;
     };
     surgicalTreatments: {
       orlSurgery: boolean;
       bariatricSurgery: boolean;
       notes?: string;
     };
-    comments?: string;
+    equipment: {
+      ppc: boolean;
+      oam: boolean;
+      oxygenotherapy: boolean;
+      vni: boolean;
+      other?: string;
+    };
+    exitPrescription: {
+      content?: string;
+      documentUrl?: string;
+    };
+    other?: string;
   };
 
   // PPC Follow-up
@@ -153,12 +211,12 @@ export interface Patient {
     deviceModel?: string;
     deviceSupplier?: string;
     initialPressure?: number;
-    ventilationMode?: "CPAP" | "APAP" | "Bi-level";
+    ventilationMode?: "" | "CPAP" | "APAP" | "Bi-level";
     humidifier: boolean;
     maskType?: string;
     maskModel?: string;
     maskSize?: string;
-    serialNumber?: string;
+    serialNumber?: number;
     provider?: string;
     otherAccessories?: string;
   };

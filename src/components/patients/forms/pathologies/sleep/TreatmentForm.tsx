@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FormSectionProps } from "../../types";
 
 export function TreatmentForm({ register }: FormSectionProps) {
@@ -11,13 +10,13 @@ export function TreatmentForm({ register }: FormSectionProps) {
         {/* Mesures hygiéno-diététiques */}
         <div className="space-y-2">
           <label
-            htmlFor="treatment.hygiene"
+            htmlFor="sleepTreatment.hygiene"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             Mesures hygiéno-diététiques
           </label>
           <textarea
-            {...register("treatment.hygieneDietetic.notes" as any)}
+            {...register("sleepTreatment.hygieneDietetic.notes")}
             rows={3}
             className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
           />
@@ -26,13 +25,13 @@ export function TreatmentForm({ register }: FormSectionProps) {
         {/* Traitement médical */}
         <div className="space-y-2">
           <label
-            htmlFor="treatment.medical"
+            htmlFor="sleepTreatment.medical"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             Traitement médical
           </label>
           <textarea
-            {...register("treatment.medicalTreatments.medications" as any)}
+            {...register("sleepTreatment.medicalTreatments.medications")}
             rows={3}
             className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
           />
@@ -41,13 +40,13 @@ export function TreatmentForm({ register }: FormSectionProps) {
         {/* Traitement chirurgical */}
         <div className="space-y-2">
           <label
-            htmlFor="treatment.surgical"
+            htmlFor="sleepTreatment.surgical"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             Traitement chirurgical
           </label>
           <textarea
-            {...register("treatment.surgicalTreatments.notes" as any)}
+            {...register("sleepTreatment.surgicalTreatments.notes")}
             rows={3}
             className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
           />
@@ -63,7 +62,7 @@ export function TreatmentForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
-                  {...register("treatment.medicalTreatments.ppc" as any)}
+                  {...register("sleepTreatment.medicalTreatments.ppc")}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>
@@ -76,7 +75,7 @@ export function TreatmentForm({ register }: FormSectionProps) {
               <div className="flex h-5 items-center">
                 <input
                   type="checkbox"
-                  {...register("treatment.medicalTreatments.oam" as any)}
+                  {...register("sleepTreatment.medicalTreatments.oam")}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
               </div>
@@ -90,7 +89,7 @@ export function TreatmentForm({ register }: FormSectionProps) {
                 <input
                   type="checkbox"
                   {...register(
-                    "treatment.medicalTreatments.oxygenotherapy" as any
+                    "sleepTreatment.medicalTreatments.oxygenotherapy"
                   )}
                   className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 />
@@ -107,13 +106,13 @@ export function TreatmentForm({ register }: FormSectionProps) {
         {/* Commentaires */}
         <div className="space-y-2">
           <label
-            htmlFor="treatment.comments"
+            htmlFor="sleepTreatment.comments"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >
             Commentaires
           </label>
           <textarea
-            {...register("treatment.comments" as any)}
+            {...register("sleepTreatment.other")}
             rows={3}
             className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors"
           />

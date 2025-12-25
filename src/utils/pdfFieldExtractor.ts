@@ -2,6 +2,7 @@
  * Utilitaires d'extraction et de formatage des champs pour le PDF
  */
 
+import { pathologies } from "@/config/pathologies";
 import type { Patient } from "@/types/patient";
 
 // Type étendu pour les patients avec champs dynamiques par pathologie
@@ -47,6 +48,7 @@ export function getNestedValue(obj: unknown, path: string): unknown {
  */
 export function hasValue(value: unknown): boolean {
   if (value === null || value === undefined) return false;
+  if (typeof value === "boolean") return value === true; // Les booléens false ne sont pas considérés comme des valeurs
   if (typeof value === "string") return value.trim() !== "";
   if (Array.isArray(value)) return value.length > 0;
   if (typeof value === "object") return Object.keys(value).length > 0;
@@ -74,7 +76,9 @@ export function formatFieldValue(value: unknown, type: string): string {
       return isNaN(num) ? String(value) : num.toString();
 
     case "boolean":
-      return value ? "Oui" : "Non";
+      // Les booléens false ne doivent pas être affichés
+      // Cette fonction ne devrait être appelée que si hasValue() a retourné true
+      return "Oui";
 
     case "array":
       if (Array.isArray(value)) {
@@ -261,18 +265,8 @@ export function generatePathologySummary(patient: ExtendedPatient): string {
     return "Aucune pathologie spécifiée";
   }
 
-  const pathologyNames: Record<string, string> = {
-    asthma: "Asthme",
-    bpco: "BPCO",
-    ddb: "Dilatation des Bronches",
-    tbk: "Tuberculose",
-    sleep: "Troubles respiratoires du sommeil",
-    pleuralEffusion: "Épanchement Pleural",
-    pid: "Pneumopathie Interstitielle Diffuse",
-  };
-
   const names = patient.pathologies
-    .map((code) => pathologyNames[code] || code)
+    .map((code) => getPathologyFrenchName(code))
     .filter((name) => name);
 
   if (names.length === 0) return "Aucune pathologie spécifiée";
@@ -280,4 +274,20 @@ export function generatePathologySummary(patient: ExtendedPatient): string {
 
   const last = names.pop();
   return `${names.join(", ")} et ${last}`;
+}
+
+/**
+ * Récupère le nom français d'une pathologie à partir de son code
+ */
+export function getPathologyFrenchName(pathologyId: string): string {
+  const pathology = pathologies.find((p) => p.id === pathologyId);
+  return pathology?.name || pathologyId;
+}
+
+/**
+ * Génère le titre de section pour une pathologie en français
+ */
+export function getPathologySectionTitle(pathologyId: string): string {
+  const frenchName = getPathologyFrenchName(pathologyId);
+  return `Rapport ${frenchName}`;
 }

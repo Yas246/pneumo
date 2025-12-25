@@ -1,19 +1,20 @@
 /**
  * Composants de rendu PDF dynamiques
- * Génère automatiquement le contenu PDF basé sur la configuration
+ * Génère automatiquement le contenu PDF basé sur les données du patient
  */
 
 import {
   ExtendedPatient,
   formatFieldValue,
   getNestedValue,
+  getPathologySectionTitle,
   hasValue,
-  shouldDisplaySection,
-  sortSectionFields,
 } from "@/utils/pdfFieldExtractor";
-import { Text, View } from "@react-pdf/renderer";
-import { PDF_CONFIG } from "../PatientPDFConfig";
-import { baseStyles, conditionalStyles } from "./styles";
+import { Image, Text, View } from "@react-pdf/renderer";
+import { PneumothoraxPathologyPDF } from "./pathologies/PneumothoraxPathologyPDF";
+import { SleepPathologyPDF } from "./pathologies/SleepPathologyPDF";
+import { TBKPathologyPDF } from "./pathologies/TBKPathologyPDF";
+import { baseStyles, conditionalStyles, imageStyles } from "./styles";
 
 interface DynamicPDFRendererProps {
   patient: ExtendedPatient;
@@ -21,34 +22,139 @@ interface DynamicPDFRendererProps {
 }
 
 /**
+ * Extrait tous les champs remplis d'un objet de manière récursive
+ */
+function extractFilledFields(
+  obj: Record<string, unknown>,
+  prefix: string = ""
+): string[] {
+  const fields: string[] = [];
+
+  for (const key in obj) {
+    if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+
+    const value = obj[key];
+    const fullKey = prefix ? `${prefix}.${key}` : key;
+
+    // Ignorer les champs système
+    if (
+      [
+        "id",
+        "createdAt",
+        "updatedAt",
+        "creatorId",
+        "creatorRole",
+        "creatorName",
+        "status",
+        "statusHistory",
+        "statusChangedAt",
+      ].includes(key)
+    ) {
+      continue;
+    }
+
+    // Ignorer les champs vides, null, undefined
+    if (value === null || value === undefined || value === "") {
+      continue;
+    }
+
+    // Ignorer les booléens false
+    if (typeof value === "boolean" && value === false) {
+      continue;
+    }
+
+    // Ignorer les tableaux vides
+    if (Array.isArray(value) && value.length === 0) {
+      continue;
+    }
+
+    // Si c'est un objet, extraire ses champs récursivement
+    if (typeof value === "object" && !Array.isArray(value)) {
+      const nestedFields = extractFilledFields(
+        value as Record<string, unknown>,
+        fullKey
+      );
+      fields.push(...nestedFields);
+    } else {
+      // C'est une valeur primitive, l'ajouter
+      fields.push(fullKey);
+    }
+  }
+
+  return fields;
+}
+
+/**
+ * Regroupe les champs par section basée sur leur préfixe
+ */
+function groupFieldsBySection(fields: string[]): Record<string, string[]> {
+  const sections: Record<string, string[]> = {};
+
+  for (const field of fields) {
+    // Extraire le préfixe (première partie avant le point)
+    const parts = field.split(".");
+    const sectionKey = parts[0];
+
+    if (!sections[sectionKey]) {
+      sections[sectionKey] = [];
+    }
+
+    sections[sectionKey].push(field);
+  }
+
+  return sections;
+}
+
+/**
+ * Détermine si une section doit être affichée en grille ou en liste
+ */
+function getSectionLayout(sectionKey: string): "list" | "grid" {
+  const lowerKey = sectionKey.toLowerCase();
+  if (
+    lowerKey.includes("exam") ||
+    lowerKey.includes("clinical") ||
+    lowerKey.includes("complementary") ||
+    lowerKey.includes("diagnostic")
+  ) {
+    return "grid";
+  }
+  return "list";
+}
+
+/**
  * Composant principal pour rendre une section PDF
  */
 export function PDFSection({
   patient,
-  sectionConfig,
+  sectionKey,
+  fields,
 }: {
   patient: ExtendedPatient;
-  sectionConfig: {
-    title: string;
-    fields: string[];
-    layout: "list" | "grid";
-  };
+  sectionKey: string;
+  fields: string[];
 }) {
-  // Vérifier si la section doit être affichée
-  if (!shouldDisplaySection(patient, sectionConfig.fields)) {
+  // Vérifier si la section a des champs avec des valeurs
+  const hasFilledFields = fields.some((fieldKey) => {
+    const value = getNestedValue(patient, fieldKey);
+    return hasValue(value);
+  });
+
+  if (!hasFilledFields) {
     return null;
   }
 
-  const sortedFields = sortSectionFields(sectionConfig.fields);
+  // Obtenir le titre de la section en français
+  const title = getPathologySectionTitle(sectionKey);
+  const layout = getSectionLayout(sectionKey);
 
   return (
     <View style={baseStyles.section}>
-      <Text style={baseStyles.sectionTitle}>{sectionConfig.title}</Text>
+      <Text style={baseStyles.sectionTitle}>{title}</Text>
 
-      {sectionConfig.layout === "grid" ? (
-        <PDFGridSection patient={patient} fields={sortedFields} />
+      {layout === "grid" ? (
+        <PDFGridSection patient={patient} fields={fields} />
       ) : (
-        <PDFListSection patient={patient} fields={sortedFields} />
+        <PDFListSection patient={patient} fields={fields} />
       )}
     </View>
   );
@@ -64,7 +170,7 @@ function PDFGridSection({
   patient: ExtendedPatient;
   fields: string[];
 }) {
-  const fieldPairs = [];
+  const fieldPairs: string[][] = [];
   for (let i = 0; i < fields.length; i += 2) {
     fieldPairs.push(fields.slice(i, i + 2));
   }
@@ -117,17 +223,46 @@ function PDFField({
   const value = getNestedValue(patient, fieldKey);
   const hasVal = hasValue(value);
 
+  // Ne pas afficher les champs booléens à false
+  if (typeof value === "boolean" && value === false) {
+    return null;
+  }
+
+  // Vérifier si c'est un champ d'images (tableau de chaînes)
+  if (
+    Array.isArray(value) &&
+    value.length > 0 &&
+    typeof value[0] === "string" &&
+    (fieldKey.includes("Images") || fieldKey.includes("images"))
+  ) {
+    return <PDFImagesField value={value} fieldKey={fieldKey} />;
+  }
+
   // Générer le libellé à partir de la clé
   const label = generateFieldLabel(fieldKey);
+
+  // Déterminer le type de champ pour le formatage
+  const fieldType = getFieldTypeFromValue(value);
 
   return (
     <View style={baseStyles.field}>
       <Text style={baseStyles.fieldLabel}>{label}:</Text>
       <Text style={conditionalStyles.fieldValue(hasVal)}>
-        {hasVal ? formatFieldValue(value, "string") : "Non renseigné"}
+        {hasVal ? formatFieldValue(value, fieldType) : "Non renseigné"}
       </Text>
     </View>
   );
+}
+
+/**
+ * Détermine le type de champ à partir de sa valeur
+ */
+function getFieldTypeFromValue(value: unknown): string {
+  if (typeof value === "boolean") return "boolean";
+  if (typeof value === "number") return "number";
+  if (value instanceof Date) return "date";
+  if (Array.isArray(value)) return "array";
+  return "string";
 }
 
 /**
@@ -150,29 +285,52 @@ function generateFieldLabel(fieldKey: string): string {
  */
 export function DynamicPDFRenderer({
   patient,
-  pathology,
-}: DynamicPDFRendererProps) {
-  const pathologyConfig = PDF_CONFIG[pathology];
+}: Omit<DynamicPDFRendererProps, "pathology">) {
+  // Vérifier si le patient a la pathologie sleep
+  const hasSleepPathology = patient.pathologies?.includes("sleep");
 
-  if (!pathologyConfig) {
-    return (
-      <View style={baseStyles.section}>
-        <Text style={baseStyles.sectionTitle}>
-          Configuration non trouvée pour la pathologie: {pathology}
-        </Text>
-      </View>
-    );
+  // Vérifier si le patient a la pathologie pneumothorax
+  const hasPneumothoraxPathology =
+    patient.pathologies?.includes("pneumothorax");
+
+  // Vérifier si le patient a la pathologie tbk
+  const hasTBKPathology = patient.pathologies?.includes("tbk");
+
+  // Si le patient a la pathologie sleep, utiliser le composant spécifique
+  if (hasSleepPathology) {
+    return <SleepPathologyPDF patient={patient} />;
   }
 
-  const sections = Object.entries(pathologyConfig.sections);
+  // Si le patient a la pathologie pneumothorax, utiliser le composant spécifique
+  if (hasPneumothoraxPathology) {
+    return <PneumothoraxPathologyPDF patient={patient} />;
+  }
+
+  // Si le patient a la pathologie tbk, utiliser le composant spécifique
+  if (hasTBKPathology) {
+    return <TBKPathologyPDF patient={patient} />;
+  }
+
+  // Sinon, utiliser le rendu dynamique générique pour les autres pathologies
+  // Extraire tous les champs remplis du patient
+  const allFields = extractFilledFields(patient as Record<string, unknown>);
+
+  // Regrouper les champs par section
+  const sections = groupFieldsBySection(allFields);
+
+  // Filtrer les sections vides
+  const filledSections = Object.entries(sections).filter(
+    ([, fields]) => fields.length > 0
+  );
 
   return (
     <View>
-      {sections.map(([sectionKey, sectionConfig]) => (
+      {filledSections.map(([sectionKey, fields]) => (
         <PDFSection
           key={sectionKey}
           patient={patient}
-          sectionConfig={sectionConfig}
+          sectionKey={sectionKey}
+          fields={fields}
         />
       ))}
     </View>
@@ -180,178 +338,67 @@ export function DynamicPDFRenderer({
 }
 
 /**
- * Composant spécialisé pour les champs médicaux complexes
+ * Composant spécialisé pour les champs d'images
+ * Les images prennent toute la largeur du document en respectant le ratio 16:9
  */
-export function PDFMedicalField({
-  patient,
-  fieldKey,
-  type = "auto",
-}: {
-  patient: ExtendedPatient;
-  fieldKey: string;
-  type?: "auto" | "symptoms" | "medications" | "exams";
-}) {
-  const value = getNestedValue(patient, fieldKey);
-  const hasVal = hasValue(value);
-
-  if (!hasVal) {
-    return (
-      <View style={baseStyles.field}>
-        <Text style={baseStyles.fieldLabel}>
-          {generateFieldLabel(fieldKey)}:
-        </Text>
-        <Text style={baseStyles.fieldEmpty}>Non renseigné</Text>
-      </View>
-    );
-  }
-
-  // Traitement spécial selon le type
-  switch (type) {
-    case "symptoms":
-      return <PDFSymptomsField value={value} fieldKey={fieldKey} />;
-    case "medications":
-      return <PDFMedicationsField value={value} fieldKey={fieldKey} />;
-    case "exams":
-      return <PDFExamsField value={value} fieldKey={fieldKey} />;
-    default:
-      return <PDFField patient={patient} fieldKey={fieldKey} />;
-  }
-}
-
-/**
- * Champ spécialisé pour les symptômes
- */
-function PDFSymptomsField({
+function PDFImagesField({
   value,
   fieldKey,
 }: {
-  value: unknown;
+  value: string[];
   fieldKey: string;
 }) {
-  if (!Array.isArray(value)) {
-    return (
-      <View style={baseStyles.field}>
-        <Text style={baseStyles.fieldLabel}>
-          {generateFieldLabel(fieldKey)}:
-        </Text>
-        <Text style={baseStyles.fieldValue}>
-          {formatFieldValue(value, "string")}
-        </Text>
-      </View>
-    );
+  if (!Array.isArray(value) || value.length === 0) {
+    return null;
   }
+
+  const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+  /**
+   * Obtient l'URL complète de l'image
+   * Convertit les URLs Firebase en URLs de proxy pour le PDF
+   */
+  const getImageUrl = (imgPath: string): string => {
+    // Si l'URL est une URL Firebase Storage, la convertir en URL de proxy
+    if (imgPath.includes("firebasestorage.googleapis.com")) {
+      try {
+        // Extraire le chemin du fichier depuis l'URL Firebase
+        const url = new URL(imgPath);
+        // Le chemin Firebase est dans le pathname, après /v0/b/bucket/o/
+        const pathMatch = url.pathname.match(/\/v0\/b\/[^/]+\/o\/(.+)/);
+        if (pathMatch) {
+          const firebasePath = decodeURIComponent(pathMatch[1]);
+          // Retourner l'URL de notre proxy
+          return `${BASE_URL}/api/images/${firebasePath}`;
+        }
+      } catch (error) {
+        console.warn("Erreur lors de la conversion de l'URL Firebase:", error);
+      }
+    }
+
+    // Pour les autres URLs (locales), les utiliser directement
+    if (imgPath.startsWith("http://") || imgPath.startsWith("https://")) {
+      return imgPath;
+    }
+
+    // Sinon, construire l'URL locale en ajoutant le slash si nécessaire
+    return `${BASE_URL}${imgPath.startsWith("/") ? "" : "/"}${imgPath}`;
+  };
 
   return (
     <View style={baseStyles.field}>
       <Text style={baseStyles.fieldLabel}>{generateFieldLabel(fieldKey)}:</Text>
-      <View style={baseStyles.list}>
-        {value.map((symptom, index) => (
-          <View key={index} style={baseStyles.listItem}>
-            <Text style={baseStyles.bullet}>•</Text>
-            <Text style={baseStyles.fieldValue}>{String(symptom)}</Text>
-          </View>
-        ))}
-      </View>
-    </View>
-  );
-}
-
-/**
- * Champ spécialisé pour les médicaments
- */
-function PDFMedicationsField({
-  value,
-  fieldKey,
-}: {
-  value: unknown;
-  fieldKey: string;
-}) {
-  if (!Array.isArray(value)) {
-    return (
-      <View style={baseStyles.field}>
-        <Text style={baseStyles.fieldLabel}>
-          {generateFieldLabel(fieldKey)}:
-        </Text>
-        <Text style={baseStyles.fieldValue}>
-          {formatFieldValue(value, "string")}
-        </Text>
-      </View>
-    );
-  }
-
-  return (
-    <View style={baseStyles.field}>
-      <Text style={baseStyles.fieldLabel}>{generateFieldLabel(fieldKey)}:</Text>
-      <View style={baseStyles.list}>
-        {value.map((medication, index) => (
-          <View key={index} style={baseStyles.listItem}>
-            <Text style={baseStyles.bullet}>•</Text>
-            <Text style={baseStyles.fieldValue}>
-              {typeof medication === "object" && medication !== null
-                ? `${
-                    medication.name || medication.medication || "Médicament"
-                  } - ${
-                    medication.dosage || medication.dose || "Dose non spécifiée"
-                  }`
-                : String(medication)}
-            </Text>
-          </View>
-        ))}
-      </View>
-    </View>
-  );
-}
-
-/**
- * Champ spécialisé pour les examens
- */
-function PDFExamsField({
-  value,
-  fieldKey,
-}: {
-  value: unknown;
-  fieldKey: string;
-}) {
-  if (typeof value !== "object" || value === null) {
-    return (
-      <View style={baseStyles.field}>
-        <Text style={baseStyles.fieldLabel}>
-          {generateFieldLabel(fieldKey)}:
-        </Text>
-        <Text style={baseStyles.fieldValue}>
-          {formatFieldValue(value, "string")}
-        </Text>
-      </View>
-    );
-  }
-
-  const examData = value as Record<string, unknown>;
-  const examEntries = Object.entries(examData).filter(([, val]) =>
-    hasValue(val)
-  );
-
-  if (examEntries.length === 0) {
-    return (
-      <View style={baseStyles.field}>
-        <Text style={baseStyles.fieldLabel}>
-          {generateFieldLabel(fieldKey)}:
-        </Text>
-        <Text style={baseStyles.fieldEmpty}>Non renseigné</Text>
-      </View>
-    );
-  }
-
-  return (
-    <View style={baseStyles.field}>
-      <Text style={baseStyles.fieldLabel}>{generateFieldLabel(fieldKey)}:</Text>
-      <View style={baseStyles.grid}>
-        {examEntries.map(([key, val]) => (
-          <View key={key} style={baseStyles.gridItem}>
-            <Text style={baseStyles.fieldLabel}>
-              {generateFieldLabel(key)}:
-            </Text>
-            <Text style={baseStyles.fieldValue}>
-              {formatFieldValue(val, "string")}
+      <View style={imageStyles.imageGrid}>
+        {value.map((imgPath, index) => (
+          <View key={index} style={imageStyles.imageContainer} break>
+            {/* eslint-disable-next-line jsx-a11y/alt-text */}
+            <Image
+              src={getImageUrl(imgPath)}
+              style={imageStyles.image}
+              cache={false}
+            />
+            <Text style={imageStyles.imageLabel}>
+              {generateFieldLabel(fieldKey)} {index + 1}
             </Text>
           </View>
         ))}

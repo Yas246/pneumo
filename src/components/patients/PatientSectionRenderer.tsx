@@ -77,6 +77,24 @@ export function PatientSectionRenderer({
               patient[`${pathologyId}${dataPrefix}` as keyof ExtendedPatient];
             break;
         }
+      } else if (pathologyId === "sleep") {
+        // Pour sleep, les données sont directement sur l'objet patient (pas de préfixe)
+        switch (sectionName as string) {
+          case "clinicalExam":
+            sectionData = patient?.clinicalExam;
+            break;
+          case "complementaryExams":
+            sectionData = patient?.complementaryExams;
+            break;
+          case "diagnosis":
+            sectionData = patient?.diagnosis;
+            break;
+          case "treatment":
+            sectionData = patient?.treatment;
+            break;
+          default:
+            sectionData = null;
+        }
       } else {
         // Pour les autres pathologies
         sectionData =

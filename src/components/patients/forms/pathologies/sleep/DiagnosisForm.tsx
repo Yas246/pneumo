@@ -1,5 +1,14 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { FormSectionProps } from "./types";
+import { FormSectionProps } from "../../types";
+
+// Type pour les pathologies
+type PathologyItem = {
+  name: string;
+  selected: boolean;
+  treatments: Array<{
+    name: string;
+    selected: boolean;
+  }>;
+};
 
 // Liste des pathologies avec leurs traitements associés
 const pathologiesList = [
@@ -36,14 +45,14 @@ const pathologiesList = [
 
 export function DiagnosisForm({ register, watch, setValue }: FormSectionProps) {
   // Surveiller les changements des pathologies sélectionnées
-  const selectedPathologies = watch("diagnosis.pathologies" as any) || [];
+  const selectedPathologies = watch("sleepDiagnosis.pathologies") || [];
 
   // Fonction pour gérer la sélection d'une pathologie
   const handlePathologyChange = (pathologyName: string, isChecked: boolean) => {
-    const currentPathologies = selectedPathologies;
+    const currentPathologies = selectedPathologies as PathologyItem[];
     if (isChecked) {
       // Ajouter la pathologie si elle n'existe pas déjà
-      if (!currentPathologies.find((p: any) => p.name === pathologyName)) {
+      if (!currentPathologies.find((p) => p.name === pathologyName)) {
         const pathology = pathologiesList.find((p) => p.name === pathologyName);
         if (pathology) {
           const newPathology = {
@@ -54,7 +63,7 @@ export function DiagnosisForm({ register, watch, setValue }: FormSectionProps) {
               selected: false,
             })),
           };
-          setValue("diagnosis.pathologies" as any, [
+          setValue("sleepDiagnosis.pathologies", [
             ...currentPathologies,
             newPathology,
           ]);
@@ -63,8 +72,8 @@ export function DiagnosisForm({ register, watch, setValue }: FormSectionProps) {
     } else {
       // Supprimer la pathologie
       setValue(
-        "diagnosis.pathologies" as any,
-        currentPathologies.filter((p: any) => p.name !== pathologyName)
+        "sleepDiagnosis.pathologies",
+        currentPathologies.filter((p) => p.name !== pathologyName)
       );
     }
   };
@@ -82,8 +91,8 @@ export function DiagnosisForm({ register, watch, setValue }: FormSectionProps) {
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {pathologiesList.map((pathology) => {
-              const isSelected = selectedPathologies.some(
-                (p: any) => p.name === pathology.name && p.selected
+              const isSelected = (selectedPathologies as PathologyItem[]).some(
+                (p) => p.name === pathology.name && p.selected
               );
               return (
                 <div key={pathology.name} className="space-y-4">
@@ -122,11 +131,13 @@ export function DiagnosisForm({ register, watch, setValue }: FormSectionProps) {
                               <input
                                 type="checkbox"
                                 {...register(
-                                  `diagnosis.pathologies.${selectedPathologies.findIndex(
-                                    (p: any) => p.name === pathology.name
+                                  `sleepDiagnosis.pathologies.${(
+                                    selectedPathologies as PathologyItem[]
+                                  ).findIndex(
+                                    (p) => p.name === pathology.name
                                   )}.treatments.${pathology.treatments.indexOf(
                                     treatment
-                                  )}.selected` as any
+                                  )}.selected`
                                 )}
                                 className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                               />
@@ -156,7 +167,7 @@ export function DiagnosisForm({ register, watch, setValue }: FormSectionProps) {
             Autres traitements
           </label>
           <textarea
-            {...register("diagnosis.otherTreatments" as any)}
+            {...register("sleepDiagnosis.otherTreatments")}
             rows={3}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-700 dark:border-gray-600"
           />

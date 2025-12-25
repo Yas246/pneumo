@@ -3,6 +3,150 @@ import type { Patient } from "@/types/patient";
 // Interface pour étendre le type Patient avec des champs dynamiques
 export interface ExtendedPatient extends Patient {
   [key: string]: unknown;
+  
+  // Champs spécifiques Sleep (avec préfixe sleep)
+  sleepPersonalHistory?: {
+    obesity?: boolean;
+    hta?: boolean;
+    orl?: string;
+    neuro?: string;
+    smoking?: string;
+    alcoholism?: string;
+    diabetes?: string;
+    cardiovascularDiseases?: string;
+    lifestyle?: string;
+    respiratoryPathology?: string;
+    currentMedications?: string;
+  };
+  sleepFamilyHistory?: {
+    saosHistory?: boolean;
+    respiratoryPathologies?: boolean;
+  };
+  sleepOrlExam?: {
+    facialMorphology?: {
+      retrognathism?: boolean;
+      prognathism?: boolean;
+      retromaxillia?: boolean;
+      other?: string;
+    };
+    hyoidBone?: string;
+    dentalClass?: string;
+    ogivalPalate?: boolean;
+    mallampati?: string;
+    friedman?: string;
+    nasofibroscopy?: {
+      nasalFossae?: string;
+      retrovelarObstacle?: string;
+      retrobasillingualObstacle?: string;
+    };
+    maneuvers?: {
+      tongueProtraction?: boolean;
+      simulatedSnoring?: boolean;
+      prognathism?: boolean;
+      otherExam?: string;
+    };
+    otherClinicalExams?: string;
+  };
+  sleepComplementaryExams?: {
+    ventilationPolygraphy?: boolean;
+    psg?: boolean;
+    tensionalHolter?: boolean;
+    nightOximetry?: boolean;
+    imaging?: {
+      chestXray?: boolean;
+      orlScan?: boolean;
+    };
+    polygraphyDate?: string;
+    iah?: number | null;
+    iahCentral?: number | null;
+    oxygenDesaturation?: number | null;
+    ct90?: number | null;
+    gazometryDate?: string;
+    ph?: number | null;
+    pao2?: number | null;
+    paco2?: number | null;
+    hco3?: number | null;
+    sao2?: number | null;
+    efrDate?: string;
+    cvf?: number | null;
+    vems?: number | null;
+    dlco?: number | null;
+    cpt?: number | null;
+    otherExams?: string;
+    metabolicAssessment?: string;
+    chestXray?: {
+      imageUrls?: string[];
+      notes?: string;
+    };
+    scanner?: {
+      imageUrls?: string[];
+      videoUrls?: string[];
+      notes?: string;
+    };
+    otherComplementaryExams?: string;
+  };
+  sleepDiagnosis?: {
+    saos?: boolean;
+    sacs?: boolean;
+    soh?: boolean;
+    nocturnalHypoventilation?: boolean;
+    simpleSnoring?: boolean;
+    pathologies?: Array<{
+      name: string;
+      selected: boolean;
+      treatments: Array<{
+        name: string;
+        selected: boolean;
+      }>;
+    }>;
+    otherTreatments?: string;
+  };
+  sleepTreatment?: {
+    hygieneDietetic?: {
+      weightLoss?: boolean;
+      alcoholAndSedativesStop?: boolean;
+      sleepHygieneImprovement?: boolean;
+      notes?: string;
+    };
+    medicalTreatments?: {
+      ppc?: boolean;
+      oam?: boolean;
+      oxygenotherapy?: boolean;
+      medications?: string[];
+      other?: string;
+    };
+    surgicalTreatments?: {
+      orlSurgery?: boolean;
+      maxillofacialSurgery?: boolean;
+      notes?: string;
+    };
+    equipment?: {
+      ppc?: boolean;
+      oam?: boolean;
+      oxygenotherapy?: boolean;
+      vni?: boolean;
+      other?: string;
+    };
+    exitPrescription?: {
+      content?: string;
+      documentUrl?: string;
+    };
+    other?: string;
+  };
+  sleepPpcFollowUp?: {
+    ppcPrescribingDoctor?: string;
+    ppcStartDate?: string;
+    deviceSupplier?: string;
+    deviceModel?: string;
+    serialNumber?: number | null;
+    initialPressure?: number | null;
+    ventilationMode?: "" | "CPAP" | "APAP" | "Bi-level";
+    humidifier?: boolean;
+    maskType?: "" | "nasal" | "facial" | "narinaire";
+    maskModel?: string;
+    maskSize?: string;
+    otherAccessories?: string;
+  };
   pleuralEffusionDiagnosis?: {
     type?: string;
     etiology?: string;
@@ -310,33 +454,6 @@ export interface ExtendedPatient extends Patient {
       walkTest?: string;
       ecg?: string;
       echocardiography?: string;
-    };
-  };
-  complementaryExams?: {
-    polygraphyDate: string;
-    iah: number;
-    iahCentral: number;
-    oxygenDesaturation: number;
-    ct90: number;
-    gazometryDate: string;
-    ph: number;
-    pao2: number;
-    paco2: number;
-    hco3: number;
-    sao2: number;
-    efrDate: string;
-    cvf: number;
-    vems: number;
-    dlco: number;
-    cpt: number;
-    chestXray?: {
-      imageUrls?: string[];
-      notes?: string;
-    };
-    scanner?: {
-      imageUrls?: string[];
-      videoUrls?: string[];
-      notes?: string;
     };
   };
   // Champs spécifiques Pneumothorax

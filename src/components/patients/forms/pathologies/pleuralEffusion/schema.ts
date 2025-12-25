@@ -129,7 +129,7 @@ export const pleuralEffusionSchema = z.object({
     .default({}),
 
   // Clinique
-  clinicalExam: z
+  pleuralClinicalExam: z
     .object({
       dyspnea: z.boolean().default(false),
       dyspneaSadoulStage: z.string().optional(),

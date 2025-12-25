@@ -61,7 +61,31 @@ export function PatientForm({
       pathologies: pathologies || [],
       consultationReason: "",
       symptomsDuration: "",
+
+      // Étaler initialData d'abord pour préserver les données existantes
       ...initialData,
+
+      // S'assurer que clinicalExam est toujours présent (seulement si absent d'initialData)
+      clinicalExam: initialData?.clinicalExam || {
+        weight: null,
+        height: null,
+        bmi: null,
+        neckCircumference: null,
+        abdominalPerimeter: null,
+        bloodPressure: "",
+        heartRate: null,
+        saturation: null,
+        pulmonaryAuscultation: "",
+      },
+
+      // Champs sleep spécifiques (avec préfixe sleep)
+      sleepPersonalHistory: initialData?.sleepPersonalHistory || {},
+      sleepFamilyHistory: initialData?.sleepFamilyHistory || {},
+      sleepOrlExam: initialData?.sleepOrlExam || {},
+      sleepComplementaryExams: initialData?.sleepComplementaryExams || {},
+      sleepDiagnosis: initialData?.sleepDiagnosis || {},
+      sleepTreatment: initialData?.sleepTreatment || {},
+      sleepPpcFollowUp: initialData?.sleepPpcFollowUp || {},
     }),
     [initialData, pathologies]
   );
@@ -366,6 +390,7 @@ export function PatientForm({
         setValue={setValue}
         watch={watch}
         disabled={disabled}
+        isEditing={isEditing}
       />
 
       {/* Formulaire spécifique à la pathologie */}

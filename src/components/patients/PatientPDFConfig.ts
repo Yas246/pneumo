@@ -1,20 +1,20 @@
 /**
  * Configuration PDF générée automatiquement
- * Généré le: 2025-12-20T15:54:19.999Z
+ * Généré le: 2025-12-24T11:42:32.323Z
  * Ne pas modifier manuellement - utiliser scripts/generate-pdf-config.js
  */
 
 export interface PDFFieldConfig {
   key: string;
   label: string;
-  type: "string" | "number" | "boolean" | "date" | "array" | "enum";
+  type: 'string' | 'number' | 'boolean' | 'date' | 'array' | 'enum';
   required: boolean;
 }
 
 export interface PDFSectionConfig {
   title: string;
   fields: string[];
-  layout: "list" | "grid";
+  layout: 'list' | 'grid';
 }
 
 export interface PDFPathologyConfig {
@@ -22,990 +22,742 @@ export interface PDFPathologyConfig {
 }
 
 export const PDF_CONFIG: Record<string, PDFPathologyConfig> = {
-  asthma: {
-    sections: {
-      consultation: {
-        title: "Motif de consultation",
-        fields: [],
-        layout: "list",
+  "sleep": {
+    "sections": {
+      "consultationReason": {
+        "title": "Motif de consultation",
+        "fields": [],
+        "layout": "list"
       },
-      medicalHistory: {
-        title: "Antécédents médicaux",
-        fields: [],
-        layout: "list",
+      "diurnalSymptoms": {
+        "title": "Symptômes diurnes",
+        "fields": [
+          "diurnalSymptoms.excessiveSleepiness",
+          "diurnalSymptoms.headaches",
+          "diurnalSymptoms.asthenia",
+          "diurnalSymptoms.epworthScore",
+          "diurnalSymptoms.epworthDetails"
+        ],
+        "layout": "list"
       },
-      diseaseHistory: {
-        title: "Histoire de la maladie",
-        fields: [],
-        layout: "list",
+      "nocturnalSymptoms": {
+        "title": "Symptômes nocturnes",
+        "fields": [
+          "nocturnalSymptoms.snoring",
+          "nocturnalSymptoms.sleepApnea",
+          "nocturnalSymptoms.choking",
+          "nocturnalSymptoms.agitation",
+          "nocturnalSymptoms.insomnia",
+          "nocturnalSymptoms.nocturia",
+          "nocturnalSymptoms.other"
+        ],
+        "layout": "list"
       },
-      generalState: {
-        title: "État général",
-        fields: [],
-        layout: "list",
+      "symptomsDuration": {
+        "title": "Durée des symptômes",
+        "fields": [],
+        "layout": "list"
       },
-      respiratorySystem: {
-        title: "Appareil respiratoire",
-        fields: [],
-        layout: "list",
+      "personalHistory": {
+        "title": "Antécédents personnels",
+        "fields": [
+          "personalHistory.obesity",
+          "personalHistory.hta",
+          "personalHistory.orl",
+          "personalHistory.neuro",
+          "personalHistory.smoking",
+          "personalHistory.alcoholism",
+          "personalHistory.diabetes",
+          "personalHistory.cardiovascularDiseases",
+          "personalHistory.lifestyle",
+          "personalHistory.respiratoryPathology",
+          "personalHistory.currentMedications"
+        ],
+        "layout": "list"
       },
-      cardiovascularSystem: {
-        title: "Appareil cardiovasculaire",
-        fields: [],
-        layout: "list",
+      "familyHistory": {
+        "title": "Antécédents familiaux",
+        "fields": [
+          "familyHistory.saosHistory",
+          "familyHistory.respiratoryPathologies"
+        ],
+        "layout": "list"
       },
-      digestiveSystem: {
-        title: "Appareil digestif",
-        fields: [],
-        layout: "list",
+      "clinicalExam": {
+        "title": "Examen clinique",
+        "fields": [
+          "clinicalExam.weight",
+          "clinicalExam.height",
+          "clinicalExam.bmi",
+          "clinicalExam.neckCircumference",
+          "clinicalExam.abdominalPerimeter",
+          "clinicalExam.bloodPressure",
+          "clinicalExam.heartRate",
+          "clinicalExam.saturation",
+          "clinicalExam.pulmonaryAuscultation"
+        ],
+        "layout": "grid"
       },
-      urinarySystem: {
-        title: "Appareil urinaire",
-        fields: [],
-        layout: "list",
+      "orlExam": {
+        "title": "Examen ORL",
+        "fields": [
+          "orlExam.vasAnatomy",
+          "orlExam.nasalObstruction",
+          "orlExam.amygdalineHypertrophy",
+          "orlExam.retrognathia",
+          "orlExam.micromandible",
+          "orlExam.macroglossia"
+        ],
+        "layout": "grid"
       },
-      musculoskeletalSystem: {
-        title: "Appareil musculo-squelettique",
-        fields: [],
-        layout: "list",
+      "complementaryExams": {
+        "title": "Examens complémentaires",
+        "fields": [
+          "complementaryExams.polygraphyDate",
+          "complementaryExams.iah",
+          "complementaryExams.iahCentral",
+          "complementaryExams.oxygenDesaturation",
+          "complementaryExams.ct90",
+          "complementaryExams.gazometryDate",
+          "complementaryExams.ph",
+          "complementaryExams.pao2",
+          "complementaryExams.paco2",
+          "complementaryExams.hco3",
+          "complementaryExams.sao2",
+          "complementaryExams.efrDate",
+          "complementaryExams.cvf",
+          "complementaryExams.vems",
+          "complementaryExams.dlco",
+          "complementaryExams.cpt"
+        ],
+        "layout": "grid"
       },
-      nervousSystem: {
-        title: "Système nerveux",
-        fields: [],
-        layout: "list",
+      "diagnosis": {
+        "title": "Diagnostic",
+        "fields": [
+          "diagnosis.saos",
+          "diagnosis.sacs",
+          "diagnosis.soh",
+          "diagnosis.nocturalHypoventilation",
+          "diagnosis.simpleSnoring"
+        ],
+        "layout": "list"
       },
-      skinMucous: {
-        title: "Peau et muqueuses",
-        fields: [],
-        layout: "list",
+      "treatment": {
+        "title": "Traitement",
+        "fields": [
+          "treatment.weightLoss",
+          "treatment.alcoholAndSedativesStop",
+          "treatment.sleepHygieneImprovement",
+          "treatment.notes"
+        ],
+        "layout": "list"
       },
-      orlEyesMouth: {
-        title: "ORL, yeux, bouche",
-        fields: [],
-        layout: "list",
-      },
-      complementaryExams: {
-        title: "Examens complémentaires",
-        fields: [],
-        layout: "grid",
-      },
-      severityClassification: {
-        title: "Classification de sévérité",
-        fields: [],
-        layout: "list",
-      },
-      treatment: {
-        title: "Traitement",
-        fields: [],
-        layout: "list",
-      },
-      followUp: {
-        title: "Suivi",
-        fields: [],
-        layout: "list",
-      },
-    },
+      "ppcFollowUp": {
+        "title": "Suivi PPC",
+        "fields": [
+          "ppcFollowUp.ppcPrescribingDoctor",
+          "ppcFollowUp.ppcStartDate",
+          "ppcFollowUp.deviceModel",
+          "ppcFollowUp.deviceSupplier",
+          "ppcFollowUp.initialPressure",
+          "ppcFollowUp.ventilationMode",
+          "ppcFollowUp.humidifier",
+          "ppcFollowUp.maskType",
+          "ppcFollowUp.maskModel",
+          "ppcFollowUp.maskSize",
+          "ppcFollowUp.serialNumber",
+          "ppcFollowUp.provider",
+          "ppcFollowUp.otherAccessories"
+        ],
+        "layout": "list"
+      }
+    }
   },
-  bpco: {
-    sections: {
-      consultation: {
-        title: "Motif de consultation",
-        fields: [],
-        layout: "list",
+  "bpco": {
+    "sections": {
+      "bpcoConsultationReason": {
+        "title": "Motif de consultation",
+        "fields": [
+          "bpcoConsultationReason.chronicCough",
+          "bpcoConsultationReason.chronicBronchitis",
+          "bpcoConsultationReason.chronicDyspnea",
+          "bpcoConsultationReason.acuteDyspneaAggravation",
+          "bpcoConsultationReason.frequentRespiratoryInfections",
+          "bpcoConsultationReason.other"
+        ],
+        "layout": "list"
       },
-      comorbidities: {
-        title: "Comorbidités",
-        fields: [],
-        layout: "list",
+      "bpcoMedicalHistory": {
+        "title": "Antécédents médicaux",
+        "fields": [
+          "bpcoMedicalHistory.asthma",
+          "bpcoMedicalHistory.asthmaExacerbationsPerYear",
+          "bpcoMedicalHistory.bpco",
+          "bpcoMedicalHistory.bpcoExacerbationsPerYear",
+          "bpcoMedicalHistory.tuberculosis",
+          "bpcoMedicalHistory.pneumonia",
+          "bpcoMedicalHistory.recurrentRespiratoryInfections",
+          "bpcoMedicalHistory.professionalPollutants",
+          "bpcoMedicalHistory.domesticPollutants",
+          "bpcoMedicalHistory.urbanPollutants",
+          "bpcoMedicalHistory.rgo",
+          "bpcoMedicalHistory.hepatopathy",
+          "bpcoMedicalHistory.nephropathy",
+          "bpcoMedicalHistory.cardiopathy",
+          "bpcoMedicalHistory.connectiveTissue",
+          "bpcoMedicalHistory.neoplasia",
+          "bpcoMedicalHistory.other",
+          "bpcoMedicalHistory.surgicalHistory",
+          "bpcoMedicalHistory.vaccinations",
+          "bpcoMedicalHistory.smokingStatus",
+          "bpcoMedicalHistory.paquetsAnnees",
+          "bpcoMedicalHistory.cannabis",
+          "bpcoMedicalHistory.alcohol"
+        ],
+        "layout": "list"
       },
-      personalHistory: {
-        title: "Antécédents personnels",
-        fields: [],
-        layout: "list",
+      "bpcoClinicalExam": {
+        "title": "Examen clinique",
+        "fields": [
+          "bpcoClinicalExam.performanceScore",
+          "bpcoClinicalExam.goodConsciousness",
+          "bpcoClinicalExam.confusion",
+          "bpcoClinicalExam.asthenia",
+          "bpcoClinicalExam.generalStateAlteration"
+        ],
+        "layout": "grid"
       },
-      recentContagion: {
-        title: "Contage récent",
-        fields: [],
-        layout: "list",
+      "bpcoDiseaseHistory": {
+        "title": "Histoire de la maladie",
+        "fields": [
+          "bpcoDiseaseHistory.firstSymptomsDate",
+          "bpcoDiseaseHistory.evolution",
+          "bpcoDiseaseHistory.tobacco",
+          "bpcoDiseaseHistory.pollution",
+          "bpcoDiseaseHistory.professional"
+        ],
+        "layout": "list"
       },
-      toxicHabits: {
-        title: "Habitudes toxiques",
-        fields: [],
-        layout: "list",
+      "bpcoDiagnosticTests": {
+        "title": "Bilan à visée diagnostique",
+        "fields": [
+          "bpcoDiagnosticTests.vems",
+          "bpcoDiagnosticTests.vemsCv",
+          "bpcoDiagnosticTests.goldStage"
+        ],
+        "layout": "grid"
       },
-      generalSigns: {
-        title: "Signes généraux",
-        fields: [],
-        layout: "list",
+      "bpcoImpactAssessment": {
+        "title": "Bilan de retentissement",
+        "fields": [
+          "bpcoImpactAssessment.ph",
+          "bpcoImpactAssessment.paO2",
+          "bpcoImpactAssessment.paCO2"
+        ],
+        "layout": "list"
       },
-      functionalSigns: {
-        title: "Signes fonctionnels",
-        fields: [],
-        layout: "list",
+      "bpcoTreatment": {
+        "title": "Traitement",
+        "fields": [
+          "bpcoTreatment.maintenance",
+          "bpcoTreatment.prescribedTreatments",
+          "bpcoTreatment.longTermOxygen",
+          "bpcoTreatment.therapeuticEducation",
+          "bpcoTreatment.smokingCessation"
+        ],
+        "layout": "list"
       },
-      clinicalExam: {
-        title: "Examen clinique",
-        fields: [],
-        layout: "grid",
+      "bpcoFollowUp": {
+        "title": "Suivi",
+        "fields": [
+          "bpcoFollowUp.lastConsultation",
+          "bpcoFollowUp.nextEvaluation",
+          "bpcoFollowUp.pneumologyFollowUp",
+          "bpcoFollowUp.vaccinationsUpToDate"
+        ],
+        "layout": "list"
       },
-      chestXRay: {
-        title: "Radiographie thoracique",
-        fields: [],
-        layout: "list",
-      },
-      sputumBacteriology: {
-        title: "Bactériologie des expectorations",
-        fields: [],
-        layout: "list",
-      },
-      genetics: {
-        title: "Génétique BK",
-        fields: [],
-        layout: "list",
-      },
-      biology: {
-        title: "Biologie",
-        fields: [],
-        layout: "grid",
-      },
-      otherAssessments: {
-        title: "Autres bilans",
-        fields: [],
-        layout: "list",
-      },
-      prescribedTreatment: {
-        title: "Traitement prescrit",
-        fields: [],
-        layout: "list",
-      },
-      serumDosage: {
-        title: "Dosage sérique",
-        fields: [],
-        layout: "list",
-      },
-      evolution: {
-        title: "Évolution",
-        fields: [],
-        layout: "list",
-      },
-      dischargeConclusion: {
-        title: "Conclusion de sortie",
-        fields: [],
-        layout: "list",
-      },
-    },
+      "bpcoComplementaryExams": {
+        "title": "Examens complémentaires",
+        "fields": [
+          "bpcoComplementaryExams.vems",
+          "bpcoComplementaryExams.vemsCvf",
+          "bpcoComplementaryExams.goldStage",
+          "bpcoComplementaryExams.cpt",
+          "bpcoComplementaryExams.vr",
+          "bpcoComplementaryExams.crf",
+          "bpcoComplementaryExams.ph",
+          "bpcoComplementaryExams.pao2",
+          "bpcoComplementaryExams.paco2"
+        ],
+        "layout": "grid"
+      }
+    }
   },
-  ddb: {
-    sections: {
-      consultation: {
-        title: "Motif de consultation",
-        fields: [],
-        layout: "list",
+  "asthma": {
+    "sections": {
+      "asthmaConsultationReason": {
+        "title": "Motif de consultation",
+        "fields": [],
+        "layout": "list"
       },
-      medicalHistory: {
-        title: "Antécédents médicaux",
-        fields: [],
-        layout: "list",
+      "asthmaMedicalHistory": {
+        "title": "Antécédents médicaux",
+        "fields": [],
+        "layout": "list"
       },
-      toxicHistory: {
-        title: "Antécédents toxiques",
-        fields: [],
-        layout: "list",
+      "asthmaDiseaseHistory": {
+        "title": "Histoire de la maladie",
+        "fields": [],
+        "layout": "list"
       },
-      diseaseHistory: {
-        title: "Histoire de la maladie",
-        fields: [],
-        layout: "list",
+      "asthmaGeneralState": {
+        "title": "État général",
+        "fields": [],
+        "layout": "list"
       },
-      respiratorySymptoms: {
-        title: "Symptômes respiratoires",
-        fields: [],
-        layout: "list",
+      "asthmaRespiratorySystem": {
+        "title": "Appareil respiratoire",
+        "fields": [],
+        "layout": "list"
       },
-      extraRespiratorySymptoms: {
-        title: "Symptômes extra-respiratoires",
-        fields: [],
-        layout: "list",
+      "asthmaCardiovascularSystem": {
+        "title": "Appareil cardiovasculaire",
+        "fields": [],
+        "layout": "list"
       },
-      physicalSigns: {
-        title: "Signes physiques",
-        fields: [],
-        layout: "list",
+      "asthmaDigestiveSystem": {
+        "title": "Appareil digestif",
+        "fields": [],
+        "layout": "list"
       },
-      complementaryExams: {
-        title: "Examens complémentaires",
-        fields: [],
-        layout: "grid",
+      "asthmaUrinarySystem": {
+        "title": "Appareil urinaire",
+        "fields": [],
+        "layout": "list"
       },
-      conclusion: {
-        title: "Conclusion",
-        fields: [],
-        layout: "list",
+      "asthmaMusculoskeletalSystem": {
+        "title": "Appareil musculo-squelettique",
+        "fields": [],
+        "layout": "list"
       },
-      etiology: {
-        title: "Étiologie",
-        fields: [],
-        layout: "list",
+      "asthmaNervousSystem": {
+        "title": "Système nerveux",
+        "fields": [],
+        "layout": "list"
       },
-      treatment: {
-        title: "Traitements envisagés",
-        fields: [],
-        layout: "list",
+      "asthmaSkinMucous": {
+        "title": "Peau et muqueuses",
+        "fields": [],
+        "layout": "list"
       },
-      followUp: {
-        title: "Suivi",
-        fields: [],
-        layout: "list",
+      "asthmaOrlEyesMouth": {
+        "title": "ORL, yeux, bouche",
+        "fields": [],
+        "layout": "list"
       },
-    },
+      "asthmaComplementaryExams": {
+        "title": "Examens complémentaires",
+        "fields": [],
+        "layout": "grid"
+      },
+      "asthmaSeverityClassification": {
+        "title": "Classification de sévérité",
+        "fields": [],
+        "layout": "list"
+      },
+      "asthmaTreatment": {
+        "title": "Traitement",
+        "fields": [],
+        "layout": "list"
+      },
+      "asthmaFollowUp": {
+        "title": "Suivi",
+        "fields": [],
+        "layout": "list"
+      }
+    }
   },
-  tbk: {
-    sections: {
-      consultation: {
-        title: "Motif d'hospitalisation",
-        fields: [],
-        layout: "list",
+  "ddb": {
+    "sections": {
+      "ddbConsultationReason": {
+        "title": "Motif de consultation",
+        "fields": [],
+        "layout": "list"
       },
-      comorbidities: {
-        title: "Comorbidités",
-        fields: [],
-        layout: "list",
+      "ddbMedicalHistory": {
+        "title": "Antécédents médicaux",
+        "fields": [],
+        "layout": "list"
       },
-      personalHistory: {
-        title: "ATCD personnels",
-        fields: [],
-        layout: "list",
+      "ddbToxicHistory": {
+        "title": "Antécédents toxiques",
+        "fields": [],
+        "layout": "list"
       },
-      recentContagion: {
-        title: "Contage récent",
-        fields: [],
-        layout: "list",
+      "ddbDiseaseHistory": {
+        "title": "Histoire de la maladie",
+        "fields": [],
+        "layout": "list"
       },
-      toxicHabits: {
-        title: "Habitudes toxiques",
-        fields: [],
-        layout: "list",
+      "ddbRespiratorySymptoms": {
+        "title": "Symptômes respiratoires",
+        "fields": [],
+        "layout": "list"
       },
-      generalSigns: {
-        title: "Signes généraux",
-        fields: [],
-        layout: "list",
+      "ddbExtraRespiratorySymptoms": {
+        "title": "Symptômes extra-respiratoires",
+        "fields": [],
+        "layout": "list"
       },
-      functionalSigns: {
-        title: "Signes fonctionnels",
-        fields: [],
-        layout: "list",
+      "ddbPhysicalSigns": {
+        "title": "Signes physiques",
+        "fields": [],
+        "layout": "list"
       },
-      clinicalExam: {
-        title: "Examen clinique",
-        fields: [],
-        layout: "grid",
+      "ddbComplementaryExams": {
+        "title": "Examens complémentaires",
+        "fields": [],
+        "layout": "grid"
       },
-      chestXRay: {
-        title: "Rx thoracique",
-        fields: [],
-        layout: "list",
+      "ddbConclusion": {
+        "title": "Conclusion",
+        "fields": [],
+        "layout": "list"
       },
-      sputumBacteriology: {
-        title: "Bactériologie expectorations",
-        fields: [],
-        layout: "list",
+      "ddbEtiology": {
+        "title": "Étiologie",
+        "fields": [],
+        "layout": "list"
       },
-      bkGenetics: {
-        title: "Génétique BK",
-        fields: [],
-        layout: "list",
+      "ddbTreatment": {
+        "title": "Traitements envisagés",
+        "fields": [],
+        "layout": "list"
       },
-      biology: {
-        title: "Biologie",
-        fields: [],
-        layout: "grid",
-      },
-      otherAssessments: {
-        title: "Autres bilans",
-        fields: [],
-        layout: "list",
-      },
-      prescribedTreatment: {
-        title: "Traitement prescrit",
-        fields: [],
-        layout: "list",
-      },
-      serumDosage: {
-        title: "Dosage sérique AT",
-        fields: [],
-        layout: "list",
-      },
-      evolution: {
-        title: "Évolution",
-        fields: [],
-        layout: "list",
-      },
-      dischargeConclusion: {
-        title: "Conclusion de sortie",
-        fields: [],
-        layout: "list",
-      },
-    },
+      "ddbFollowUp": {
+        "title": "Suivi",
+        "fields": [],
+        "layout": "list"
+      }
+    }
   },
-  sleep: {
-    sections: {
-      consultation: {
-        title: "Motif de consultation",
-        fields: [],
-        layout: "list",
+  "tbk": {
+    "sections": {
+      "tbkConsultationReason": {
+        "title": "Motif d'hospitalisation",
+        "fields": [],
+        "layout": "list"
       },
-      medicalHistory: {
-        title: "Antécédents médicaux",
-        fields: [],
-        layout: "list",
+      "tbkComorbidities": {
+        "title": "Comorbidités",
+        "fields": [],
+        "layout": "list"
       },
-      clinicalExam: {
-        title: "Examen clinique",
-        fields: [],
-        layout: "grid",
+      "tbkPersonalHistory": {
+        "title": "ATCD personnels",
+        "fields": [],
+        "layout": "list"
       },
-      orlExam: {
-        title: "Examen ORL",
-        fields: [],
-        layout: "list",
+      "tbkRecentContagion": {
+        "title": "Contage récent",
+        "fields": [],
+        "layout": "list"
       },
-      complementaryExams: {
-        title: "Examens complémentaires",
-        fields: [],
-        layout: "grid",
+      "tbkToxicHabits": {
+        "title": "Habitudes toxiques",
+        "fields": [],
+        "layout": "list"
       },
-      diagnosis: {
-        title: "Diagnostic",
-        fields: [],
-        layout: "list",
+      "tbkDiseaseHistory": {
+        "title": "Histoire de la maladie",
+        "fields": [],
+        "layout": "list"
       },
-      treatment: {
-        title: "Traitement",
-        fields: [],
-        layout: "list",
+      "tbkGeneralSigns": {
+        "title": "Signes généraux",
+        "fields": [],
+        "layout": "list"
       },
-      followUp: {
-        title: "Suivi",
-        fields: [],
-        layout: "list",
+      "tbkFunctionalSigns": {
+        "title": "Signes fonctionnels",
+        "fields": [],
+        "layout": "list"
       },
-    },
+      "tbkClinicalExam": {
+        "title": "Examen clinique",
+        "fields": [],
+        "layout": "grid"
+      },
+      "tbkChestXRay": {
+        "title": "Rx thoracique",
+        "fields": [],
+        "layout": "list"
+      },
+      "tbkSputumBacteriology": {
+        "title": "Bactériologie expectorations",
+        "fields": [],
+        "layout": "list"
+      },
+      "tbkBkGenetics": {
+        "title": "Génétique BK",
+        "fields": [],
+        "layout": "list"
+      },
+      "tbkBiology": {
+        "title": "Biologie",
+        "fields": [],
+        "layout": "list"
+      },
+      "tbkOtherAssessments": {
+        "title": "Autres bilans",
+        "fields": [],
+        "layout": "list"
+      },
+      "tbkPrescribedTreatment": {
+        "title": "Traitement prescrit",
+        "fields": [],
+        "layout": "list"
+      },
+      "tbkSerumDosage": {
+        "title": "Dosage sérique AT",
+        "fields": [],
+        "layout": "list"
+      },
+      "tbkEvolution": {
+        "title": "Évolution",
+        "fields": [],
+        "layout": "list"
+      },
+      "tbkDischargeConclusion": {
+        "title": "Conclusion de sortie",
+        "fields": [],
+        "layout": "list"
+      }
+    }
   },
-  pleuralEffusion: {
-    sections: {
-      consultation: {
-        title: "Motif de consultation",
-        fields: [],
-        layout: "list",
+  "pleuralEffusion": {
+    "sections": {
+      "pleuralEffusionConsultationReason": {
+        "title": "Motif de consultation",
+        "fields": [],
+        "layout": "list"
       },
-      medicalHistory: {
-        title: "Antécédents médicaux",
-        fields: [],
-        layout: "list",
+      "pleuralEffusionMedicalHistory": {
+        "title": "Antécédents médicaux",
+        "fields": [],
+        "layout": "list"
       },
-      biology: {
-        title: "Biologie",
-        fields: [],
-        layout: "grid",
+      "pleuralEffusionBiology": {
+        "title": "Biologie",
+        "fields": [],
+        "layout": "list"
       },
-      chestXRay: {
-        title: "Radiographie thoracique",
-        fields: [],
-        layout: "list",
+      "pleuralEffusionChestXRay": {
+        "title": "Radiographie thoracique",
+        "fields": [],
+        "layout": "list"
       },
-      clinicalExam: {
-        title: "Examen clinique",
-        fields: [],
-        layout: "grid",
+      "pleuralEffusionClinicalExam": {
+        "title": "Examen clinique",
+        "fields": [],
+        "layout": "grid"
       },
-      diagnosis: {
-        title: "Diagnostic",
-        fields: [],
-        layout: "list",
+      "pleuralEffusionDiagnosis": {
+        "title": "Diagnostic",
+        "fields": [],
+        "layout": "list"
       },
-      evolution: {
-        title: "Évolution",
-        fields: [],
-        layout: "list",
+      "pleuralEffusionEvolution": {
+        "title": "Évolution",
+        "fields": [],
+        "layout": "list"
       },
-      imaging: {
-        title: "Imagerie",
-        fields: [],
-        layout: "list",
+      "pleuralEffusionImaging": {
+        "title": "Imagerie",
+        "fields": [],
+        "layout": "list"
       },
-      otherAssessments: {
-        title: "Autres bilans",
-        fields: [],
-        layout: "list",
+      "pleuralEffusionOtherAssessments": {
+        "title": "Autres bilans",
+        "fields": [],
+        "layout": "list"
       },
-      pleuralPuncture: {
-        title: "Ponction pleurale",
-        fields: [],
-        layout: "list",
+      "pleuralEffusionPleuralPuncture": {
+        "title": "Ponction pleurale",
+        "fields": [],
+        "layout": "list"
       },
-      treatment: {
-        title: "Traitement",
-        fields: [],
-        layout: "list",
-      },
-    },
+      "pleuralEffusionTreatment": {
+        "title": "Traitement",
+        "fields": [],
+        "layout": "list"
+      }
+    }
   },
-  pid: {
-    sections: {
-      admissionReason: {
-        title: "Motif d'admission",
-        fields: [],
-        layout: "list",
+  "pid": {
+    "sections": {
+      "pidAdmissionReason": {
+        "title": "Motif d'admission",
+        "fields": [],
+        "layout": "list"
       },
-      medicalHistory: {
-        title: "Antécédents médicaux",
-        fields: [],
-        layout: "list",
+      "pidMedicalHistory": {
+        "title": "Antécédents médicaux",
+        "fields": [],
+        "layout": "list"
       },
-      toxicHistory: {
-        title: "Antécédents toxiques",
-        fields: [],
-        layout: "list",
+      "pidToxicHistory": {
+        "title": "Antécédents toxiques",
+        "fields": [],
+        "layout": "list"
       },
-      familyHistory: {
-        title: "Antécédents familiaux",
-        fields: [],
-        layout: "list",
+      "pidFamilyHistory": {
+        "title": "Antécédents familiaux",
+        "fields": [],
+        "layout": "list"
       },
-      lifestyle: {
-        title: "Mode de vie",
-        fields: [],
-        layout: "list",
+      "pidLifestyle": {
+        "title": "Mode de vie",
+        "fields": [],
+        "layout": "list"
       },
-      gynecoObstetricHistory: {
-        title: "Antécédents gynéco-obstétricaux",
-        fields: [],
-        layout: "list",
+      "pidGynecoObstetricHistory": {
+        "title": "Antécédents gynéco-obstétricaux",
+        "fields": [],
+        "layout": "list"
       },
-      generalSigns: {
-        title: "Signes généraux",
-        fields: [],
-        layout: "list",
+      "pidGeneralSigns": {
+        "title": "Signes généraux",
+        "fields": [],
+        "layout": "list"
       },
-      respiratorySymptoms: {
-        title: "Symptômes respiratoires",
-        fields: [],
-        layout: "list",
+      "pidRespiratorySymptoms": {
+        "title": "Symptômes respiratoires",
+        "fields": [],
+        "layout": "list"
       },
-      extraRespiratorySymptoms: {
-        title: "Symptômes extra-respiratoires",
-        fields: [],
-        layout: "list",
+      "pidExtraRespiratorySymptoms": {
+        "title": "Symptômes extra-respiratoires",
+        "fields": [],
+        "layout": "list"
       },
-      clinicalExam: {
-        title: "Examen clinique",
-        fields: [],
-        layout: "grid",
+      "pidClinicalExam": {
+        "title": "Examen clinique",
+        "fields": [],
+        "layout": "grid"
       },
-      complementaryExams: {
-        title: "Examens complémentaires",
-        fields: [],
-        layout: "grid",
+      "pidComplementaryExams": {
+        "title": "Examens complémentaires",
+        "fields": [],
+        "layout": "grid"
       },
-      finalDiagnosis: {
-        title: "Diagnostic final",
-        fields: [],
-        layout: "list",
-      },
-    },
+      "pidFinalDiagnosis": {
+        "title": "Diagnostic final",
+        "fields": [],
+        "layout": "list"
+      }
+    }
   },
-  pneumothorax: {
-    sections: {
-      consultationReason: {
-        title: "Motif de consultation",
-        fields: [
-          "pneumothoraxConsultationReason.thoracicPain",
-          "pneumothoraxConsultationReason.dyspnea",
-          "pneumothoraxConsultationReason.cough",
-          "pneumothoraxConsultationReason.thoracicOppression",
-          "pneumothoraxConsultationReason.malaiseSyncope",
-          "pneumothoraxConsultationReason.radiologicalDiscovery",
-          "pneumothoraxConsultationReason.other",
-          "pneumothoraxConsultationReason.otherDetails",
-        ],
-        layout: "grid",
+  "pneumothorax": {
+    "sections": {
+      "pneumothoraxConsultationReason": {
+        "title": "Motif de consultation",
+        "fields": [],
+        "layout": "list"
       },
-      medicalHistory: {
-        title: "Antécédents médicaux",
-        fields: [
-          "pneumothoraxMedicalHistory.previousPneumothorax",
-          "pneumothoraxMedicalHistory.previousPneumothoraxSide",
-          "pneumothoraxMedicalHistory.previousPneumothoraxCount",
-          "pneumothoraxMedicalHistory.previousPneumothoraxDate",
-          "pneumothoraxMedicalHistory.bpcoEmphysema",
-          "pneumothoraxMedicalHistory.severeAsthma",
-          "pneumothoraxMedicalHistory.tuberculosis",
-          "pneumothoraxMedicalHistory.pidFibrosis",
-          "pneumothoraxMedicalHistory.cancers",
-          "pneumothoraxMedicalHistory.cancersDetails",
-          "pneumothoraxMedicalHistory.cardiopathy",
-          "pneumothoraxMedicalHistory.hta",
-          "pneumothoraxMedicalHistory.diabetes",
-          "pneumothoraxMedicalHistory.irc",
-          "pneumothoraxMedicalHistory.thoracicSurgery",
-          "pneumothoraxMedicalHistory.otherPersonal",
-          "pneumothoraxMedicalHistory.otherPersonalDetails",
-          "pneumothoraxMedicalHistory.recentThoracicTrauma",
-          "pneumothoraxMedicalHistory.mechanicalVentilation",
-          "pneumothoraxMedicalHistory.cvcPleuralPuncture",
-          "pneumothoraxMedicalHistory.otherRecentProcedure",
-          "pneumothoraxMedicalHistory.otherRecentProcedureDetails",
-          "pneumothoraxMedicalHistory.smoking",
-          "pneumothoraxMedicalHistory.smokingQuantity",
-          "pneumothoraxMedicalHistory.cannabisDrugs",
-          "pneumothoraxMedicalHistory.longiligneMorphotype",
-          "pneumothoraxMedicalHistory.recentExposure",
-          "pneumothoraxMedicalHistory.allergies",
-          "pneumothoraxMedicalHistory.allergiesDetails",
-          "pneumothoraxMedicalHistory.chronicTreatments",
-          "pneumothoraxMedicalHistory.chronicTreatmentsDetails",
-        ],
-        layout: "grid",
+      "pneumothoraxMedicalHistory": {
+        "title": "Antécédents médicaux",
+        "fields": [],
+        "layout": "list"
       },
-      diseaseHistory: {
-        title: "Histoire de la maladie",
-        fields: [
-          "pneumothoraxDiseaseHistory.onset",
-          "pneumothoraxDiseaseHistory.onsetDateTime",
-          "pneumothoraxDiseaseHistory.circumstances",
-          "pneumothoraxDiseaseHistory.thoracicPain",
-          "pneumothoraxDiseaseHistory.thoracicPainType",
-          "pneumothoraxDiseaseHistory.thoracicPainSide",
-          "pneumothoraxDiseaseHistory.dyspnea",
-          "pneumothoraxDiseaseHistory.dyspneaIntensity",
-          "pneumothoraxDiseaseHistory.cough",
-          "pneumothoraxDiseaseHistory.hemoptysis",
-          "pneumothoraxDiseaseHistory.fever",
-          "pneumothoraxDiseaseHistory.associatedSigns",
-          "pneumothoraxDiseaseHistory.commentsChronology",
-        ],
-        layout: "grid",
+      "pneumothoraxDiseaseHistory": {
+        "title": "Histoire de la maladie",
+        "fields": [],
+        "layout": "list"
       },
-      clinicalExam: {
-        title: "Examen clinique",
-        fields: [
-          "pneumothoraxClinicalExam.ta",
-          "pneumothoraxClinicalExam.fc",
-          "pneumothoraxClinicalExam.fr",
-          "pneumothoraxClinicalExam.spO2",
-          "pneumothoraxClinicalExam.temp",
-          "pneumothoraxClinicalExam.painEva",
-          "pneumothoraxClinicalExam.respiratoryDistress",
-          "pneumothoraxClinicalExam.desaturation",
-          "pneumothoraxClinicalExam.hemodynamicInstability",
-          "pneumothoraxClinicalExam.consciousnessAlteration",
-          "pneumothoraxClinicalExam.compressivePneumothorax",
-          "pneumothoraxClinicalExam.thoracicAsymmetry",
-          "pneumothoraxClinicalExam.thoracicAsymmetrySide",
-          "pneumothoraxClinicalExam.subcutaneousEmphysema",
-          "pneumothoraxClinicalExam.trachealDeviation",
-          "pneumothoraxClinicalExam.cyanosis",
-          "pneumothoraxClinicalExam.tympanism",
-          "pneumothoraxClinicalExam.tympanismSide",
-          "pneumothoraxClinicalExam.diminishedVesicularMurmur",
-          "pneumothoraxClinicalExam.diminishedVesicularMurmurSide",
-          "pneumothoraxClinicalExam.associatedRales",
-          "pneumothoraxClinicalExam.associatedRalesDetails",
-          "pneumothoraxClinicalExam.tachycardia",
-          "pneumothoraxClinicalExam.shockSigns",
-          "pneumothoraxClinicalExam.otherCardiovascular",
-          "pneumothoraxClinicalExam.otherCardiovascularDetails",
-          "pneumothoraxClinicalExam.otherExams",
-        ],
-        layout: "grid",
+      "pneumothoraxClinicalExam": {
+        "title": "Examen clinique",
+        "fields": [],
+        "layout": "grid"
       },
-      complementaryExams: {
-        title: "Examens complémentaires",
-        fields: [
-          "pneumothoraxComplementaryExams.chestXray",
-          "pneumothoraxComplementaryExams.chestXrayReport",
-          "pneumothoraxComplementaryExams.pleuralUltrasound",
-          "pneumothoraxComplementaryExams.pleuralUltrasoundReport",
-          "pneumothoraxComplementaryExams.thoracicCtd",
-          "pneumothoraxComplementaryExams.imagingResults",
-          "pneumothoraxComplementaryExams.bloodGas",
-          "pneumothoraxComplementaryExams.nfs",
-          "pneumothoraxComplementaryExams.crp",
-          "pneumothoraxComplementaryExams.ionogram",
-          "pneumothoraxComplementaryExams.hemostasis",
-          "pneumothoraxComplementaryExams.bloodGroup",
-        ],
-        layout: "grid",
+      "pneumothoraxComplementaryExams": {
+        "title": "Examens complémentaires",
+        "fields": [],
+        "layout": "grid"
       },
-      diagnosis: {
-        title: "Diagnostic",
-        fields: [
-          "pneumothoraxDiagnosis.spontaneousPrimary",
-          "pneumothoraxDiagnosis.spontaneousSecondary",
-          "pneumothoraxDiagnosis.spontaneousSecondaryTerrain",
-          "pneumothoraxDiagnosis.traumatic",
-          "pneumothoraxDiagnosis.iatrogenic",
-          "pneumothoraxDiagnosis.wellTolerated",
-          "pneumothoraxDiagnosis.poorlyTolerated",
-          "pneumothoraxDiagnosis.compressiveTension",
-          "pneumothoraxDiagnosis.small",
-          "pneumothoraxDiagnosis.medium",
-          "pneumothoraxDiagnosis.large",
-          "pneumothoraxDiagnosis.diagnosticConclusion",
-        ],
-        layout: "grid",
+      "pneumothoraxDiagnosis": {
+        "title": "Diagnostic",
+        "fields": [],
+        "layout": "list"
       },
-      treatment: {
-        title: "Traitement",
-        fields: [
-          "pneumothoraxManagement.oxygenTherapy",
-          "pneumothoraxManagement.oxygenModality",
-          "pneumothoraxManagement.oxygenFlow",
-          "pneumothoraxManagement.analgesia",
-          "pneumothoraxManagement.analgesiaDetails",
-          "pneumothoraxManagement.peripheralIv",
-          "pneumothoraxManagement.monitoring",
-          "pneumothoraxManagement.bloodGasIndication",
-          "pneumothoraxManagement.specializedAdvice",
-          "pneumothoraxManagement.simpleMonitoring",
-          "pneumothoraxManagement.needleAspiration",
-          "pneumothoraxManagement.pleuralDrainage",
-          "pneumothoraxManagement.drainageSide",
-          "pneumothoraxManagement.drainageType",
-          "pneumothoraxManagement.drainageSystem",
-          "pneumothoraxManagement.drainageAspiration",
-          "pneumothoraxManagement.drainageAspirationPressure",
-          "pneumothoraxManagement.localAnesthesia",
-          "pneumothoraxManagement.postProcedureXray",
-          "pneumothoraxManagement.compressiveDecompression",
-          "pneumothoraxManagement.persistentAirLeak",
-          "pneumothoraxManagement.highRiskTerrain",
-        ],
-        layout: "grid",
+      "pneumothoraxTreatment": {
+        "title": "Traitement",
+        "fields": [],
+        "layout": "list"
       },
-      followUp: {
-        title: "Suivi",
-        fields: [
-          "pneumothoraxMonitoring.regularClinicalMonitoring",
-          "pneumothoraxMonitoring.monitoringDetails",
-          "pneumothoraxMonitoring.radiologicalControl",
-          "pneumothoraxMonitoring.drainMonitoring",
-          "pneumothoraxMonitoring.complications",
-          "pneumothoraxMonitoring.evolutionRemarks",
-        ],
-        layout: "grid",
+      "pneumothoraxFollowUp": {
+        "title": "Suivi",
+        "fields": [],
+        "layout": "list"
       },
-      treatmentDischarge: {
-        title: "Traitement et ordonnance / consignes de sortie",
-        fields: [
-          "pneumothoraxTreatmentDischarge.analgesic",
-          "pneumothoraxTreatmentDischarge.analgesicDetails",
-          "pneumothoraxTreatmentDischarge.otherTreatments",
-          "pneumothoraxTreatmentDischarge.otherTreatmentsDetails",
-          "pneumothoraxTreatmentDischarge.smokingCessation",
-          "pneumothoraxTreatmentDischarge.hemodynamicStability",
-          "pneumothoraxTreatmentDischarge.satisfactorySpO2",
-          "pneumothoraxTreatmentDischarge.clinicalImprovement",
-          "pneumothoraxTreatmentDischarge.satisfactoryImaging",
-          "pneumothoraxTreatmentDischarge.drainRemoved",
-          "pneumothoraxTreatmentDischarge.emergencyReturn",
-          "pneumothoraxTreatmentDischarge.avoidHeavyEfforts",
-          "pneumothoraxTreatmentDischarge.avoidEffortsDays",
-          "pneumothoraxTreatmentDischarge.stopSmoking",
-          "pneumothoraxTreatmentDischarge.avoidFlying",
-          "pneumothoraxTreatmentDischarge.divingContraindicated",
-          "pneumothoraxTreatmentDischarge.pneumologyConsultation",
-          "pneumothoraxTreatmentDischarge.thoracicSurgeryConsultation",
-          "pneumothoraxTreatmentDischarge.controlXray",
-          "pneumothoraxTreatmentDischarge.controlXrayDate",
-          "pneumothoraxTreatmentDischarge.otherInstructions",
-        ],
-        layout: "grid",
-      },
-    },
+      "pneumothoraxTreatmentDischarge": {
+        "title": "Traitement et ordonnance / consignes de sortie",
+        "fields": [],
+        "layout": "list"
+      }
+    }
   },
-  lungCancer: {
-    sections: {
-      consultationReason: {
-        title: "Motif de consultation",
-        fields: [
-          "lungCancerConsultationReason.chronicCough",
-          "lungCancerConsultationReason.hemoptysis",
-          "lungCancerConsultationReason.dyspnea",
-          "lungCancerConsultationReason.chestPain",
-          "lungCancerConsultationReason.generalStateAlteration",
-          "lungCancerConsultationReason.prolongedFever",
-          "lungCancerConsultationReason.dysphonia",
-          "lungCancerConsultationReason.fortuitousRadiologicalDiscovery",
-          "lungCancerConsultationReason.extensionAssessment",
-          "lungCancerConsultationReason.other",
-          "lungCancerConsultationReason.otherDetails",
-        ],
-        layout: "grid",
+  "lungCancer": {
+    "sections": {
+      "lungCancerConsultationReason": {
+        "title": "Motif de consultation",
+        "fields": [],
+        "layout": "list"
       },
-      medicalHistory: {
-        title: "Antécédents médicaux et facteurs de risque",
-        fields: [
-          "lungCancerMedicalHistory.personalHistory.bpco",
-          "lungCancerMedicalHistory.personalHistory.asthma",
-          "lungCancerMedicalHistory.personalHistory.tuberculosis",
-          "lungCancerMedicalHistory.personalHistory.pid",
-          "lungCancerMedicalHistory.personalHistory.bronchiectasis",
-          "lungCancerMedicalHistory.personalHistory.cardiovascularDisease",
-          "lungCancerMedicalHistory.personalHistory.hta",
-          "lungCancerMedicalHistory.personalHistory.diabetes",
-          "lungCancerMedicalHistory.personalHistory.chronicKidneyDisease",
-          "lungCancerMedicalHistory.personalHistory.liverDisease",
-          "lungCancerMedicalHistory.personalHistory.cancerHistory",
-          "lungCancerMedicalHistory.personalHistory.thoracicSurgery",
-          "lungCancerMedicalHistory.personalHistory.thoracicRadiotherapy",
-          "lungCancerMedicalHistory.personalHistory.other",
-          "lungCancerMedicalHistory.riskFactors.smoking",
-          "lungCancerMedicalHistory.riskFactors.packYears",
-          "lungCancerMedicalHistory.riskFactors.smokingStatus",
-          "lungCancerMedicalHistory.riskFactors.passiveSmoking",
-          "lungCancerMedicalHistory.riskFactors.occupationalExposure",
-          "lungCancerMedicalHistory.riskFactors.pollution",
-          "lungCancerMedicalHistory.riskFactors.familyHistory",
-          "lungCancerMedicalHistory.riskFactors.immunosuppression",
-          "lungCancerMedicalHistory.allergiesTreatments.allergies",
-          "lungCancerMedicalHistory.allergiesTreatments.chronicTreatments",
-          "lungCancerMedicalHistory.allergiesTreatments.anticoagulantsAntiplatelets",
-        ],
-        layout: "grid",
+      "lungCancerMedicalHistory": {
+        "title": "Antécédents médicaux et facteurs de risque",
+        "fields": [],
+        "layout": "list"
       },
-      diseaseHistory: {
-        title: "Histoire de la maladie",
-        fields: [
-          "lungCancerDiseaseHistory.symptomOnsetDate",
-          "lungCancerDiseaseHistory.evolution",
-          "lungCancerDiseaseHistory.cough",
-          "lungCancerDiseaseHistory.expectoration",
-          "lungCancerDiseaseHistory.expectorationAspect",
-          "lungCancerDiseaseHistory.hemoptysis",
-          "lungCancerDiseaseHistory.hemoptysisType",
-          "lungCancerDiseaseHistory.dyspnea",
-          "lungCancerDiseaseHistory.dyspneaMmrc",
-          "lungCancerDiseaseHistory.chestPain",
-          "lungCancerDiseaseHistory.chestPainType",
-          "lungCancerDiseaseHistory.feverSweats",
-          "lungCancerDiseaseHistory.generalState",
-          "lungCancerDiseaseHistory.recurrentInfections",
-          "lungCancerDiseaseHistory.extensionSigns.superiorVenaCavaSyndrome",
-          "lungCancerDiseaseHistory.extensionSigns.dysphonia",
-          "lungCancerDiseaseHistory.extensionSigns.dysphagia",
-          "lungCancerDiseaseHistory.extensionSigns.bonePain",
-          "lungCancerDiseaseHistory.extensionSigns.headaches",
-          "lungCancerDiseaseHistory.extensionSigns.neurologicalDisorders",
-          "lungCancerDiseaseHistory.extensionSigns.convulsions",
-          "lungCancerDiseaseHistory.extensionSigns.jaundice",
-          "lungCancerDiseaseHistory.extensionSigns.abdominalPain",
-          "lungCancerDiseaseHistory.extensionSigns.pleuralEffusion",
-          "lungCancerDiseaseHistory.extensionSigns.massiveHemoptysis",
-          "lungCancerDiseaseHistory.extensionSigns.commentsChronology",
-        ],
-        layout: "grid",
+      "lungCancerDiseaseHistory": {
+        "title": "Histoire de la maladie",
+        "fields": [],
+        "layout": "list"
       },
-      clinicalExam: {
-        title: "Examen clinique",
-        fields: [
-          "lungCancerClinicalExam.vitalSigns.bloodPressure",
-          "lungCancerClinicalExam.vitalSigns.heartRate",
-          "lungCancerClinicalExam.vitalSigns.respiratoryRate",
-          "lungCancerClinicalExam.vitalSigns.spO2",
-          "lungCancerClinicalExam.vitalSigns.temperature",
-          "lungCancerClinicalExam.vitalSigns.weight",
-          "lungCancerClinicalExam.vitalSigns.height",
-          "lungCancerClinicalExam.performanceStatus.ecogScore",
-          "lungCancerClinicalExam.performanceStatus.markedGeneralState",
-          "lungCancerClinicalExam.performanceStatus.lowBmi",
-          "lungCancerClinicalExam.performanceStatus.dehydration",
-          "lungCancerClinicalExam.respiratoryExam.pleuralFluidSyndrome",
-          "lungCancerClinicalExam.respiratoryExam.condensationSyndrome",
-          "lungCancerClinicalExam.respiratoryExam.wheezing",
-          "lungCancerClinicalExam.respiratoryExam.crackles",
-          "lungCancerClinicalExam.respiratoryExam.localizedDiminishedBreathSounds",
-          "lungCancerClinicalExam.respiratoryExam.pleuralEffusionSigns",
-          "lungCancerClinicalExam.respiratoryExam.atelectasisSigns",
-          "lungCancerClinicalExam.respiratoryExam.other",
-          "lungCancerClinicalExam.cardiovascularExam.rhythm",
-          "lungCancerClinicalExam.cardiovascularExam.murmur",
-          "lungCancerClinicalExam.cardiovascularExam.heartFailureSigns",
-          "lungCancerClinicalExam.cardiovascularExam.pericardialFriction",
-          "lungCancerClinicalExam.cardiovascularExam.abolishedHeartSounds",
-          "lungCancerClinicalExam.cardiovascularExam.other",
-          "lungCancerClinicalExam.lymphNodeExam.supraclavicularRight",
-          "lungCancerClinicalExam.lymphNodeExam.supraclavicularLeft",
-          "lungCancerClinicalExam.lymphNodeExam.cervical",
-          "lungCancerClinicalExam.lymphNodeExam.axillary",
-          "lungCancerClinicalExam.lymphNodeExam.other",
-          "lungCancerClinicalExam.generalExam.hepatomegaly",
-          "lungCancerClinicalExam.generalExam.bonePain",
-          "lungCancerClinicalExam.generalExam.focalNeurologicalDeficit",
-          "lungCancerClinicalExam.generalExam.superiorVenaCavaSyndrome",
-          "lungCancerClinicalExam.generalExam.lowerLimbEdema",
-          "lungCancerClinicalExam.generalExam.skinSigns",
-          "lungCancerClinicalExam.generalExam.clinicalExamRemarks",
-          "lungCancerClinicalExam.generalExam.otherExams",
-        ],
-        layout: "grid",
+      "lungCancerClinicalExam": {
+        "title": "Examen clinique",
+        "fields": [],
+        "layout": "grid"
       },
-      complementaryExams: {
-        title: "Examens complémentaires",
-        fields: [
-          "lungCancerComplementaryExams.thoracicImaging.chestXRay",
-          "lungCancerComplementaryExams.thoracicImaging.chestXRayReport",
-          "lungCancerComplementaryExams.thoracicImaging.tapCt",
-          "lungCancerComplementaryExams.thoracicImaging.tapCtReport",
-          "lungCancerComplementaryExams.thoracicImaging.brainMri",
-          "lungCancerComplementaryExams.thoracicImaging.brainMriReport",
-          "lungCancerComplementaryExams.thoracicImaging.petCt",
-          "lungCancerComplementaryExams.thoracicImaging.petCtReport",
-          "lungCancerComplementaryExams.thoracicImaging.pleuralUltrasound",
-          "lungCancerComplementaryExams.thoracicImaging.pleuralUltrasoundReport",
-          "lungCancerComplementaryExams.thoracicImaging.other",
-          "lungCancerComplementaryExams.endoscopyBiopsies.bronchoscopy",
-          "lungCancerComplementaryExams.endoscopyBiopsies.bronchoscopyReport",
-          "lungCancerComplementaryExams.endoscopyBiopsies.bronchialBiopsies",
-          "lungCancerComplementaryExams.endoscopyBiopsies.bronchialBiopsiesReport",
-          "lungCancerComplementaryExams.endoscopyBiopsies.balCytology",
-          "lungCancerComplementaryExams.endoscopyBiopsies.balCytologyResults",
-          "lungCancerComplementaryExams.endoscopyBiopsies.ebus",
-          "lungCancerComplementaryExams.endoscopyBiopsies.ebusResults",
-          "lungCancerComplementaryExams.endoscopyBiopsies.ctGuidedBiopsy",
-          "lungCancerComplementaryExams.endoscopyBiopsies.ctGuidedBiopsyResults",
-          "lungCancerComplementaryExams.endoscopyBiopsies.diagnosticPleuralPuncture",
-          "lungCancerComplementaryExams.endoscopyBiopsies.diagnosticPleuralPunctureResults",
-          "lungCancerComplementaryExams.endoscopyBiopsies.lymphNodeBiopsy",
-          "lungCancerComplementaryExams.endoscopyBiopsies.lymphNodeBiopsyResults",
-          "lungCancerComplementaryExams.pathology.histologicalType",
-          "lungCancerComplementaryExams.pathology.nsclcSubtype",
-          "lungCancerComplementaryExams.pathology.molecularBiology",
-          "lungCancerComplementaryExams.pathology.otherMolecular",
-          "lungCancerComplementaryExams.initialBiology.cbc",
-          "lungCancerComplementaryExams.initialBiology.cbcResults",
-          "lungCancerComplementaryExams.initialBiology.crp",
-          "lungCancerComplementaryExams.initialBiology.crpResults",
-          "lungCancerComplementaryExams.initialBiology.ionogramUreaCreatinine",
-          "lungCancerComplementaryExams.initialBiology.ionogramUreaCreatinineResults",
-          "lungCancerComplementaryExams.initialBiology.liverFunction",
-          "lungCancerComplementaryExams.initialBiology.liverFunctionResults",
-          "lungCancerComplementaryExams.initialBiology.calcium",
-          "lungCancerComplementaryExams.initialBiology.albuminNutrition",
-          "lungCancerComplementaryExams.initialBiology.hemostasis",
-          "lungCancerComplementaryExams.initialBiology.hemostasisResults",
-          "lungCancerComplementaryExams.initialBiology.tumorMarkers",
-          "lungCancerComplementaryExams.initialBiology.tumorMarkersResults",
-          "lungCancerComplementaryExams.preTherapeuticAssessment.pftSpirometry",
-          "lungCancerComplementaryExams.preTherapeuticAssessment.pftSpirometryResults",
-          "lungCancerComplementaryExams.preTherapeuticAssessment.dlco",
-          "lungCancerComplementaryExams.preTherapeuticAssessment.dlcoResults",
-          "lungCancerComplementaryExams.preTherapeuticAssessment.bloodGas",
-          "lungCancerComplementaryExams.preTherapeuticAssessment.bloodGasResults",
-          "lungCancerComplementaryExams.preTherapeuticAssessment.ecg",
-          "lungCancerComplementaryExams.preTherapeuticAssessment.ecgResults",
-          "lungCancerComplementaryExams.preTherapeuticAssessment.echocardiography",
-          "lungCancerComplementaryExams.preTherapeuticAssessment.echocardiographyResults",
-          "lungCancerComplementaryExams.preTherapeuticAssessment.anestheticEvaluation",
-          "lungCancerComplementaryExams.preTherapeuticAssessment.anestheticEvaluationResults",
-        ],
-        layout: "grid",
+      "lungCancerComplementaryExams": {
+        "title": "Examens complémentaires",
+        "fields": [],
+        "layout": "grid"
       },
-      diagnosis: {
-        title: "Diagnostic",
-        fields: [
-          "lungCancerDiagnosis.diagnosis.suspected",
-          "lungCancerDiagnosis.diagnosis.confirmed",
-          "lungCancerDiagnosis.diagnosis.nsclc",
-          "lungCancerDiagnosis.diagnosis.sclc",
-          "lungCancerDiagnosis.diagnosis.other",
-          "lungCancerDiagnosis.diagnosis.otherDetails",
-          "lungCancerDiagnosis.staging.t",
-          "lungCancerDiagnosis.staging.n",
-          "lungCancerDiagnosis.staging.m",
-          "lungCancerDiagnosis.staging.stage",
-          "lungCancerDiagnosis.staging.localizedOperable",
-          "lungCancerDiagnosis.staging.locallyAdvanced",
-          "lungCancerDiagnosis.staging.metastatic",
-          "lungCancerDiagnosis.staging.metastaticSites",
-          "lungCancerDiagnosis.staging.otherSites",
-          "lungCancerDiagnosis.staging.otherSitesDetails",
-        ],
-        layout: "grid",
+      "lungCancerDiagnosis": {
+        "title": "Diagnostic",
+        "fields": [],
+        "layout": "list"
       },
-      treatment: {
-        title: "Prise en charge",
-        fields: [
-          "lungCancerManagement.immediateMeasures.oxygenotherapy",
-          "lungCancerManagement.immediateMeasures.analgesia",
-          "lungCancerManagement.immediateMeasures.symptomaticTreatment",
-          "lungCancerManagement.immediateMeasures.oncologicalEmergency",
-          "lungCancerManagement.immediateMeasures.oncologicalEmergencyType",
-          "lungCancerManagement.multidisciplinaryMeeting.rcpRequested",
-          "lungCancerManagement.multidisciplinaryMeeting.rcpAvailable",
-          "lungCancerManagement.multidisciplinaryMeeting.rcpDate",
-          "lungCancerManagement.multidisciplinaryMeeting.decision",
-          "lungCancerManagement.therapeuticProject.surgery",
-          "lungCancerManagement.therapeuticProject.radiotherapy",
-          "lungCancerManagement.therapeuticProject.chemoradiotherapy",
-          "lungCancerManagement.therapeuticProject.chemotherapy",
-          "lungCancerManagement.therapeuticProject.immunotherapy",
-          "lungCancerManagement.therapeuticProject.targetedTherapies",
-          "lungCancerManagement.therapeuticProject.palliativeCare",
-          "lungCancerManagement.therapeuticProject.other",
-          "lungCancerManagement.therapeuticProject.otherDetails",
-        ],
-        layout: "grid",
+      "lungCancerManagement": {
+        "title": "Prise en charge",
+        "fields": [],
+        "layout": "list"
       },
-      followUp: {
-        title: "Surveillance évolutive",
-        fields: [
-          "lungCancerFollowUp.clinicalMonitoring",
-          "lungCancerFollowUp.toxicityEvaluation",
-          "lungCancerFollowUp.followUpImaging",
-          "lungCancerFollowUp.pftFollowUp",
-          "lungCancerFollowUp.nutritionalManagement",
-          "lungCancerFollowUp.smokingCessation",
-          "lungCancerFollowUp.vaccination",
-          "lungCancerFollowUp.evolutionResponse",
-          "lungCancerFollowUp.remarks",
-        ],
-        layout: "grid",
+      "lungCancerFollowUp": {
+        "title": "Surveillance évolutive",
+        "fields": [],
+        "layout": "list"
       },
-      treatmentDischarge: {
-        title: "Traitement et ordonnance / consignes de sortie",
-        fields: [
-          "lungCancerTreatmentDischarge.prescribedTreatment.analgesic",
-          "lungCancerTreatmentDischarge.prescribedTreatment.analgesicDetails",
-          "lungCancerTreatmentDischarge.prescribedTreatment.antitussive",
-          "lungCancerTreatmentDischarge.prescribedTreatment.antitussiveDetails",
-          "lungCancerTreatmentDischarge.prescribedTreatment.corticosteroids",
-          "lungCancerTreatmentDischarge.prescribedTreatment.corticosteroidsDetails",
-          "lungCancerTreatmentDischarge.prescribedTreatment.anticoagulation",
-          "lungCancerTreatmentDischarge.prescribedTreatment.anticoagulationDetails",
-          "lungCancerTreatmentDischarge.prescribedTreatment.other",
-          "lungCancerTreatmentDischarge.prescribedTreatment.otherDetails",
-          "lungCancerTreatmentDischarge.supportiveCare.painManagement",
-          "lungCancerTreatmentDischarge.supportiveCare.dyspneaManagement",
-          "lungCancerTreatmentDischarge.supportiveCare.nutritionalManagement",
-          "lungCancerTreatmentDischarge.supportiveCare.psychosocialSupport",
-          "lungCancerTreatmentDischarge.supportiveCare.palliativeCare",
-          "lungCancerTreatmentDischarge.instructionsFollowUp.emergencyReturn",
-          "lungCancerTreatmentDischarge.instructionsFollowUp.smokingStop",
-          "lungCancerTreatmentDischarge.instructionsFollowUp.pneumologyAppointment",
-          "lungCancerTreatmentDischarge.instructionsFollowUp.oncologyAppointment",
-          "lungCancerTreatmentDischarge.instructionsFollowUp.radiotherapy",
-          "lungCancerTreatmentDischarge.instructionsFollowUp.biologicalControl",
-          "lungCancerTreatmentDischarge.instructionsFollowUp.biologicalControlDate",
-          "lungCancerTreatmentDischarge.instructionsFollowUp.imagingControl",
-          "lungCancerTreatmentDischarge.instructionsFollowUp.imagingControlDate",
-          "lungCancerTreatmentDischarge.instructionsFollowUp.documentsDelivered",
-        ],
-        layout: "grid",
-      },
-    },
-  },
+      "lungCancerTreatmentDischarge": {
+        "title": "Traitement et ordonnance / consignes de sortie",
+        "fields": [],
+        "layout": "list"
+      }
+    }
+  }
 };
 
 export type PDFConfig = typeof PDF_CONFIG;
