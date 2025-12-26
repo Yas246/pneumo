@@ -3,7 +3,7 @@ import type { Patient } from "@/types/patient";
 // Interface pour étendre le type Patient avec des champs dynamiques
 export interface ExtendedPatient extends Patient {
   [key: string]: unknown;
-  
+
   // Champs spécifiques Sleep (avec préfixe sleep)
   sleepPersonalHistory?: {
     obesity?: boolean;
@@ -654,12 +654,111 @@ export interface ExtendedPatient extends Patient {
     };
   };
   // Champs spécifiques DDB
+  ddbConsultationReason?: {
+    consultationReason?: string;
+  };
+  ddbMedicalHistory?: {
+    childhoodRespiratoryInfections?: boolean;
+    childhoodInfections?: string[];
+    cysticFibrosis?: boolean;
+    immuneDeficiency?: boolean;
+    toxicInhalation?: boolean;
+    tuberculosis?: boolean;
+    tuberculosisContagion?: boolean;
+    recurrentSinusitis?: boolean;
+    crohnDisease?: boolean;
+    infertility?: boolean;
+    lymphoma?: boolean;
+    asthma?: boolean;
+    surgicalHistory?: string;
+    gynecoObstetricHistory?: string;
+    consanguinity?: boolean;
+    familyInfertility?: boolean;
+  };
+  ddbToxicHistory?: {
+    activeSmoking?: boolean;
+    smokingType?: string[];
+    smokingStartAge?: number | null;
+    packYears?: number | null;
+    smokingStopped?: boolean;
+    smokingStoppedDuration?: string;
+    passiveSmoking?: boolean;
+    passiveSmokingLocation?: string[];
+    cannabis?: boolean;
+    cannabisConsumption?: string;
+    cannabisStopped?: boolean;
+    cannabisStoppedDuration?: string;
+    alcohol?: boolean;
+    alcoholStopped?: boolean;
+    alcoholStoppedDuration?: string;
+  };
+  ddbDiseaseHistory?: {
+    firstSymptoms?: string;
+    evolution?: string;
+  };
+  ddbRespiratorySymptoms?: {
+    bronchorrhea?: boolean;
+    bronchorrheaVolume?: string;
+    cough?: boolean;
+    hemoptysis?: boolean;
+    purulentSputum?: boolean;
+    recurrentRespiratoryInfections?: boolean;
+    penetrationSyndrome?: boolean;
+    fever?: boolean;
+    thoracicPain?: boolean;
+  };
+  ddbExtraRespiratorySymptoms?: {
+    chronicDiarrhea?: boolean;
+    malabsorptionSyndrome?: boolean;
+    digestiveHemorrhage?: boolean;
+    pyrosis?: boolean;
+    generalStateAlteration?: boolean;
+    sinusPain?: boolean;
+    nasalObstruction?: boolean;
+    ocularSigns?: boolean;
+  };
+  ddbPhysicalSigns?: {
+    thoracicDeformation?: boolean;
+    cyanosis?: boolean;
+    hippocraticFingers?: boolean;
+    bronchialRales?: boolean;
+    crackles?: boolean;
+  };
   ddbComplementaryExams?: {
+    chestXRaySigns?: string[];
     chestXRayImages?: string[];
+    ctAspect?: "" | "DDB localisée" | "DDB généralisée";
+    ctSigns?: string[];
     ctImages?: string[];
+    ctOtherAnomalies?: string;
+    efrDisorder?: string[];
+    bronchoscopyConclusion?: string;
     bronchoscopyImages?: string[];
+    ecbcResult?: string;
     ecbcImages?: string[];
+    bloodGasResult?: string;
     bloodGasImages?: string[];
+    biologyNfs?: string[];
+    biologyCrp?: "" | "Normale" | "Élevée";
+    biologyProteinuria?: "" | "Positif (+)" | "Négatif (-)";
+    biologySweatTest?: "" | "Positif (+)" | "Négatif (-)";
+    biologyIgDosage?: "" | "Positif (+)" | "Négatif (-)";
+  };
+  ddbConclusion?: {
+    conclusion?: string;
+  };
+  ddbEtiology?: {
+    localizedEtiology?: string[];
+    generalizedEtiology?: string[];
+  };
+  ddbTreatment?: {
+    symptomaticTreatments?: string[];
+    etiologicalTreatment?: "" | "Oui" | "Non";
+    otherMeasures?: string[];
+  };
+  ddbFollowUp?: {
+    nextAppointment?: string;
+    observations?: string;
   };
   // Champs spécifiques TBK
   tbkConsultationReason?: {

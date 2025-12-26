@@ -11,6 +11,11 @@ import {
   hasValue,
 } from "@/utils/pdfFieldExtractor";
 import { Image, Text, View } from "@react-pdf/renderer";
+import { BPCOPathologyPDF } from "./pathologies/BPCOPathologyPDF";
+import { DDBPathologyPDF } from "./pathologies/DDBPathologyPDF";
+import { LungCancerPathologyPDF } from "./pathologies/LungCancerPathologyPDF";
+import { PIDPathologyPDF } from "./pathologies/PIDPathologyPDF";
+import { PleuralEffusionPathologyPDF } from "./pathologies/PleuralEffusionPathologyPDF";
 import { PneumothoraxPathologyPDF } from "./pathologies/PneumothoraxPathologyPDF";
 import { SleepPathologyPDF } from "./pathologies/SleepPathologyPDF";
 import { TBKPathologyPDF } from "./pathologies/TBKPathologyPDF";
@@ -286,6 +291,15 @@ function generateFieldLabel(fieldKey: string): string {
 export function DynamicPDFRenderer({
   patient,
 }: Omit<DynamicPDFRendererProps, "pathology">) {
+  // Vérifier si le patient a la pathologie lungCancer
+  const hasLungCancerPathology = patient.pathologies?.includes("lungCancer");
+
+  // Vérifier si le patient a la pathologie ddb
+  const hasDDBPathology = patient.pathologies?.includes("ddb");
+
+  // Vérifier si le patient a la pathologie pid
+  const hasPIDPathology = patient.pathologies?.includes("pid");
+
   // Vérifier si le patient a la pathologie sleep
   const hasSleepPathology = patient.pathologies?.includes("sleep");
 
@@ -295,6 +309,28 @@ export function DynamicPDFRenderer({
 
   // Vérifier si le patient a la pathologie tbk
   const hasTBKPathology = patient.pathologies?.includes("tbk");
+
+  // Vérifier si le patient a la pathologie pleuralEffusion
+  const hasPleuralEffusionPathology =
+    patient.pathologies?.includes("pleuralEffusion");
+
+  // Vérifier si le patient a la pathologie bpco
+  const hasBPCOPathology = patient.pathologies?.includes("bpco");
+
+  // Si le patient a la pathologie lungCancer, utiliser le composant spécifique
+  if (hasLungCancerPathology) {
+    return <LungCancerPathologyPDF patient={patient} />;
+  }
+
+  // Si le patient a la pathologie ddb, utiliser le composant spécifique
+  if (hasDDBPathology) {
+    return <DDBPathologyPDF patient={patient} />;
+  }
+
+  // Si le patient a la pathologie pid, utiliser le composant spécifique
+  if (hasPIDPathology) {
+    return <PIDPathologyPDF patient={patient} />;
+  }
 
   // Si le patient a la pathologie sleep, utiliser le composant spécifique
   if (hasSleepPathology) {
@@ -309,6 +345,16 @@ export function DynamicPDFRenderer({
   // Si le patient a la pathologie tbk, utiliser le composant spécifique
   if (hasTBKPathology) {
     return <TBKPathologyPDF patient={patient} />;
+  }
+
+  // Si le patient a la pathologie pleuralEffusion, utiliser le composant spécifique
+  if (hasPleuralEffusionPathology) {
+    return <PleuralEffusionPathologyPDF patient={patient} />;
+  }
+
+  // Si le patient a la pathologie bpco, utiliser le composant spécifique
+  if (hasBPCOPathology) {
+    return <BPCOPathologyPDF patient={patient} />;
   }
 
   // Sinon, utiliser le rendu dynamique générique pour les autres pathologies
