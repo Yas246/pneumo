@@ -11,6 +11,7 @@ import {
   hasValue,
 } from "@/utils/pdfFieldExtractor";
 import { Image, Text, View } from "@react-pdf/renderer";
+import { AsthmaPathologyPDF } from "./pathologies/AsthmaPathologyPDF";
 import { BPCOPathologyPDF } from "./pathologies/BPCOPathologyPDF";
 import { DDBPathologyPDF } from "./pathologies/DDBPathologyPDF";
 import { LungCancerPathologyPDF } from "./pathologies/LungCancerPathologyPDF";
@@ -314,6 +315,9 @@ export function DynamicPDFRenderer({
   const hasPleuralEffusionPathology =
     patient.pathologies?.includes("pleuralEffusion");
 
+  // Vérifier si le patient a la pathologie asthma
+  const hasAsthmaPathology = patient.pathologies?.includes("asthma");
+
   // Vérifier si le patient a la pathologie bpco
   const hasBPCOPathology = patient.pathologies?.includes("bpco");
 
@@ -350,6 +354,11 @@ export function DynamicPDFRenderer({
   // Si le patient a la pathologie pleuralEffusion, utiliser le composant spécifique
   if (hasPleuralEffusionPathology) {
     return <PleuralEffusionPathologyPDF patient={patient} />;
+  }
+
+  // Si le patient a la pathologie asthma, utiliser le composant spécifique
+  if (hasAsthmaPathology) {
+    return <AsthmaPathologyPDF patient={patient} />;
   }
 
   // Si le patient a la pathologie bpco, utiliser le composant spécifique
