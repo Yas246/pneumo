@@ -4,6 +4,10 @@ import type { Patient } from "@/types/patient";
 export interface ExtendedPatient extends Patient {
   [key: string]: unknown;
 
+  // Note: consultationReason, symptomsDuration, diurnalSymptoms, nocturnalSymptoms
+  // sont déjà définis dans l'interface Patient (src/types/patient.ts)
+  // Le champ showEpworth est manquant dans Patient mais utilisé dans le formulaire
+
   // Champs spécifiques Sleep (avec préfixe sleep)
   sleepPersonalHistory?: {
     obesity?: boolean;

@@ -5,7 +5,7 @@
 
 import { ExtendedPatient, getNestedValue } from "@/utils/pdfFieldExtractor";
 import { Image, Text, View } from "@react-pdf/renderer";
-import { baseStyles, imageStyles } from "../styles";
+import { baseStyles, imageStyles, pathologyStyles } from "../styles";
 
 interface LungCancerPathologyPDFProps {
   patient: ExtendedPatient;
@@ -138,63 +138,68 @@ function ConsultationReasonSection({ patient }: LungCancerPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>II. Motif de consultation</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Toux chronique"
-            value={consultationReason?.chronicCough}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Hémoptysie" value={consultationReason?.hemoptysis} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Dyspnée" value={consultationReason?.dyspnea} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Douleur thoracique"
-            value={consultationReason?.chestPain}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Altération de l'état général"
-            value={consultationReason?.generalStateAlteration}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Fièvre prolongée"
-            value={consultationReason?.prolongedFever}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Dysphonie" value={consultationReason?.dysphonia} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Découverte radiologique fortuite"
-            value={consultationReason?.fortuitousRadiologicalDiscovery}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Bilan d'extension"
-            value={consultationReason?.extensionAssessment}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Autre" value={consultationReason?.other} />
-        </View>
-        {hasValue(consultationReason?.otherDetails) && (
-          <View style={baseStyles.gridItemFull}>
+      <View style={pathologyStyles.lungCancerSection}>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
             <PDFField
-              label="Détails autre"
-              value={consultationReason?.otherDetails}
+              label="Toux chronique"
+              value={consultationReason?.chronicCough}
             />
           </View>
-        )}
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Hémoptysie"
+              value={consultationReason?.hemoptysis}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Dyspnée" value={consultationReason?.dyspnea} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Douleur thoracique"
+              value={consultationReason?.chestPain}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Altération de l'état général"
+              value={consultationReason?.generalStateAlteration}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Fièvre prolongée"
+              value={consultationReason?.prolongedFever}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Dysphonie" value={consultationReason?.dysphonia} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Découverte radiologique fortuite"
+              value={consultationReason?.fortuitousRadiologicalDiscovery}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Bilan d'extension"
+              value={consultationReason?.extensionAssessment}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Autre" value={consultationReason?.other} />
+          </View>
+          {hasValue(consultationReason?.otherDetails) && (
+            <View style={baseStyles.gridItemFull}>
+              <PDFField
+                label="Détails autre"
+                value={consultationReason?.otherDetails}
+              />
+            </View>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -230,222 +235,223 @@ function MedicalHistorySection({ patient }: LungCancerPathologyPDFProps) {
       <Text style={baseStyles.sectionTitle}>
         III. Antécédents et facteurs de risque
       </Text>
+      <View style={pathologyStyles.lungCancerSection}>
+        {/* Antécédents personnels */}
+        {personalHistory &&
+          Object.values(personalHistory).some((v) => hasValue(v)) && (
+            <>
+              <Text style={baseStyles.subsectionTitle}>
+                Antécédents personnels
+              </Text>
+              <View style={baseStyles.grid}>
+                <View style={baseStyles.gridItem}>
+                  <PDFField label="BPCO" value={personalHistory?.bpco} />
+                </View>
+                <View style={baseStyles.gridItem}>
+                  <PDFField label="Asthme" value={personalHistory?.asthma} />
+                </View>
+                <View style={baseStyles.gridItem}>
+                  <PDFField
+                    label="Tuberculose"
+                    value={personalHistory?.tuberculosis}
+                  />
+                </View>
+                <View style={baseStyles.gridItem}>
+                  <PDFField label="PID" value={personalHistory?.pid} />
+                </View>
+                <View style={baseStyles.gridItem}>
+                  <PDFField
+                    label="Bronchectasies"
+                    value={personalHistory?.bronchiectasis}
+                  />
+                </View>
+                <View style={baseStyles.gridItem}>
+                  <PDFField
+                    label="Maladie cardiovasculaire"
+                    value={personalHistory?.cardiovascularDisease}
+                  />
+                </View>
+                <View style={baseStyles.gridItem}>
+                  <PDFField label="HTA" value={personalHistory?.hta} />
+                </View>
+                {hasValue(personalHistory?.htaDetails) && (
+                  <View style={baseStyles.gridItemFull}>
+                    <PDFField
+                      label="Détails HTA"
+                      value={personalHistory?.htaDetails}
+                    />
+                  </View>
+                )}
+                <View style={baseStyles.gridItem}>
+                  <PDFField label="Diabète" value={personalHistory?.diabetes} />
+                </View>
+                {hasValue(personalHistory?.diabetesDetails) && (
+                  <View style={baseStyles.gridItemFull}>
+                    <PDFField
+                      label="Détails Diabète"
+                      value={personalHistory?.diabetesDetails}
+                    />
+                  </View>
+                )}
+                <View style={baseStyles.gridItem}>
+                  <PDFField
+                    label="Insuffisance rénale chronique"
+                    value={personalHistory?.chronicKidneyDisease}
+                  />
+                </View>
+                <View style={baseStyles.gridItem}>
+                  <PDFField
+                    label="Maladie hépatique"
+                    value={personalHistory?.liverDisease}
+                  />
+                </View>
+                {hasValue(personalHistory?.liverDiseaseDetails) && (
+                  <View style={baseStyles.gridItemFull}>
+                    <PDFField
+                      label="Détails maladie hépatique"
+                      value={personalHistory?.liverDiseaseDetails}
+                    />
+                  </View>
+                )}
+                <View style={baseStyles.gridItem}>
+                  <PDFField
+                    label="Antécédents de cancer"
+                    value={personalHistory?.cancerHistory}
+                  />
+                </View>
+                {hasValue(personalHistory?.cancerHistoryDetails) && (
+                  <View style={baseStyles.gridItemFull}>
+                    <PDFField
+                      label="Détails antécédents cancer"
+                      value={personalHistory?.cancerHistoryDetails}
+                    />
+                  </View>
+                )}
+                <View style={baseStyles.gridItem}>
+                  <PDFField
+                    label="Chirurgie thoracique"
+                    value={personalHistory?.thoracicSurgery}
+                  />
+                </View>
+                <View style={baseStyles.gridItem}>
+                  <PDFField
+                    label="Radiothérapie thoracique"
+                    value={personalHistory?.thoracicRadiotherapy}
+                  />
+                </View>
+                <View style={baseStyles.gridItem}>
+                  <PDFField label="Autre" value={personalHistory?.other} />
+                </View>
+                {hasValue(personalHistory?.otherDetails) && (
+                  <View style={baseStyles.gridItemFull}>
+                    <PDFField
+                      label="Détails autre"
+                      value={personalHistory?.otherDetails}
+                    />
+                  </View>
+                )}
+              </View>
+            </>
+          )}
 
-      {/* Antécédents personnels */}
-      {personalHistory &&
-        Object.values(personalHistory).some((v) => hasValue(v)) && (
+        {/* Facteurs de risque et expositions */}
+        {riskFactors && Object.values(riskFactors).some((v) => hasValue(v)) && (
           <>
             <Text style={baseStyles.subsectionTitle}>
-              Antécédents personnels
+              Facteurs de risque et expositions
             </Text>
             <View style={baseStyles.grid}>
               <View style={baseStyles.gridItem}>
-                <PDFField label="BPCO" value={personalHistory?.bpco} />
+                <PDFField label="Tabagisme" value={riskFactors?.smoking} />
               </View>
-              <View style={baseStyles.gridItem}>
-                <PDFField label="Asthme" value={personalHistory?.asthma} />
-              </View>
-              <View style={baseStyles.gridItem}>
-                <PDFField
-                  label="Tuberculose"
-                  value={personalHistory?.tuberculosis}
-                />
-              </View>
-              <View style={baseStyles.gridItem}>
-                <PDFField label="PID" value={personalHistory?.pid} />
-              </View>
-              <View style={baseStyles.gridItem}>
-                <PDFField
-                  label="Bronchectasies"
-                  value={personalHistory?.bronchiectasis}
-                />
-              </View>
-              <View style={baseStyles.gridItem}>
-                <PDFField
-                  label="Maladie cardiovasculaire"
-                  value={personalHistory?.cardiovascularDisease}
-                />
-              </View>
-              <View style={baseStyles.gridItem}>
-                <PDFField label="HTA" value={personalHistory?.hta} />
-              </View>
-              {hasValue(personalHistory?.htaDetails) && (
-                <View style={baseStyles.gridItemFull}>
+              {hasValue(riskFactors?.packYears) && (
+                <View style={baseStyles.gridItem}>
                   <PDFField
-                    label="Détails HTA"
-                    value={personalHistory?.htaDetails}
+                    label="Paquets-années"
+                    value={riskFactors?.packYears}
                   />
                 </View>
               )}
-              <View style={baseStyles.gridItem}>
-                <PDFField label="Diabète" value={personalHistory?.diabetes} />
-              </View>
-              {hasValue(personalHistory?.diabetesDetails) && (
-                <View style={baseStyles.gridItemFull}>
+              {hasValue(riskFactors?.smokingStatus) && (
+                <View style={baseStyles.gridItem}>
                   <PDFField
-                    label="Détails Diabète"
-                    value={personalHistory?.diabetesDetails}
+                    label="Statut tabagique"
+                    value={riskFactors?.smokingStatus}
                   />
                 </View>
               )}
               <View style={baseStyles.gridItem}>
                 <PDFField
-                  label="Insuffisance rénale chronique"
-                  value={personalHistory?.chronicKidneyDisease}
+                  label="Tabagisme passif"
+                  value={riskFactors?.passiveSmoking}
+                />
+              </View>
+              {Array.isArray(riskFactors?.occupationalExposure) &&
+                riskFactors.occupationalExposure.length > 0 && (
+                  <View style={baseStyles.gridItemFull}>
+                    <PDFField
+                      label="Exposition professionnelle"
+                      value={riskFactors?.occupationalExposure}
+                    />
+                  </View>
+                )}
+              <View style={baseStyles.gridItem}>
+                <PDFField label="Pollution" value={riskFactors?.pollution} />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField
+                  label="Antécédents familiaux"
+                  value={riskFactors?.familyHistory}
                 />
               </View>
               <View style={baseStyles.gridItem}>
                 <PDFField
-                  label="Maladie hépatique"
-                  value={personalHistory?.liverDisease}
-                />
-              </View>
-              {hasValue(personalHistory?.liverDiseaseDetails) && (
-                <View style={baseStyles.gridItemFull}>
-                  <PDFField
-                    label="Détails maladie hépatique"
-                    value={personalHistory?.liverDiseaseDetails}
-                  />
-                </View>
-              )}
-              <View style={baseStyles.gridItem}>
-                <PDFField
-                  label="Antécédents de cancer"
-                  value={personalHistory?.cancerHistory}
-                />
-              </View>
-              {hasValue(personalHistory?.cancerHistoryDetails) && (
-                <View style={baseStyles.gridItemFull}>
-                  <PDFField
-                    label="Détails antécédents cancer"
-                    value={personalHistory?.cancerHistoryDetails}
-                  />
-                </View>
-              )}
-              <View style={baseStyles.gridItem}>
-                <PDFField
-                  label="Chirurgie thoracique"
-                  value={personalHistory?.thoracicSurgery}
-                />
-              </View>
-              <View style={baseStyles.gridItem}>
-                <PDFField
-                  label="Radiothérapie thoracique"
-                  value={personalHistory?.thoracicRadiotherapy}
-                />
-              </View>
-              <View style={baseStyles.gridItem}>
-                <PDFField label="Autre" value={personalHistory?.other} />
-              </View>
-              {hasValue(personalHistory?.otherDetails) && (
-                <View style={baseStyles.gridItemFull}>
-                  <PDFField
-                    label="Détails autre"
-                    value={personalHistory?.otherDetails}
-                  />
-                </View>
-              )}
-            </View>
-          </>
-        )}
-
-      {/* Facteurs de risque et expositions */}
-      {riskFactors && Object.values(riskFactors).some((v) => hasValue(v)) && (
-        <>
-          <Text style={baseStyles.subsectionTitle}>
-            Facteurs de risque et expositions
-          </Text>
-          <View style={baseStyles.grid}>
-            <View style={baseStyles.gridItem}>
-              <PDFField label="Tabagisme" value={riskFactors?.smoking} />
-            </View>
-            {hasValue(riskFactors?.packYears) && (
-              <View style={baseStyles.gridItem}>
-                <PDFField
-                  label="Paquets-années"
-                  value={riskFactors?.packYears}
-                />
-              </View>
-            )}
-            {hasValue(riskFactors?.smokingStatus) && (
-              <View style={baseStyles.gridItem}>
-                <PDFField
-                  label="Statut tabagique"
-                  value={riskFactors?.smokingStatus}
-                />
-              </View>
-            )}
-            <View style={baseStyles.gridItem}>
-              <PDFField
-                label="Tabagisme passif"
-                value={riskFactors?.passiveSmoking}
-              />
-            </View>
-            {Array.isArray(riskFactors?.occupationalExposure) &&
-              riskFactors.occupationalExposure.length > 0 && (
-                <View style={baseStyles.gridItemFull}>
-                  <PDFField
-                    label="Exposition professionnelle"
-                    value={riskFactors?.occupationalExposure}
-                  />
-                </View>
-              )}
-            <View style={baseStyles.gridItem}>
-              <PDFField label="Pollution" value={riskFactors?.pollution} />
-            </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField
-                label="Antécédents familiaux"
-                value={riskFactors?.familyHistory}
-              />
-            </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField
-                label="Immunosuppression"
-                value={riskFactors?.immunosuppression}
-              />
-            </View>
-          </View>
-        </>
-      )}
-
-      {/* Allergies et traitements */}
-      {allergiesTreatments &&
-        Object.values(allergiesTreatments).some((v) => hasValue(v)) && (
-          <>
-            <Text style={baseStyles.subsectionTitle}>
-              Allergies et traitements
-            </Text>
-            <View style={baseStyles.grid}>
-              <View style={baseStyles.gridItem}>
-                <PDFField
-                  label="Allergies"
-                  value={allergiesTreatments?.allergies}
-                />
-              </View>
-              {hasValue(allergiesTreatments?.allergiesDetails) && (
-                <View style={baseStyles.gridItemFull}>
-                  <PDFField
-                    label="Détails allergies"
-                    value={allergiesTreatments?.allergiesDetails}
-                  />
-                </View>
-              )}
-              <View style={baseStyles.gridItemFull}>
-                <PDFField
-                  label="Traitements chroniques"
-                  value={allergiesTreatments?.chronicTreatments}
-                />
-              </View>
-              <View style={baseStyles.gridItem}>
-                <PDFField
-                  label="Anticoagulants/Antiagrégants"
-                  value={allergiesTreatments?.anticoagulantsAntiplatelets}
+                  label="Immunosuppression"
+                  value={riskFactors?.immunosuppression}
                 />
               </View>
             </View>
           </>
         )}
+
+        {/* Allergies et traitements */}
+        {allergiesTreatments &&
+          Object.values(allergiesTreatments).some((v) => hasValue(v)) && (
+            <>
+              <Text style={baseStyles.subsectionTitle}>
+                Allergies et traitements
+              </Text>
+              <View style={baseStyles.grid}>
+                <View style={baseStyles.gridItem}>
+                  <PDFField
+                    label="Allergies"
+                    value={allergiesTreatments?.allergies}
+                  />
+                </View>
+                {hasValue(allergiesTreatments?.allergiesDetails) && (
+                  <View style={baseStyles.gridItemFull}>
+                    <PDFField
+                      label="Détails allergies"
+                      value={allergiesTreatments?.allergiesDetails}
+                    />
+                  </View>
+                )}
+                <View style={baseStyles.gridItemFull}>
+                  <PDFField
+                    label="Traitements chroniques"
+                    value={allergiesTreatments?.chronicTreatments}
+                  />
+                </View>
+                <View style={baseStyles.gridItem}>
+                  <PDFField
+                    label="Anticoagulants/Antiagrégants"
+                    value={allergiesTreatments?.anticoagulantsAntiplatelets}
+                  />
+                </View>
+              </View>
+            </>
+          )}
+      </View>
     </View>
   );
 }
@@ -472,183 +478,190 @@ function DiseaseHistorySection({ patient }: LungCancerPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>IV. Histoire de la maladie</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Date d'apparition des symptômes"
-            value={diseaseHistory?.symptomOnsetDate}
-          />
-        </View>
-        <View style={baseStyles.gridItemFull}>
-          <PDFField label="Évolution" value={diseaseHistory?.evolution} />
-        </View>
-
-        {/* Symptômes */}
-        <Text style={baseStyles.subsectionTitle}>Symptômes</Text>
-        {Array.isArray(diseaseHistory?.cough) &&
-          diseaseHistory.cough.length > 0 && (
-            <View style={baseStyles.gridItemFull}>
-              <PDFField label="Toux" value={diseaseHistory?.cough} />
-            </View>
-          )}
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Expectoration"
-            value={diseaseHistory?.expectoration}
-          />
-        </View>
-        {hasValue(diseaseHistory?.expectorationAspect) && (
-          <View style={baseStyles.gridItem}>
+      <View style={pathologyStyles.lungCancerSection}>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItemFull}>
             <PDFField
-              label="Aspect expectoration"
-              value={diseaseHistory?.expectorationAspect}
+              label="Date d'apparition des symptômes"
+              value={diseaseHistory?.symptomOnsetDate}
             />
           </View>
-        )}
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Hémoptysie" value={diseaseHistory?.hemoptysis} />
-        </View>
-        {Array.isArray(diseaseHistory?.hemoptysisType) &&
-          diseaseHistory.hemoptysisType.length > 0 && (
-            <View style={baseStyles.gridItemFull}>
+          <View style={baseStyles.gridItemFull}>
+            <PDFField label="Évolution" value={diseaseHistory?.evolution} />
+          </View>
+
+          {/* Symptômes */}
+          <Text style={baseStyles.subsectionTitle}>Symptômes</Text>
+          {Array.isArray(diseaseHistory?.cough) &&
+            diseaseHistory.cough.length > 0 && (
+              <View style={baseStyles.gridItemFull}>
+                <PDFField label="Toux" value={diseaseHistory?.cough} />
+              </View>
+            )}
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Expectoration"
+              value={diseaseHistory?.expectoration}
+            />
+          </View>
+          {hasValue(diseaseHistory?.expectorationAspect) && (
+            <View style={baseStyles.gridItem}>
               <PDFField
-                label="Type hémoptysie"
-                value={diseaseHistory?.hemoptysisType}
+                label="Aspect expectoration"
+                value={diseaseHistory?.expectorationAspect}
               />
             </View>
           )}
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Dyspnée" value={diseaseHistory?.dyspnea} />
-        </View>
-        {hasValue(diseaseHistory?.dyspneaMmrc) && (
           <View style={baseStyles.gridItem}>
-            <PDFField label="MMRC" value={diseaseHistory?.dyspneaMmrc} />
+            <PDFField label="Hémoptysie" value={diseaseHistory?.hemoptysis} />
           </View>
-        )}
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Douleur thoracique"
-            value={diseaseHistory?.chestPain}
-          />
-        </View>
-        {hasValue(diseaseHistory?.chestPainType) && (
+          {Array.isArray(diseaseHistory?.hemoptysisType) &&
+            diseaseHistory.hemoptysisType.length > 0 && (
+              <View style={baseStyles.gridItemFull}>
+                <PDFField
+                  label="Type hémoptysie"
+                  value={diseaseHistory?.hemoptysisType}
+                />
+              </View>
+            )}
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Dyspnée" value={diseaseHistory?.dyspnea} />
+          </View>
+          {hasValue(diseaseHistory?.dyspneaMmrc) && (
+            <View style={baseStyles.gridItem}>
+              <PDFField label="MMRC" value={diseaseHistory?.dyspneaMmrc} />
+            </View>
+          )}
           <View style={baseStyles.gridItem}>
             <PDFField
-              label="Type douleur"
-              value={diseaseHistory?.chestPainType}
+              label="Douleur thoracique"
+              value={diseaseHistory?.chestPain}
             />
           </View>
-        )}
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Fièvre/Sueurs" value={diseaseHistory?.feverSweats} />
-        </View>
-        {Array.isArray(diseaseHistory?.generalState) &&
-          diseaseHistory.generalState.length > 0 && (
-            <View style={baseStyles.gridItemFull}>
+          {hasValue(diseaseHistory?.chestPainType) && (
+            <View style={baseStyles.gridItem}>
               <PDFField
-                label="État général"
-                value={diseaseHistory?.generalState}
+                label="Type douleur"
+                value={diseaseHistory?.chestPainType}
               />
             </View>
           )}
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Infections récurrentes"
-            value={diseaseHistory?.recurrentInfections}
-          />
-        </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Fièvre/Sueurs"
+              value={diseaseHistory?.feverSweats}
+            />
+          </View>
+          {Array.isArray(diseaseHistory?.generalState) &&
+            diseaseHistory.generalState.length > 0 && (
+              <View style={baseStyles.gridItemFull}>
+                <PDFField
+                  label="État général"
+                  value={diseaseHistory?.generalState}
+                />
+              </View>
+            )}
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Infections récurrentes"
+              value={diseaseHistory?.recurrentInfections}
+            />
+          </View>
 
-        {/* Signes d'extension */}
-        {extensionSigns &&
-          Object.values(extensionSigns).some((v) => hasValue(v)) && (
-            <>
-              <Text style={baseStyles.subsectionTitle}>
-                Signes d&apos;extension/complication
-              </Text>
-              <View style={baseStyles.grid}>
-                <View style={baseStyles.gridItem}>
-                  <PDFField
-                    label="Syndrome cave supérieur"
-                    value={extensionSigns?.superiorVenaCavaSyndrome}
-                  />
-                </View>
-                {Array.isArray(extensionSigns?.superiorVenaCavaSyndromeSigns) &&
-                  extensionSigns.superiorVenaCavaSyndromeSigns.length > 0 && (
+          {/* Signes d'extension */}
+          {extensionSigns &&
+            Object.values(extensionSigns).some((v) => hasValue(v)) && (
+              <>
+                <Text style={baseStyles.subsectionTitle}>
+                  Signes d&apos;extension/complication
+                </Text>
+                <View style={baseStyles.grid}>
+                  <View style={baseStyles.gridItem}>
+                    <PDFField
+                      label="Syndrome cave supérieur"
+                      value={extensionSigns?.superiorVenaCavaSyndrome}
+                    />
+                  </View>
+                  {Array.isArray(
+                    extensionSigns?.superiorVenaCavaSyndromeSigns
+                  ) &&
+                    extensionSigns.superiorVenaCavaSyndromeSigns.length > 0 && (
+                      <View style={baseStyles.gridItemFull}>
+                        <PDFField
+                          label="Signes syndrome cave supérieur"
+                          value={extensionSigns?.superiorVenaCavaSyndromeSigns}
+                        />
+                      </View>
+                    )}
+                  <View style={baseStyles.gridItem}>
+                    <PDFField
+                      label="Dysphonie"
+                      value={extensionSigns?.dysphonia}
+                    />
+                  </View>
+                  <View style={baseStyles.gridItem}>
+                    <PDFField
+                      label="Dysphagie"
+                      value={extensionSigns?.dysphagia}
+                    />
+                  </View>
+                  <View style={baseStyles.gridItem}>
+                    <PDFField
+                      label="Douleurs osseuses"
+                      value={extensionSigns?.bonePain}
+                    />
+                  </View>
+                  <View style={baseStyles.gridItem}>
+                    <PDFField
+                      label="Céphalées"
+                      value={extensionSigns?.headaches}
+                    />
+                  </View>
+                  <View style={baseStyles.gridItem}>
+                    <PDFField
+                      label="Troubles neurologiques"
+                      value={extensionSigns?.neurologicalDisorders}
+                    />
+                  </View>
+                  <View style={baseStyles.gridItem}>
+                    <PDFField
+                      label="Convulsions"
+                      value={extensionSigns?.convulsions}
+                    />
+                  </View>
+                  <View style={baseStyles.gridItem}>
+                    <PDFField label="Ictère" value={extensionSigns?.jaundice} />
+                  </View>
+                  <View style={baseStyles.gridItem}>
+                    <PDFField
+                      label="Douleurs abdominales"
+                      value={extensionSigns?.abdominalPain}
+                    />
+                  </View>
+                  <View style={baseStyles.gridItem}>
+                    <PDFField
+                      label="Épanchement pleural"
+                      value={extensionSigns?.pleuralEffusion}
+                    />
+                  </View>
+                  <View style={baseStyles.gridItem}>
+                    <PDFField
+                      label="Hémoptysie massive"
+                      value={extensionSigns?.massiveHemoptysis}
+                    />
+                  </View>
+                  {hasValue(extensionSigns?.commentsChronology) && (
                     <View style={baseStyles.gridItemFull}>
                       <PDFField
-                        label="Signes syndrome cave supérieur"
-                        value={extensionSigns?.superiorVenaCavaSyndromeSigns}
+                        label="Commentaires chronologiques"
+                        value={extensionSigns?.commentsChronology}
                       />
                     </View>
                   )}
-                <View style={baseStyles.gridItem}>
-                  <PDFField
-                    label="Dysphonie"
-                    value={extensionSigns?.dysphonia}
-                  />
                 </View>
-                <View style={baseStyles.gridItem}>
-                  <PDFField
-                    label="Dysphagie"
-                    value={extensionSigns?.dysphagia}
-                  />
-                </View>
-                <View style={baseStyles.gridItem}>
-                  <PDFField
-                    label="Douleurs osseuses"
-                    value={extensionSigns?.bonePain}
-                  />
-                </View>
-                <View style={baseStyles.gridItem}>
-                  <PDFField
-                    label="Céphalées"
-                    value={extensionSigns?.headaches}
-                  />
-                </View>
-                <View style={baseStyles.gridItem}>
-                  <PDFField
-                    label="Troubles neurologiques"
-                    value={extensionSigns?.neurologicalDisorders}
-                  />
-                </View>
-                <View style={baseStyles.gridItem}>
-                  <PDFField
-                    label="Convulsions"
-                    value={extensionSigns?.convulsions}
-                  />
-                </View>
-                <View style={baseStyles.gridItem}>
-                  <PDFField label="Ictère" value={extensionSigns?.jaundice} />
-                </View>
-                <View style={baseStyles.gridItem}>
-                  <PDFField
-                    label="Douleurs abdominales"
-                    value={extensionSigns?.abdominalPain}
-                  />
-                </View>
-                <View style={baseStyles.gridItem}>
-                  <PDFField
-                    label="Épanchement pleural"
-                    value={extensionSigns?.pleuralEffusion}
-                  />
-                </View>
-                <View style={baseStyles.gridItem}>
-                  <PDFField
-                    label="Hémoptysie massive"
-                    value={extensionSigns?.massiveHemoptysis}
-                  />
-                </View>
-                {hasValue(extensionSigns?.commentsChronology) && (
-                  <View style={baseStyles.gridItemFull}>
-                    <PDFField
-                      label="Commentaires chronologiques"
-                      value={extensionSigns?.commentsChronology}
-                    />
-                  </View>
-                )}
-              </View>
-            </>
-          )}
+              </>
+            )}
+        </View>
       </View>
     </View>
   );

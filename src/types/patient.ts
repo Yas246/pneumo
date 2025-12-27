@@ -41,6 +41,7 @@ export interface Patient {
     excessiveSleepiness: boolean;
     headaches: boolean;
     asthenia: boolean;
+    showEpworth?: boolean;
     epworthScore: number;
     epworthDetails: number[];
   };

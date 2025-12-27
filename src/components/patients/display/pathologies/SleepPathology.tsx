@@ -20,6 +20,9 @@ export function SleepPathology({
 
   return (
     <div className={className}>
+      {/* Section 0: Motif de Consultation */}
+      <ConsultationReasonSection patient={patient} />
+
       {/* Section 1: Examen Clinique */}
       <ClinicalExamSection patient={patient} />
 
@@ -41,6 +44,148 @@ export function SleepPathology({
       {/* Section 7: Traitement */}
       <TreatmentSection patient={patient} />
     </div>
+  );
+}
+
+// Sous-composant pour la section motif de consultation
+function ConsultationReasonSection({ patient }: { patient: ExtendedPatient }) {
+  const consultationReason = patient?.consultationReason;
+  const symptomsDuration = patient?.symptomsDuration;
+  const diurnalSymptoms = patient?.diurnalSymptoms;
+  const nocturnalSymptoms = patient?.nocturnalSymptoms;
+
+  const hasAnyConsultationData =
+    consultationReason ||
+    symptomsDuration ||
+    diurnalSymptoms?.excessiveSleepiness ||
+    diurnalSymptoms?.headaches ||
+    diurnalSymptoms?.asthenia ||
+    (diurnalSymptoms?.showEpworth && diurnalSymptoms?.epworthScore) ||
+    nocturnalSymptoms?.snoring ||
+    nocturnalSymptoms?.sleepApnea ||
+    nocturnalSymptoms?.choking ||
+    nocturnalSymptoms?.agitation ||
+    nocturnalSymptoms?.insomnia ||
+    nocturnalSymptoms?.nocturia ||
+    nocturnalSymptoms?.other;
+
+  if (!hasAnyConsultationData) return null;
+
+  return (
+    <PathologySection title="Motif de Consultation" patient={patient}>
+      <div className="space-y-6">
+        {/* Motif principal */}
+        {consultationReason && (
+          <div>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Motif principal
+            </p>
+            <p className="text-sm text-gray-900 dark:text-white">
+              {consultationReason}
+            </p>
+          </div>
+        )}
+
+        {/* Durée des symptômes */}
+        {symptomsDuration && (
+          <div>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Durée des symptômes
+            </p>
+            <p className="text-sm text-gray-900 dark:text-white">
+              {symptomsDuration}
+            </p>
+          </div>
+        )}
+
+        {/* Symptômes diurnes */}
+        {(diurnalSymptoms?.excessiveSleepiness ||
+          diurnalSymptoms?.headaches ||
+          diurnalSymptoms?.asthenia ||
+          (diurnalSymptoms?.showEpworth && diurnalSymptoms?.epworthScore)) && (
+          <div>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Symptômes diurnes
+            </p>
+            <div className="mt-2 space-y-2">
+              {diurnalSymptoms.excessiveSleepiness && (
+                <p className="text-sm text-gray-900 dark:text-white">
+                  • Somnolence diurne excessive
+                </p>
+              )}
+              {diurnalSymptoms.headaches && (
+                <p className="text-sm text-gray-900 dark:text-white">
+                  • Céphalées
+                </p>
+              )}
+              {diurnalSymptoms.asthenia && (
+                <p className="text-sm text-gray-900 dark:text-white">
+                  • Asthénie
+                </p>
+              )}
+              {diurnalSymptoms.showEpworth &&
+                diurnalSymptoms.epworthScore !== undefined && (
+                  <p className="text-sm text-gray-900 dark:text-white">
+                    • Score d&apos;Epworth: {diurnalSymptoms.epworthScore}/24
+                  </p>
+                )}
+            </div>
+          </div>
+        )}
+
+        {/* Symptômes nocturnes */}
+        {(nocturnalSymptoms?.snoring ||
+          nocturnalSymptoms?.sleepApnea ||
+          nocturnalSymptoms?.choking ||
+          nocturnalSymptoms?.agitation ||
+          nocturnalSymptoms?.insomnia ||
+          nocturnalSymptoms?.nocturia ||
+          nocturnalSymptoms?.other) && (
+          <div>
+            <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+              Symptômes nocturnes
+            </p>
+            <div className="mt-2 space-y-2">
+              {nocturnalSymptoms.snoring && (
+                <p className="text-sm text-gray-900 dark:text-white">
+                  • Ronflements
+                </p>
+              )}
+              {nocturnalSymptoms.sleepApnea && (
+                <p className="text-sm text-gray-900 dark:text-white">
+                  • Apnées nocturnes
+                </p>
+              )}
+              {nocturnalSymptoms.choking && (
+                <p className="text-sm text-gray-900 dark:text-white">
+                  • Étouffement/Suffocation
+                </p>
+              )}
+              {nocturnalSymptoms.agitation && (
+                <p className="text-sm text-gray-900 dark:text-white">
+                  • Agitation
+                </p>
+              )}
+              {nocturnalSymptoms.insomnia && (
+                <p className="text-sm text-gray-900 dark:text-white">
+                  • Insomnie
+                </p>
+              )}
+              {nocturnalSymptoms.nocturia && (
+                <p className="text-sm text-gray-900 dark:text-white">
+                  • Nycturie
+                </p>
+              )}
+              {nocturnalSymptoms.other && (
+                <p className="text-sm text-gray-900 dark:text-white">
+                  • Autres: {nocturnalSymptoms.other}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </PathologySection>
   );
 }
 

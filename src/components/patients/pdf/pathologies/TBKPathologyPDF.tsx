@@ -5,7 +5,7 @@
 
 import { ExtendedPatient, getNestedValue } from "@/utils/pdfFieldExtractor";
 import { Image, Text, View } from "@react-pdf/renderer";
-import { baseStyles, imageStyles } from "../styles";
+import { baseStyles, imageStyles, pathologyStyles } from "../styles";
 
 interface TBKPathologyPDFProps {
   patient: ExtendedPatient;
@@ -168,7 +168,8 @@ function ComorbiditesSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.subsectionTitle}>Comorbidités</Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <View style={baseStyles.gridItem}>
           <PDFField label="Diabète" value={comorbidities?.diabetes} />
         </View>
@@ -226,6 +227,7 @@ function ComorbiditesSection({ patient }: TBKPathologyPDFProps) {
           />
         </View>
       </View>
+      </View>
     </View>
   );
 }
@@ -261,7 +263,8 @@ function ATCDTuberculoseSection({ patient }: TBKPathologyPDFProps) {
       <Text style={baseStyles.subsectionTitle}>
         ATCD Personnel de Tuberculose
       </Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <View style={baseStyles.gridItem}>
           <PDFField
             label="ATCD tuberculose"
@@ -320,6 +323,7 @@ function ATCDTuberculoseSection({ patient }: TBKPathologyPDFProps) {
           </>
         )}
     </View>
+    </View>
   );
 }
 
@@ -348,7 +352,8 @@ function ContageTuberculeuxSection({ patient }: TBKPathologyPDFProps) {
       <Text style={baseStyles.subsectionTitle}>
         Notion de Contage Tuberculeux Récent
       </Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <View style={baseStyles.gridItem}>
           <PDFField
             label="Contage récent"
@@ -390,6 +395,7 @@ function ContageTuberculeuxSection({ patient }: TBKPathologyPDFProps) {
           </>
         )}
       </View>
+      </View>
     </View>
   );
 }
@@ -409,7 +415,8 @@ function HabitudesToxiquesSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.subsectionTitle}>Habitudes Toxiques</Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <View style={baseStyles.gridItem}>
           <PDFField label="Tabagisme" value={toxicHabits?.smoking} />
         </View>
@@ -475,6 +482,7 @@ function HabitudesToxiquesSection({ patient }: TBKPathologyPDFProps) {
           </>
         )}
       </View>
+      </View>
     </View>
   );
 }
@@ -499,10 +507,12 @@ function ATCDSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>ATCD</Text>
-      <ComorbiditesSection patient={patient} />
-      <ATCDTuberculoseSection patient={patient} />
-      <ContageTuberculeuxSection patient={patient} />
-      <HabitudesToxiquesSection patient={patient} />
+      <View style={pathologyStyles.tbkSection}>
+        <ComorbiditesSection patient={patient} />
+        <ATCDTuberculoseSection patient={patient} />
+        <ContageTuberculeuxSection patient={patient} />
+        <HabitudesToxiquesSection patient={patient} />
+      </View>
     </View>
   );
 }
@@ -522,7 +532,8 @@ function SignesGenerauxSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.subsectionTitle}>Signes Généraux</Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <View style={baseStyles.gridItem}>
           <PDFField label="Fièvre" value={generalSigns?.fever} />
         </View>
@@ -568,6 +579,7 @@ function SignesGenerauxSection({ patient }: TBKPathologyPDFProps) {
           <PDFField label="OMS PS" value={generalSigns?.omsPs} />
         </View>
       </View>
+      </View>
     </View>
   );
 }
@@ -590,7 +602,8 @@ function SignesFonctionnelsSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.subsectionTitle}>Signes Fonctionnels</Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <View style={baseStyles.gridItem}>
           <PDFField label="Toux" value={functionalSigns?.cough} />
         </View>
@@ -646,6 +659,7 @@ function SignesFonctionnelsSection({ patient }: TBKPathologyPDFProps) {
           </View>
         )}
       </View>
+      </View>
     </View>
   );
 }
@@ -665,7 +679,8 @@ function ExamenCliniqueSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.subsectionTitle}>Examen Clinique</Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <View style={baseStyles.gridItem}>
           <PDFField
             label="Température (°C)"
@@ -731,6 +746,7 @@ function ExamenCliniqueSection({ patient }: TBKPathologyPDFProps) {
           </View>
         )}
       </View>
+      </View>
     </View>
   );
 }
@@ -756,9 +772,11 @@ function CliniqueSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Clinique</Text>
-      <SignesGenerauxSection patient={patient} />
-      <SignesFonctionnelsSection patient={patient} />
-      <ExamenCliniqueSection patient={patient} />
+      <View style={pathologyStyles.tbkSection}>
+        <SignesGenerauxSection patient={patient} />
+        <SignesFonctionnelsSection patient={patient} />
+        <ExamenCliniqueSection patient={patient} />
+      </View>
     </View>
   );
 }
@@ -782,7 +800,8 @@ function RxThoraciqueSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.subsectionTitle}>Rx Thoracique</Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <View style={baseStyles.gridItemFull}>
           <PDFField label="Types de lésions" value={lesionTypes?.join(", ")} />
         </View>
@@ -817,6 +836,7 @@ function RxThoraciqueSection({ patient }: TBKPathologyPDFProps) {
       {imageFiles && imageFiles.length > 0 && (
         <PDFImageGrid label="Images Rx Thoracique" images={imageFiles} />
       )}
+      </View>
     </View>
   );
 }
@@ -858,94 +878,96 @@ function BacteriologieExpectorationsSection({ patient }: TBKPathologyPDFProps) {
       <Text style={baseStyles.subsectionTitle}>
         Bactériologie des Expectorations
       </Text>
-      {directExams &&
-        directExams.length > 0 &&
-        directExams.some((e) => hasValue(e)) && (
+      <View style={pathologyStyles.tbkSection}>
+        {directExams &&
+          directExams.length > 0 &&
+          directExams.some((e) => hasValue(e)) && (
+            <>
+              <Text style={baseStyles.subsectionTitle}>Examens directs</Text>
+              {directExams.map((exam, index) => {
+                if (
+                  !hasValue(exam.date) &&
+                  !hasValue(exam.result) &&
+                  !hasValue(exam.bacterialLoad)
+                ) {
+                  return null;
+                }
+                return (
+                  <View key={index} style={baseStyles.grid}>
+                    <View style={baseStyles.gridItem}>
+                      <PDFField label="Date" value={exam.date} />
+                    </View>
+                    <View style={baseStyles.gridItem}>
+                      <PDFField label="Résultat" value={exam.result} />
+                    </View>
+                    <View style={baseStyles.gridItem}>
+                      <PDFField
+                        label="Charge bacillaire"
+                        value={exam.bacterialLoad}
+                      />
+                    </View>
+                  </View>
+                );
+              })}
+            </>
+          )}
+        {bkCulture && hasValue(bkCulture) && (
           <>
-            <Text style={baseStyles.subsectionTitle}>Examens directs</Text>
-            {directExams.map((exam, index) => {
-              if (
-                !hasValue(exam.date) &&
-                !hasValue(exam.result) &&
-                !hasValue(exam.bacterialLoad)
-              ) {
-                return null;
-              }
-              return (
-                <View key={index} style={baseStyles.grid}>
-                  <View style={baseStyles.gridItem}>
-                    <PDFField label="Date" value={exam.date} />
-                  </View>
-                  <View style={baseStyles.gridItem}>
-                    <PDFField label="Résultat" value={exam.result} />
-                  </View>
-                  <View style={baseStyles.gridItem}>
-                    <PDFField
-                      label="Charge bacillaire"
-                      value={exam.bacterialLoad}
-                    />
-                  </View>
-                </View>
-              );
-            })}
+            <Text style={baseStyles.subsectionTitle}>Culture BK</Text>
+            <View style={baseStyles.grid}>
+              <View style={baseStyles.gridItem}>
+                <PDFField label="Date" value={bkCulture.date} />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField label="Milieu" value={bkCulture.medium} />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField label="Résultat" value={bkCulture.result} />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField
+                  label="Charge bacillaire"
+                  value={bkCulture.bacterialLoad}
+                />
+              </View>
+            </View>
           </>
         )}
-      {bkCulture && hasValue(bkCulture) && (
-        <>
-          <Text style={baseStyles.subsectionTitle}>Culture BK</Text>
-          <View style={baseStyles.grid}>
-            <View style={baseStyles.gridItem}>
-              <PDFField label="Date" value={bkCulture.date} />
-            </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField label="Milieu" value={bkCulture.medium} />
-            </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField label="Résultat" value={bkCulture.result} />
-            </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField
-                label="Charge bacillaire"
-                value={bkCulture.bacterialLoad}
-              />
-            </View>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Antibiogramme"
+              value={sputumBacteriology?.antibiogram}
+            />
           </View>
-        </>
-      )}
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Antibiogramme"
-            value={sputumBacteriology?.antibiogram}
-          />
-        </View>
-        {sputumBacteriology?.antibiogram === "Fait" && (
-          <>
-            <View style={baseStyles.gridItem}>
-              <PDFField
-                label="Type antibiogramme"
-                value={sputumBacteriology?.antibiogramType}
-              />
-            </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField
-                label="Résultat antibiogramme"
-                value={sputumBacteriology?.antibiogramResult}
-              />
-            </View>
-            <View style={baseStyles.gridItemFull}>
-              <PDFField
-                label="Détails résistance"
-                value={sputumBacteriology?.resistanceDetails}
-              />
-            </View>
-          </>
-        )}
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Autre bactériologie"
-            value={sputumBacteriology?.otherBacteriology}
-          />
+          {sputumBacteriology?.antibiogram === "Fait" && (
+            <>
+              <View style={baseStyles.gridItem}>
+                <PDFField
+                  label="Type antibiogramme"
+                  value={sputumBacteriology?.antibiogramType}
+                />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField
+                  label="Résultat antibiogramme"
+                  value={sputumBacteriology?.antibiogramResult}
+                />
+              </View>
+              <View style={baseStyles.gridItemFull}>
+                <PDFField
+                  label="Détails résistance"
+                  value={sputumBacteriology?.resistanceDetails}
+                />
+              </View>
+            </>
+          )}
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Autre bactériologie"
+              value={sputumBacteriology?.otherBacteriology}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -969,7 +991,8 @@ function GenetiqueBKSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.subsectionTitle}>Génétique BK</Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <View style={baseStyles.gridItem}>
           <PDFField label="GeneXpert" value={bkGenetics?.genexpert} />
         </View>
@@ -1015,6 +1038,7 @@ function GenetiqueBKSection({ patient }: TBKPathologyPDFProps) {
           </>
         )}
       </View>
+      </View>
     </View>
   );
 }
@@ -1034,7 +1058,8 @@ function BiologieSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.subsectionTitle}>Biologie</Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <Text style={baseStyles.subsectionTitle}>NFS</Text>
         <View style={baseStyles.gridItem}>
           <PDFField label="Hb (g/dL)" value={biology?.nfsHb} />
@@ -1124,6 +1149,7 @@ function BiologieSection({ patient }: TBKPathologyPDFProps) {
           value={biology?.otherBiologicalAssessments}
         />
       </View>
+      </View>
     </View>
   );
 }
@@ -1164,6 +1190,7 @@ function AutresBilansParacliniquesSection({ patient }: TBKPathologyPDFProps) {
       <Text style={baseStyles.subsectionTitle}>
         Autres Bilans Paracliniques
       </Text>
+      <View style={pathologyStyles.tbkSection}>
       <View style={baseStyles.grid}>
         <View style={baseStyles.gridItem}>
           <PDFField
@@ -1394,6 +1421,7 @@ function AutresBilansParacliniquesSection({ patient }: TBKPathologyPDFProps) {
       {otherAssessmentsImages && otherAssessmentsImages.length > 0 && (
         <PDFImageGrid label="Autres Images" images={otherAssessmentsImages} />
       )}
+      </View>
     </View>
   );
 }
@@ -1425,11 +1453,13 @@ function ParacliniqueSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Paraclinique</Text>
-      <RxThoraciqueSection patient={patient} />
-      <BacteriologieExpectorationsSection patient={patient} />
-      <GenetiqueBKSection patient={patient} />
-      <BiologieSection patient={patient} />
-      <AutresBilansParacliniquesSection patient={patient} />
+      <View style={pathologyStyles.tbkSection}>
+        <RxThoraciqueSection patient={patient} />
+        <BacteriologieExpectorationsSection patient={patient} />
+        <GenetiqueBKSection patient={patient} />
+        <BiologieSection patient={patient} />
+        <AutresBilansParacliniquesSection patient={patient} />
+      </View>
     </View>
   );
 }
@@ -1455,7 +1485,8 @@ function TraitementPrescritSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Traitement Prescrit</Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <View style={baseStyles.gridItem}>
           <PDFField label="Date début" value={prescribedTreatment?.startDate} />
         </View>
@@ -1477,6 +1508,7 @@ function TraitementPrescritSection({ patient }: TBKPathologyPDFProps) {
             value={prescribedTreatment?.otherTherapeutics}
           />
         </View>
+      </View>
       </View>
     </View>
   );
@@ -1502,7 +1534,8 @@ function DosageSeriqueATSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Dosage Sérique des AT</Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <View style={baseStyles.gridItem}>
           <PDFField label="Statut" value={serumDosage?.status} />
         </View>
@@ -1561,6 +1594,7 @@ function DosageSeriqueATSection({ patient }: TBKPathologyPDFProps) {
           </View>
         </View>
       )}
+      </View>
     </View>
   );
 }
@@ -1580,7 +1614,8 @@ function EvolutionSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Évolution</Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <Text style={baseStyles.subsectionTitle}>Évolution Clinique</Text>
         <View style={baseStyles.gridItem}>
           <PDFField
@@ -1651,6 +1686,7 @@ function EvolutionSection({ patient }: TBKPathologyPDFProps) {
           </View>
         )}
       </View>
+      </View>
     </View>
   );
 }
@@ -1674,7 +1710,8 @@ function ConclusionSortieSection({ patient }: TBKPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Conclusion de Sortie</Text>
-      <View style={baseStyles.grid}>
+      <View style={pathologyStyles.tbkSection}>
+        <View style={baseStyles.grid}>
         <View style={baseStyles.gridItem}>
           <PDFField
             label="Date de sortie"
@@ -1687,6 +1724,7 @@ function ConclusionSortieSection({ patient }: TBKPathologyPDFProps) {
             value={dischargeConclusion?.dischargeConclusion}
           />
         </View>
+      </View>
       </View>
     </View>
   );

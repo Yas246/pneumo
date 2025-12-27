@@ -64,7 +64,9 @@ export const patientSchema = z.object({
       excessiveSleepiness: z.boolean().default(false),
       headaches: z.boolean().default(false),
       asthenia: z.boolean().default(false),
+      showEpworth: z.boolean().default(false),
       epworthScore: z.number().optional(),
+      epworthDetails: z.array(z.number()).default([]),
       other: z.string().optional(),
     })
     .optional(),

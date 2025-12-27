@@ -5,7 +5,7 @@
 
 import { ExtendedPatient, getNestedValue } from "@/utils/pdfFieldExtractor";
 import { Image, Text, View } from "@react-pdf/renderer";
-import { baseStyles, imageStyles } from "../styles";
+import { baseStyles, imageStyles, pathologyStyles } from "../styles";
 
 interface PneumothoraxPathologyPDFProps {
   patient: ExtendedPatient;
@@ -138,49 +138,51 @@ function ConsultationReasonSection({ patient }: PneumothoraxPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Motif de Consultation</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Douleur thoracique"
-            value={consultationReason?.thoracicPain}
-          />
+      <View style={pathologyStyles.pneumothoraxSection}>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Douleur thoracique"
+              value={consultationReason?.thoracicPain}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Dyspnée" value={consultationReason?.dyspnea} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Toux" value={consultationReason?.cough} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Oppression thoracique"
+              value={consultationReason?.thoracicOppression}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Malaise/Syncope"
+              value={consultationReason?.malaiseSyncope}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Découverte radiologique"
+              value={consultationReason?.radiologicalDiscovery}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Autre" value={consultationReason?.other} />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Dyspnée" value={consultationReason?.dyspnea} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Toux" value={consultationReason?.cough} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Oppression thoracique"
-            value={consultationReason?.thoracicOppression}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Malaise/Syncope"
-            value={consultationReason?.malaiseSyncope}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Découverte radiologique"
-            value={consultationReason?.radiologicalDiscovery}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Autre" value={consultationReason?.other} />
-        </View>
+        {hasValue(consultationReason?.otherDetails) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Détails autre motif"
+              value={consultationReason?.otherDetails}
+            />
+          </View>
+        )}
       </View>
-      {hasValue(consultationReason?.otherDetails) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Détails autre motif"
-            value={consultationReason?.otherDetails}
-          />
-        </View>
-      )}
     </View>
   );
 }
@@ -194,7 +196,10 @@ function MedicalHistorySection({ patient }: PneumothoraxPathologyPDFProps) {
     "pneumothoraxMedicalHistory"
   ) as Record<string, unknown> | undefined;
 
-  if (!medicalHistory || !Object.values(medicalHistory).some((v) => hasValue(v))) {
+  if (
+    !medicalHistory ||
+    !Object.values(medicalHistory).some((v) => hasValue(v))
+  ) {
     return null;
   }
 
@@ -206,188 +211,193 @@ function MedicalHistorySection({ patient }: PneumothoraxPathologyPDFProps) {
 
       {/* Antécédents personnels */}
       <Text style={baseStyles.subsectionTitle}>Antécédents Personnels</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Pneumothorax antérieur"
-            value={medicalHistory?.previousPneumothorax}
-          />
+      <View style={pathologyStyles.pneumothoraxSection}>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Pneumothorax antérieur"
+              value={medicalHistory?.previousPneumothorax}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Côté pneumothorax antérieur"
+              value={medicalHistory?.previousPneumothoraxSide}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Nombre d'épisodes"
+              value={medicalHistory?.previousPneumothoraxCount}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Date dernier épisode"
+              value={medicalHistory?.previousPneumothoraxDate}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="BPCO/Emphysème"
+              value={medicalHistory?.bpcoEmphysema}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Asthme sévère"
+              value={medicalHistory?.severeAsthma}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Tuberculose"
+              value={medicalHistory?.tuberculosis}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="PID/Fibrose" value={medicalHistory?.pidFibrosis} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Cancers" value={medicalHistory?.cancers} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Cardiopathie"
+              value={medicalHistory?.cardiopathy}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="HTA" value={medicalHistory?.hta} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Diabète" value={medicalHistory?.diabetes} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="IRC" value={medicalHistory?.irc} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Chirurgie thoracique"
+              value={medicalHistory?.thoracicSurgery}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Autre" value={medicalHistory?.otherPersonal} />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Côté pneumothorax antérieur"
-            value={medicalHistory?.previousPneumothoraxSide}
-          />
+        {hasValue(medicalHistory?.cancersDetails) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Détails cancers"
+              value={medicalHistory?.cancersDetails}
+            />
+          </View>
+        )}
+        {hasValue(medicalHistory?.otherPersonalDetails) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Détails autre antécédent"
+              value={medicalHistory?.otherPersonalDetails}
+            />
+          </View>
+        )}
+        {/* Antécédents iatrogènes / traumatiques */}
+        <Text style={baseStyles.subsectionTitle}>
+          Antécédents Iatrogènes / Traumatiques
+        </Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Traumatisme thoracique récent"
+              value={medicalHistory?.recentThoracicTrauma}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Ventilation mécanique"
+              value={medicalHistory?.mechanicalVentilation}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="CVC/Ponction pleurale"
+              value={medicalHistory?.cvcPleuralPuncture}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Autre geste récent"
+              value={medicalHistory?.otherRecentProcedure}
+            />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Nombre d'épisodes"
-            value={medicalHistory?.previousPneumothoraxCount}
-          />
+        {hasValue(medicalHistory?.otherRecentProcedureDetails) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Détails autre geste"
+              value={medicalHistory?.otherRecentProcedureDetails}
+            />
+          </View>
+        )}
+        {/* Habitus et facteurs de risque */}
+        <Text style={baseStyles.subsectionTitle}>
+          Habitus et Facteurs de Risque
+        </Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Tabagisme" value={medicalHistory?.smoking} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Quantité tabagisme (PA)"
+              value={medicalHistory?.smokingQuantity}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Cannabis/Drogues"
+              value={medicalHistory?.cannabisDrugs}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Morphotype longiligne"
+              value={medicalHistory?.longiligneMorphotype}
+            />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Date dernier épisode"
-            value={medicalHistory?.previousPneumothoraxDate}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="BPCO/Emphysème"
-            value={medicalHistory?.bpcoEmphysema}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Asthme sévère"
-            value={medicalHistory?.severeAsthma}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Tuberculose" value={medicalHistory?.tuberculosis} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="PID/Fibrose"
-            value={medicalHistory?.pidFibrosis}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Cancers" value={medicalHistory?.cancers} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Cardiopathie" value={medicalHistory?.cardiopathy} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="HTA" value={medicalHistory?.hta} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Diabète" value={medicalHistory?.diabetes} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="IRC" value={medicalHistory?.irc} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Chirurgie thoracique"
-            value={medicalHistory?.thoracicSurgery}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Autre" value={medicalHistory?.otherPersonal} />
-        </View>
-      </View>
-      {hasValue(medicalHistory?.cancersDetails) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Détails cancers"
-            value={medicalHistory?.cancersDetails}
-          />
-        </View>
-      )}
-      {hasValue(medicalHistory?.otherPersonalDetails) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Détails autre antécédent"
-            value={medicalHistory?.otherPersonalDetails}
-          />
-        </View>
-      )}
 
-      {/* Antécédents iatrogènes / traumatiques */}
-      <Text style={baseStyles.subsectionTitle}>
-        Antécédents Iatrogènes / Traumatiques
-      </Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Traumatisme thoracique récent"
-            value={medicalHistory?.recentThoracicTrauma}
-          />
+        {/* Allergies et traitements */}
+        <Text style={baseStyles.subsectionTitle}>Allergies et Traitements</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Allergies" value={medicalHistory?.allergies} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Traitements chroniques"
+              value={medicalHistory?.chronicTreatments}
+            />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Ventilation mécanique"
-            value={medicalHistory?.mechanicalVentilation}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="CVC/Ponction pleurale"
-            value={medicalHistory?.cvcPleuralPuncture}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Autre geste récent"
-            value={medicalHistory?.otherRecentProcedure}
-          />
-        </View>
+        {hasValue(medicalHistory?.allergiesDetails) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Détails allergies"
+              value={medicalHistory?.allergiesDetails}
+            />
+          </View>
+        )}
+        {hasValue(medicalHistory?.chronicTreatmentsDetails) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Détails traitements chroniques"
+              value={medicalHistory?.chronicTreatmentsDetails}
+            />
+          </View>
+        )}
       </View>
-      {hasValue(medicalHistory?.otherRecentProcedureDetails) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Détails autre geste"
-            value={medicalHistory?.otherRecentProcedureDetails}
-          />
-        </View>
-      )}
-
-      {/* Habitus et facteurs de risque */}
-      <Text style={baseStyles.subsectionTitle}>Habitus et Facteurs de Risque</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Tabagisme" value={medicalHistory?.smoking} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Quantité tabagisme (PA)"
-            value={medicalHistory?.smokingQuantity}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Cannabis/Drogues"
-            value={medicalHistory?.cannabisDrugs}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Morphotype longiligne"
-            value={medicalHistory?.longiligneMorphotype}
-          />
-        </View>
-      </View>
-
-      {/* Allergies et traitements */}
-      <Text style={baseStyles.subsectionTitle}>Allergies et Traitements</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Allergies" value={medicalHistory?.allergies} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Traitements chroniques"
-            value={medicalHistory?.chronicTreatments}
-          />
-        </View>
-      </View>
-      {hasValue(medicalHistory?.allergiesDetails) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Détails allergies"
-            value={medicalHistory?.allergiesDetails}
-          />
-        </View>
-      )}
-      {hasValue(medicalHistory?.chronicTreatmentsDetails) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Détails traitements chroniques"
-            value={medicalHistory?.chronicTreatmentsDetails}
-          />
-        </View>
-      )}
     </View>
   );
 }
@@ -411,64 +421,69 @@ function DiseaseHistorySection({ patient }: PneumothoraxPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Histoire de la Maladie</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Début" value={diseaseHistory?.onset} />
+      <View style={pathologyStyles.pneumothoraxSection}>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Début" value={diseaseHistory?.onset} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Date/Heure début"
+              value={diseaseHistory?.onsetDateTime}
+            />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Date/Heure début" value={diseaseHistory?.onsetDateTime} />
-        </View>
-      </View>
 
-      {/* Symptômes */}
-      <Text style={baseStyles.subsectionTitle}>Symptômes</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Douleur thoracique"
-            value={diseaseHistory?.thoracicPain}
-          />
+        {/* Symptômes */}
+        <Text style={baseStyles.subsectionTitle}>Symptômes</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Douleur thoracique"
+              value={diseaseHistory?.thoracicPain}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Type douleur thoracique"
+              value={diseaseHistory?.thoracicPainType}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Côté douleur thoracique"
+              value={diseaseHistory?.thoracicPainSide}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Dyspnée" value={diseaseHistory?.dyspnea} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Intensité dyspnée"
+              value={diseaseHistory?.dyspneaIntensity}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Toux" value={diseaseHistory?.cough} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Hémoptysie" value={diseaseHistory?.hemoptysis} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Fièvre" value={diseaseHistory?.fever} />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Type douleur thoracique"
-            value={diseaseHistory?.thoracicPainType}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Côté douleur thoracique"
-            value={diseaseHistory?.thoracicPainSide}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Dyspnée" value={diseaseHistory?.dyspnea} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Intensité dyspnée"
-            value={diseaseHistory?.dyspneaIntensity}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Toux" value={diseaseHistory?.cough} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Hémoptysie" value={diseaseHistory?.hemoptysis} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Fièvre" value={diseaseHistory?.fever} />
-        </View>
-      </View>
 
-      {hasValue(diseaseHistory?.commentsChronology) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Commentaires chronologie"
-            value={diseaseHistory?.commentsChronology}
-          />
-        </View>
-      )}
+        {hasValue(diseaseHistory?.commentsChronology) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Commentaires chronologie"
+              value={diseaseHistory?.commentsChronology}
+            />
+          </View>
+        )}
+      </View>
     </View>
   );
 }
@@ -477,10 +492,9 @@ function DiseaseHistorySection({ patient }: PneumothoraxPathologyPDFProps) {
  * Section Examen Clinique
  */
 function ClinicalExamSection({ patient }: PneumothoraxPathologyPDFProps) {
-  const clinicalExam = getNestedValue(
-    patient,
-    "pneumothoraxClinicalExam"
-  ) as Record<string, unknown> | undefined;
+  const clinicalExam = getNestedValue(patient, "pneumothoraxClinicalExam") as
+    | Record<string, unknown>
+    | undefined;
 
   if (!clinicalExam || !Object.values(clinicalExam).some((v) => hasValue(v))) {
     return null;
@@ -489,161 +503,170 @@ function ClinicalExamSection({ patient }: PneumothoraxPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Examen Clinique</Text>
+      <View style={pathologyStyles.pneumothoraxSection}>
+        {/* Constantes */}
+        <Text style={baseStyles.subsectionTitle}>Constantes</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="TA (mmHg)" value={clinicalExam?.ta} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="FC (bpm)" value={clinicalExam?.fc} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="FR (cpm)" value={clinicalExam?.fr} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="SpO2 (%)" value={clinicalExam?.spO2} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Température (°C)" value={clinicalExam?.temp} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="EVA douleur" value={clinicalExam?.painEva} />
+          </View>
+        </View>
 
-      {/* Constantes */}
-      <Text style={baseStyles.subsectionTitle}>Constantes</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="TA (mmHg)" value={clinicalExam?.ta} />
+        {/* État général et signes de gravité */}
+        <Text style={baseStyles.subsectionTitle}>
+          État Général et Signes de Gravité
+        </Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Détresse respiratoire"
+              value={clinicalExam?.respiratoryDistress}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Désaturation" value={clinicalExam?.desaturation} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Instabilité hémodynamique"
+              value={clinicalExam?.hemodynamicInstability}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Altération conscience"
+              value={clinicalExam?.consciousnessAlteration}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Pneumothorax compressif"
+              value={clinicalExam?.compressivePneumothorax}
+            />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="FC (bpm)" value={clinicalExam?.fc} />
+
+        {/* Inspection - Palpation */}
+        <Text style={baseStyles.subsectionTitle}>Inspection - Palpation</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Asymétrie thoracique"
+              value={clinicalExam?.thoracicAsymmetry}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Côté asymétrie thoracique"
+              value={clinicalExam?.thoracicAsymmetrySide}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Emphysème sous-cutané"
+              value={clinicalExam?.subcutaneousEmphysema}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Déviation trachéale"
+              value={clinicalExam?.trachealDeviation}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Cyanose" value={clinicalExam?.cyanosis} />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="FR (cpm)" value={clinicalExam?.fr} />
+
+        {/* Percussion - Auscultation */}
+        <Text style={baseStyles.subsectionTitle}>
+          Percussion - Auscultation
+        </Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Tympanisme" value={clinicalExam?.tympanism} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Côté tympanisme"
+              value={clinicalExam?.tympanismSide}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Murmure vésiculaire diminué"
+              value={clinicalExam?.diminishedVesicularMurmur}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Côté murmure vésiculaire diminué"
+              value={clinicalExam?.diminishedVesicularMurmurSide}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Râles associés"
+              value={clinicalExam?.associatedRales}
+            />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="SpO2 (%)" value={clinicalExam?.spO2} />
+        {hasValue(clinicalExam?.associatedRalesDetails) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Détails râles associés"
+              value={clinicalExam?.associatedRalesDetails}
+            />
+          </View>
+        )}
+
+        {/* Examen cardio-vasculaire */}
+        <Text style={baseStyles.subsectionTitle}>Examen Cardio-Vasculaire</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Tachycardie" value={clinicalExam?.tachycardia} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Signes de choc" value={clinicalExam?.shockSigns} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Autre anomalie cardio-vasculaire"
+              value={clinicalExam?.otherCardiovascular}
+            />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Température (°C)" value={clinicalExam?.temp} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="EVA douleur" value={clinicalExam?.painEva} />
-        </View>
+        {hasValue(clinicalExam?.otherCardiovascularDetails) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Détails autre anomalie cardio-vasculaire"
+              value={clinicalExam?.otherCardiovascularDetails}
+            />
+          </View>
+        )}
+
+        {/* Autres examens */}
+        {hasValue(clinicalExam?.otherExams) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField label="Autres examens" value={clinicalExam?.otherExams} />
+          </View>
+        )}
       </View>
-
-      {/* État général et signes de gravité */}
-      <Text style={baseStyles.subsectionTitle}>
-        État Général et Signes de Gravité
-      </Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Détresse respiratoire"
-            value={clinicalExam?.respiratoryDistress}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Désaturation" value={clinicalExam?.desaturation} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Instabilité hémodynamique"
-            value={clinicalExam?.hemodynamicInstability}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Altération conscience"
-            value={clinicalExam?.consciousnessAlteration}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Pneumothorax compressif"
-            value={clinicalExam?.compressivePneumothorax}
-          />
-        </View>
-      </View>
-
-      {/* Inspection - Palpation */}
-      <Text style={baseStyles.subsectionTitle}>Inspection - Palpation</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Asymétrie thoracique"
-            value={clinicalExam?.thoracicAsymmetry}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Côté asymétrie thoracique"
-            value={clinicalExam?.thoracicAsymmetrySide}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Emphysème sous-cutané"
-            value={clinicalExam?.subcutaneousEmphysema}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Déviation trachéale"
-            value={clinicalExam?.trachealDeviation}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Cyanose" value={clinicalExam?.cyanosis} />
-        </View>
-      </View>
-
-      {/* Percussion - Auscultation */}
-      <Text style={baseStyles.subsectionTitle}>Percussion - Auscultation</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Tympanisme" value={clinicalExam?.tympanism} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Côté tympanisme" value={clinicalExam?.tympanismSide} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Murmure vésiculaire diminué"
-            value={clinicalExam?.diminishedVesicularMurmur}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Côté murmure vésiculaire diminué"
-            value={clinicalExam?.diminishedVesicularMurmurSide}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Râles associés" value={clinicalExam?.associatedRales} />
-        </View>
-      </View>
-      {hasValue(clinicalExam?.associatedRalesDetails) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Détails râles associés"
-            value={clinicalExam?.associatedRalesDetails}
-          />
-        </View>
-      )}
-
-      {/* Examen cardio-vasculaire */}
-      <Text style={baseStyles.subsectionTitle}>Examen Cardio-Vasculaire</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Tachycardie" value={clinicalExam?.tachycardia} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Signes de choc" value={clinicalExam?.shockSigns} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Autre anomalie cardio-vasculaire"
-            value={clinicalExam?.otherCardiovascular}
-          />
-        </View>
-      </View>
-      {hasValue(clinicalExam?.otherCardiovascularDetails) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Détails autre anomalie cardio-vasculaire"
-            value={clinicalExam?.otherCardiovascularDetails}
-          />
-        </View>
-      )}
-
-      {/* Autres examens */}
-      {hasValue(clinicalExam?.otherExams) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField label="Autres examens" value={clinicalExam?.otherExams} />
-        </View>
-      )}
     </View>
   );
 }
@@ -667,93 +690,109 @@ function ComplementaryExamsSection({ patient }: PneumothoraxPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Examens Paracliniques</Text>
-
-      {/* Imagerie */}
-      <Text style={baseStyles.subsectionTitle}>Imagerie</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Radio thorax" value={complementaryExams?.chestXray} />
+      <View style={pathologyStyles.pneumothoraxSection}>
+        {/* Imagerie */}
+        <Text style={baseStyles.subsectionTitle}>Imagerie</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Radio thorax"
+              value={complementaryExams?.chestXray}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Échographie pleurale"
+              value={complementaryExams?.pleuralUltrasound}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="TDM thoracique"
+              value={complementaryExams?.thoracicCtd}
+            />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Échographie pleurale"
-            value={complementaryExams?.pleuralUltrasound}
+
+        {/* Radio thorax */}
+        {hasValue(complementaryExams?.chestXrayReport) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Compte-rendu radio thorax"
+              value={complementaryExams?.chestXrayReport}
+            />
+          </View>
+        )}
+        {hasValue(complementaryExams?.chestXrayImages) && (
+          <PDFImageGrid
+            label="Images Radio Thorax"
+            images={complementaryExams?.chestXrayImages as string[]}
           />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="TDM thoracique" value={complementaryExams?.thoracicCtd} />
-        </View>
-      </View>
+        )}
 
-      {/* Radio thorax */}
-      {hasValue(complementaryExams?.chestXrayReport) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Compte-rendu radio thorax"
-            value={complementaryExams?.chestXrayReport}
+        {/* Échographie pleurale */}
+        {hasValue(complementaryExams?.pleuralUltrasoundReport) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Compte-rendu échographie pleurale"
+              value={complementaryExams?.pleuralUltrasoundReport}
+            />
+          </View>
+        )}
+        {hasValue(complementaryExams?.pleuralUltrasoundImages) && (
+          <PDFImageGrid
+            label="Images Échographie Pleurale"
+            images={complementaryExams?.pleuralUltrasoundImages as string[]}
           />
-        </View>
-      )}
-      {hasValue(complementaryExams?.chestXrayImages) && (
-        <PDFImageGrid
-          label="Images Radio Thorax"
-          images={complementaryExams?.chestXrayImages as string[]}
-        />
-      )}
+        )}
 
-      {/* Échographie pleurale */}
-      {hasValue(complementaryExams?.pleuralUltrasoundReport) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Compte-rendu échographie pleurale"
-            value={complementaryExams?.pleuralUltrasoundReport}
+        {/* TDM thoracique */}
+        {hasValue(complementaryExams?.thoracicCtdImages) && (
+          <PDFImageGrid
+            label="Images TDM Thoracique"
+            images={complementaryExams?.thoracicCtdImages as string[]}
           />
-        </View>
-      )}
-      {hasValue(complementaryExams?.pleuralUltrasoundImages) && (
-        <PDFImageGrid
-          label="Images Échographie Pleurale"
-          images={complementaryExams?.pleuralUltrasoundImages as string[]}
-        />
-      )}
+        )}
 
-      {/* TDM thoracique */}
-      {hasValue(complementaryExams?.thoracicCtdImages) && (
-        <PDFImageGrid
-          label="Images TDM Thoracique"
-          images={complementaryExams?.thoracicCtdImages as string[]}
-        />
-      )}
+        {hasValue(complementaryExams?.imagingResults) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Résultats imagerie"
+              value={complementaryExams?.imagingResults}
+            />
+          </View>
+        )}
 
-      {hasValue(complementaryExams?.imagingResults) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Résultats imagerie"
-            value={complementaryExams?.imagingResults}
-          />
-        </View>
-      )}
-
-      {/* Biologie */}
-      <Text style={baseStyles.subsectionTitle}>Biologie</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Gaz du sang" value={complementaryExams?.bloodGas} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="NFS" value={complementaryExams?.nfs} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="CRP" value={complementaryExams?.crp} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Ionogramme" value={complementaryExams?.ionogram} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Hémostase" value={complementaryExams?.hemostasis} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Groupe sanguin" value={complementaryExams?.bloodGroup} />
+        {/* Biologie */}
+        <Text style={baseStyles.subsectionTitle}>Biologie</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Gaz du sang"
+              value={complementaryExams?.bloodGas}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="NFS" value={complementaryExams?.nfs} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="CRP" value={complementaryExams?.crp} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Ionogramme" value={complementaryExams?.ionogram} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Hémostase"
+              value={complementaryExams?.hemostasis}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Groupe sanguin"
+              value={complementaryExams?.bloodGroup}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -764,10 +803,9 @@ function ComplementaryExamsSection({ patient }: PneumothoraxPathologyPDFProps) {
  * Section Diagnostic
  */
 function DiagnosisSection({ patient }: PneumothoraxPathologyPDFProps) {
-  const diagnosis = getNestedValue(
-    patient,
-    "pneumothoraxDiagnosis"
-  ) as Record<string, unknown> | undefined;
+  const diagnosis = getNestedValue(patient, "pneumothoraxDiagnosis") as
+    | Record<string, unknown>
+    | undefined;
 
   if (!diagnosis || !Object.values(diagnosis).some((v) => hasValue(v))) {
     return null;
@@ -776,74 +814,75 @@ function DiagnosisSection({ patient }: PneumothoraxPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Diagnostic</Text>
+      <View style={pathologyStyles.pneumothoraxSection}>
+        {/* Type de pneumothorax */}
+        <Text style={baseStyles.subsectionTitle}>Type de Pneumothorax</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Spontané primitif"
+              value={diagnosis?.spontaneousPrimary}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Spontané secondaire"
+              value={diagnosis?.spontaneousSecondary}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Traumatique" value={diagnosis?.traumatic} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Iatrogène" value={diagnosis?.iatrogenic} />
+          </View>
+        </View>
+        {hasValue(diagnosis?.spontaneousSecondaryTerrain) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Terrain spontané secondaire"
+              value={diagnosis?.spontaneousSecondaryTerrain}
+            />
+          </View>
+        )}
 
-      {/* Type de pneumothorax */}
-      <Text style={baseStyles.subsectionTitle}>Type de Pneumothorax</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Spontané primitif"
-            value={diagnosis?.spontaneousPrimary}
-          />
+        {/* Évaluation de la tolérance et de la taille */}
+        <Text style={baseStyles.subsectionTitle}>
+          Évaluation de la Tolérance et de la Taille
+        </Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Bien toléré" value={diagnosis?.wellTolerated} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Mal toléré" value={diagnosis?.poorlyTolerated} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Compressif/Tension"
+              value={diagnosis?.compressiveTension}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Petit" value={diagnosis?.small} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Moyen" value={diagnosis?.medium} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Grand" value={diagnosis?.large} />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Spontané secondaire"
-            value={diagnosis?.spontaneousSecondary}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Traumatique" value={diagnosis?.traumatic} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Iatrogène" value={diagnosis?.iatrogenic} />
-        </View>
+
+        {hasValue(diagnosis?.diagnosticConclusion) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Conclusion diagnostique"
+              value={diagnosis?.diagnosticConclusion}
+            />
+          </View>
+        )}
       </View>
-      {hasValue(diagnosis?.spontaneousSecondaryTerrain) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Terrain spontané secondaire"
-            value={diagnosis?.spontaneousSecondaryTerrain}
-          />
-        </View>
-      )}
-
-      {/* Évaluation de la tolérance et de la taille */}
-      <Text style={baseStyles.subsectionTitle}>
-        Évaluation de la Tolérance et de la Taille
-      </Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Bien toléré" value={diagnosis?.wellTolerated} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Mal toléré" value={diagnosis?.poorlyTolerated} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Compressif/Tension"
-            value={diagnosis?.compressiveTension}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Petit" value={diagnosis?.small} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Moyen" value={diagnosis?.medium} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Grand" value={diagnosis?.large} />
-        </View>
-      </View>
-
-      {hasValue(diagnosis?.diagnosticConclusion) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Conclusion diagnostique"
-            value={diagnosis?.diagnosticConclusion}
-          />
-        </View>
-      )}
     </View>
   );
 }
@@ -852,10 +891,9 @@ function DiagnosisSection({ patient }: PneumothoraxPathologyPDFProps) {
  * Section Prise en Charge (PEC)
  */
 function ManagementSection({ patient }: PneumothoraxPathologyPDFProps) {
-  const management = getNestedValue(
-    patient,
-    "pneumothoraxManagement"
-  ) as Record<string, unknown> | undefined;
+  const management = getNestedValue(patient, "pneumothoraxManagement") as
+    | Record<string, unknown>
+    | undefined;
 
   if (!management || !Object.values(management).some((v) => hasValue(v))) {
     return null;
@@ -864,114 +902,133 @@ function ManagementSection({ patient }: PneumothoraxPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Prise en Charge (PEC)</Text>
+      <View style={pathologyStyles.pneumothoraxSection}>
+        {/* Mesures immédiates */}
+        <Text style={baseStyles.subsectionTitle}>Mesures Immédiates</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Oxygénothérapie"
+              value={management?.oxygenTherapy}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Modalité oxygénothérapie"
+              value={management?.oxygenModality}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Débit (L/min)" value={management?.oxygenFlow} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Analgésie" value={management?.analgesia} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Voie périphérique"
+              value={management?.peripheralIv}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Monitoring" value={management?.monitoring} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Indication gaz du sang"
+              value={management?.bloodGasIndication}
+            />
+          </View>
+        </View>
+        {hasValue(management?.analgesiaDetails) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Détails analgésie"
+              value={management?.analgesiaDetails}
+            />
+          </View>
+        )}
 
-      {/* Mesures immédiates */}
-      <Text style={baseStyles.subsectionTitle}>Mesures Immédiates</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Oxygénothérapie" value={management?.oxygenTherapy} />
+        {/* Traitement spécifique */}
+        <Text style={baseStyles.subsectionTitle}>Traitement Spécifique</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Surveillance simple"
+              value={management?.simpleMonitoring}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Ponction à l'aiguille"
+              value={management?.needleAspiration}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Drainage pleural"
+              value={management?.pleuralDrainage}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Côté drainage" value={management?.drainageSide} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField label="Type drainage" value={management?.drainageType} />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Système drainage"
+              value={management?.drainageSystem}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Aspiration drainage"
+              value={management?.drainageAspiration}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Pression aspiration (cmH2O)"
+              value={management?.drainageAspirationPressure}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Anesthésie locale"
+              value={management?.localAnesthesia}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Radio post-procédure"
+              value={management?.postProcedureXray}
+            />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Modalité oxygénothérapie"
-            value={management?.oxygenModality}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Débit (L/min)" value={management?.oxygenFlow} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Analgésie" value={management?.analgesia} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Voie périphérique" value={management?.peripheralIv} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Monitoring" value={management?.monitoring} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Indication gaz du sang"
-            value={management?.bloodGasIndication}
-          />
-        </View>
-      </View>
-      {hasValue(management?.analgesiaDetails) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Détails analgésie"
-            value={management?.analgesiaDetails}
-          />
-        </View>
-      )}
 
-      {/* Traitement spécifique */}
-      <Text style={baseStyles.subsectionTitle}>Traitement Spécifique</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Surveillance simple"
-            value={management?.simpleMonitoring}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Ponction à l'aiguille"
-            value={management?.needleAspiration}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Drainage pleural" value={management?.pleuralDrainage} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Côté drainage" value={management?.drainageSide} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Type drainage" value={management?.drainageType} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Système drainage" value={management?.drainageSystem} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Aspiration drainage"
-            value={management?.drainageAspiration}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Pression aspiration (cmH2O)"
-            value={management?.drainageAspirationPressure}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Anesthésie locale" value={management?.localAnesthesia} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Radio post-procédure"
-            value={management?.postProcedureXray}
-          />
-        </View>
-      </View>
-
-      {/* Situations particulières */}
-      <Text style={baseStyles.subsectionTitle}>Situations Particulières</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Décompression compressif"
-            value={management?.compressiveDecompression}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Fuite d'air persistante"
-            value={management?.persistentAirLeak}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Terrain à haut risque" value={management?.highRiskTerrain} />
+        {/* Situations particulières */}
+        <Text style={baseStyles.subsectionTitle}>Situations Particulières</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Décompression compressif"
+              value={management?.compressiveDecompression}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Fuite d'air persistante"
+              value={management?.persistentAirLeak}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Terrain à haut risque"
+              value={management?.highRiskTerrain}
+            />
+          </View>
         </View>
       </View>
     </View>
@@ -982,10 +1039,9 @@ function ManagementSection({ patient }: PneumothoraxPathologyPDFProps) {
  * Section Surveillance Évolutive
  */
 function MonitoringSection({ patient }: PneumothoraxPathologyPDFProps) {
-  const monitoring = getNestedValue(
-    patient,
-    "pneumothoraxMonitoring"
-  ) as Record<string, unknown> | undefined;
+  const monitoring = getNestedValue(patient, "pneumothoraxMonitoring") as
+    | Record<string, unknown>
+    | undefined;
 
   if (!monitoring || !Object.values(monitoring).some((v) => hasValue(v))) {
     return null;
@@ -994,39 +1050,44 @@ function MonitoringSection({ patient }: PneumothoraxPathologyPDFProps) {
   return (
     <View style={baseStyles.section}>
       <Text style={baseStyles.sectionTitle}>Surveillance Évolutive</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Surveillance clinique régulière"
-            value={monitoring?.regularClinicalMonitoring}
-          />
+      <View style={pathologyStyles.pneumothoraxSection}>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Surveillance clinique régulière"
+              value={monitoring?.regularClinicalMonitoring}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Contrôle radiologique"
+              value={monitoring?.radiologicalControl}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Surveillance drain"
+              value={monitoring?.drainMonitoring}
+            />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Contrôle radiologique"
-            value={monitoring?.radiologicalControl}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Surveillance drain" value={monitoring?.drainMonitoring} />
-        </View>
+        {hasValue(monitoring?.monitoringDetails) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Détails surveillance"
+              value={monitoring?.monitoringDetails}
+            />
+          </View>
+        )}
+        {hasValue(monitoring?.evolutionRemarks) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Remarques évolution"
+              value={monitoring?.evolutionRemarks}
+            />
+          </View>
+        )}
       </View>
-      {hasValue(monitoring?.monitoringDetails) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Détails surveillance"
-            value={monitoring?.monitoringDetails}
-          />
-        </View>
-      )}
-      {hasValue(monitoring?.evolutionRemarks) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Remarques évolution"
-            value={monitoring?.evolutionRemarks}
-          />
-        </View>
-      )}
     </View>
   );
 }
@@ -1052,135 +1113,154 @@ function TreatmentDischargeSection({ patient }: PneumothoraxPathologyPDFProps) {
       <Text style={baseStyles.sectionTitle}>
         Traitement et Ordonnance / Consignes de Sortie
       </Text>
+      <View style={pathologyStyles.pneumothoraxSection}>
+        {/* Traitement prescrit */}
+        <Text style={baseStyles.subsectionTitle}>Traitement Prescrit</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Antalgique"
+              value={treatmentDischarge?.analgesic}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Autres traitements"
+              value={treatmentDischarge?.otherTreatments}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Sevrage tabagique"
+              value={treatmentDischarge?.smokingCessation}
+            />
+          </View>
+        </View>
+        {hasValue(treatmentDischarge?.analgesicDetails) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Détails antalgique"
+              value={treatmentDischarge?.analgesicDetails}
+            />
+          </View>
+        )}
+        {hasValue(treatmentDischarge?.otherTreatmentsDetails) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Détails autres traitements"
+              value={treatmentDischarge?.otherTreatmentsDetails}
+            />
+          </View>
+        )}
 
-      {/* Traitement prescrit */}
-      <Text style={baseStyles.subsectionTitle}>Traitement Prescrit</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Antalgique" value={treatmentDischarge?.analgesic} />
+        {/* Critères de sortie */}
+        <Text style={baseStyles.subsectionTitle}>Critères de Sortie</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Stabilité hémodynamique"
+              value={treatmentDischarge?.hemodynamicStability}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="SpO2 satisfaisante"
+              value={treatmentDischarge?.satisfactorySpO2}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Amélioration clinique"
+              value={treatmentDischarge?.clinicalImprovement}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Imagerie satisfaisante"
+              value={treatmentDischarge?.satisfactoryImaging}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Drain retiré"
+              value={treatmentDischarge?.drainRemoved}
+            />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Autres traitements"
-            value={treatmentDischarge?.otherTreatments}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Sevrage tabagique"
-            value={treatmentDischarge?.smokingCessation}
-          />
-        </View>
-      </View>
-      {hasValue(treatmentDischarge?.analgesicDetails) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Détails antalgique"
-            value={treatmentDischarge?.analgesicDetails}
-          />
-        </View>
-      )}
-      {hasValue(treatmentDischarge?.otherTreatmentsDetails) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Détails autres traitements"
-            value={treatmentDischarge?.otherTreatmentsDetails}
-          />
-        </View>
-      )}
 
-      {/* Critères de sortie */}
-      <Text style={baseStyles.subsectionTitle}>Critères de Sortie</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Stabilité hémodynamique"
-            value={treatmentDischarge?.hemodynamicStability}
-          />
+        {/* Consignes au patient */}
+        <Text style={baseStyles.subsectionTitle}>Consignes au Patient</Text>
+        <View style={baseStyles.grid}>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Retour en urgence si"
+              value={treatmentDischarge?.emergencyReturn}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Éviter efforts importants"
+              value={treatmentDischarge?.avoidHeavyEfforts}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Durée évitement efforts (jours)"
+              value={treatmentDischarge?.avoidEffortsDays}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Arrêter tabac"
+              value={treatmentDischarge?.stopSmoking}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Éviter avion"
+              value={treatmentDischarge?.avoidFlying}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Plongée contre-indiquée"
+              value={treatmentDischarge?.divingContraindicated}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Consultation pneumologie"
+              value={treatmentDischarge?.pneumologyConsultation}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Consultation chirurgie thoracique"
+              value={treatmentDischarge?.thoracicSurgeryConsultation}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Radio de contrôle"
+              value={treatmentDischarge?.controlXray}
+            />
+          </View>
+          <View style={baseStyles.gridItem}>
+            <PDFField
+              label="Date radio contrôle"
+              value={treatmentDischarge?.controlXrayDate}
+            />
+          </View>
         </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="SpO2 satisfaisante" value={treatmentDischarge?.satisfactorySpO2} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Amélioration clinique"
-            value={treatmentDischarge?.clinicalImprovement}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Imagerie satisfaisante"
-            value={treatmentDischarge?.satisfactoryImaging}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Drain retiré" value={treatmentDischarge?.drainRemoved} />
-        </View>
+        {hasValue(treatmentDischarge?.otherInstructions) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Autres consignes"
+              value={treatmentDischarge?.otherInstructions}
+            />
+          </View>
+        )}
       </View>
-
-      {/* Consignes au patient */}
-      <Text style={baseStyles.subsectionTitle}>Consignes au Patient</Text>
-      <View style={baseStyles.grid}>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Retour en urgence si"
-            value={treatmentDischarge?.emergencyReturn}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Éviter efforts importants"
-            value={treatmentDischarge?.avoidHeavyEfforts}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Durée évitement efforts (jours)"
-            value={treatmentDischarge?.avoidEffortsDays}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Arrêter tabac" value={treatmentDischarge?.stopSmoking} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Éviter avion" value={treatmentDischarge?.avoidFlying} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Plongée contre-indiquée"
-            value={treatmentDischarge?.divingContraindicated}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Consultation pneumologie"
-            value={treatmentDischarge?.pneumologyConsultation}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Consultation chirurgie thoracique"
-            value={treatmentDischarge?.thoracicSurgeryConsultation}
-          />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField label="Radio de contrôle" value={treatmentDischarge?.controlXray} />
-        </View>
-        <View style={baseStyles.gridItem}>
-          <PDFField
-            label="Date radio contrôle"
-            value={treatmentDischarge?.controlXrayDate}
-          />
-        </View>
-      </View>
-      {hasValue(treatmentDischarge?.otherInstructions) && (
-        <View style={baseStyles.gridItemFull}>
-          <PDFField
-            label="Autres consignes"
-            value={treatmentDischarge?.otherInstructions}
-          />
-        </View>
-      )}
     </View>
   );
 }
@@ -1188,7 +1268,9 @@ function TreatmentDischargeSection({ patient }: PneumothoraxPathologyPDFProps) {
 /**
  * Composant principal pour la pathologie Pneumothorax
  */
-export function PneumothoraxPathologyPDF({ patient }: PneumothoraxPathologyPDFProps) {
+export function PneumothoraxPathologyPDF({
+  patient,
+}: PneumothoraxPathologyPDFProps) {
   return (
     <View>
       <ConsultationReasonSection patient={patient} />
