@@ -47,17 +47,32 @@ function PatientListItem({ patient, status }: PatientListItemProps) {
         </div>
       </div>
       <div className="mt-2 flex flex-col sm:flex-row sm:justify-between gap-2 sm:gap-4">
-        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-          <span className="font-medium sm:hidden">Motif:</span>
-          <span className="ml-1 sm:ml-0">
-            {patient.consultationReason || "Non spécifié"}
+        <div className="flex items-center text-sm">
+          <span className="font-medium sm:hidden text-gray-500 dark:text-gray-400">
+            Médecin traitant:
+          </span>
+          <span className="ml-1 sm:ml-0 inline-flex items-center px-2 py-0.5 rounded-md bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-medium hover:bg-primary-100 dark:hover:bg-primary-900/40 transition-colors cursor-default">
+            <svg
+              className="w-3.5 h-3.5 mr-1.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              />
+            </svg>
+            {patient.treatingDoctor || "Non spécifié"}
           </span>
         </div>
         <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-          <span className="font-medium sm:hidden">Dernière visite:</span>
+          <span className="font-medium sm:hidden">Dernière mise à jour:</span>
           <span className="ml-1 sm:ml-0">
-            {patient.lastVisit
-              ? new Date(patient.lastVisit).toLocaleDateString()
+            {patient.updatedAt
+              ? new Date(patient.updatedAt).toLocaleDateString()
               : "Non spécifié"}
           </span>
         </div>

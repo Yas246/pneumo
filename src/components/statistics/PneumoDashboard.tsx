@@ -1,6 +1,5 @@
 "use client";
 
-import { pathologies } from "@/config/pathologies";
 import { getStatistics } from "@/firebase/statistics";
 import {
   ArrowRightIcon,
@@ -20,14 +19,9 @@ type PneumologyMetrics = {
   totalPatients: number;
   pleuralEffusionCount: number;
   pleuralEffusionTrend: number;
-  tumorPathologyCount: number;
-  bronchialPathologyCount: number;
-  infectionCount: number;
-  sleepDisordersCount: number;
   pathologyDistribution: Array<{ name: string; count: number }>;
   monthlyTrends: Array<{ name: string; count: number }>;
-  severityDistribution: Array<{ name: string; count: number }>;
-  treatmentOutcomes: Array<{ name: string; count: number }>;
+  pathologyTrends: { [key: string]: number };
 };
 
 export function PneumoDashboard() {
@@ -35,65 +29,32 @@ export function PneumoDashboard() {
     totalPatients: 0,
     pleuralEffusionCount: 0,
     pleuralEffusionTrend: 0,
-    tumorPathologyCount: 0,
-    bronchialPathologyCount: 0,
-    infectionCount: 0,
-    sleepDisordersCount: 0,
     pathologyDistribution: [],
     monthlyTrends: [],
-    severityDistribution: [
-      { name: "Légère", count: 0 },
-      { name: "Modérée", count: 0 },
-      { name: "Sévère", count: 0 },
-    ],
-    treatmentOutcomes: [
-      { name: "Guérison", count: 0 },
-      { name: "Amélioration", count: 0 },
-      { name: "Stabilisation", count: 0 },
-      { name: "Aggravation", count: 0 },
-    ],
+    pathologyTrends: {},
   });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPneumologyData = async () => {
       try {
-        // Fetch real data from your API
         const statistics = await getStatistics();
 
-        // For now, let's populate with sample data
-        // In a real implementation, you would map the API response to this format
+        // Récupérer le nombre d'épanchements pleuraux depuis la distribution
+        const pleuralEffusionData = statistics.pathologyDistribution.find(
+          (p) => p.name === "Épanchement pleural"
+        );
+        const pleuralEffusionCount = pleuralEffusionData?.count || 0;
+        const pleuralEffusionTrend =
+          statistics.pathologyTrends?.["pleuralEffusion"] || 0;
+
         setMetrics({
-          totalPatients: statistics.totalPatients || 120,
-          pleuralEffusionCount: 42,
-          pleuralEffusionTrend: 15,
-          tumorPathologyCount: 35,
-          bronchialPathologyCount: 28,
-          infectionCount: 10,
-          sleepDisordersCount: 5,
-          pathologyDistribution: pathologies.map((p) => ({
-            name: p.name,
-            count: Math.floor(Math.random() * 50) + 10,
-          })),
-          monthlyTrends: [
-            { name: "Jan", count: 15 },
-            { name: "Fév", count: 18 },
-            { name: "Mar", count: 20 },
-            { name: "Avr", count: 22 },
-            { name: "Mai", count: 25 },
-            { name: "Juin", count: 30 },
-          ],
-          severityDistribution: [
-            { name: "Légère", count: 18 },
-            { name: "Modérée", count: 15 },
-            { name: "Sévère", count: 9 },
-          ],
-          treatmentOutcomes: [
-            { name: "Guérison", count: 12 },
-            { name: "Amélioration", count: 18 },
-            { name: "Stabilisation", count: 8 },
-            { name: "Aggravation", count: 4 },
-          ],
+          totalPatients: statistics.totalPatients || 0,
+          pleuralEffusionCount,
+          pleuralEffusionTrend,
+          pathologyDistribution: statistics.pathologyDistribution,
+          monthlyTrends: statistics.monthlyAppointments,
+          pathologyTrends: statistics.pathologyTrends || {},
         });
       } catch (error) {
         console.error(
@@ -125,38 +86,41 @@ export function PneumoDashboard() {
       {/* Principales métriques */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
+          title="Total patients"
+          value={metrics.totalPatients}
+          icon={UserGroupIcon}
+          trend={{
+            value: 0,
+            label: "vs mois dernier",
+          }}
+        />
+        <StatCard
           title="Épanchements pleuraux"
           value={metrics.pleuralEffusionCount}
           icon={BeakerIcon}
           trend={{
-            value: metrics.pleuralEffusionTrend,
+            value: Math.round(metrics.pleuralEffusionTrend),
             label: "vs mois dernier",
           }}
         />
         <StatCard
-          title="Pneumopathies tumorales"
-          value={metrics.tumorPathologyCount}
+          title="Pathologies diverses"
+          value={metrics.pathologyDistribution.length}
           icon={ChartBarIcon}
           trend={{
-            value: 8,
+            value: 0,
             label: "vs mois dernier",
           }}
         />
         <StatCard
-          title="Pneumopathies bronchiques"
-          value={metrics.bronchialPathologyCount}
+          title="Total pathologies"
+          value={metrics.pathologyDistribution.reduce(
+            (sum, p) => sum + p.count,
+            0
+          )}
           icon={ClipboardDocumentListIcon}
           trend={{
-            value: -5,
-            label: "vs mois dernier",
-          }}
-        />
-        <StatCard
-          title="Infections pulmonaires"
-          value={metrics.infectionCount}
-          icon={UserGroupIcon}
-          trend={{
-            value: 12,
+            value: 0,
             label: "vs mois dernier",
           }}
         />
@@ -194,142 +158,25 @@ export function PneumoDashboard() {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
             <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">
-              Distribution de sévérité
+              Distribution des pathologies
             </h4>
             <div className="h-64">
               <StatChart
                 title=""
                 type="pie"
-                data={metrics.severityDistribution}
+                data={metrics.pathologyDistribution}
               />
             </div>
           </div>
 
           <div>
             <h4 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4">
-              Résultats des traitements
+              Tendances mensuelles
             </h4>
             <div className="h-64">
-              <StatChart title="" type="bar" data={metrics.treatmentOutcomes} />
+              <StatChart title="" type="bar" data={metrics.monthlyTrends} />
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Tableau des derniers cas */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
-        <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white">
-            Derniers cas d&apos;épanchement pleural
-          </h3>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-700/50">
-              <tr>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                >
-                  Patient
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                >
-                  Date
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                >
-                  Sévérité
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-                >
-                  Statut
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-              {[
-                {
-                  id: 1,
-                  name: "Ahmed Benani",
-                  date: "15/06/2023",
-                  severity: "Modérée",
-                  status: "Suivi en cours",
-                },
-                {
-                  id: 2,
-                  name: "Fatima Zohra",
-                  date: "22/06/2023",
-                  severity: "Sévère",
-                  status: "Hospitalisation",
-                },
-                {
-                  id: 3,
-                  name: "Karim El Amrani",
-                  date: "28/06/2023",
-                  severity: "Légère",
-                  status: "Traitement ambulatoire",
-                },
-                {
-                  id: 4,
-                  name: "Nadia Ouazzani",
-                  date: "02/07/2023",
-                  severity: "Modérée",
-                  status: "Suivi en cours",
-                },
-                {
-                  id: 5,
-                  name: "Omar Tadlaoui",
-                  date: "10/07/2023",
-                  severity: "Sévère",
-                  status: "Traitement intensif",
-                },
-              ].map((patient) => (
-                <tr
-                  key={patient.id}
-                  className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900 dark:text-white">
-                      {patient.name}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                      {patient.date}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        patient.severity === "Légère"
-                          ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-                          : patient.severity === "Modérée"
-                          ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
-                          : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400"
-                      }`}
-                    >
-                      {patient.severity}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                    {patient.status}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800/50 border-t border-gray-200 dark:border-gray-700">
-          <button className="text-sm text-primary-600 dark:text-primary-400 hover:text-primary-500 dark:hover:text-primary-300 font-medium">
-            Voir tous les cas
-          </button>
         </div>
       </div>
 

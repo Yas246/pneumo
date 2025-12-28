@@ -1,8 +1,10 @@
 "use client";
 
 import { Navbar } from "@/components/shared/Navbar";
+import { DemographicsStats } from "@/components/statistics/DemographicsStats";
 import { StatCard } from "@/components/statistics/StatCard";
 import { StatChart } from "@/components/statistics/StatChart";
+import { TemporalTrends } from "@/components/statistics/TemporalTrends";
 import { getStatistics } from "@/firebase/statistics";
 import {
   ChartBarIcon,
@@ -23,6 +25,7 @@ type StatsData = {
   appointmentsTrend: number;
   pathologyDistribution: Array<{ name: string; count: number }>;
   monthlyAppointments: Array<{ name: string; count: number }>;
+  pathologyTrends: { [key: string]: number };
 };
 
 export default function StatisticsPage() {
@@ -37,6 +40,7 @@ export default function StatisticsPage() {
     appointmentsTrend: 0,
     pathologyDistribution: [],
     monthlyAppointments: [],
+    pathologyTrends: {},
   });
   const [loading, setLoading] = useState(true);
 
@@ -136,6 +140,12 @@ export default function StatisticsPage() {
               data={stats.monthlyAppointments}
             />
           </div>
+
+          {/* Statistiques Démographiques */}
+          <DemographicsStats />
+
+          {/* Tendances Temporelles */}
+          <TemporalTrends />
         </div>
       </main>
     </div>
