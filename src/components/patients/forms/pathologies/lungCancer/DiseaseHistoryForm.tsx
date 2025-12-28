@@ -49,7 +49,7 @@ export function DiseaseHistoryForm({ register, disabled }: FormSectionProps) {
             type="text"
             {...register("lungCancerDiseaseHistory.cough")}
             disabled={disabled}
-            placeholder="Types de toux..."
+            placeholder="Caractéristiques..."
             className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
           />
         </div>

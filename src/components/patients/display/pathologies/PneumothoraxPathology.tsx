@@ -1,11 +1,11 @@
 "use client";
 
+import { ImageGallery } from "../shared/ImageGallery";
 import {
   ExtendedPatient,
   PathologyConfig,
   PathologySectionProps,
 } from "../types";
-import { ImageGallery } from "../shared/ImageGallery";
 import { PathologySection } from "./PathologySection";
 
 export function PneumothoraxPathology({
@@ -437,41 +437,74 @@ function ComplementaryExamsSection({ patient }: { patient: ExtendedPatient }) {
             <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
               Bilan biologique
             </p>
-            <div className="mt-2 flex flex-wrap gap-2">
+            <div className="mt-2 space-y-2">
               {exams.bloodGas && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
-                  Gaz du sang
-                </span>
+                <div>
+                  <p className="text-sm text-gray-900 dark:text-white">
+                    Gaz du sang
+                  </p>
+                </div>
               )}
 
               {exams.nfs && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
-                  NFS
-                </span>
+                <div>
+                  <p className="text-sm text-gray-900 dark:text-white">NFS</p>
+                  {exams.nfsResults && (
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      {exams.nfsResults}
+                    </p>
+                  )}
+                </div>
               )}
 
               {exams.crp && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
-                  CRP
-                </span>
+                <div>
+                  <p className="text-sm text-gray-900 dark:text-white">CRP</p>
+                  {exams.crpResults && (
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      {exams.crpResults}
+                    </p>
+                  )}
+                </div>
               )}
 
               {exams.ionogram && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
-                  Ionogramme
-                </span>
+                <div>
+                  <p className="text-sm text-gray-900 dark:text-white">
+                    Ionogramme
+                  </p>
+                  {exams.ionogramResults && (
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      {exams.ionogramResults}
+                    </p>
+                  )}
+                </div>
               )}
 
               {exams.hemostasis && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
-                  Hémostase
-                </span>
+                <div>
+                  <p className="text-sm text-gray-900 dark:text-white">
+                    Hémostase
+                  </p>
+                  {exams.hemostasisResults && (
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      {exams.hemostasisResults}
+                    </p>
+                  )}
+                </div>
               )}
 
               {exams.bloodGroup && (
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
-                  Groupe sanguin
-                </span>
+                <div>
+                  <p className="text-sm text-gray-900 dark:text-white">
+                    Groupe sanguin
+                  </p>
+                  {exams.bloodGroupResults && (
+                    <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                      {exams.bloodGroupResults}
+                    </p>
+                  )}
+                </div>
               )}
             </div>
           </div>
@@ -627,7 +660,8 @@ function ManagementSection({ patient }: { patient: ExtendedPatient }) {
     management.pleuralDrainage ||
     management.compressiveDecompression ||
     management.persistentAirLeak ||
-    management.highRiskTerrain;
+    management.highRiskTerrain ||
+    management.conduiteATenir;
 
   if (!hasAnyManagementData) return null;
 
@@ -821,6 +855,7 @@ function MonitoringSection({ patient }: { patient: ExtendedPatient }) {
   const hasAnyMonitoringData =
     monitoring.regularClinicalMonitoring ||
     monitoring.radiologicalControl ||
+    monitoring.radiologicalControlOther ||
     monitoring.drainMonitoring ||
     monitoring.complications ||
     monitoring.evolutionRemarks;
@@ -850,7 +885,10 @@ function MonitoringSection({ patient }: { patient: ExtendedPatient }) {
               Contrôle radiologique
             </p>
             <p className="mt-1 text-sm text-gray-900 dark:text-white">
-              {monitoring.radiologicalControl}
+              {monitoring.radiologicalControl === "autre" &&
+              monitoring.radiologicalControlOther
+                ? monitoring.radiologicalControlOther
+                : monitoring.radiologicalControl}
             </p>
           </div>
         )}
@@ -1072,7 +1110,6 @@ function DischargeInstructionsSection({
               {discharge.otherInstructions}
             </p>
           </div>
-          
         )}
       </div>
     </PathologySection>

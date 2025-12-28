@@ -24,7 +24,7 @@ export function DiagnosisForm({ register, disabled }: FormSectionProps) {
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
               <span className="text-sm text-gray-700 dark:text-gray-300">
-                Suspecté
+                Cancer bronchopulmonaire Suspecté
               </span>
             </label>
             <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
@@ -35,7 +35,7 @@ export function DiagnosisForm({ register, disabled }: FormSectionProps) {
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
               <span className="text-sm text-gray-700 dark:text-gray-300">
-                Confirmé
+                Cancer bronchopulmonaire confirmé histologiquement
               </span>
             </label>
             <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
@@ -46,7 +46,7 @@ export function DiagnosisForm({ register, disabled }: FormSectionProps) {
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
               <span className="text-sm text-gray-700 dark:text-gray-300">
-                CBNPC
+                CBNPC (cancer bronchique non à petites cellules)
               </span>
             </label>
             <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
@@ -57,7 +57,7 @@ export function DiagnosisForm({ register, disabled }: FormSectionProps) {
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
               <span className="text-sm text-gray-700 dark:text-gray-300">
-                CBPC
+                CBPC (cancer bronchique à petites cellules)
               </span>
             </label>
             <div className="space-y-2">

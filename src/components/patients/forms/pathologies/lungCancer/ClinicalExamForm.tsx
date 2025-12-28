@@ -2,7 +2,14 @@
 
 import { FormSectionProps } from "../../types";
 
-export function ClinicalExamForm({ register, disabled }: FormSectionProps) {
+export function ClinicalExamForm({
+  register,
+  disabled,
+  watch,
+}: FormSectionProps) {
+  // Surveiller l'état des checkboxes pour afficher conditionnellement les champs
+  const wheezing = watch("lungCancerClinicalExam.respiratoryExam.wheezing");
+  const crackles = watch("lungCancerClinicalExam.respiratoryExam.crackles");
   return (
     <div className="bg-white dark:bg-gray-800 shadow-soft rounded-xl p-6">
       <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-6">
@@ -215,28 +222,68 @@ export function ClinicalExamForm({ register, disabled }: FormSectionProps) {
                 Syndrome de condensation
               </span>
             </label>
-            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-              <input
-                type="checkbox"
-                {...register("lungCancerClinicalExam.respiratoryExam.wheezing")}
-                disabled={disabled}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-              />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
-                Sibilants
-              </span>
-            </label>
-            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
-              <input
-                type="checkbox"
-                {...register("lungCancerClinicalExam.respiratoryExam.crackles")}
-                disabled={disabled}
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-              />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
-                Crépitants
-              </span>
-            </label>
+            <div className="space-y-2">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <input
+                  type="checkbox"
+                  {...register(
+                    "lungCancerClinicalExam.respiratoryExam.wheezing"
+                  )}
+                  disabled={disabled}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">
+                  Sibilants
+                </span>
+              </label>
+              {wheezing && (
+                <div className="ml-7">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Siège
+                  </label>
+                  <input
+                    type="text"
+                    {...register(
+                      "lungCancerClinicalExam.respiratoryExam.wheezingLocation"
+                    )}
+                    disabled={disabled}
+                    placeholder="Préciser le siège..."
+                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                  />
+                </div>
+              )}
+            </div>
+            <div className="space-y-2">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                <input
+                  type="checkbox"
+                  {...register(
+                    "lungCancerClinicalExam.respiratoryExam.crackles"
+                  )}
+                  disabled={disabled}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <span className="text-sm text-gray-700 dark:text-gray-300">
+                  Crépitants
+                </span>
+              </label>
+              {crackles && (
+                <div className="ml-7">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Siège
+                  </label>
+                  <input
+                    type="text"
+                    {...register(
+                      "lungCancerClinicalExam.respiratoryExam.cracklesLocation"
+                    )}
+                    disabled={disabled}
+                    placeholder="Préciser le siège..."
+                    className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                  />
+                </div>
+              )}
+            </div>
             <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"

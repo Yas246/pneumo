@@ -1219,6 +1219,13 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                   </p>
                   <p className="mt-1 text-sm text-gray-900 dark:text-white">
                     Présentes
+                    {clinicalExam.respiratoryExam.wheezingLocation && (
+                      <span>
+                        {" "}
+                        (Siège:{" "}
+                        {clinicalExam.respiratoryExam.wheezingLocation})
+                      </span>
+                    )}
                   </p>
                 </div>
               )}
@@ -1230,6 +1237,12 @@ function ClinicalExamSection({ patient }: { patient: ExtendedPatient }) {
                   </p>
                   <p className="mt-1 text-sm text-gray-900 dark:text-white">
                     Présents
+                    {clinicalExam.respiratoryExam.cracklesLocation && (
+                      <span>
+                        {" "}
+                        (Siège: {clinicalExam.respiratoryExam.cracklesLocation})
+                      </span>
+                    )}
                   </p>
                 </div>
               )}

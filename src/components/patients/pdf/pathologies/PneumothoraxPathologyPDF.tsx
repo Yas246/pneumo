@@ -775,24 +775,64 @@ function ComplementaryExamsSection({ patient }: PneumothoraxPathologyPDFProps) {
           <View style={baseStyles.gridItem}>
             <PDFField label="NFS" value={complementaryExams?.nfs} />
           </View>
+          {hasValue(complementaryExams?.nfsResults) && (
+            <View style={baseStyles.gridItemFull}>
+              <PDFField
+                label="Résultats NFS"
+                value={complementaryExams?.nfsResults}
+              />
+            </View>
+          )}
           <View style={baseStyles.gridItem}>
             <PDFField label="CRP" value={complementaryExams?.crp} />
           </View>
+          {hasValue(complementaryExams?.crpResults) && (
+            <View style={baseStyles.gridItemFull}>
+              <PDFField
+                label="Résultats CRP"
+                value={complementaryExams?.crpResults}
+              />
+            </View>
+          )}
           <View style={baseStyles.gridItem}>
             <PDFField label="Ionogramme" value={complementaryExams?.ionogram} />
           </View>
+          {hasValue(complementaryExams?.ionogramResults) && (
+            <View style={baseStyles.gridItemFull}>
+              <PDFField
+                label="Résultats Ionogramme"
+                value={complementaryExams?.ionogramResults}
+              />
+            </View>
+          )}
           <View style={baseStyles.gridItem}>
             <PDFField
               label="Hémostase"
               value={complementaryExams?.hemostasis}
             />
           </View>
+          {hasValue(complementaryExams?.hemostasisResults) && (
+            <View style={baseStyles.gridItemFull}>
+              <PDFField
+                label="Résultats Hémostase"
+                value={complementaryExams?.hemostasisResults}
+              />
+            </View>
+          )}
           <View style={baseStyles.gridItem}>
             <PDFField
               label="Groupe sanguin"
               value={complementaryExams?.bloodGroup}
             />
           </View>
+          {hasValue(complementaryExams?.bloodGroupResults) && (
+            <View style={baseStyles.gridItemFull}>
+              <PDFField
+                label="Résultats Groupage"
+                value={complementaryExams?.bloodGroupResults}
+              />
+            </View>
+          )}
         </View>
       </View>
     </View>
@@ -1030,6 +1070,14 @@ function ManagementSection({ patient }: PneumothoraxPathologyPDFProps) {
             />
           </View>
         </View>
+        {hasValue(management?.conduiteATenir) && (
+          <View style={baseStyles.gridItemFull}>
+            <PDFField
+              label="Conduite à Tenir"
+              value={management?.conduiteATenir}
+            />
+          </View>
+        )}
       </View>
     </View>
   );
@@ -1061,7 +1109,9 @@ function MonitoringSection({ patient }: PneumothoraxPathologyPDFProps) {
           <View style={baseStyles.gridItem}>
             <PDFField
               label="Contrôle radiologique"
-              value={monitoring?.radiologicalControl}
+              value={monitoring?.radiologicalControl === "autre" && monitoring?.radiologicalControlOther
+                ? monitoring?.radiologicalControlOther
+                : monitoring?.radiologicalControl}
             />
           </View>
           <View style={baseStyles.gridItem}>

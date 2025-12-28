@@ -119,7 +119,7 @@ export function TreatmentForm({ register, disabled }: FormSectionProps) {
                 Avis spécialisé
               </label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     value="pneumologie"
@@ -131,7 +131,7 @@ export function TreatmentForm({ register, disabled }: FormSectionProps) {
                     Pneumologie
                   </span>
                 </label>
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     value="chirThoracique"
@@ -143,7 +143,7 @@ export function TreatmentForm({ register, disabled }: FormSectionProps) {
                     Chir thoracique
                   </span>
                 </label>
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     value="reanimation"
@@ -277,7 +277,7 @@ export function TreatmentForm({ register, disabled }: FormSectionProps) {
                     className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
                   />
                 </div>
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     {...register("pneumothoraxManagement.localAnesthesia")}
@@ -290,7 +290,7 @@ export function TreatmentForm({ register, disabled }: FormSectionProps) {
                 </div>
               </div>
               <div className="ml-7">
-                <label className="flex items-center space-x-3">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     {...register("pneumothoraxManagement.postProcedureXray")}
@@ -345,6 +345,18 @@ export function TreatmentForm({ register, disabled }: FormSectionProps) {
                 Terrain à risque (BPCO, ventilation)
               </span>
             </label>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Conduite à Tenir
+              </label>
+              <textarea
+                {...register("pneumothoraxManagement.conduiteATenir")}
+                disabled={disabled}
+                rows={3}
+                placeholder="Préciser la conduite à tenir..."
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm resize-y"
+              />
+            </div>
           </div>
         </div>
       </div>

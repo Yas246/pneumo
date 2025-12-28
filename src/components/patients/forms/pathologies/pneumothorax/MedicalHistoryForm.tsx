@@ -356,7 +356,8 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
                 <input
                   type="number"
                   {...register("pneumothoraxMedicalHistory.smokingQuantity", {
-                    setValueAs: (value) => (value === "" ? null : Number(value)),
+                    setValueAs: (value) =>
+                      value === "" ? null : Number(value),
                   })}
                   disabled={disabled}
                   placeholder="Ex: 10 PA"
@@ -403,7 +404,7 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
                 Exposition récente
               </label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     value="effort"
@@ -415,7 +416,7 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
                     Effort
                   </span>
                 </label>
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     value="toux"
@@ -427,7 +428,7 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
                     Toux
                   </span>
                 </label>
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     value="plongee"
@@ -439,7 +440,7 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
                     Plongée
                   </span>
                 </label>
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     value="avion"
@@ -451,7 +452,7 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
                     Avion
                   </span>
                 </label>
-                <label className="flex items-center space-x-2">
+                <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                   <input
                     type="checkbox"
                     value="altitude"

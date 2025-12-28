@@ -9,6 +9,77 @@ export function ComplementaryExamsForm({
   watch,
   setValue,
 }: FormSectionProps) {
+  // Surveiller l'état des checkboxes pour afficher conditionnellement les champs de résultats
+  // Section 6.1 Imagerie thoracique
+  const chestXRay = watch(
+    "lungCancerComplementaryExams.thoracicImaging.chestXRay"
+  );
+  const tapCt = watch("lungCancerComplementaryExams.thoracicImaging.tapCt");
+  const brainMri = watch(
+    "lungCancerComplementaryExams.thoracicImaging.brainMri"
+  );
+  const petCt = watch("lungCancerComplementaryExams.thoracicImaging.petCt");
+  const pleuralUltrasound = watch(
+    "lungCancerComplementaryExams.thoracicImaging.pleuralUltrasound"
+  );
+
+  // Section 6.2 Endoscopie / prélèvements
+  const bronchoscopy = watch(
+    "lungCancerComplementaryExams.endoscopyBiopsies.bronchoscopy"
+  );
+  const bronchialBiopsies = watch(
+    "lungCancerComplementaryExams.endoscopyBiopsies.bronchialBiopsies"
+  );
+  const balCytology = watch(
+    "lungCancerComplementaryExams.endoscopyBiopsies.balCytology"
+  );
+  const ebus = watch("lungCancerComplementaryExams.endoscopyBiopsies.ebus");
+  const ctGuidedBiopsy = watch(
+    "lungCancerComplementaryExams.endoscopyBiopsies.ctGuidedBiopsy"
+  );
+  const diagnosticPleuralPuncture = watch(
+    "lungCancerComplementaryExams.endoscopyBiopsies.diagnosticPleuralPuncture"
+  );
+  const lymphNodeBiopsy = watch(
+    "lungCancerComplementaryExams.endoscopyBiopsies.lymphNodeBiopsy"
+  );
+
+  // Section 6.3 Biologie (bilan initial)
+  const cbc = watch("lungCancerComplementaryExams.initialBiology.cbc");
+  const crp = watch("lungCancerComplementaryExams.initialBiology.crp");
+  const ionogramUreaCreatinine = watch(
+    "lungCancerComplementaryExams.initialBiology.ionogramUreaCreatinine"
+  );
+  const liverFunction = watch(
+    "lungCancerComplementaryExams.initialBiology.liverFunction"
+  );
+  const hemostasis = watch(
+    "lungCancerComplementaryExams.initialBiology.hemostasis"
+  );
+  const tumorMarkers = watch(
+    "lungCancerComplementaryExams.initialBiology.tumorMarkers"
+  );
+
+  // Section 6.4 Bilan pré-thérapeutique
+  const pftSpirometry = watch(
+    "lungCancerComplementaryExams.preTherapeuticAssessment.pftSpirometry"
+  );
+  const dlco = watch(
+    "lungCancerComplementaryExams.preTherapeuticAssessment.dlco"
+  );
+  const bloodGas = watch(
+    "lungCancerComplementaryExams.preTherapeuticAssessment.bloodGas"
+  );
+  const ecg = watch(
+    "lungCancerComplementaryExams.preTherapeuticAssessment.ecg"
+  );
+  const echocardiography = watch(
+    "lungCancerComplementaryExams.preTherapeuticAssessment.echocardiography"
+  );
+  const anestheticEvaluation = watch(
+    "lungCancerComplementaryExams.preTherapeuticAssessment.anestheticEvaluation"
+  );
+
   return (
     <div className="bg-white dark:bg-gray-800 shadow-soft rounded-xl p-6">
       <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-6">
@@ -23,7 +94,7 @@ export function ComplementaryExamsForm({
           </h4>
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -36,41 +107,45 @@ export function ComplementaryExamsForm({
                   Radiographie thoracique
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.thoracicImaging.chestXRayReport"
-                )}
-                disabled={disabled}
-                placeholder="Rapport..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {chestXRay && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.thoracicImaging.chestXRayReport"
+                  )}
+                  disabled={disabled}
+                  placeholder="Rapport..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Images de la Radiographie thoracique
-              </label>
-              <MediaUploadDragDrop
-                onFileSelect={(files, urls) => {
-                  if (urls && urls.length > 0) {
-                    setValue(
-                      "lungCancerComplementaryExams.thoracicImaging.chestXRayImages",
-                      urls
-                    );
+            {chestXRay && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images de la Radiographie thoracique
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "lungCancerComplementaryExams.thoracicImaging.chestXRayImages",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*"
+                  placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                  currentUrls={
+                    watch?.(
+                      "lungCancerComplementaryExams.thoracicImaging.chestXRayImages"
+                    ) || []
                   }
-                }}
-                accept="image/*"
-                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
-                currentUrls={
-                  watch?.(
-                    "lungCancerComplementaryExams.thoracicImaging.chestXRayImages"
-                  ) || []
-                }
-                disabled={disabled}
-              />
-            </div>
+                  disabled={disabled}
+                />
+              </div>
+            )}
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -83,41 +158,45 @@ export function ComplementaryExamsForm({
                   TDM TAP
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.thoracicImaging.tapCtReport"
-                )}
-                disabled={disabled}
-                placeholder="Rapport..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {tapCt && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.thoracicImaging.tapCtReport"
+                  )}
+                  disabled={disabled}
+                  placeholder="Rapport..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Images de la TDM TAP
-              </label>
-              <MediaUploadDragDrop
-                onFileSelect={(files, urls) => {
-                  if (urls && urls.length > 0) {
-                    setValue(
-                      "lungCancerComplementaryExams.thoracicImaging.tapCtImages",
-                      urls
-                    );
+            {tapCt && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images de la TDM TAP
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "lungCancerComplementaryExams.thoracicImaging.tapCtImages",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*"
+                  placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                  currentUrls={
+                    watch?.(
+                      "lungCancerComplementaryExams.thoracicImaging.tapCtImages"
+                    ) || []
                   }
-                }}
-                accept="image/*"
-                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
-                currentUrls={
-                  watch?.(
-                    "lungCancerComplementaryExams.thoracicImaging.tapCtImages"
-                  ) || []
-                }
-                disabled={disabled}
-              />
-            </div>
+                  disabled={disabled}
+                />
+              </div>
+            )}
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -130,41 +209,46 @@ export function ComplementaryExamsForm({
                   IRM cérébrale
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.thoracicImaging.brainMriReport"
-                )}
-                disabled={disabled}
-                placeholder="Rapport..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {brainMri && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.thoracicImaging.brainMriReport"
+                  )}
+                  disabled={disabled}
+                  placeholder="Rapport..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Images de l&apos;IRM cérébrale
-              </label>
-              <MediaUploadDragDrop
-                onFileSelect={(files, urls) => {
-                  if (urls && urls.length > 0) {
-                    setValue(
-                      "lungCancerComplementaryExams.thoracicImaging.brainMriImages",
-                      urls
-                    );
+            {brainMri && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images de l&apos;IRM cérébrale
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "lungCancerComplementaryExams.thoracicImaging.brainMriImages",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*"
+                  placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                  currentUrls={
+                    watch?.(
+                      "lungCancerComplementaryExams.thoracicImaging.brainMriImages"
+                    ) || []
                   }
-                }}
-                accept="image/*"
-                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
-                currentUrls={
-                  watch?.(
-                    "lungCancerComplementaryExams.thoracicImaging.brainMriImages"
-                  ) || []
-                }
-                disabled={disabled}
-              />
-            </div>
+                  disabled={disabled}
+                />
+              </div>
+            )}
+
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -177,41 +261,45 @@ export function ComplementaryExamsForm({
                   TEP-TDM
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.thoracicImaging.petCtReport"
-                )}
-                disabled={disabled}
-                placeholder="Rapport..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {petCt && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.thoracicImaging.petCtReport"
+                  )}
+                  disabled={disabled}
+                  placeholder="Rapport..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Images de la TEP-TDM
-              </label>
-              <MediaUploadDragDrop
-                onFileSelect={(files, urls) => {
-                  if (urls && urls.length > 0) {
-                    setValue(
-                      "lungCancerComplementaryExams.thoracicImaging.petCtImages",
-                      urls
-                    );
+            {petCt && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images de la TEP-TDM
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "lungCancerComplementaryExams.thoracicImaging.petCtImages",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*"
+                  placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                  currentUrls={
+                    watch?.(
+                      "lungCancerComplementaryExams.thoracicImaging.petCtImages"
+                    ) || []
                   }
-                }}
-                accept="image/*"
-                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
-                currentUrls={
-                  watch?.(
-                    "lungCancerComplementaryExams.thoracicImaging.petCtImages"
-                  ) || []
-                }
-                disabled={disabled}
-              />
-            </div>
+                  disabled={disabled}
+                />
+              </div>
+            )}
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -224,39 +312,44 @@ export function ComplementaryExamsForm({
                   Échographie pleurale
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.thoracicImaging.pleuralUltrasoundReport"
-                )}
-                disabled={disabled}
-                placeholder="Rapport..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {pleuralUltrasound && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.thoracicImaging.pleuralUltrasoundReport"
+                  )}
+                  disabled={disabled}
+                  placeholder="Rapport..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Images de l&apos;Échographie pleurale
-              </label>
-              <MediaUploadDragDrop
-                onFileSelect={(files, urls) => {
-                  if (urls && urls.length > 0) {
-                    setValue(
-                      "lungCancerComplementaryExams.thoracicImaging.pleuralUltrasoundImages",
-                      urls
-                    );
+            {pleuralUltrasound && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images de l&apos;Échographie pleurale
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "lungCancerComplementaryExams.thoracicImaging.pleuralUltrasoundImages",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*"
+                  placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                  currentUrls={
+                    watch?.(
+                      "lungCancerComplementaryExams.thoracicImaging.pleuralUltrasoundImages"
+                    ) || []
                   }
-                }}
-                accept="image/*"
-                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
-                currentUrls={
-                  watch?.(
-                    "lungCancerComplementaryExams.thoracicImaging.pleuralUltrasoundImages"
-                  ) || []
-                }
-                disabled={disabled}
-              />
-            </div>
+                  disabled={disabled}
+                />
+              </div>
+            )}
+
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Autre
@@ -304,7 +397,7 @@ export function ComplementaryExamsForm({
           </h4>
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -317,41 +410,45 @@ export function ComplementaryExamsForm({
                   Bronchoscopie
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.endoscopyBiopsies.bronchoscopyReport"
-                )}
-                disabled={disabled}
-                placeholder="Rapport..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {bronchoscopy && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.endoscopyBiopsies.bronchoscopyReport"
+                  )}
+                  disabled={disabled}
+                  placeholder="Rapport..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Images de la Bronchoscopie
-              </label>
-              <MediaUploadDragDrop
-                onFileSelect={(files, urls) => {
-                  if (urls && urls.length > 0) {
-                    setValue(
-                      "lungCancerComplementaryExams.endoscopyBiopsies.bronchoscopyImages",
-                      urls
-                    );
+            {bronchoscopy && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images de la Bronchoscopie
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "lungCancerComplementaryExams.endoscopyBiopsies.bronchoscopyImages",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*"
+                  placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                  currentUrls={
+                    watch?.(
+                      "lungCancerComplementaryExams.endoscopyBiopsies.bronchoscopyImages"
+                    ) || []
                   }
-                }}
-                accept="image/*"
-                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
-                currentUrls={
-                  watch?.(
-                    "lungCancerComplementaryExams.endoscopyBiopsies.bronchoscopyImages"
-                  ) || []
-                }
-                disabled={disabled}
-              />
-            </div>
+                  disabled={disabled}
+                />
+              </div>
+            )}
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -364,41 +461,45 @@ export function ComplementaryExamsForm({
                   Biopsies bronchiques
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.endoscopyBiopsies.bronchialBiopsiesReport"
-                )}
-                disabled={disabled}
-                placeholder="Rapport..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {bronchialBiopsies && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.endoscopyBiopsies.bronchialBiopsiesReport"
+                  )}
+                  disabled={disabled}
+                  placeholder="Rapport..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Images des Biopsies bronchiques
-              </label>
-              <MediaUploadDragDrop
-                onFileSelect={(files, urls) => {
-                  if (urls && urls.length > 0) {
-                    setValue(
-                      "lungCancerComplementaryExams.endoscopyBiopsies.bronchialBiopsiesImages",
-                      urls
-                    );
+            {bronchialBiopsies && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images des Biopsies bronchiques
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "lungCancerComplementaryExams.endoscopyBiopsies.bronchialBiopsiesImages",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*"
+                  placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                  currentUrls={
+                    watch?.(
+                      "lungCancerComplementaryExams.endoscopyBiopsies.bronchialBiopsiesImages"
+                    ) || []
                   }
-                }}
-                accept="image/*"
-                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
-                currentUrls={
-                  watch?.(
-                    "lungCancerComplementaryExams.endoscopyBiopsies.bronchialBiopsiesImages"
-                  ) || []
-                }
-                disabled={disabled}
-              />
-            </div>
+                  disabled={disabled}
+                />
+              </div>
+            )}
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -411,41 +512,45 @@ export function ComplementaryExamsForm({
                   Cytologie LBA
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.endoscopyBiopsies.balCytologyResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {balCytology && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.endoscopyBiopsies.balCytologyResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Images de la Cytologie LBA
-              </label>
-              <MediaUploadDragDrop
-                onFileSelect={(files, urls) => {
-                  if (urls && urls.length > 0) {
-                    setValue(
-                      "lungCancerComplementaryExams.endoscopyBiopsies.balCytologyImages",
-                      urls
-                    );
+            {balCytology && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images de la Cytologie LBA
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "lungCancerComplementaryExams.endoscopyBiopsies.balCytologyImages",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*"
+                  placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                  currentUrls={
+                    watch?.(
+                      "lungCancerComplementaryExams.endoscopyBiopsies.balCytologyImages"
+                    ) || []
                   }
-                }}
-                accept="image/*"
-                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
-                currentUrls={
-                  watch?.(
-                    "lungCancerComplementaryExams.endoscopyBiopsies.balCytologyImages"
-                  ) || []
-                }
-                disabled={disabled}
-              />
-            </div>
+                  disabled={disabled}
+                />
+              </div>
+            )}
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -458,41 +563,46 @@ export function ComplementaryExamsForm({
                   EBUS
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.endoscopyBiopsies.ebusResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {ebus && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.endoscopyBiopsies.ebusResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Images de l&apos;EBUS
-              </label>
-              <MediaUploadDragDrop
-                onFileSelect={(files, urls) => {
-                  if (urls && urls.length > 0) {
-                    setValue(
-                      "lungCancerComplementaryExams.endoscopyBiopsies.ebusImages",
-                      urls
-                    );
+            {ebus && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images de l&apos;EBUS
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "lungCancerComplementaryExams.endoscopyBiopsies.ebusImages",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*"
+                  placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                  currentUrls={
+                    watch?.(
+                      "lungCancerComplementaryExams.endoscopyBiopsies.ebusImages"
+                    ) || []
                   }
-                }}
-                accept="image/*"
-                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
-                currentUrls={
-                  watch?.(
-                    "lungCancerComplementaryExams.endoscopyBiopsies.ebusImages"
-                  ) || []
-                }
-                disabled={disabled}
-              />
-            </div>
+                  disabled={disabled}
+                />
+              </div>
+            )}
+
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -505,41 +615,45 @@ export function ComplementaryExamsForm({
                   Biopsie sous TDM
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.endoscopyBiopsies.ctGuidedBiopsyResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {ctGuidedBiopsy && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.endoscopyBiopsies.ctGuidedBiopsyResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Images de la Biopsie scanno-guidée
-              </label>
-              <MediaUploadDragDrop
-                onFileSelect={(files, urls) => {
-                  if (urls && urls.length > 0) {
-                    setValue(
-                      "lungCancerComplementaryExams.endoscopyBiopsies.ctGuidedBiopsyImages",
-                      urls
-                    );
+            {ctGuidedBiopsy && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images de la Biopsie scanno-guidée
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "lungCancerComplementaryExams.endoscopyBiopsies.ctGuidedBiopsyImages",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*"
+                  placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                  currentUrls={
+                    watch?.(
+                      "lungCancerComplementaryExams.endoscopyBiopsies.ctGuidedBiopsyImages"
+                    ) || []
                   }
-                }}
-                accept="image/*"
-                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
-                currentUrls={
-                  watch?.(
-                    "lungCancerComplementaryExams.endoscopyBiopsies.ctGuidedBiopsyImages"
-                  ) || []
-                }
-                disabled={disabled}
-              />
-            </div>
+                  disabled={disabled}
+                />
+              </div>
+            )}
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -552,18 +666,20 @@ export function ComplementaryExamsForm({
                   Ponction pleurale diagnostique
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.endoscopyBiopsies.diagnosticPleuralPunctureResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {diagnosticPleuralPuncture && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.endoscopyBiopsies.diagnosticPleuralPunctureResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -576,62 +692,68 @@ export function ComplementaryExamsForm({
                   Biopsie ganglionnaire
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.endoscopyBiopsies.lymphNodeBiopsyResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {lymphNodeBiopsy && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.endoscopyBiopsies.lymphNodeBiopsyResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Images de la Ponction pleurale diagnostique
-              </label>
-              <MediaUploadDragDrop
-                onFileSelect={(files, urls) => {
-                  if (urls && urls.length > 0) {
-                    setValue(
-                      "lungCancerComplementaryExams.endoscopyBiopsies.diagnosticPleuralPunctureImages",
-                      urls
-                    );
+            {diagnosticPleuralPuncture && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images de la Ponction pleurale diagnostique
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "lungCancerComplementaryExams.endoscopyBiopsies.diagnosticPleuralPunctureImages",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*"
+                  placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                  currentUrls={
+                    watch?.(
+                      "lungCancerComplementaryExams.endoscopyBiopsies.diagnosticPleuralPunctureImages"
+                    ) || []
                   }
-                }}
-                accept="image/*"
-                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
-                currentUrls={
-                  watch?.(
-                    "lungCancerComplementaryExams.endoscopyBiopsies.diagnosticPleuralPunctureImages"
-                  ) || []
-                }
-                disabled={disabled}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Images de la Biopsie ganglionnaire
-              </label>
-              <MediaUploadDragDrop
-                onFileSelect={(files, urls) => {
-                  if (urls && urls.length > 0) {
-                    setValue(
-                      "lungCancerComplementaryExams.endoscopyBiopsies.lymphNodeBiopsyImages",
-                      urls
-                    );
+                  disabled={disabled}
+                />
+              </div>
+            )}
+            {lymphNodeBiopsy && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Images de la Biopsie ganglionnaire
+                </label>
+                <MediaUploadDragDrop
+                  onFileSelect={(files, urls) => {
+                    if (urls && urls.length > 0) {
+                      setValue(
+                        "lungCancerComplementaryExams.endoscopyBiopsies.lymphNodeBiopsyImages",
+                        urls
+                      );
+                    }
+                  }}
+                  accept="image/*"
+                  placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
+                  currentUrls={
+                    watch?.(
+                      "lungCancerComplementaryExams.endoscopyBiopsies.lymphNodeBiopsyImages"
+                    ) || []
                   }
-                }}
-                accept="image/*"
-                placeholder="Glissez-déposez des images ou cliquez pour sélectionner"
-                currentUrls={
-                  watch?.(
-                    "lungCancerComplementaryExams.endoscopyBiopsies.lymphNodeBiopsyImages"
-                  ) || []
-                }
-                disabled={disabled}
-              />
-            </div>
+                  disabled={disabled}
+                />
+              </div>
+            )}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Images de l&apos;Anatomopathologie
@@ -708,7 +830,7 @@ export function ComplementaryExamsForm({
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Autre moléculaire
+                Autre
               </label>
               <input
                 type="text"
@@ -730,7 +852,7 @@ export function ComplementaryExamsForm({
           </h4>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -743,18 +865,20 @@ export function ComplementaryExamsForm({
                   NFS
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.initialBiology.cbcResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {cbc && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.initialBiology.cbcResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -767,18 +891,20 @@ export function ComplementaryExamsForm({
                   CRP
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.initialBiology.crpResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {crp && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.initialBiology.crpResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -791,18 +917,20 @@ export function ComplementaryExamsForm({
                   Ionogramme urée créatinine
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.initialBiology.ionogramUreaCreatinineResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {ionogramUreaCreatinine && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.initialBiology.ionogramUreaCreatinineResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -815,15 +943,17 @@ export function ComplementaryExamsForm({
                   Fonction hépatique
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.initialBiology.liverFunctionResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {liverFunction && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.initialBiology.liverFunctionResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -854,7 +984,7 @@ export function ComplementaryExamsForm({
               />
             </div>
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -867,18 +997,20 @@ export function ComplementaryExamsForm({
                   Hémostase
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.initialBiology.hemostasisResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {hemostasis && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.initialBiology.hemostasisResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -891,15 +1023,17 @@ export function ComplementaryExamsForm({
                   Marqueurs tumoraux
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.initialBiology.tumorMarkersResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {tumorMarkers && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.initialBiology.tumorMarkersResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
           </div>
         </div>
@@ -911,7 +1045,7 @@ export function ComplementaryExamsForm({
           </h4>
           <div className="space-y-4">
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -924,18 +1058,20 @@ export function ComplementaryExamsForm({
                   EFR spirométrie
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.preTherapeuticAssessment.pftSpirometryResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {pftSpirometry && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.preTherapeuticAssessment.pftSpirometryResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -948,18 +1084,20 @@ export function ComplementaryExamsForm({
                   DLCO
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.preTherapeuticAssessment.dlcoResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {dlco && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.preTherapeuticAssessment.dlcoResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -972,18 +1110,20 @@ export function ComplementaryExamsForm({
                   Gaz du sang
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.preTherapeuticAssessment.bloodGasResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {bloodGas && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.preTherapeuticAssessment.bloodGasResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -996,18 +1136,20 @@ export function ComplementaryExamsForm({
                   ECG
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.preTherapeuticAssessment.ecgResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {ecg && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.preTherapeuticAssessment.ecgResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -1020,18 +1162,20 @@ export function ComplementaryExamsForm({
                   Échocardiographie
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.preTherapeuticAssessment.echocardiographyResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {echocardiography && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.preTherapeuticAssessment.echocardiographyResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
             <div className="space-y-2">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
                 <input
                   type="checkbox"
                   {...register(
@@ -1044,15 +1188,17 @@ export function ComplementaryExamsForm({
                   Consultation anesthésique
                 </span>
               </label>
-              <input
-                type="text"
-                {...register(
-                  "lungCancerComplementaryExams.preTherapeuticAssessment.anestheticEvaluationResults"
-                )}
-                disabled={disabled}
-                placeholder="Résultats..."
-                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
-              />
+              {anestheticEvaluation && (
+                <input
+                  type="text"
+                  {...register(
+                    "lungCancerComplementaryExams.preTherapeuticAssessment.anestheticEvaluationResults"
+                  )}
+                  disabled={disabled}
+                  placeholder="Résultats..."
+                  className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+                />
+              )}
             </div>
           </div>
         </div>

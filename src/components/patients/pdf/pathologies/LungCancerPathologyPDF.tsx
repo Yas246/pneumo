@@ -801,12 +801,28 @@ function ClinicalExamSection({ patient }: LungCancerPathologyPDFProps) {
                   value={respiratoryExam?.wheezing}
                 />
               </View>
+              {hasValue(respiratoryExam?.wheezingLocation) && (
+                <View style={baseStyles.gridItem}>
+                  <PDFField
+                    label="Siège sibilances"
+                    value={respiratoryExam?.wheezingLocation}
+                  />
+                </View>
+              )}
               <View style={baseStyles.gridItem}>
                 <PDFField
                   label="Crépitants"
                   value={respiratoryExam?.crackles}
                 />
               </View>
+              {hasValue(respiratoryExam?.cracklesLocation) && (
+                <View style={baseStyles.gridItem}>
+                  <PDFField
+                    label="Siège crépitants"
+                    value={respiratoryExam?.cracklesLocation}
+                  />
+                </View>
+              )}
               <View style={baseStyles.gridItem}>
                 <PDFField
                   label="Murmure vésiculaire localisé diminué"

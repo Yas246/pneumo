@@ -560,10 +560,15 @@ export interface ExtendedPatient extends Patient {
     imagingResults?: string;
     bloodGas?: string;
     nfs?: boolean;
+    nfsResults?: string;
     crp?: boolean;
+    crpResults?: string;
     ionogram?: boolean;
+    ionogramResults?: string;
     hemostasis?: boolean;
+    hemostasisResults?: string;
     bloodGroup?: boolean;
+    bloodGroupResults?: string;
   };
   pneumothoraxDiagnosis?: {
     spontaneousPrimary?: boolean;
@@ -602,11 +607,13 @@ export interface ExtendedPatient extends Patient {
     compressiveDecompression?: boolean;
     persistentAirLeak?: boolean;
     highRiskTerrain?: boolean;
+    conduiteATenir?: string;
   };
   pneumothoraxMonitoring?: {
     regularClinicalMonitoring?: boolean;
     monitoringDetails?: string;
     radiologicalControl?: string;
+    radiologicalControlOther?: string;
     drainMonitoring?: boolean;
     complications?: string[];
     evolutionRemarks?: string;
@@ -1209,7 +1216,9 @@ export interface ExtendedPatient extends Patient {
       pleuralFluidSyndrome?: boolean;
       condensationSyndrome?: boolean;
       wheezing?: boolean;
+      wheezingLocation?: string;
       crackles?: boolean;
+      cracklesLocation?: string;
       localizedDiminishedBreathSounds?: boolean;
       pleuralEffusionSigns?: boolean;
       atelectasisSigns?: boolean;

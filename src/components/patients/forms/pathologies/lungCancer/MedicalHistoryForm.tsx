@@ -395,7 +395,7 @@ export function MedicalHistoryForm({ register, disabled }: FormSectionProps) {
                 className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
               <span className="text-sm text-gray-700 dark:text-gray-300">
-                Antécédents familiaux
+                Antécédents familiaux broncho-pulmonaire
               </span>
             </label>
 

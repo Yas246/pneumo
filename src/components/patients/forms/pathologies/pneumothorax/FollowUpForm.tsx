@@ -1,7 +1,11 @@
 "use client";
 
 import { FormSectionProps } from "../../types";
-export function FollowUpForm({ register, disabled }: FormSectionProps) {
+export function FollowUpForm({ register, watch, disabled }: FormSectionProps) {
+  const radiologicalControl = watch(
+    "pneumothoraxMonitoring.radiologicalControl"
+  );
+
   return (
     <div className="bg-white dark:bg-gray-800 shadow-soft rounded-xl p-6">
       <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-6">
@@ -48,6 +52,17 @@ export function FollowUpForm({ register, disabled }: FormSectionProps) {
             <option value="24h">à 24h</option>
             <option value="autre">Autre</option>
           </select>
+          {radiologicalControl === "autre" && (
+            <div className="mt-2">
+              <input
+                type="text"
+                {...register("pneumothoraxMonitoring.radiologicalControlOther")}
+                disabled={disabled}
+                placeholder="Préciser le délai..."
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm"
+              />
+            </div>
+          )}
         </div>
 
         {/* Surveillance du drain */}
@@ -69,7 +84,7 @@ export function FollowUpForm({ register, disabled }: FormSectionProps) {
             Recherche de complications
           </label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="hemothorax"
@@ -81,7 +96,7 @@ export function FollowUpForm({ register, disabled }: FormSectionProps) {
                 Hémothorax
               </span>
             </label>
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="infection"
@@ -93,7 +108,7 @@ export function FollowUpForm({ register, disabled }: FormSectionProps) {
                 Infection
               </span>
             </label>
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="emphysemeSC"
@@ -105,7 +120,7 @@ export function FollowUpForm({ register, disabled }: FormSectionProps) {
                 Emphysème SC
               </span>
             </label>
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="oedemeReexpansion"

@@ -152,10 +152,15 @@ export const pneumothoraxSchema = z.object({
       // Biologie
       bloodGas: z.string().optional(),
       nfs: z.boolean().default(false),
+      nfsResults: z.string().optional(),
       crp: z.boolean().default(false),
+      crpResults: z.string().optional(),
       ionogram: z.boolean().default(false),
+      ionogramResults: z.string().optional(),
       hemostasis: z.boolean().default(false),
+      hemostasisResults: z.string().optional(),
       bloodGroup: z.boolean().default(false),
+      bloodGroupResults: z.string().optional(),
     })
     .default({}),
 
@@ -207,6 +212,7 @@ export const pneumothoraxSchema = z.object({
       compressiveDecompression: z.boolean().default(false),
       persistentAirLeak: z.boolean().default(false),
       highRiskTerrain: z.boolean().default(false),
+      conduiteATenir: z.string().optional(),
     })
     .default({}),
 
@@ -216,6 +222,7 @@ export const pneumothoraxSchema = z.object({
       regularClinicalMonitoring: z.boolean().default(false),
       monitoringDetails: z.string().optional(),
       radiologicalControl: z.string().optional(),
+      radiologicalControlOther: z.string().optional(),
       drainMonitoring: z.boolean().default(false),
       complications: booleanOrArray(),
       evolutionRemarks: z.string().optional(),

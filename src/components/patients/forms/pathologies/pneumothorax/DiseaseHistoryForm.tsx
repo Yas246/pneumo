@@ -44,7 +44,7 @@ export function DiseaseHistoryForm({ register, disabled }: FormSectionProps) {
             Circonstances
           </label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="repos"
@@ -56,7 +56,7 @@ export function DiseaseHistoryForm({ register, disabled }: FormSectionProps) {
                 Repos
               </span>
             </label>
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="effort"
@@ -68,7 +68,7 @@ export function DiseaseHistoryForm({ register, disabled }: FormSectionProps) {
                 Effort
               </span>
             </label>
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="toux"
@@ -80,7 +80,7 @@ export function DiseaseHistoryForm({ register, disabled }: FormSectionProps) {
                 Toux
               </span>
             </label>
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="traumatisme"
@@ -92,7 +92,7 @@ export function DiseaseHistoryForm({ register, disabled }: FormSectionProps) {
                 Traumatisme
               </span>
             </label>
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="gesteIatrogene"
@@ -243,7 +243,7 @@ export function DiseaseHistoryForm({ register, disabled }: FormSectionProps) {
             Signes associés
           </label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="agitation"
@@ -255,7 +255,7 @@ export function DiseaseHistoryForm({ register, disabled }: FormSectionProps) {
                 Agitation
               </span>
             </label>
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="sueurs"
@@ -267,7 +267,7 @@ export function DiseaseHistoryForm({ register, disabled }: FormSectionProps) {
                 Sueurs
               </span>
             </label>
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="cyanose"
@@ -279,7 +279,7 @@ export function DiseaseHistoryForm({ register, disabled }: FormSectionProps) {
                 Cyanose
               </span>
             </label>
-            <label className="flex items-center space-x-2">
+            <label className="flex items-center space-x-3 p-3 border border-gray-200 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
               <input
                 type="checkbox"
                 value="malaise"
