@@ -1,55 +1,105 @@
 "use client";
 
 import { Button } from "@/components/shared/Button";
-import { getAppointments } from "@/firebase/appointments";
 import { useAuth } from "@/hooks/useAuth";
 import { AppointmentWithPatient } from "@/types/appointment";
 import { FunnelIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { toast } from "react-hot-toast";
+import { useMemo, useState } from "react";
 
 interface AppointmentListProps {
   initialAppointments: AppointmentWithPatient[];
 }
 
 export function AppointmentList({ initialAppointments }: AppointmentListProps) {
-  const { isSuperAdmin, user, isResident, isProf } = useAuth();
+  const { isSuperAdmin } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilters, setShowFilters] = useState(false);
   const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
   const [selectedDoctors, setSelectedDoctors] = useState<string[]>([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [appointments, setAppointments] =
-    useState<AppointmentWithPatient[]>(initialAppointments);
+
+  // Helper function pour obtenir le type de manière sécurisée
+  const getAppointmentType = (appointment: AppointmentWithPatient) => {
+    return appointment.type || "Non défini";
+  };
+
+  // Helper function pour obtenir la classe CSS selon le type
+  const getTypeClassName = (appointment: AppointmentWithPatient) => {
+    const type = getAppointmentType(appointment);
+    switch (type) {
+      case "consultation":
+        return "border-l-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/10";
+      case "examen":
+        return "border-l-green-500 hover:bg-green-50/50 dark:hover:bg-green-900/10";
+      case "suivi":
+        return "border-l-purple-500 hover:bg-purple-50/50 dark:hover:bg-purple-900/10";
+      default:
+        return "border-l-gray-500";
+    }
+  };
+
+  // Helper function pour obtenir la classe du badge selon le type
+  const getBadgeClassName = (appointment: AppointmentWithPatient) => {
+    const type = getAppointmentType(appointment);
+    switch (type) {
+      case "consultation":
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300";
+      case "examen":
+        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300";
+      case "suivi":
+        return "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300";
+      default:
+        return "bg-gray-100 text-gray-800 dark:bg-gray-800/30 dark:text-gray-300";
+    }
+  };
+
+  // Helper function pour obtenir la classe du bouton selon le type
+  const getButtonClassName = (appointment: AppointmentWithPatient) => {
+    const type = getAppointmentType(appointment);
+    switch (type) {
+      case "consultation":
+        return "text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/10";
+      case "examen":
+        return "text-green-600 hover:bg-green-50 dark:hover:bg-green-900/10";
+      case "suivi":
+        return "text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/10";
+      default:
+        return "text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-900/10";
+    }
+  };
 
   // Extraire tous les types uniques de rendez-vous
   const appointmentTypes = useMemo(() => {
     const types = new Set<string>();
-    appointments.forEach((appointment) => {
-      types.add(appointment.type);
+    initialAppointments.forEach((appointment) => {
+      if (appointment.type) {
+        types.add(appointment.type);
+      }
     });
     return Array.from(types);
-  }, [appointments]);
+  }, [initialAppointments]);
 
   // Extraire tous les médecins uniques
   const doctors = useMemo(() => {
     const uniqueDoctors = new Set<string>();
-    appointments.forEach((appointment) => {
+    initialAppointments.forEach((appointment) => {
       if (appointment.doctor?.displayName) {
         uniqueDoctors.add(appointment.doctor.displayName);
       }
     });
     return Array.from(uniqueDoctors);
-  }, [appointments]);
+  }, [initialAppointments]);
 
   // Filtrer les rendez-vous
   const filteredAppointments = useMemo(() => {
-    return appointments.filter((appointment) => {
+    return initialAppointments.filter((appointment) => {
+      // Vérifier que le patient existe
+      if (!appointment.patient) return false;
+
       // Filtre par recherche
       const searchMatch =
         searchTerm === "" ||
@@ -60,7 +110,8 @@ export function AppointmentList({ initialAppointments }: AppointmentListProps) {
 
       // Filtre par type
       const typeMatch =
-        selectedTypes.length === 0 || selectedTypes.includes(appointment.type);
+        selectedTypes.length === 0 ||
+        (appointment.type && selectedTypes.includes(appointment.type));
 
       // Filtre par médecin
       const doctorMatch =
@@ -76,7 +127,7 @@ export function AppointmentList({ initialAppointments }: AppointmentListProps) {
       return searchMatch && typeMatch && doctorMatch && dateMatch;
     });
   }, [
-    appointments,
+    initialAppointments,
     searchTerm,
     selectedTypes,
     selectedDoctors,
@@ -84,41 +135,7 @@ export function AppointmentList({ initialAppointments }: AppointmentListProps) {
     endDate,
   ]);
 
-  useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        if (!user) return;
-
-        const appointmentsList = await getAppointments(user.uid, user.role);
-
-        // Messages spécifiques selon le rôle
-        if (isResident) {
-          toast.success("Affichage de vos rendez-vous uniquement");
-        } else if (isProf) {
-          toast.success("Affichage de vos rendez-vous et ceux des résidents");
-        }
-
-        setAppointments(appointmentsList);
-      } catch (error) {
-        console.error("Error fetching appointments:", error);
-        toast.error("Erreur lors de la récupération des rendez-vous");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAppointments();
-  }, [user, isResident, isProf]);
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
-      </div>
-    );
-  }
-
-  if (appointments.length === 0) {
+  if (initialAppointments.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-gray-500 dark:text-gray-400">
@@ -349,8 +366,8 @@ export function AppointmentList({ initialAppointments }: AppointmentListProps) {
               <div className="flex justify-between items-start">
                 <div>
                   <h3 className="text-base font-medium text-gray-900 dark:text-white">
-                    {appointment.patient.firstName}{" "}
-                    {appointment.patient.lastName}
+                    {appointment.patient?.firstName}{" "}
+                    {appointment.patient?.lastName}
                   </h3>
                   <div className="mt-1 flex items-center gap-2">
                     <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -370,17 +387,11 @@ export function AppointmentList({ initialAppointments }: AppointmentListProps) {
                   </div>
                 </div>
                 <span
-                  className={`px-2.5 py-1 text-xs font-medium rounded-full ${
-                    appointment.type === "consultation"
-                      ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
-                      : appointment.type === "examen"
-                      ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
-                      : appointment.type === "suivi"
-                      ? "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
-                      : "bg-gray-100 text-gray-800 dark:bg-gray-800/30 dark:text-gray-300"
-                  }`}
+                  className={`px-2.5 py-1 text-xs font-medium rounded-full ${getBadgeClassName(
+                    appointment
+                  )}`}
                 >
-                  {appointment.type}
+                  {getAppointmentType(appointment)}
                 </span>
               </div>
 
@@ -393,7 +404,7 @@ export function AppointmentList({ initialAppointments }: AppointmentListProps) {
                   </div>
                   <div>
                     <p className="text-sm text-gray-900 dark:text-white">
-                      {appointment.doctor.displayName || "Non assigné"}
+                      Dr. {appointment.doctor.displayName}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       {appointment.doctor.role === "medecin"
@@ -421,15 +432,9 @@ export function AppointmentList({ initialAppointments }: AppointmentListProps) {
                 >
                   <Button
                     variant="outline"
-                    className={`w-full sm:w-auto ${
-                      appointment.type === "consultation"
-                        ? "text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/10"
-                        : appointment.type === "examen"
-                        ? "text-green-600 hover:bg-green-50 dark:hover:bg-green-900/10"
-                        : appointment.type === "suivi"
-                        ? "text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/10"
-                        : "text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-900/10"
-                    }`}
+                    className={`w-full sm:w-auto ${getButtonClassName(
+                      appointment
+                    )}`}
                   >
                     Voir
                   </Button>
@@ -469,20 +474,14 @@ export function AppointmentList({ initialAppointments }: AppointmentListProps) {
             {filteredAppointments.map((appointment) => (
               <tr
                 key={appointment.id}
-                className={`border-l-4 hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-colors ${
-                  appointment.type === "consultation"
-                    ? "border-l-blue-500 hover:bg-blue-50/50 dark:hover:bg-blue-900/10"
-                    : appointment.type === "examen"
-                    ? "border-l-green-500 hover:bg-green-50/50 dark:hover:bg-green-900/10"
-                    : appointment.type === "suivi"
-                    ? "border-l-purple-500 hover:bg-purple-50/50 dark:hover:bg-purple-900/10"
-                    : "border-l-gray-500"
-                }`}
+                className={`border-l-4 hover:bg-gray-50/50 dark:hover:bg-gray-700/30 transition-colors ${getTypeClassName(
+                  appointment
+                )}`}
               >
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900 dark:text-white">
-                    {appointment.patient.firstName}{" "}
-                    {appointment.patient.lastName}
+                    {appointment.patient?.firstName}{" "}
+                    {appointment.patient?.lastName}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
@@ -502,42 +501,38 @@ export function AppointmentList({ initialAppointments }: AppointmentListProps) {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
-                    className={`px-2.5 py-1 text-xs font-medium rounded-full ${
-                      appointment.type === "consultation"
-                        ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300"
-                        : appointment.type === "examen"
-                        ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
-                        : appointment.type === "suivi"
-                        ? "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300"
-                        : "bg-gray-100 text-gray-800 dark:bg-gray-800/30 dark:text-gray-300"
-                    }`}
+                    className={`px-2.5 py-1 text-xs font-medium rounded-full ${getBadgeClassName(
+                      appointment
+                    )}`}
                   >
-                    {appointment.type}
+                    {getAppointmentType(appointment)}
                   </span>
                 </td>
                 {isSuperAdmin && (
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-2">
-                      <div className="h-6 w-6 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                        <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
-                          {appointment.doctor?.displayName?.charAt(0) || "?"}
-                        </span>
-                      </div>
-                      <div>
-                        <div className="text-sm text-gray-900 dark:text-white">
-                          {appointment.doctor?.displayName || "Non assigné"}
+                    {appointment.doctor && (
+                      <div className="flex items-center gap-2">
+                        <div className="h-6 w-6 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                          <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
+                            {appointment.doctor.displayName?.charAt(0) || "?"}
+                          </span>
                         </div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">
-                          {appointment.doctor?.role === "medecin"
-                            ? "Médecin"
-                            : appointment.doctor?.role === "super-admin"
-                            ? "Super Admin"
-                            : appointment.doctor?.role === "infirmier"
-                            ? "Infirmier"
-                            : ""}
+                        <div>
+                          <div className="text-sm text-gray-900 dark:text-white">
+                            Dr. {appointment.doctor.displayName}
+                          </div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            {appointment.doctor.role === "medecin"
+                              ? "Médecin"
+                              : appointment.doctor.role === "super-admin"
+                              ? "Super Admin"
+                              : appointment.doctor.role === "infirmier"
+                              ? "Infirmier"
+                              : ""}
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </td>
                 )}
                 <td className="px-6 py-4">
@@ -549,15 +544,7 @@ export function AppointmentList({ initialAppointments }: AppointmentListProps) {
                   <Link href={`/appointments/${appointment.id}`}>
                     <Button
                       variant="outline"
-                      className={`${
-                        appointment.type === "consultation"
-                          ? "text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/10"
-                          : appointment.type === "examen"
-                          ? "text-green-600 hover:bg-green-50 dark:hover:bg-green-900/10"
-                          : appointment.type === "suivi"
-                          ? "text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/10"
-                          : "text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-900/10"
-                      }`}
+                      className={`${getButtonClassName(appointment)}`}
                     >
                       Voir
                     </Button>

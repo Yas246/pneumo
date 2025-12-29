@@ -2,11 +2,18 @@
 
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
-import { deleteAppointment, getAppointment } from "@/firebase/appointments";
+import {
+  assignDoctorToAppointment,
+  deleteAppointment,
+  getAppointment,
+  getDoctors,
+} from "@/firebase/appointments";
 import { db } from "@/firebase/config";
 import { getPatient } from "@/firebase/patients";
 import { useAuth } from "@/hooks/useAuth";
+import { usePermissions } from "@/hooks/usePermissions";
 import { Appointment } from "@/types/appointment";
+import { UserData } from "@/types/user";
 import { Dialog } from "@headlessui/react";
 import {
   ArrowLeftIcon,
@@ -33,11 +40,16 @@ export default function AppointmentDetailsPage() {
   const router = useRouter();
   const params = useParams() as { id: string };
   const { user } = useAuth();
+  const { canAssignDoctor } = usePermissions();
   const [appointment, setAppointment] = useState<AppointmentDetails | null>(
     null
   );
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isChangeDoctorOpen, setIsChangeDoctorOpen] = useState(false);
+  const [doctors, setDoctors] = useState<UserData[]>([]);
+  const [selectedDoctorId, setSelectedDoctorId] = useState<string>("");
+  const [isAssigning, setIsAssigning] = useState(false);
 
   useEffect(() => {
     const fetchAppointment = async () => {
@@ -91,6 +103,21 @@ export default function AppointmentDetailsPage() {
     fetchAppointment();
   }, [params.id, router]);
 
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      if (canAssignDoctor) {
+        try {
+          const doctorsList = await getDoctors();
+          setDoctors(doctorsList);
+        } catch (error) {
+          console.error("Erreur lors de la récupération des médecins:", error);
+        }
+      }
+    };
+
+    fetchDoctors();
+  }, [canAssignDoctor]);
+
   const handleDelete = async () => {
     if (!user) {
       toast.error("Vous devez être connecté pour supprimer un rendez-vous");
@@ -116,6 +143,47 @@ export default function AppointmentDetailsPage() {
       console.error("Erreur lors de la suppression:", error);
       toast.error("Erreur lors de la suppression du rendez-vous");
       setIsDeleting(false);
+    }
+  };
+
+  const handleChangeDoctor = async () => {
+    if (!user || !appointment || !selectedDoctorId) {
+      return;
+    }
+
+    setIsAssigning(true);
+    try {
+      const selectedDoctor = doctors.find((d) => d.uid === selectedDoctorId);
+      if (!selectedDoctor) {
+        throw new Error("Médecin non trouvé");
+      }
+
+      await assignDoctorToAppointment(
+        appointment.id!,
+        selectedDoctor.uid,
+        selectedDoctor.role,
+        selectedDoctor.displayName,
+        user.uid,
+        user.role
+      );
+
+      // Mettre à jour l'état local
+      setAppointment({
+        ...appointment,
+        doctor: {
+          displayName: selectedDoctor.displayName,
+          role: selectedDoctor.role,
+        },
+      });
+
+      toast.success("Médecin réassigné avec succès");
+      setIsChangeDoctorOpen(false);
+      setSelectedDoctorId("");
+    } catch (error) {
+      console.error("Erreur lors de la réassignation:", error);
+      toast.error("Erreur lors de la réassignation du médecin");
+    } finally {
+      setIsAssigning(false);
     }
   };
 
@@ -217,6 +285,25 @@ export default function AppointmentDetailsPage() {
                       </dd>
                     </div>
                   )}
+                  {canAssignDoctor && appointment.doctor && (
+                    <div>
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                        Actions
+                      </dt>
+                      <dd className="mt-1">
+                        <Button
+                          variant="outline"
+                          onClick={() => {
+                            setSelectedDoctorId(appointment.creatorId);
+                            setIsChangeDoctorOpen(true);
+                          }}
+                          className="text-sm"
+                        >
+                          Changer le médecin
+                        </Button>
+                      </dd>
+                    </div>
+                  )}
                   {appointment.notes && (
                     <div className="sm:col-span-2">
                       <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -241,6 +328,76 @@ export default function AppointmentDetailsPage() {
               Supprimer le rendez-vous
             </Button>
           </div>
+
+          {/* Modal de changement de médecin */}
+          <Dialog
+            open={isChangeDoctorOpen}
+            onClose={() => !isAssigning && setIsChangeDoctorOpen(false)}
+            className="relative z-50"
+          >
+            <div
+              className="fixed inset-0 bg-black/30 dark:bg-black/50"
+              aria-hidden="true"
+            />
+
+            <div className="fixed inset-0 flex items-center justify-center p-4">
+              <Dialog.Panel className="mx-auto max-w-md rounded-lg bg-white dark:bg-gray-800 p-6 shadow-xl">
+                <Dialog.Title className="text-lg font-medium text-gray-900 dark:text-white mb-4">
+                  Changer le médecin traitant
+                </Dialog.Title>
+
+                <div className="mb-4">
+                  <label
+                    htmlFor="doctorSelect"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
+                    Sélectionner un médecin
+                  </label>
+                  <select
+                    id="doctorSelect"
+                    value={selectedDoctorId}
+                    onChange={(e) => setSelectedDoctorId(e.target.value)}
+                    className="block w-full px-4 py-2.5 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white rounded-lg"
+                  >
+                    <option value="">Sélectionner un médecin...</option>
+                    {doctors.map((doctor) => (
+                      <option key={doctor.uid} value={doctor.uid}>
+                        {doctor.displayName} (
+                        {doctor.role === "medecin"
+                          ? "Médecin"
+                          : doctor.role === "chef-service"
+                          ? "Chef de service"
+                          : doctor.role === "prof"
+                          ? "Professeur"
+                          : doctor.role === "resident"
+                          ? "Résident"
+                          : doctor.role}
+                        )
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsChangeDoctorOpen(false)}
+                    className="w-full sm:w-auto"
+                    disabled={isAssigning}
+                  >
+                    Annuler
+                  </Button>
+                  <Button
+                    onClick={handleChangeDoctor}
+                    className="w-full sm:w-auto"
+                    disabled={isAssigning || !selectedDoctorId}
+                  >
+                    {isAssigning ? "Réassignation..." : "Confirmer"}
+                  </Button>
+                </div>
+              </Dialog.Panel>
+            </div>
+          </Dialog>
 
           {/* Modal de confirmation */}
           <Dialog

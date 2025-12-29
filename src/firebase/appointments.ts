@@ -72,6 +72,103 @@ export const getAppointments = async (
   }
 };
 
+export const getAppointmentsWithPatients = async (
+  userId: string,
+  userRole: UserRole
+): Promise<AppointmentWithPatient[]> => {
+  try {
+    let q = query(collection(db, APPOINTMENTS_COLLECTION));
+
+    // Filtrer selon le rôle
+    if (userRole === "resident") {
+      // Les résidents ne voient que leurs propres rendez-vous
+      q = query(
+        collection(db, APPOINTMENTS_COLLECTION),
+        where("creatorId", "==", userId)
+      );
+    } else if (userRole === "prof") {
+      // Les profs voient leurs rendez-vous et ceux des résidents
+      q = query(
+        collection(db, APPOINTMENTS_COLLECTION),
+        where("creatorRole", "in", ["prof", "resident"] as UserRole[])
+      );
+    }
+
+    const querySnapshot = await getDocs(q);
+    const appointments = querySnapshot.docs.map((doc) =>
+      appointmentConverter.fromFirestore(doc)
+    );
+
+    // Fetch all patients in one batch
+    const patientsSnapshot = await getDocs(collection(db, "patients"));
+    const patientsMap = new Map<string, Patient>();
+    patientsSnapshot.docs.forEach((doc) => {
+      patientsMap.set(doc.id, { id: doc.id, ...doc.data() } as Patient);
+    });
+
+    // Fetch all doctors in one batch
+    const doctorsSnapshot = await getDocs(collection(db, "users"));
+    const doctorsMap = new Map<string, UserData>();
+    doctorsSnapshot.docs.forEach((doc) => {
+      const data = doc.data();
+      if (data) {
+        doctorsMap.set(doc.id, {
+          uid: doc.id,
+          displayName: data.displayName || "Utilisateur inconnu",
+          role: data.role || ("unknown" as UserRole),
+          email: data.email,
+          createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
+        });
+      }
+    });
+
+    // Map appointments to include patient and doctor data
+    return appointments.map((appointment) => {
+      const patient = patientsMap.get(appointment.patientId);
+      const doctor = doctorsMap.get(appointment.creatorId);
+
+      if (!patient) {
+        return {
+          ...appointment,
+          patient: {
+            id: "unknown",
+            firstName: "Patient inconnu",
+            lastName: "",
+            email: "",
+          },
+          doctor: doctor
+            ? {
+                displayName: doctor.displayName,
+                role: doctor.role,
+              }
+            : undefined,
+        };
+      }
+
+      return {
+        ...appointment,
+        patient: {
+          id: patient.id || "unknown",
+          firstName: patient.firstName,
+          lastName: patient.lastName,
+          email: patient.email,
+          birthDate: patient.birthDate,
+          phone: patient.phone,
+        },
+        doctor: doctor
+          ? {
+              displayName: doctor.displayName,
+              role: doctor.role,
+            }
+          : undefined,
+      };
+    });
+  } catch (error) {
+    console.error("Error getting appointments with patients:", error);
+    throw error;
+  }
+};
+
 export const createAppointment = async (
   appointmentData: Omit<Appointment, "id" | "createdAt" | "updatedAt">,
   userId: string,
@@ -257,9 +354,27 @@ export const getUserAppointmentsWithPatients = async (
       }
     });
 
-    // Map appointments to include patient data
+    // Fetch all doctors in one batch
+    const doctorsSnapshot = await getDocs(collection(db, "users"));
+    const doctorsMap = new Map<string, UserData>();
+    doctorsSnapshot.docs.forEach((doc) => {
+      const data = doc.data();
+      if (data) {
+        doctorsMap.set(doc.id, {
+          uid: doc.id,
+          displayName: data.displayName || "Utilisateur inconnu",
+          role: data.role || ("unknown" as UserRole),
+          email: data.email,
+          createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
+        });
+      }
+    });
+
+    // Map appointments to include patient and doctor data
     return appointments.map((appointment) => {
       const patient = patientsMap.get(appointment.patientId);
+      const doctor = doctorsMap.get(appointment.creatorId);
+
       if (!patient) {
         return {
           ...appointment,
@@ -269,6 +384,12 @@ export const getUserAppointmentsWithPatients = async (
             lastName: "",
             email: "",
           },
+          doctor: doctor
+            ? {
+                displayName: doctor.displayName,
+                role: doctor.role,
+              }
+            : undefined,
         };
       }
 
@@ -282,6 +403,12 @@ export const getUserAppointmentsWithPatients = async (
           birthDate: patient.birthDate,
           phone: patient.phone,
         },
+        doctor: doctor
+          ? {
+              displayName: doctor.displayName,
+              role: doctor.role,
+            }
+          : undefined,
       };
     });
   } catch (error) {
@@ -367,6 +494,81 @@ export const getAllAppointmentsWithPatients = async (): Promise<
     });
   } catch (error) {
     console.error("Error getting appointments with patients:", error);
+    throw error;
+  }
+};
+
+export const assignDoctorToAppointment = async (
+  appointmentId: string,
+  newDoctorId: string,
+  newDoctorRole: UserRole,
+  newDoctorName: string,
+  adminUserId: string,
+  adminUserRole: UserRole
+): Promise<void> => {
+  try {
+    const docRef = doc(db, APPOINTMENTS_COLLECTION, appointmentId);
+
+    // Vérifier que l'utilisateur a les permissions nécessaires
+    if (
+      adminUserRole !== "super-admin" &&
+      adminUserRole !== "chef-service" &&
+      adminUserRole !== "prof"
+    ) {
+      throw new Error(
+        "Vous n'avez pas les permissions pour réassigner un médecin"
+      );
+    }
+
+    await updateDoc(docRef, {
+      creatorId: newDoctorId,
+      creatorRole: newDoctorRole,
+      creatorName: newDoctorName,
+      updatedAt: new Date(),
+    });
+
+    // Créer un log pour la réassignation du médecin
+    await createLog({
+      userId: adminUserId,
+      userEmail: "",
+      userRole: adminUserRole,
+      action: "REASSIGNMENT_RDV",
+      details: `Réassignation du rendez-vous ${appointmentId} au médecin ${newDoctorName}`,
+      targetId: appointmentId,
+      targetType: "appointment",
+    });
+  } catch (error) {
+    console.error("Error assigning doctor to appointment:", error);
+    throw error;
+  }
+};
+
+export const getDoctors = async (): Promise<UserData[]> => {
+  try {
+    const doctorsSnapshot = await getDocs(
+      query(
+        collection(db, "users"),
+        where("role", "in", [
+          "medecin",
+          "resident",
+          "chef-service",
+          "prof",
+        ] as UserRole[])
+      )
+    );
+
+    return doctorsSnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        uid: doc.id,
+        displayName: data.displayName || "Utilisateur inconnu",
+        role: data.role || ("unknown" as UserRole),
+        email: data.email,
+        createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
+      };
+    });
+  } catch (error) {
+    console.error("Error getting doctors:", error);
     throw error;
   }
 };

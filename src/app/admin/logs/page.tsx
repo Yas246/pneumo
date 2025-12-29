@@ -49,6 +49,7 @@ const ACTION_LABELS: Record<LogActionType, string> = {
   MODIFICATION_DOSSIER: "Modification de dossier patient",
   ARCHIVAGE_DOSSIER: "Archivage de dossier patient",
   DESARCHIVAGE_DOSSIER: "Désarchivage de dossier patient",
+  REASSIGNMENT_RDV: "Réassignation de médécin",
 };
 
 const ACTION_COLORS: Record<
@@ -104,6 +105,11 @@ const ACTION_COLORS: Record<
     bg: "bg-teal-100 dark:bg-teal-900/30",
     text: "text-teal-800 dark:text-teal-300",
     hover: "hover:bg-teal-200 dark:hover:bg-teal-800/50",
+  },
+  REASSIGNMENT_RDV: {
+    bg: "bg-cyan-100 dark:bg-cyan-900/30",
+    text: "text-cyan-800 dark:text-cyan-300",
+    hover: "hover:bg-cyan-200 dark:hover:bg-cyan-800/50",
   },
 };
 

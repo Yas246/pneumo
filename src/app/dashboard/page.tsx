@@ -1,21 +1,53 @@
 "use client";
 
 import { PatientList } from "@/components/patients/PatientList";
+import {
+  AdvancedFilter,
+  AdvancedFilterValues,
+} from "@/components/shared/AdvancedFilter";
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
 import { PathologyFilter } from "@/components/shared/PathologyFilter";
 import { SearchBar } from "@/components/shared/SearchBar";
+import { getAllUsers } from "@/firebase/users";
+import { useAuth } from "@/hooks/useAuth";
 import {
   ChevronDownIcon,
   ChevronUpIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const [isArchivedOpen, setIsArchivedOpen] = useState(false);
   const [selectedPathologies, setSelectedPathologies] = useState<string[]>([]);
+  const [advancedFilters, setAdvancedFilters] = useState<AdvancedFilterValues>(
+    {}
+  );
+  const [availableDoctors, setAvailableDoctors] = useState<string[]>([]);
+  const { user } = useAuth();
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      if (!user) return;
+      try {
+        const allUsers = await getAllUsers();
+        const doctors = allUsers
+          .filter((u) => ["medecin", "chef-service", "prof"].includes(u.role))
+          .map((u) => u.displayName)
+          .sort();
+        setAvailableDoctors(doctors);
+      } catch (error) {
+        console.error(
+          "Erreur lors de la récupération des médecins traitants:",
+          error
+        );
+      }
+    };
+
+    fetchDoctors();
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -37,7 +69,13 @@ export default function DashboardPage() {
 
           <div className="mb-6 sm:mb-8 space-y-4">
             <SearchBar />
-            <PathologyFilter onFilterChange={setSelectedPathologies} />
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <PathologyFilter onFilterChange={setSelectedPathologies} />
+              <AdvancedFilter
+                onFilterChange={setAdvancedFilters}
+                availableDoctors={availableDoctors}
+              />
+            </div>
           </div>
 
           <div className="space-y-6 sm:space-y-8">
@@ -48,6 +86,7 @@ export default function DashboardPage() {
               <PatientList
                 status="active"
                 selectedPathologies={selectedPathologies}
+                advancedFilters={advancedFilters}
               />
             </div>
 
@@ -76,6 +115,7 @@ export default function DashboardPage() {
                   <PatientList
                     status="archived"
                     selectedPathologies={selectedPathologies}
+                    advancedFilters={advancedFilters}
                   />
                 </div>
               </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { pathologies } from "@/config/pathologies";
-import { FunnelIcon } from "@heroicons/react/24/outline";
+import { FunnelIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
 
 interface PathologyFilterProps {
@@ -64,41 +64,70 @@ export function PathologyFilter({ onFilterChange }: PathologyFilterProps) {
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 mt-2 w-72 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5">
-          <div className="py-1" role="menu" aria-orientation="vertical">
-            <label className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer border-b border-gray-200 dark:border-gray-700">
-              <input
-                type="checkbox"
-                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                checked={false}
-                onChange={handleResetFilter}
-              />
-              <div className="ml-3 flex-1">
-                <div className="font-medium">Réinitialiser</div>
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                  Réinitialiser le filtre
+        <div className="absolute z-10 mt-2 w-80 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5">
+          <div className="p-4 space-y-4">
+            {/* En-tête avec réinitialisation */}
+            <div className="flex items-center justify-between pb-3 border-b border-gray-200 dark:border-gray-700">
+              <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+                Filtrer par Entité
+              </h3>
+              {selectedPathologies.length > 0 && (
+                <button
+                  onClick={handleResetFilter}
+                  className="text-xs text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium flex items-center"
+                >
+                  <XMarkIcon className="h-3.5 w-3.5 mr-1" />
+                  Réinitialiser
+                </button>
+              )}
+            </div>
+
+            {/* Liste des pathologies */}
+            <div className="space-y-2">
+              {pathologies.map((pathology) => (
+                <label
+                  key={pathology.id}
+                  className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer rounded-md transition-colors group"
+                >
+                  <input
+                    type="checkbox"
+                    className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    checked={selectedPathologies.includes(pathology.id)}
+                    onChange={() => handlePathologyToggle(pathology.id)}
+                  />
+                  <div className="ml-3 flex-1">
+                    <div className="font-medium">{pathology.name}</div>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300">
+                      {pathology.description}
+                    </p>
+                  </div>
+                </label>
+              ))}
+            </div>
+
+            {/* Résumé des filtres actifs */}
+            {selectedPathologies.length > 0 && (
+              <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+                <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                  Entités sélectionnées :
                 </p>
-              </div>
-            </label>
-            {pathologies.map((pathology) => (
-              <label
-                key={pathology.id}
-                className="flex items-center px-4 py-3 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer group"
-              >
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                  checked={selectedPathologies.includes(pathology.id)}
-                  onChange={() => handlePathologyToggle(pathology.id)}
-                />
-                <div className="ml-3 flex-1">
-                  <div className="font-medium">{pathology.name}</div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300">
-                    {pathology.description}
-                  </p>
+                <div className="flex flex-wrap gap-2">
+                  {selectedPathologies.map((pathologyId) => {
+                    const pathology = pathologies.find(
+                      (p) => p.id === pathologyId
+                    );
+                    return pathology ? (
+                      <span
+                        key={pathologyId}
+                        className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300"
+                      >
+                        {pathology.name}
+                      </span>
+                    ) : null;
+                  })}
                 </div>
-              </label>
-            ))}
+              </div>
+            )}
           </div>
         </div>
       )}

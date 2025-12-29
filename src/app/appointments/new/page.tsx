@@ -2,11 +2,12 @@
 
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
-import { createAppointment } from "@/firebase/appointments";
+import { createAppointment, getDoctors } from "@/firebase/appointments";
 import { searchPatients } from "@/firebase/patients";
 import { useAuth } from "@/hooks/useAuth";
 import { usePermissions } from "@/hooks/usePermissions";
 import { Patient } from "@/types/patient";
+import { UserData } from "@/types/user";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -23,6 +24,7 @@ const appointmentSchema = z.object({
   duration: z.number().min(15, "La durée minimum est de 15 minutes"),
   type: z.enum(["consultation", "suivi", "examen"]),
   notes: z.string().optional(),
+  doctorId: z.string().optional(),
 });
 
 type AppointmentFormData = z.infer<typeof appointmentSchema>;
@@ -34,8 +36,12 @@ function NewAppointmentContent() {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
-  const { canCreateAppointment, loading: permissionsLoading } =
-    usePermissions();
+  const [doctors, setDoctors] = useState<UserData[]>([]);
+  const {
+    canCreateAppointment,
+    canAssignDoctor,
+    loading: permissionsLoading,
+  } = usePermissions();
   const { user } = useAuth();
 
   const patientId = searchParams.get("patientId");
@@ -67,6 +73,21 @@ function NewAppointmentContent() {
     return () => clearTimeout(timeoutId);
   }, [searchTerm]);
 
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      if (canAssignDoctor) {
+        try {
+          const doctorsList = await getDoctors();
+          setDoctors(doctorsList);
+        } catch (error) {
+          console.error("Erreur lors de la récupération des médecins:", error);
+        }
+      }
+    };
+
+    fetchDoctors();
+  }, [canAssignDoctor]);
+
   const {
     register,
     handleSubmit,
@@ -81,7 +102,9 @@ function NewAppointmentContent() {
     },
   });
 
-  const onSubmit = async (data: AppointmentFormData) => {
+  const onSubmit = async (
+    data: AppointmentFormData & { doctorId?: string }
+  ) => {
     if (!user) {
       toast.error("Vous devez être connecté pour créer un rendez-vous");
       return;
@@ -91,6 +114,20 @@ function NewAppointmentContent() {
     try {
       if (!selectedPatient || !selectedPatient.id) {
         throw new Error("Patient non sélectionné");
+      }
+
+      // Si un médecin est sélectionné, utiliser ses informations
+      let doctorId = user.uid;
+      let doctorRole = user.role;
+      let doctorName = user.displayName || "";
+
+      if (canAssignDoctor && data.doctorId) {
+        const selectedDoctor = doctors.find((d) => d.uid === data.doctorId);
+        if (selectedDoctor) {
+          doctorId = selectedDoctor.uid;
+          doctorRole = selectedDoctor.role;
+          doctorName = selectedDoctor.displayName;
+        }
       }
 
       const appointmentData = {
@@ -104,11 +141,11 @@ function NewAppointmentContent() {
           phone: selectedPatient.phone || "",
           birthDate: selectedPatient.birthDate,
         },
-        creatorId: user.uid,
-        creatorRole: user.role,
-        creatorName: user.displayName || "",
+        creatorId: doctorId,
+        creatorRole: doctorRole,
+        creatorName: doctorName,
       };
-      await createAppointment(appointmentData, user.uid, user.role);
+      await createAppointment(appointmentData, doctorId, doctorRole);
       toast.success("Rendez-vous créé avec succès");
       router.push("/appointments");
     } catch (error) {
@@ -312,6 +349,43 @@ function NewAppointmentContent() {
                   )}
                 </div>
               </div>
+
+              {/* Sélection du médecin (visible uniquement pour super-admin, chef-service, prof) */}
+              {canAssignDoctor && (
+                <div>
+                  <label
+                    htmlFor="doctorId"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                  >
+                    Médecin traitant
+                  </label>
+                  <select
+                    id="doctorId"
+                    {...register("doctorId")}
+                    className="block w-full px-4 py-2.5 text-base border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white rounded-lg"
+                  >
+                    <option value="">Sélectionner un médecin...</option>
+                    {doctors.map((doctor) => (
+                      <option key={doctor.uid} value={doctor.uid}>
+                        {doctor.displayName} (
+                        {doctor.role === "medecin"
+                          ? "Médecin"
+                          : doctor.role === "chef-service"
+                          ? "Chef de service"
+                          : doctor.role === "prof"
+                          ? "Professeur"
+                          : doctor.role === "resident"
+                          ? "Résident"
+                          : doctor.role}
+                        )
+                      </option>
+                    ))}
+                  </select>
+                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                    Laissez vide pour vous assigner ce rendez-vous
+                  </p>
+                </div>
+              )}
 
               {/* Notes */}
               <div>

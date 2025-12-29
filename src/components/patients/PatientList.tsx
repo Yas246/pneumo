@@ -1,5 +1,6 @@
 "use client";
 
+import type { AdvancedFilterValues } from "@/components/shared/AdvancedFilter";
 import { getPatients } from "@/firebase/patients";
 import { useAuth } from "@/hooks/useAuth";
 import type { Patient } from "@/types/patient";
@@ -10,6 +11,7 @@ import { toast } from "react-hot-toast";
 interface PatientListProps {
   status: "active" | "archived";
   selectedPathologies?: string[];
+  advancedFilters?: AdvancedFilterValues;
 }
 
 interface PatientListItemProps {
@@ -51,7 +53,7 @@ function PatientListItem({ patient, status }: PatientListItemProps) {
           <span className="font-medium sm:hidden text-gray-500 dark:text-gray-400">
             Médecin traitant:
           </span>
-          <span className="ml-1 sm:ml-0 inline-flex items-center px-2 py-0.5 rounded-md bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-300 font-medium hover:bg-primary-100 dark:hover:bg-primary-900/40 transition-colors cursor-default">
+          <span className="ml-1 sm:ml-0 inline-flex items-center px-2 py-0.5 rounded-md bg-purple-50 dark:bg-purple-900/20 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/40 transition-colors cursor-default">
             <svg
               className="w-3.5 h-3.5 mr-1.5"
               fill="none"
@@ -84,6 +86,7 @@ function PatientListItem({ patient, status }: PatientListItemProps) {
 export function PatientList({
   status,
   selectedPathologies = [],
+  advancedFilters = {},
 }: PatientListProps) {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState(true);
@@ -109,6 +112,66 @@ export function PatientList({
           );
         }
 
+        // Appliquer le filtre par médecin traitant
+        if (advancedFilters.treatingDoctor) {
+          filteredPatients = filteredPatients.filter(
+            (patient) =>
+              patient.treatingDoctor?.toLowerCase() ===
+              advancedFilters.treatingDoctor?.toLowerCase()
+          );
+        }
+
+        // Appliquer le filtre par période de temps (basé sur updatedAt ou createdAt)
+        if (advancedFilters.startDate || advancedFilters.endDate) {
+          filteredPatients = filteredPatients.filter((patient) => {
+            const patientDate = patient.updatedAt
+              ? new Date(patient.updatedAt)
+              : patient.createdAt
+              ? new Date(patient.createdAt)
+              : null;
+
+            if (!patientDate) return false;
+
+            const startDate = advancedFilters.startDate
+              ? new Date(advancedFilters.startDate)
+              : null;
+            const endDate = advancedFilters.endDate
+              ? new Date(advancedFilters.endDate)
+              : null;
+
+            // Normaliser les dates pour comparer uniquement les parties jour/mois/année
+            const normalizeDate = (date: Date) => {
+              return new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate()
+              );
+            };
+
+            const normalizedPatientDate = normalizeDate(patientDate);
+            const normalizedStartDate = startDate
+              ? normalizeDate(startDate)
+              : null;
+            const normalizedEndDate = endDate ? normalizeDate(endDate) : null;
+
+            if (
+              normalizedStartDate &&
+              normalizedPatientDate < normalizedStartDate
+            ) {
+              return false;
+            }
+
+            if (
+              normalizedEndDate &&
+              normalizedPatientDate > normalizedEndDate
+            ) {
+              return false;
+            }
+
+            return true;
+          });
+        }
+
         // Si c'est un résident, on affiche un message spécial
         if (isResident) {
           toast.success("Affichage de vos dossiers patients uniquement");
@@ -123,7 +186,7 @@ export function PatientList({
     };
 
     fetchPatients();
-  }, [user, status, isResident, selectedPathologies]);
+  }, [user, status, isResident, selectedPathologies, advancedFilters]);
 
   if (loading) {
     return (
@@ -140,6 +203,10 @@ export function PatientList({
           Aucun patient {status === "active" ? "en cours" : "archivé"}
           {selectedPathologies.length > 0 &&
             " pour les pathologies sélectionnées"}
+          {(advancedFilters.startDate ||
+            advancedFilters.endDate ||
+            advancedFilters.treatingDoctor) &&
+            " pour les filtres appliqués"}
         </p>
       </div>
     );

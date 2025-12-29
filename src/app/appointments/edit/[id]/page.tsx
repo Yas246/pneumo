@@ -2,9 +2,16 @@
 
 import { Button } from "@/components/shared/Button";
 import { Navbar } from "@/components/shared/Navbar";
-import { getAppointment, updateAppointment } from "@/firebase/appointments";
+import {
+  assignDoctorToAppointment,
+  getAppointment,
+  getDoctors,
+  updateAppointment,
+} from "@/firebase/appointments";
 import { getPatient } from "@/firebase/patients";
 import { useAuth } from "@/hooks/useAuth";
+import { usePermissions } from "@/hooks/usePermissions";
+import { UserData } from "@/types/user";
 import { ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
@@ -20,6 +27,7 @@ const appointmentSchema = z.object({
   duration: z.number().min(15).max(120),
   type: z.enum(["consultation", "suivi", "examen"]),
   notes: z.string().optional(),
+  doctorId: z.string().optional(),
 });
 
 type AppointmentFormData = z.infer<typeof appointmentSchema>;
@@ -28,9 +36,12 @@ export default function EditAppointmentPage() {
   const router = useRouter();
   const params = useParams() as { id: string };
   const { user } = useAuth();
+  const { canAssignDoctor } = usePermissions();
   const [loading, setLoading] = useState(true);
   const [patientName, setPatientName] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [doctors, setDoctors] = useState<UserData[]>([]);
+  const [currentDoctorId, setCurrentDoctorId] = useState<string>("");
 
   const {
     register,
@@ -62,12 +73,15 @@ export default function EditAppointmentPage() {
           setPatientName(`${patient.firstName} ${patient.lastName}`);
         }
 
+        setCurrentDoctorId(appointment.creatorId);
+
         reset({
           date: appointment.date,
           time: appointment.time,
           duration: appointment.duration,
           type: appointment.type,
           notes: appointment.notes,
+          doctorId: appointment.creatorId,
         });
       } catch (error) {
         console.error("Error:", error);
@@ -81,7 +95,24 @@ export default function EditAppointmentPage() {
     fetchAppointment();
   }, [params.id, router, reset]);
 
-  const onSubmit = async (data: AppointmentFormData) => {
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      if (canAssignDoctor) {
+        try {
+          const doctorsList = await getDoctors();
+          setDoctors(doctorsList);
+        } catch (error) {
+          console.error("Erreur lors de la récupération des médecins:", error);
+        }
+      }
+    };
+
+    fetchDoctors();
+  }, [canAssignDoctor]);
+
+  const onSubmit = async (
+    data: AppointmentFormData & { doctorId?: string }
+  ) => {
     if (!user) {
       toast.error("Vous devez être connecté pour modifier un rendez-vous");
       return;
@@ -94,6 +125,27 @@ export default function EditAppointmentPage() {
 
     setIsSubmitting(true);
     try {
+      // Si le médecin a changé et que l'utilisateur a la permission
+      if (
+        canAssignDoctor &&
+        data.doctorId &&
+        data.doctorId !== currentDoctorId
+      ) {
+        const selectedDoctor = doctors.find((d) => d.uid === data.doctorId);
+        if (selectedDoctor) {
+          await assignDoctorToAppointment(
+            params.id,
+            selectedDoctor.uid,
+            selectedDoctor.role,
+            selectedDoctor.displayName,
+            user.uid,
+            user.role
+          );
+          toast.success("Médecin réassigné avec succès");
+        }
+      }
+
+      // Mettre à jour les autres champs
       await updateAppointment(params.id, data, user.uid, user.role);
       toast.success("Rendez-vous modifié avec succès");
       router.push("/appointments");
@@ -222,6 +274,43 @@ export default function EditAppointmentPage() {
                       </p>
                     )}
                   </div>
+
+                  {/* Sélection du médecin (visible uniquement pour super-admin, chef-service, prof) */}
+                  {canAssignDoctor && (
+                    <div>
+                      <label
+                        htmlFor="doctorId"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                      >
+                        Médecin traitant
+                      </label>
+                      <select
+                        id="doctorId"
+                        {...register("doctorId")}
+                        className="mt-1 block w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white text-base px-4 py-3"
+                      >
+                        <option value="">Sélectionner un médecin...</option>
+                        {doctors.map((doctor) => (
+                          <option key={doctor.uid} value={doctor.uid}>
+                            {doctor.displayName} (
+                            {doctor.role === "medecin"
+                              ? "Médecin"
+                              : doctor.role === "chef-service"
+                              ? "Chef de service"
+                              : doctor.role === "prof"
+                              ? "Professeur"
+                              : doctor.role === "resident"
+                              ? "Résident"
+                              : doctor.role}
+                            )
+                          </option>
+                        ))}
+                      </select>
+                      <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        Changer le médecin réassignera le rendez-vous
+                      </p>
+                    </div>
+                  )}
 
                   <div className="sm:col-span-2">
                     <label

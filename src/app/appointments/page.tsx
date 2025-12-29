@@ -25,14 +25,14 @@ export default function AppointmentsPage() {
     []
   );
   const [loading, setLoading] = useState(true);
-  const { user, isSuperAdmin } = useAuth();
+  const { user, canViewAllAppointments } = useAuth();
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         if (!user) return;
 
-        const fetchedAppointments = isSuperAdmin
+        const fetchedAppointments = canViewAllAppointments
           ? await getAllAppointmentsWithPatients()
           : await getUserAppointmentsWithPatients(user.uid);
 
@@ -46,7 +46,7 @@ export default function AppointmentsPage() {
     };
 
     fetchAppointments();
-  }, [user, isSuperAdmin]);
+  }, [user, canViewAllAppointments]);
 
   if (loading) {
     return (

@@ -44,6 +44,16 @@ export function usePermissions() {
     user?.role === "chef-service" ||
     user?.role === "prof";
 
+  const canAssignDoctor =
+    user?.role === "super-admin" ||
+    user?.role === "chef-service" ||
+    user?.role === "prof";
+
+  const canViewAllAppointments =
+    user?.role === "super-admin" ||
+    user?.role === "chef-service" ||
+    user?.role === "prof";
+
   console.log("Calculated permissions:", {
     loading,
     canCreate,
@@ -63,5 +73,7 @@ export function usePermissions() {
     canCreateAppointment,
     canManageUsers,
     canViewResidentAppointments,
+    canAssignDoctor,
+    canViewAllAppointments,
   };
 }
