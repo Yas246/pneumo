@@ -1,10 +1,23 @@
 import { auth } from "@/firebase/admin";
+import { csrfProtect } from "@/lib/csrf";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ uid: string }> }
 ) {
+  try {
+    await csrfProtect(request);
+  } catch (error) {
+    if (error instanceof Error && error.name === "CsrfError") {
+      return NextResponse.json({ message: error.message }, { status: 403 });
+    }
+    return NextResponse.json(
+      { message: "Erreur de validation CSRF" },
+      { status: 403 }
+    );
+  }
+
   try {
     const { newPassword } = await request.json();
     const { uid } = await params;

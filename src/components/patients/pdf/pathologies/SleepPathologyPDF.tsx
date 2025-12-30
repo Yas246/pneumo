@@ -145,88 +145,97 @@ function AntecedentsSection({ patient }: SleepPathologyPDFProps) {
 
   return (
     <View style={baseStyles.section}>
-      <Text style={baseStyles.sectionTitle}>
-        Antécédents et Facteurs de Risque
-      </Text>
+      <View style={pathologyStyles.sleepSection}>
+        <Text style={baseStyles.sectionTitle}>
+          Antécédents et Facteurs de Risque
+        </Text>
+        {hasPersonalHistory && (
+          <>
+            <Text style={baseStyles.subsectionTitle}>
+              Antecedents Personnels
+            </Text>
 
-      {hasPersonalHistory && (
-        <>
-          <Text style={baseStyles.subsectionTitle}>Antecedents Personnels</Text>
-          <View style={baseStyles.grid}>
-            <View style={baseStyles.gridItem}>
-              <PDFField label="Obesite" value={personalHistory?.obesity} />
+            <View style={baseStyles.grid}>
+              <View style={baseStyles.gridItem}>
+                <PDFField label="Obesite" value={personalHistory?.obesity} />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField label="HTA" value={personalHistory?.hta} />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField
+                  label="Antecedents ORL"
+                  value={personalHistory?.orl}
+                />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField
+                  label="Antecedents Neurologiques"
+                  value={personalHistory?.neuro}
+                />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField label="Tabagisme" value={personalHistory?.smoking} />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField
+                  label="Alcoolisme"
+                  value={personalHistory?.alcoholism}
+                />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField label="Diabete" value={personalHistory?.diabetes} />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField
+                  label="Maladies Cardiovasculaires"
+                  value={personalHistory?.cardiovascularDiseases}
+                />
+              </View>
+              <View style={baseStyles.gridItemFull}>
+                <PDFField
+                  label="Mode de vie"
+                  value={personalHistory?.lifestyle}
+                />
+              </View>
+              <View style={baseStyles.gridItemFull}>
+                <PDFField
+                  label="Pathologie Respiratoire"
+                  value={personalHistory?.respiratoryPathology}
+                />
+              </View>
+              <View style={baseStyles.gridItemFull}>
+                <PDFField
+                  label="Traitements en cours"
+                  value={personalHistory?.currentMedications}
+                />
+              </View>
             </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField label="HTA" value={personalHistory?.hta} />
-            </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField label="Antecedents ORL" value={personalHistory?.orl} />
-            </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField
-                label="Antecedents Neurologiques"
-                value={personalHistory?.neuro}
-              />
-            </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField label="Tabagisme" value={personalHistory?.smoking} />
-            </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField
-                label="Alcoolisme"
-                value={personalHistory?.alcoholism}
-              />
-            </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField label="Diabete" value={personalHistory?.diabetes} />
-            </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField
-                label="Maladies Cardiovasculaires"
-                value={personalHistory?.cardiovascularDiseases}
-              />
-            </View>
-            <View style={baseStyles.gridItemFull}>
-              <PDFField
-                label="Mode de vie"
-                value={personalHistory?.lifestyle}
-              />
-            </View>
-            <View style={baseStyles.gridItemFull}>
-              <PDFField
-                label="Pathologie Respiratoire"
-                value={personalHistory?.respiratoryPathology}
-              />
-            </View>
-            <View style={baseStyles.gridItemFull}>
-              <PDFField
-                label="Traitements en cours"
-                value={personalHistory?.currentMedications}
-              />
-            </View>
-          </View>
-        </>
-      )}
+          </>
+        )}
 
-      {hasFamilyHistory && (
-        <>
-          <Text style={baseStyles.subsectionTitle}>Antecedents Familiaux</Text>
-          <View style={baseStyles.grid}>
-            <View style={baseStyles.gridItem}>
-              <PDFField
-                label="Antecedents de SAOS"
-                value={familyHistory?.saosHistory}
-              />
+        {hasFamilyHistory && (
+          <>
+            <Text style={baseStyles.subsectionTitle}>
+              Antecedents Familiaux
+            </Text>
+            <View style={baseStyles.grid}>
+              <View style={baseStyles.gridItem}>
+                <PDFField
+                  label="Antecedents de SAOS"
+                  value={familyHistory?.saosHistory}
+                />
+              </View>
+              <View style={baseStyles.gridItem}>
+                <PDFField
+                  label="Pathologies Respiratoires"
+                  value={familyHistory?.respiratoryPathologies}
+                />
+              </View>
             </View>
-            <View style={baseStyles.gridItem}>
-              <PDFField
-                label="Pathologies Respiratoires"
-                value={familyHistory?.respiratoryPathologies}
-              />
-            </View>
-          </View>
-        </>
-      )}
+          </>
+        )}
+      </View>
     </View>
   );
 }

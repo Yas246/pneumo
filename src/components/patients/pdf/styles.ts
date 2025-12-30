@@ -650,7 +650,7 @@ export const pathologyStyles = StyleSheet.create({
   sleepSection: {
     borderLeft: `4pt solid ${COLORS.sleepBorder}`,
     paddingLeft: 12,
-    marginBottom: 12,
+    marginBottom: 0,
     backgroundColor: COLORS.sleepBg,
     borderRadius: 2,
     ...baseStyles.avoidPageBreak,

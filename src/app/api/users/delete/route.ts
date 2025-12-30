@@ -1,7 +1,20 @@
 import { auth } from "@/firebase/admin";
+import { csrfProtect } from "@/lib/csrf";
 import { NextResponse } from "next/server";
 
 export async function DELETE(request: Request) {
+  try {
+    await csrfProtect(request);
+  } catch (error) {
+    if (error instanceof Error && error.name === "CsrfError") {
+      return NextResponse.json({ message: error.message }, { status: 403 });
+    }
+    return NextResponse.json(
+      { message: "Erreur de validation CSRF" },
+      { status: 403 }
+    );
+  }
+
   try {
     const { uid } = await request.json();
 

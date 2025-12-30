@@ -1,4 +1,5 @@
 import { deletePatient, getPatient, updatePatient } from "@/firebase/patients";
+import { csrfProtect } from "@/lib/csrf";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -26,6 +27,18 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
   try {
+    await csrfProtect(request);
+  } catch (error) {
+    if (error instanceof Error && error.name === "CsrfError") {
+      return Response.json({ message: error.message }, { status: 403 });
+    }
+    return Response.json(
+      { message: "Erreur de validation CSRF" },
+      { status: 403 }
+    );
+  }
+
+  try {
     const { id } = await params;
     const { userId, ...data } = await request.json();
     await updatePatient(id, data, userId);
@@ -40,9 +53,21 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ): Promise<Response> {
+  try {
+    await csrfProtect(request);
+  } catch (error) {
+    if (error instanceof Error && error.name === "CsrfError") {
+      return Response.json({ message: error.message }, { status: 403 });
+    }
+    return Response.json(
+      { message: "Erreur de validation CSRF" },
+      { status: 403 }
+    );
+  }
+
   try {
     const { id } = await params;
     await deletePatient(id);

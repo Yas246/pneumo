@@ -3,8 +3,18 @@ import { createAppointment } from "@/firebase/appointments";
 import { UserRole } from "@/types/user";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { csrfProtect } from "@/lib/csrf";
 
 export async function POST(request: NextRequest) {
+  try {
+    await csrfProtect(request);
+  } catch (error) {
+    if (error instanceof Error && error.name === "CsrfError") {
+      return NextResponse.json({ message: error.message }, { status: 403 });
+    }
+    return NextResponse.json({ message: "Erreur de validation CSRF" }, { status: 403 });
+  }
+
   try {
     // Récupérer le token depuis les cookies
     const cookieStore = await cookies();

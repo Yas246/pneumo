@@ -158,10 +158,17 @@ export const changeUserPassword = async (
       throw new Error("Utilisateur non trouvé");
     }
 
+    const tokenResponse = await fetch("/api/csrf-token");
+    if (!tokenResponse.ok) {
+      throw new Error("Failed to fetch CSRF token");
+    }
+    const { token, headerName } = await tokenResponse.json();
+
     const response = await fetch(`/api/users/${uid}/change-password`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        [headerName]: token,
       },
       body: JSON.stringify({ newPassword }),
     });

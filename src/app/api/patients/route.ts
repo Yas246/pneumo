@@ -3,8 +3,18 @@ import {
   updatePatient as updatePatientInDb,
 } from "@/firebase/patients";
 import { NextResponse } from "next/server";
+import { csrfProtect } from "@/lib/csrf";
 
 export async function POST(request: Request) {
+  try {
+    await csrfProtect(request);
+  } catch (error) {
+    if (error instanceof Error && error.name === "CsrfError") {
+      return NextResponse.json({ message: error.message }, { status: 403 });
+    }
+    return NextResponse.json({ message: "Erreur de validation CSRF" }, { status: 403 });
+  }
+
   try {
     const { userId, ...data } = await request.json();
     const patientId = await createPatientInDb(data, userId);
@@ -20,6 +30,15 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+  try {
+    await csrfProtect(request);
+  } catch (error) {
+    if (error instanceof Error && error.name === "CsrfError") {
+      return NextResponse.json({ message: error.message }, { status: 403 });
+    }
+    return NextResponse.json({ message: "Erreur de validation CSRF" }, { status: 403 });
+  }
+
   try {
     const { id, userId, ...data } = await request.json();
     await updatePatientInDb(id, data, userId);

@@ -1,3 +1,4 @@
+import { CsrfProvider } from "@/components/auth/CsrfProvider";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
@@ -20,14 +21,16 @@ export default function RootLayout({
   return (
     <html lang="fr" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
-        >
-          {children}
-        </ThemeProvider>
-        <Toaster position="top-right" />
+        <CsrfProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem={false}
+          >
+            {children}
+          </ThemeProvider>
+          <Toaster position="top-right" />
+        </CsrfProvider>
       </body>
     </html>
   );
