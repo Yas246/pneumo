@@ -135,25 +135,6 @@ export function PatientPDFDocument({ patient }: PatientPDFDocumentProps) {
           <Text style={baseStyles.fieldValue}>{pathologiesSummary}</Text>
         </View>
 
-        {/* Motif de consultation */}
-        <View style={baseStyles.section}>
-          <Text style={baseStyles.sectionTitle}>Motif de Consultation</Text>
-
-          <View style={baseStyles.field}>
-            <Text style={baseStyles.fieldLabel}>Motif principal:</Text>
-            <Text style={baseStyles.fieldValue}>
-              {patient.consultationReason || "Non spécifié"}
-            </Text>
-          </View>
-
-          <View style={baseStyles.field}>
-            <Text style={baseStyles.fieldLabel}>Durée des symptômes:</Text>
-            <Text style={baseStyles.fieldValue}>
-              {patient.symptomsDuration || "Non spécifiée"}
-            </Text>
-          </View>
-        </View>
-
         {/* Contenu dynamique par pathologie */}
         {patient.pathologies?.map((pathology) => (
           <View key={pathology} style={baseStyles.pageBreak}>
