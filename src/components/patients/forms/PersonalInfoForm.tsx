@@ -330,6 +330,26 @@ export function PersonalInfoForm({
 
         <div className="space-y-2">
           <label
+            htmlFor="ipHosix"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+          >
+            IP HOSIX
+          </label>
+          <input
+            type="text"
+            {...register("ipHosix")}
+            disabled={disabled}
+            className="block px-4 w-full rounded-lg border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:text-white sm:text-sm py-3 transition-colors disabled:bg-gray-100 dark:disabled:bg-gray-600"
+          />
+          {errors.ipHosix && (
+            <p className="text-sm text-red-600 dark:text-red-400">
+              {errors.ipHosix.message}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <label
             htmlFor="lastVisit"
             className="block text-sm font-medium text-gray-700 dark:text-gray-300"
           >

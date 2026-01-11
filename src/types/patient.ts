@@ -16,6 +16,7 @@ export interface Patient {
   profession: string;
   treatingDoctor: string;
   socialSecurity: "CNSS" | "AMO" | "Mutuelle" | "Aucun" | "Autre";
+  ipHosix?: string;
   status: "active" | "archived";
   statusHistory: StatusChange[];
   statusChangedAt: Date;

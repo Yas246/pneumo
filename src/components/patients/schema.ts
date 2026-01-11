@@ -28,6 +28,7 @@ export const patientSchema = z.object({
   profession: z.string().optional(),
   socialSecurity: z.string().optional(),
   treatingDoctor: z.string().optional(),
+  ipHosix: z.string().optional(),
   status: z.enum(["active", "archived"]).default("active"),
 
   // Examen clinique (commun à toutes les pathologies)

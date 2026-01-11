@@ -126,6 +126,13 @@ export function PatientPDFDocument({ patient }: PatientPDFDocumentProps) {
                 {patient.treatingDoctor || "Non spécifié"}
               </Text>
             </View>
+
+            <View style={baseStyles.gridItem}>
+              <Text style={baseStyles.fieldLabel}>IP HOSIX:</Text>
+              <Text style={baseStyles.fieldValue}>
+                {patient.ipHosix || "Non spécifié"}
+              </Text>
+            </View>
           </View>
         </View>
 
