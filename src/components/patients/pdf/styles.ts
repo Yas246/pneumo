@@ -8,6 +8,7 @@
  */
 
 import { StyleSheet } from "@react-pdf/renderer";
+import "./fonts"; // Import pour enregistrer la police Montserrat
 
 // Couleurs médicales cohérentes - Optimisées pour WCAG AA
 export const COLORS = {
@@ -50,7 +51,7 @@ export const baseStyles = StyleSheet.create({
   page: {
     padding: 40,
     fontSize: 11,
-    fontFamily: "Helvetica",
+    fontFamily: "Montserrat",
     backgroundColor: COLORS.background,
   },
 

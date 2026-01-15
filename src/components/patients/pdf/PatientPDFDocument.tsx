@@ -27,40 +27,105 @@ export function PatientPDFDocument({ patient }: PatientPDFDocumentProps) {
 
   return (
     <Document>
-      <Page size="A4" style={{ ...baseStyles.page, paddingTop: 70 }}>
-        {/* En-tête du document */}
+      <Page size="A4" style={{ ...baseStyles.page, paddingTop: 85 }}>
+        {/* En-tête du document - Design amélioré */}
         <View
           style={{
             position: "absolute",
             top: 0,
             left: 0,
             right: 0,
-            height: 60,
+            height: 75,
             flexDirection: "row",
             alignItems: "center",
-            paddingHorizontal: 20,
-            borderBottom: "2pt solid #2563eb",
-            backgroundColor: "#ffffff",
+            paddingHorizontal: 30,
+            backgroundColor: "#1e40af",
+            borderBottom: "3pt solid #1e3a8a",
           }}
           fixed
         >
+          {/* Logo */}
           <Image
             src={`${BASE_URL}/logochuo.png`}
-            style={{ width: 60, height: 60 }}
+            style={{ width: 90, height: 90, marginRight: 20, marginTop: 10 }}
           />
-          <View style={{ flex: 1, alignItems: "center" }}>
+
+          {/* Informations du centre */}
+          <View style={{ flex: 1 }}>
             <Text
               style={{
-                fontSize: 14,
-                fontWeight: "bold",
-                color: "#2563eb",
-                fontFamily: "Helvetica",
+                fontSize: 18,
+                fontWeight: 700,
+                color: "#ffffff",
+                fontFamily: "Montserrat",
+                marginBottom: 4,
               }}
             >
-              Service de pneumologie CHUO
+              CHU MOHAMMED VI OUJDA
+            </Text>
+            <Text
+              style={{
+                fontSize: 13,
+                fontWeight: 500,
+                color: "#dbeafe",
+                fontFamily: "Montserrat",
+                marginBottom: 3,
+              }}
+            >
+              Service de Pneumologie
+            </Text>
+            <Text
+              style={{
+                fontSize: 10,
+                fontWeight: 400,
+                color: "#93c5fd",
+                fontFamily: "Montserrat",
+              }}
+            >
+              Soins de qualité • Excellence médicale
+            </Text>
+          </View>
+
+          {/* Informations de contact alignées à droite */}
+          <View style={{ alignItems: "flex-end", marginLeft: 20 }}>
+            <Text
+              style={{
+                fontSize: 9,
+                color: "#dbeafe",
+                fontFamily: "Montserrat",
+                marginBottom: 2,
+              }}
+            >
+              Maroc
+            </Text>
+            <Text
+              style={{
+                fontSize: 9,
+                color: "#93c5fd",
+                fontFamily: "Montserrat",
+              }}
+            >
+              {new Date().toLocaleDateString("fr-FR", {
+                day: "2-digit",
+                month: "long",
+                year: "numeric",
+              })}
             </Text>
           </View>
         </View>
+
+        {/* Barre décorative sous l'en-tête */}
+        <View
+          style={{
+            position: "absolute",
+            top: 75,
+            left: 0,
+            right: 0,
+            height: 3,
+            backgroundColor: "#3b82f6",
+          }}
+          fixed
+        />
 
         {/* Informations générales du patient */}
         <View style={baseStyles.section}>
