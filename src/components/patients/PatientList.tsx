@@ -1,6 +1,7 @@
 "use client";
 
 import type { AdvancedFilterValues } from "@/components/shared/AdvancedFilter";
+import { Pagination } from "@/components/shared/Pagination";
 import { getPatients } from "@/firebase/patients";
 import { useAuth } from "@/hooks/useAuth";
 import type { Patient } from "@/types/patient";
@@ -18,6 +19,8 @@ interface PatientListItemProps {
   patient: Patient;
   status: "active" | "archived";
 }
+
+const ITEMS_PER_PAGE = 20;
 
 function PatientListItem({ patient, status }: PatientListItemProps) {
   return (
@@ -90,6 +93,8 @@ export function PatientList({
 }: PatientListProps) {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
   const { user, isResident } = useAuth();
 
   useEffect(() => {
@@ -97,96 +102,49 @@ export function PatientList({
       try {
         if (!user) return;
 
-        const patientsData = await getPatients(user.uid, user.role);
-        let filteredPatients = patientsData.filter((p) => p.status === status);
+        // Récupérer les patients avec pagination côté serveur
+        const result = await getPatients(user.uid, user.role, {
+          status,
+          page: currentPage,
+          itemsPerPage: ITEMS_PER_PAGE,
+          selectedPathologies,
+          treatingDoctor: advancedFilters.treatingDoctor,
+          startDate: advancedFilters.startDate,
+          endDate: advancedFilters.endDate,
+        });
 
-        // Appliquer le filtre par pathologie si des pathologies sont sélectionnées
-        if (selectedPathologies.length > 0) {
-          filteredPatients = filteredPatients.filter(
-            (patient) =>
-              // S'assurer que patient.pathologies est un tableau
-              Array.isArray(patient.pathologies) &&
-              selectedPathologies.some((pathology) =>
-                patient.pathologies.includes(pathology)
-              )
-          );
-        }
-
-        // Appliquer le filtre par médecin traitant
-        if (advancedFilters.treatingDoctor) {
-          filteredPatients = filteredPatients.filter(
-            (patient) =>
-              patient.treatingDoctor?.toLowerCase() ===
-              advancedFilters.treatingDoctor?.toLowerCase()
-          );
-        }
-
-        // Appliquer le filtre par période de temps (basé sur updatedAt ou createdAt)
-        if (advancedFilters.startDate || advancedFilters.endDate) {
-          filteredPatients = filteredPatients.filter((patient) => {
-            const patientDate = patient.updatedAt
-              ? new Date(patient.updatedAt)
-              : patient.createdAt
-              ? new Date(patient.createdAt)
-              : null;
-
-            if (!patientDate) return false;
-
-            const startDate = advancedFilters.startDate
-              ? new Date(advancedFilters.startDate)
-              : null;
-            const endDate = advancedFilters.endDate
-              ? new Date(advancedFilters.endDate)
-              : null;
-
-            // Normaliser les dates pour comparer uniquement les parties jour/mois/année
-            const normalizeDate = (date: Date) => {
-              return new Date(
-                date.getFullYear(),
-                date.getMonth(),
-                date.getDate()
-              );
-            };
-
-            const normalizedPatientDate = normalizeDate(patientDate);
-            const normalizedStartDate = startDate
-              ? normalizeDate(startDate)
-              : null;
-            const normalizedEndDate = endDate ? normalizeDate(endDate) : null;
-
-            if (
-              normalizedStartDate &&
-              normalizedPatientDate < normalizedStartDate
-            ) {
-              return false;
-            }
-
-            if (
-              normalizedEndDate &&
-              normalizedPatientDate > normalizedEndDate
-            ) {
-              return false;
-            }
-
-            return true;
-          });
-        }
+        setPatients(result.patients || []);
+        setTotalItems(result.total || 0);
 
         // Si c'est un résident, on affiche un message spécial
-        if (isResident) {
+        if (isResident && currentPage === 1) {
           toast.success("Affichage de vos dossiers patients uniquement");
         }
-
-        setPatients(filteredPatients);
       } catch (error) {
         console.error("Erreur lors de la récupération des patients:", error);
+        toast.error("Erreur lors du chargement des patients");
       } finally {
         setLoading(false);
       }
     };
 
     fetchPatients();
-  }, [user, status, isResident, selectedPathologies, advancedFilters]);
+  }, [
+    user,
+    status,
+    isResident,
+    selectedPathologies,
+    advancedFilters,
+    currentPage,
+  ]);
+
+  // Calculer le nombre total de pages
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
+  // Réinitialiser à la page 1 quand les filtres changent
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedPathologies, advancedFilters]);
 
   if (loading) {
     return (
@@ -226,6 +184,17 @@ export function PatientList({
           </li>
         ))}
       </ul>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          itemsPerPage={ITEMS_PER_PAGE}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </div>
   );
 }

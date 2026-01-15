@@ -299,8 +299,17 @@ export async function updatePatientStatus(
 
 export const getPatients = async (
   userId: string,
-  userRole: string
-): Promise<Patient[]> => {
+  userRole: string,
+  options?: {
+    status?: "active" | "archived";
+    page?: number;
+    itemsPerPage?: number;
+    selectedPathologies?: string[];
+    treatingDoctor?: string;
+    startDate?: string;
+    endDate?: string;
+  }
+): Promise<{ patients: Patient[]; total: number }> => {
   try {
     let q = query(collection(db, PATIENTS_COLLECTION));
 
@@ -320,7 +329,102 @@ export const getPatients = async (
       patients.push(patient);
     });
 
-    return patients;
+    // S'assurer qu'on a toujours un tableau
+    const patientsArray = Array.isArray(patients) ? patients : [];
+
+    // Filtrer par status si spécifié
+    let filteredPatients = patientsArray;
+    if (options?.status) {
+      filteredPatients = patientsArray.filter((p) => p.status === options.status);
+    }
+
+    // Appliquer le filtre par pathologie si des pathologies sont sélectionnées
+    if (options?.selectedPathologies && options.selectedPathologies.length > 0) {
+      filteredPatients = filteredPatients.filter(
+        (patient) =>
+          // S'assurer que patient.pathologies est un tableau
+          Array.isArray(patient.pathologies) &&
+          options.selectedPathologies!.some((pathology) =>
+            patient.pathologies.includes(pathology)
+          )
+      );
+    }
+
+    // Appliquer le filtre par médecin traitant
+    if (options?.treatingDoctor) {
+      filteredPatients = filteredPatients.filter(
+        (patient) =>
+          patient.treatingDoctor?.toLowerCase() ===
+          options.treatingDoctor?.toLowerCase()
+      );
+    }
+
+    // Appliquer le filtre par période de temps (basé sur updatedAt ou createdAt)
+    if (options?.startDate || options?.endDate) {
+      filteredPatients = filteredPatients.filter((patient) => {
+        const patientDate = patient.updatedAt
+          ? new Date(patient.updatedAt)
+          : patient.createdAt
+          ? new Date(patient.createdAt)
+          : null;
+
+        if (!patientDate) return false;
+
+        const startDate = options.startDate
+          ? new Date(options.startDate)
+          : null;
+        const endDate = options.endDate ? new Date(options.endDate) : null;
+
+        // Normaliser les dates pour comparer uniquement les parties jour/mois/année
+        const normalizeDate = (date: Date) => {
+          return new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate()
+          );
+        };
+
+        const normalizedPatientDate = normalizeDate(patientDate);
+        const normalizedStartDate = startDate
+          ? normalizeDate(startDate)
+          : null;
+        const normalizedEndDate = endDate ? normalizeDate(endDate) : null;
+
+        if (
+          normalizedStartDate &&
+          normalizedPatientDate < normalizedStartDate
+        ) {
+          return false;
+        }
+
+        if (
+          normalizedEndDate &&
+          normalizedPatientDate > normalizedEndDate
+        ) {
+          return false;
+        }
+
+        return true;
+      });
+    }
+
+    // Trier par lastUpdated décroissant (plus récent en premier)
+    filteredPatients.sort((a, b) => {
+      const dateA = a.updatedAt ? new Date(a.updatedAt).getTime() : 0;
+      const dateB = b.updatedAt ? new Date(b.updatedAt).getTime() : 0;
+      return dateB - dateA; // Ordre décroissant
+    });
+
+    const total = filteredPatients.length;
+
+    // Pagination si spécifiée
+    if (options?.page && options?.itemsPerPage) {
+      const startIndex = (options.page - 1) * options.itemsPerPage;
+      const endIndex = startIndex + options.itemsPerPage;
+      filteredPatients = filteredPatients.slice(startIndex, endIndex);
+    }
+
+    return { patients: filteredPatients, total };
   } catch (error) {
     console.error("Error getting patients:", error);
     throw error;
