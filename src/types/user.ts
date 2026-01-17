@@ -46,3 +46,14 @@ export interface LogEntry {
   targetId?: string;
   targetType?: string;
 }
+
+// Type pour créer un log (sans id ni timestamp, avec champs optionnels)
+export type CreateLogEntry = {
+  userId: string;
+  userEmail?: string;
+  userRole?: UserRole;
+  action: LogActionType;
+  details: string;
+  targetId?: string;
+  targetType?: string;
+};

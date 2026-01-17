@@ -152,11 +152,19 @@ export const changeUserPassword = async (
   newPassword: string
 ): Promise<void> => {
   try {
+    console.log("changeUserPassword called with uid:", uid);
+
+    if (!uid) {
+      throw new Error("UID de l'utilisateur manquant");
+    }
+
     // Récupérer les informations de l'utilisateur
     const userData = await getUser(uid);
     if (!userData) {
       throw new Error("Utilisateur non trouvé");
     }
+
+    console.log("User data found:", userData);
 
     const tokenResponse = await fetch("/api/csrf-token");
     if (!tokenResponse.ok) {
@@ -180,17 +188,34 @@ export const changeUserPassword = async (
       );
     }
 
+    console.log("Password changed successfully for user:", uid);
+
+    // Ré-authentifier l'utilisateur actuel pour obtenir ses infos
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      throw new Error("Utilisateur non connecté");
+    }
+
+    const currentUserId = currentUser.uid;
+    const currentUserData = await getUser(currentUserId);
+
     // Créer un log pour le changement de mot de passe
     await createLog({
-      userId: uid,
-      userEmail: userData.email,
-      userRole: userData.role,
+      userId: currentUserId,
+      userEmail: currentUserData?.email,
+      userRole: currentUserData?.role,
       action: "CHANGEMENT_MDP",
       details: `Changement du mot de passe pour ${userData.displayName}`,
       targetId: uid,
       targetType: "user",
     });
   } catch (error) {
+    console.error("Error in changeUserPassword:", error);
+    // Si l'erreur est déjà une Error, la relancer telle quelle
+    if (error instanceof Error) {
+      throw error;
+    }
+    // Sinon, utiliser formatAuthError pour les erreurs Firebase
     throw formatAuthError(error as AuthError);
   }
 };

@@ -16,7 +16,7 @@ import { toast } from "react-hot-toast";
 
 export default function UsersPage() {
   const router = useRouter();
-  const { loading, isSuperAdmin } = useAuth();
+  const { loading, isSuperAdmin, user: currentUser } = useAuth();
   const [users, setUsers] = useState<UserData[]>([]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
@@ -56,11 +56,11 @@ export default function UsersPage() {
   }, [isSuperAdmin]);
 
   const handleDeleteUser = async () => {
-    if (!selectedUser) return;
+    if (!selectedUser || !currentUser) return;
 
     setIsDeletingUser(true);
     try {
-      await deleteUser(selectedUser.uid);
+      await deleteUser(selectedUser.uid, currentUser.uid);
       setUsers((current) =>
         current.filter((user) => user.uid !== selectedUser.uid)
       );
@@ -68,7 +68,9 @@ export default function UsersPage() {
       setIsDeleteModalOpen(false);
     } catch (error) {
       console.error("Erreur lors de la suppression:", error);
-      toast.error("Erreur lors de la suppression de l'utilisateur");
+      const errorMessage =
+        error instanceof Error ? error.message : "Erreur lors de la suppression";
+      toast.error(errorMessage);
     } finally {
       setIsDeletingUser(false);
     }

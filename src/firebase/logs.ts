@@ -1,4 +1,4 @@
-import type { LogEntry } from "@/types/user";
+import type { CreateLogEntry, LogEntry } from "@/types/user";
 import type { QueryDocumentSnapshot } from "firebase/firestore";
 import {
   addDoc,
@@ -16,7 +16,7 @@ const LOGS_COLLECTION = "logs";
 
 // Créer un nouveau log
 export const createLog = async (
-  logData: Omit<LogEntry, "id" | "timestamp">
+  logData: CreateLogEntry
 ): Promise<void> => {
   try {
     await addDoc(collection(db, LOGS_COLLECTION), {
